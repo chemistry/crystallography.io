@@ -1,2 +1,4 @@
-# Crystallography Online
-Alternative Web UI for COD database
+# Crystallography API
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+API for Alternative Web UI
