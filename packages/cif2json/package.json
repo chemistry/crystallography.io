@@ -1,0 +1,37 @@
+{
+  "name": "@chemistry/cif2json",
+  "version": "0.0.0",
+  "description": "Conversion of CIF to JSON",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "http://vreshch.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "crystallography",
+    "CIF",
+    "conversion"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/cif2json",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "private": false,
+  "files": [
+    "package-lock.json",
+    "package.json",
+    "dist",
+    "README.md"
+  ],
+  "main": "dist/cif2json.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+      "build": "webpack-cli --config webpack.config.js --mode production"
+  },
+  "dependencies": {
+  }
+}

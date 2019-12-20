@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "declaration": true,
+        "types": ["jest"],
+        "outDir": "dist",
+        "lib": ["es2015", "es2016", "dom"]
+    },
+
+    "rules": {
+    },
+
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+
+    "awesomeTypescriptLoaderOptions": {
+        "forkChecker": true,
+        "useWebpackText": true
+    },
+
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}

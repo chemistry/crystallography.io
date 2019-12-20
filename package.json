@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/crystallography-api",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "Crystallography API",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -27,8 +27,29 @@
         "registry": "https://registry.npmjs.org/"
     },
     "scripts": {
+        "clean": "lerna clean && rimraf dist/* coverage/*",
+        "bootstrap": "lerna bootstrap --hoist",
+        "bootstrap:ci": "lerna exec npm install",
+        "build": "lerna run build",
+        "updated": "lerna updated",
+        "test": "jest",
+        "tdd": "jest --watch",
+        "lint": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}'",
+        "lintfix": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}' --fix"
     },
-    "dependencies": {},
     "devDependencies": {
+        "@types/jest": "24.0.24",
+        "awesome-typescript-loader": "5.2.1",
+        "codecov": "3.6.1",
+        "jest": "24.9.0",
+        "lerna": "3.19.0",
+        "rimraf": "3.0.0",
+        "ts-jest": "24.2.0",
+        "ts-node": "8.5.4",
+        "tslint": "5.20.1",
+        "typescript": "3.7.3",
+        "webpack": "4.41.4",
+        "webpack-cli": "3.3.10",
+        "webpack-serve": "3.2.0"
     }
 }
