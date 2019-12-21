@@ -16,3 +16,4 @@ lib/
 npm-debug.log
 # Mac DS_Store Files
 .DS_Store
+lerna-debug.log
