@@ -14,7 +14,7 @@
         "cod"
     ],
     "engines": {
-        "node": ">=6.0.0"
+        "node": ">=8.0.0"
     },
     "devEngines": {
         "node": ">=8.0.0"
