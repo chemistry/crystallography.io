@@ -19,7 +19,7 @@
   "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/formula",
   "scripts": {
     "build": "rimraf dist/* && tsc && cp ./package.json ./dist",
-    "deploy": "gcloud functions deploy codSyncStartInstance --runtime nodejs10 --trigger-topic cod-sync-schedule-instance-start"
+    "deploy": "gcloud functions deploy codSyncStartInstance --runtime nodejs10 --source ./dist --trigger-topic cod-sync-schedule-instance-start"
   },
   "dependencies": {
   }

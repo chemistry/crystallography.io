@@ -31,6 +31,7 @@
         "bootstrap": "lerna bootstrap --hoist",
         "bootstrap:ci": "lerna exec npm install",
         "build": "lerna run build",
+        "deploy": "lerna run deploy",
         "updated": "lerna updated",
         "test": "jest",
         "tdd": "jest --watch",
