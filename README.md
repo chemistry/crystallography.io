@@ -4,7 +4,14 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
-API support for COD Alternative Web UI
+API support for Alternative [COD Web UI](http://crystallography-online.com/)
+
+## Include Packages:
+### Functions:
+  * [@chemistry/functions/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Cloud function that start COD synchronization VM
+
+### Libraries:
+  * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
 
 ## Technical description:
   * MonoRepo build with lerna
@@ -20,6 +27,16 @@ npm install
 npm run bootstrap
 npm run build
 ```
+
+## Delivery
+### Libraries
+ - Released on tag push
+ ```bash
+ git tag v0.1.0
+ git push --tags
+ ```
+### Cloud functions
+ - Continuous deployment on push to master
 
 ## Commands:
   * Run unit tests: `npm run test`

@@ -5,5 +5,5 @@
  * @param {object} context The event metadata.
  */
 export function codSyncStartInstance(event: any, context: any) {
-  console.log(`Start Instance function were executed`);
+  console.log(`Start Instance function were executed `);
 }
