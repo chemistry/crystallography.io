@@ -14,14 +14,15 @@ npm install @chemistry/common-functions
 ## Interfaces use cases
 ```javascript
 import {
-  PubSubEvent,
-  PubSubContext,
   CodSyncScheduleInstanceStartPayload,
+  PubSubContext,
   extractPayload
-} from '@chemistry/common-functions';
-
+  } from '@chemistry/common-functions';
+/**
+ * Cloud Function that will start COD synronization Instances
+ */
 export function codSyncStartInstance(
-    event: PubSubEvent<CodSyncScheduleInstanceStartPayload>,
+    data: CodSyncScheduleInstanceStartPayload,
     context: PubSubContext
 ) {
     const payload = extractPayload(event);

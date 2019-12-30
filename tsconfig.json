@@ -9,7 +9,8 @@
         "declaration": true,
         "types": ["jest"],
         "outDir": "dist",
-        "lib": ["es2015", "es2016", "dom"]
+        "lib": ["es2015", "es2016", "dom"],
+       "types" : ["node", "jest"]
     },
 
     "rules": {
