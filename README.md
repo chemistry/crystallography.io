@@ -1,6 +1,5 @@
 # Crystallography API
 [![GitHub Build Status](https://github.com/chemistry/crystallography-api/workflows/CI/badge.svg)](https://github.com/chemistry/crystallography-api/actions?query=workflow%3ACI)
-[![Travis Build Status](https://travis-ci.com/chemistry/crystallography-api.svg?branch=master)](https://travis-ci.org/chemistry/crystallography-api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
@@ -8,7 +7,7 @@ API support for Alternative [COD Web UI](http://crystallography-online.com/)
 
 ## Include Packages:
 ### Functions:
-  * [@chemistry/functions/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Cloud function that start COD synchronization VM
+  * [@chemistry/functions/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Cloud function that Start COD Synchronization VM (labels.codsync eq true)
 
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function

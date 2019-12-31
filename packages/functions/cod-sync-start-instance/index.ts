@@ -1,9 +1,26 @@
+const Compute = require('@google-cloud/compute');
+import {
+  CodSyncScheduleInstanceStartPayload,
+  PubSubContext
+} from '@chemistry/common-functions';
+
+const compute = new Compute();
 /**
- * Cloud Function that will start COD synronization Instances
- *
- * @param {object} event The event payload.
- * @param {object} context The event metadata.
+ * Will Start COD Synronization Instances (labels.codsync eq true)
  */
-export function codSyncStartInstance(event: any, context: any) {
-  console.log(`Start Instance function were executed `);
+export async function codSyncStartInstance(
+    data: CodSyncScheduleInstanceStartPayload,
+    context: PubSubContext
+) {
+    const [vms] = await compute.getVMs({ filter: 'labels.codsync eq true' });
+    await Promise.all(
+      vms.map(async (instance: any) => {
+          const [operation] = await compute
+              .zone(instance.zone.id)
+              .vm(instance.name)
+              .start();
+            return operation.promise();
+        })
+      );
+      return Promise.resolve(`Successfully started instance(s)`);
 }
