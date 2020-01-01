@@ -7,10 +7,13 @@ API support for Alternative [COD Web UI](http://crystallography-online.com/)
 
 ## Include Packages:
 ### Functions:
-  * [@chemistry/functions/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Cloud function that Start COD Synchronization VM (labels.codsync eq true)
+  * [@chemistry/functions/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)
 
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
+
+### Containers:
+  * [@chemistry/cod-to-git-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-git-sync)
 
 ## Technical description:
   * MonoRepo build with lerna
@@ -35,7 +38,10 @@ npm run build
  git push --tags
  ```
 ### Cloud functions
- - Continuous deployment on push to master
+ - Continuous deployment to Google Cloud on push to master
+
+### Containers
+- Continuous push to Google Cloud Artifactory
 
 ## Commands:
   * Run unit tests: `npm run test`

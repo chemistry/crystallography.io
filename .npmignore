@@ -6,6 +6,8 @@ temp
 # Generated docs with JSDoc
 docs
 TODO
+credentials.json
+credentials.base64.json
 lib/
 # Sublime text project space
 *.sublime-workspace

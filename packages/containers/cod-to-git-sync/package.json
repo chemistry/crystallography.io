@@ -1,0 +1,31 @@
+{
+    "name": "@chemistry/containers-cod-to-git-sync",
+    "private": true,
+    "version": "0.0.1",
+    "description": "Synchronization COD to Git Container",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "COD syncronization",
+        "crystallography",
+        "Git"
+    ],
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "devEngines": {
+        "node": ">=8.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-git-sync",
+    "scripts": {
+        "build": "rimraf dist/* && tsc",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+        "@google-cloud/pubsub": "1.2.0"
+    },
+    "devDependencies": {}
+}
