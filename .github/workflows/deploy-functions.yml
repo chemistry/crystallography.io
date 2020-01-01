@@ -7,6 +7,8 @@ on:
     paths:
       - 'packages/functions/**'
 
+# @TODO: Check git diff - functions to deploy  
+
 jobs: # Jobs List
   deploy:
     name: Deploy Cloud Function
