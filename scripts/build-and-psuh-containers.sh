@@ -2,5 +2,5 @@
 
 # @TODO: check difference
 # @TODO add iteration loop
-docker build -t gcr.io/crystallography-api/containers-cod-to-git-sync -f packages/containers/cod-to-git-sync/Dockerfile .
-docker push gcr.io/crystallography-api/containers-cod-to-git-sync
+docker build -t gcr.io/crystallography-api/containers-cod-to-gcs-sync -f packages/containers/cod-to-gcs-sync/Dockerfile .
+docker push gcr.io/crystallography-api/containers-cod-to-gcs-sync

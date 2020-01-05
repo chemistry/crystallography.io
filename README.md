@@ -6,14 +6,16 @@
 API support for Alternative [COD Web UI](http://crystallography-online.com/)
 
 ## Include Packages:
+### Containers:
+  * [@chemistry/cod-to-gcs-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync) - Synchronize COD with Google Cloud Storage
+
 ### Functions:
   * [@chemistry/functions/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)
+  * [@chemistry/functions/cod-sync-stop-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance) - Stop VM for what finished Synchronization execution
 
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
 
-### Containers:
-  * [@chemistry/cod-to-git-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-git-sync)
 
 ## Technical description:
   * MonoRepo build with lerna
@@ -32,13 +34,13 @@ npm run build
 
 ## Delivery
 ### Libraries
- - Released on tag push
+- Released on tag push
  ```bash
  git tag v0.1.0
  git push --tags
  ```
 ### Cloud functions
- - Continuous deployment to Google Cloud on push to master
+- Continuous deployment to Google Cloud on push to master
 
 ### Containers
 - Continuous push to Google Cloud Artifactory
