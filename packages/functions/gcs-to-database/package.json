@@ -1,0 +1,30 @@
+{
+    "name": "@chemistry/gcs-to-database",
+    "private": true,
+    "version": "0.0.1",
+    "description": "React on File changes and mirror data into database",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "COD syncronization",
+        "cheminformatics",
+        "Cloud functions"
+    ],
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "devEngines": {
+        "node": ">=8.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance",
+    "scripts": {
+        "build": "rimraf dist/* && tsc && cp ./package.json ./dist",
+        "deploy": "gcloud functions deploy getGCSAndStoreToDataBase --runtime nodejs10 --project crystallography-api --source ./dist --trigger-resource cod-data --trigger-event google.storage.object.finalize"
+    },
+    "dependencies": {
+        "@chemistry/common-functions": "0.0.1"
+    }
+}
