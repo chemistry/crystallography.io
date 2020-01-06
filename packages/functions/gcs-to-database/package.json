@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/gcs-to-database",
     "private": true,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "React on File changes and mirror data into database",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -25,6 +25,6 @@
         "deploy": "gcloud functions deploy getGCSAndStoreToDataBase --runtime nodejs10 --project crystallography-api --source ./dist --trigger-resource cod-data --trigger-event google.storage.object.finalize"
     },
     "dependencies": {
-        "@chemistry/common-functions": "0.0.1"
+        "@chemistry/common-functions": "^0.0.2"
     }
 }
