@@ -38,7 +38,7 @@
         "lint": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}'",
         "lintfix": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}' --fix",
         "update-lock-files": "lerna exec \"npm install --ignore-scripts --package-lock-only --no-audit\"",
-        "release": "lerna publish --no-push --yes "
+        "release": "lerna publish --no-git-reset --no-push --yes "
     },
     "devDependencies": {
         "@types/jest": "24.0.24",

@@ -47,6 +47,9 @@ jobs:
     - name: Build
       run: npm run build
 
+    - name: Reset Changes in Lock files
+      run: git reset --hard
+
     - name: Setup npmrc File
       run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
 

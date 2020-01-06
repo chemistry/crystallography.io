@@ -54,5 +54,5 @@ npm run build
   * Build project: `npm run build`
 
 ## License
-  This project is licensed under the MIT license, Copyright (c) 2019 Volodymyr Vreshch.
+  This project is licensed under the MIT license, Copyright (c) 2020 Volodymyr Vreshch.
   For more information see [LICENSE.md](https://github.com/chemistry/crystallography-api/blob/master/LICENSE.md).
