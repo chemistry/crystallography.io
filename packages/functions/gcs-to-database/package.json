@@ -22,9 +22,14 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance",
     "scripts": {
         "build": "rimraf dist/* && tsc && cp ./package.json ./dist",
-        "deploy": "gcloud functions deploy getGCSAndStoreToDataBase --runtime nodejs10 --project crystallography-api --source ./dist --trigger-resource cod-data --trigger-event google.storage.object.finalize"
+        "deploy": "gcloud functions deploy getGCSAndStoreToDataBase --runtime nodejs10 --project crystallography-api --source ./dist --trigger-resource cod-data --trigger-event google.storage.object.finalize",
+        "check": "ts-node ./check.funcction.ts"
     },
     "dependencies": {
-        "@chemistry/common-functions": "^0.0.2"
+        "@chemistry/common-functions": "^0.0.2",
+        "@google-cloud/storage": "4.2.0"
+    },
+    "devDependencies": {
+        "ts-node": "8.5.4"
     }
 }
