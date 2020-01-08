@@ -26,6 +26,8 @@ jobs:
       run: npm run test
     - name: Build
       run: npm run build
+    - name: Coverage
+      run: npm run codecov
 
       env:
         CI: true

@@ -39,6 +39,7 @@
         "lint": "tslint -c tslint.json -p tsconfig.json ",
         "lintfix": "tslint -c tslint.json -p tsconfig.json --fix",
         "update-lock-files": "lerna exec \"npm install --ignore-scripts --package-lock-only --no-audit\"",
+        "codecov": "codecov -t 4ce6e0fb-54e2-4e2f-a617-d9e115809463 < coverage/lcov.info",
         "release": "lerna publish --no-git-reset --no-push --yes "
     },
     "devDependencies": {
