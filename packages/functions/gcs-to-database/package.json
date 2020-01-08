@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/gcs-to-database",
     "private": true,
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "React on File changes and mirror data into database",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -26,7 +26,7 @@
         "check": "ts-node ./check.funcction.ts"
     },
     "dependencies": {
-        "@chemistry/common-functions": "^0.0.2",
+        "@chemistry/common-functions": "^0.0.3",
         "@google-cloud/storage": "4.2.0"
     },
     "devDependencies": {
