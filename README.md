@@ -1,13 +1,11 @@
 # Crystallography API
 [![Release version](https://img.shields.io/github/v/release/chemistry/crystallography-api?color=green.svg)](https://github.com/chemistry/crystallography-api/releases)
+[![Codecov](https://codecov.io/gh/chemistry/crystallography-api/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/crystallography-api)
 [![GitHub Build Status](https://github.com/chemistry/crystallography-api/workflows/CI/badge.svg)](https://github.com/chemistry/crystallography-api/actions?query=workflow%3ACI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
-
-
-
-API support for Alternative [COD Web UI](http://crystallography-online.com/)
+API Support [COD Web UI](http://crystallography-online.com/)
 
 ## Include Packages:
 ### Containers:
