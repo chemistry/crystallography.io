@@ -1,0 +1,29 @@
+{
+    "name": "@chemistry/cif-2-json",
+    "version": "0.0.2",
+    "description": "Tool for converting CIF to JSON and manipulate with content",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "keywords": [
+        "crystallography",
+        "cif",
+        "json"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vreshch/cif2json.git"
+    },
+    "main": "dist/cif-2-json.js",
+    "typings": "dist/index.d.ts",
+    "scripts": {
+        "build": "webpack-cli --config webpack.config.js --mode production"
+    },
+    "dependencies": {},
+    "devDependencies": {
+    }
+}
