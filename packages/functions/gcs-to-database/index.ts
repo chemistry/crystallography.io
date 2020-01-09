@@ -45,7 +45,7 @@ export async function getGCSAndStoreToDataBase(
 
       const jcif = parse(fileContent);
       const dataNames = Object.keys(jcif);
-      
+
       if (dataNames.length === 0) {
           // tslint:disable-next-line
           console.error("error while parsing processing file", name);
