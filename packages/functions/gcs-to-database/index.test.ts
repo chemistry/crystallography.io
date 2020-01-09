@@ -1,3 +1,5 @@
+import { STRUCTURE_1000004 } from './mocks';
+
 class mockStorage {
     public static instance: any = null;
     public bucket: any;
@@ -6,7 +8,7 @@ class mockStorage {
 
     constructor() {
         if (mockStorage.instance) {
-           return mockStorage.instance;
+          return mockStorage.instance;
         }
         mockStorage.instance = this;
         this.bucket = jest.fn(() => this);
@@ -14,14 +16,39 @@ class mockStorage {
         this.download = jest.fn(() => Promise.resolve());
     }
 }
+
+class mockFireStore {
+    public static instance: any = null;
+    public doc: any;
+    public set: any;
+
+    constructor() {
+      if (mockFireStore.instance) {
+        return mockFireStore.instance;
+      }
+      mockFireStore.instance = this;
+      this.doc = jest.fn(() => this);
+      this.set = jest.fn(() => Promise.resolve());
+    }
+}
+
 jest.mock('@google-cloud/storage', () => {
     return {
         Storage: mockStorage
     }
 });
-const mockFS =  {
-  readFile: jest.fn((name, cb)=> {
-      cb(null, "empty string");
+
+jest.mock('@google-cloud/firestore', () => {
+    return {
+        Firestore: mockFireStore
+    }
+});
+
+let mockStructure = STRUCTURE_1000004;
+const mockFS = {
+  ...jest.requireActual("fs"),
+  readFile: jest.fn((name, cb) => {
+      cb(null, mockStructure);
   }),
   unlink: jest.fn((name, cb) => {
       cb();
@@ -33,16 +60,20 @@ jest.mock('fs', () => {
 import { getGCSAndStoreToDataBase } from './index';
 
 describe('GCS to database', () => {
-  
+
+  beforeEach(()=> {
+      mockStructure = STRUCTURE_1000004;
+      jest.clearAllMocks();
+  });
+
   test('should define function', ()=> {
-    expect(getGCSAndStoreToDataBase).toBeDefined();
+      expect(getGCSAndStoreToDataBase).toBeDefined();
   });
 
   test('GSC should download files from buket', async ()=> {
       await getGCSAndStoreToDataBase({
         name: "cif/4/06/02/4060224.cif"
       } as any);
-      expect(mockStorage.instance.bucket).toHaveBeenCalledWith("cod-data");
       expect(mockStorage.instance.file).toHaveBeenCalledWith("cif/4/06/02/4060224.cif");
       expect(mockStorage.instance.download).toHaveBeenCalled();
   });
@@ -61,6 +92,36 @@ describe('GCS to database', () => {
     expect(mockFS.unlink).toHaveBeenCalled();
   });
 
+  test('GCS should ignore hkl file changes ', async ()=> {
+    await getGCSAndStoreToDataBase({
+      name: "hkl/4/06/02/4060224.hkl"
+    } as any);
+    expect(mockFS.readFile).not.toHaveBeenCalled();
+  });
 
+  test('GCS should throw when id is not encoded in filename', async ()=> {
+    let thrown = false;
+    try {
+      await getGCSAndStoreToDataBase({
+        name: "cif/4/06/02/_.cif"
+      } as any);
+    } catch (e) {
+      thrown = true;
+    }
+    expect(thrown).toBe(true);
+  });
+
+  test('GCS should throw in case empty file is provided', async ()=> {
+      mockStructure = "";
+      let thrown = false;
+      try {
+        await getGCSAndStoreToDataBase({
+          name: "cif/4/06/02/4060224.cif"
+        } as any);
+      } catch (e) {
+        thrown = true;
+      }
+      expect(thrown).toBe(true);
+  });
 
 });
