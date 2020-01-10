@@ -21,12 +21,12 @@ API Support [COD Web UI](http://crystallography-online.com/)
   * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
 
 ## Technical description:
-  * MonoRepo build with lerna
-  * Auto Release Script
-  * Typescript 3.7
-  * Isomorphic (for Node & browsers)
-  * Auto tests with JEST
-  * ~100% code coverage
+* MonoRepo build with lerna
+* Auto Release Script
+* Typescript 3.7
+* Isomorphic (for Node & browsers)
+* Auto tests with JEST
+* ~100% code coverage
 
 ## Development Quick Start
 ```bash

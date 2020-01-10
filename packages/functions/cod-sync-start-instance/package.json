@@ -22,7 +22,7 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance",
     "scripts": {
         "build": "rimraf dist/* && tsc && cp ./package.json ./dist",
-        "deploy": "gcloud functions deploy codSyncStartInstance --runtime nodejs10 --project crystallography-api --source ./dist --trigger-topic cod-sync-schedule-instance-start"
+        "deploy": "gcloud functions deploy codSyncStartInstance --runtime nodejs10 --project crystallography-api --source ./dist --trigger-topic cod-sync-schedule-instance-start --region europe-west1"
     },
     "dependencies": {
         "@chemistry/common-functions": "^0.0.3",
