@@ -59,11 +59,21 @@ jest.mock('fs', () => {
 });
 import { getGCSAndStoreToDataBase } from './index';
 
+
+let originalConsoleInfo = console.info;
+let originalConsoleError = console.error;
+
 describe('GCS to database', () => {
 
   beforeEach(()=> {
       mockStructure = STRUCTURE_1000004;
       jest.clearAllMocks();
+      console.info = () => {}
+      console.error = () => {}
+  });
+  afterEach(()=> {
+      console.info = originalConsoleInfo;
+      console.error = originalConsoleError;
   });
 
   test('should define function', ()=> {

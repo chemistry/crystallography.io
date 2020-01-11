@@ -63,15 +63,30 @@ export function cifProcessLoop(lines: string[]) {
     }
 
     if (columns.length && data.length) {
-        return {
+        return cleanLoopData({
             columns,
             data,
-        };
+        });
     }
     // no data found
     return null;
 }
 
+/*
+  Remove extra array from loop data
+*/
+function cleanLoopData({ columns, data }: {columns: string[], data: string[][]}): {
+  columns: string[],
+  data: string[][] | string[],
+} {
+    if (columns.length === 1) {
+        return {
+          columns,
+          data: data.map((item) => item[0]),
+        };
+    }
+    return { columns, data };
+}
 /**
  * will read multiline data
  */

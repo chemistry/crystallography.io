@@ -4,6 +4,7 @@ module.exports = {
   ],
   testEnvironment: "node",
   collectCoverage: true,
+  "setupTestFrameworkScriptFile": "<rootDir>/setupTests.js",
   "transform": {
       "^.+\\.tsx?$": "ts-jest"
   },

@@ -78,6 +78,23 @@ describe("cif2json#parse", () => {
         });
     });
 
+    it("should return array of strings for single column", () => {
+        const cifData = loadMock("002_single_dataline.cif");
+        const parseResult = sut(cifData);
+
+        expect(Array.isArray(parseResult.data_1000004.loop_)).toEqual(true);
+        const loops = parseResult.data_1000004.loop_;
+
+        loops.forEach((loop: any) => {
+            expect(Array.isArray(loop.columns)).toEqual(true);
+            expect(Array.isArray(loop.data)).toEqual(true);
+
+            if (loop.columns.length === 1 && loop.data.length >= 1) {
+                expect(typeof loop.data[0]).toEqual("string");
+            }
+        });
+    });
+
     it("should return 4 loop_", () => {
         const cifData = loadMock("002_single_dataline.cif");
         const parseResult = sut(cifData);
@@ -126,11 +143,15 @@ describe("cif2json#parse", () => {
 
         const loops = parseResult.data_1000004.loop_;
         loops.forEach((loop: any) => {
-            // console.log(loop);
+
             const colsCount = loop.columns.length;
             expect(Array.isArray(loop.data)).toEqual(true);
             loop.data.forEach((line: any) => {
-                expect(line.length).toEqual(colsCount);
+                if (typeof line === "string") {
+                  expect(colsCount).toEqual(1);
+                } else {
+                  expect(line.length).toEqual(colsCount);
+                }
             });
         });
     });
