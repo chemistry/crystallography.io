@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/functions-cod-sync-stop-instance",
     "private": true,
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Cloud functions that start COD sync instances by schedule",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -25,7 +25,7 @@
         "deploy": "gcloud functions deploy codSyncStopInstance --runtime nodejs10 --project crystallography-api --source ./dist --trigger-topic cod-sync-schedule-instance-stop --region europe-west1"
     },
     "dependencies": {
-        "@chemistry/common-functions": "^0.0.3",
+        "@chemistry/common-functions": "^0.0.4",
         "@google-cloud/compute": "1.1.8"
     }
 }
