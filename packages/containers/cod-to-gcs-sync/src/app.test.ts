@@ -42,7 +42,7 @@ describe('Should export application', () => {
     expect(App).toBeDefined();
   });
 
-  test('application should execute logs and shell commnds', async ()=> {
+  test('application should execute logs and shell commands', async ()=> {
     const appContext = {
         pubsub: (new MockPubSub() as any) ,
         log: jest.fn(),
@@ -55,9 +55,9 @@ describe('Should export application', () => {
 
   describe('shoud fail in case one commnd fileds', ()=> {
     const commnds = [
-        'rsync -av --delete rsync://www.crystallography.net/cif',
+        'svn update /home/cod/cif',
         'gsutil -m rsync -r /home/cod/cif',
-        'rsync -av --delete rsync://www.crystallography.net/hkl/',
+        'svn update /home/cod/hkl',
         'gsutil -m rsync -r /home/cod/hkl'
     ];
     for (let i = 0; i < commnds.length; i++) {

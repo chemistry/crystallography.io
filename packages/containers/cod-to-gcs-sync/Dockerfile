@@ -3,7 +3,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install rsync
-RUN apk add --update rsync openssh
+RUN apk add --update subversion rsync openssh
 
 # Install gsutil
 RUN apk add --update python py-pip py-cffi  py-cryptography \
