@@ -26,6 +26,7 @@ export async function getGCSAndStoreToDataBase(
   data: BucketEventData,
   /* ,context: PubSubContext */
 ) {
+    const start: any = new Date();
     const { name } = data;
     if (!name.endsWith(".cif")) {
         return Promise.resolve();
@@ -40,37 +41,30 @@ export async function getGCSAndStoreToDataBase(
     const tempLocalPath = `/tmp/${path.parse(name).base}`;
 
     try {
-      console.time("download-file");
       await bucket.file(name).download({ destination: tempLocalPath });
-      console.timeEnd("download-file");
 
-      console.time("read-file");
       const fileContent = (await readFile(tempLocalPath)).toString();
-      console.timeEnd("read-file");
 
-      console.time("parse");
       const jcif = parse(fileContent);
 
       const dataNames = Object.keys(jcif);
 
-      if (dataNames.length === 0) {
+      if (dataNames.length !== 1) {
           // tslint:disable-next-line
           console.error("error while parsing processing file", name);
           throw new Error("wrong data format");
       }
       const dataToSave: any = cleanupJCif(jcif[dataNames[0]]);
-      console.timeEnd("parse");
 
-      console.time("store");
       const documentRef = firestore.doc(`structures/${codId}`);
 
       await documentRef.set({
           ...dataToSave,
       });
-      console.timeEnd("store");
 
+      const end = ((new Date() as any) - start);
       // tslint:disable-next-line
-      console.info(`file: ${ Math.round(fileContent.length / 1024) } KB; jcif length : ${Math.round( JSON.stringify(dataToSave).length / 1024 )} KB`);
+      console.info(`file: ${ Math.round(fileContent.length / 1024) } KB; jcif length : ${Math.round( JSON.stringify(dataToSave).length / 1024 )} KB, time: ${Math.round(end)} ms`);
 
     } finally {
         await unlink(tempLocalPath);

@@ -1,2 +1,2 @@
-console.time = () => {}
-console.timeEnd = () => {}
+// console.time = () => {}
+// console.timeEnd = () => {}
