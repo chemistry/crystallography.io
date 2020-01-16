@@ -50,9 +50,7 @@ export async function getGCSAndStoreToDataBase(
       const dataNames = Object.keys(jcif);
 
       if (dataNames.length !== 1) {
-          // tslint:disable-next-line
-          console.error("error while parsing processing file", name);
-          throw new Error("wrong data format");
+          throw new Error(`wrong data format; Filename: ${name}, dataNames: ${JSON.stringify(dataNames)}`);
       }
       const dataToSave: any = cleanupJCif(jcif[dataNames[0]]);
 
