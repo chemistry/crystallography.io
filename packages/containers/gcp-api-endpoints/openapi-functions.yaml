@@ -18,7 +18,7 @@ paths:
       summary: Get a list of Structures
       operationId: Get-Structures-List
       x-google-backend:
-        address: https://europe-west1-crystallography-api.cloudfunctions.net/get-structures-list
+        address: https://europe-west1-crystallography-api.cloudfunctions.net/api-get-structures-list
       responses:
         '200':
           description: A successful response

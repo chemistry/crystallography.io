@@ -45,6 +45,7 @@
     "devDependencies": {
         "@types/jest": "24.0.25",
         "@types/node": "13.1.4",
+        "@types/express": "4.17.2",
         "awesome-typescript-loader": "5.2.1",
         "codecov": "3.6.1",
         "jest": "24.9.0",
