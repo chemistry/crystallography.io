@@ -10,6 +10,7 @@ API Support [COD Web UI](http://crystallography-online.com/)
 ## Include Packages:
 ### Containers:
   * [@chemistry/cod-to-gcs-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync) - Synchronize COD with Google Cloud Storage
+  * [@chemistry/gcp-api-endpoints](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/gcp-api-endpoints) - API Endpoint that execute cloud functions 
 
 ### Functions:
   * [@chemistry/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)

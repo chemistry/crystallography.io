@@ -1,0 +1,26 @@
+swagger: '2.0'
+info:
+  title: Cloud Endpoints - Cloud Functions
+  description: API Endpoints to Support Development of Crystallography API
+  version: 1.0.0
+host: crystallography-api-6q6gddw3pa-ew.a.run.app
+basePath: /api/v1
+
+schemes:
+  - https
+
+produces:
+  - application/json
+
+paths:
+  /structures:
+    get:
+      summary: Get a list of Structures
+      operationId: Get-Structures-List
+      x-google-backend:
+        address: https://europe-west1-crystallography-api.cloudfunctions.net/get-structures-list
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

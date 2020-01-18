@@ -1,0 +1,20 @@
+{
+    "name": "@chemistry/gcp-api-endpoints",
+    "private": true,
+    "version": "0.0.1",
+    "description": "API Enpoints Specification",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "crystallography",
+        "cloud functions",
+        "API"
+    ],
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/gcp-api-endpoints",
+    "scripts": {
+        "build": ""
+    }
+}
