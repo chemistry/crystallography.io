@@ -18,7 +18,9 @@
     "exclude": [
         "node_modules",
         "dist",
-        "**/*.test.ts"
+        "**/*.test.ts",
+        "**/*.check.ts",
+        "**/mocks"
     ],
 
     "awesomeTypescriptLoaderOptions": {
