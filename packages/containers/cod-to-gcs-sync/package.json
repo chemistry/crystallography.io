@@ -22,6 +22,7 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync",
     "scripts": {
         "build": "rimraf dist/* && tsc",
+        "deploy": "./deploy.sh",
         "start": "node dist/index.js"
     },
     "dependencies": {

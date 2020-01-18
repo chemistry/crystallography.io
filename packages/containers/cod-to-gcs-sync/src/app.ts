@@ -14,7 +14,7 @@ export async function App(context: AppContext) {
         return Promise.reject(`Error: Synchronization of CIF from crystallography.net to Disk Failed`);
     }
 
-    log("Syncronize cif to gcs");
+    log("Syncronize cif > gcs");
     for (let i = 1; i < 10; i++) {
         if (exec(`gsutil -m rsync -r /home/cod/cif/${i} gs://cod-data/cif/${i}`).code !== 0) {
             return Promise.reject(`Error: Synchronization of CIF/${i} to GC`);
@@ -26,7 +26,7 @@ export async function App(context: AppContext) {
         return Promise.reject(`Error: Synchronization of HKL from crystallography.net to Disk Failed`);
     }
 
-    log("Syncronize hkl to gcs");
+    log("Syncronize hkl > gcs");
     for (let i = 1; i < 10; i++) {
         if (exec(`gsutil -m rsync -r /home/cod/hkl/${i} gs://cod-data/hkl/${i}`).code !== 0) {
             return Promise.reject(`Error: Synchronization of HKL/${i} to GC`);

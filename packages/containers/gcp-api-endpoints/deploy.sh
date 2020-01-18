@@ -13,6 +13,8 @@ CONFIG_ID=`cat output1.txt | egrep -o '\[[0-9r-]*\]' | sed -r 's/\[//g' | sed -r
 
 NEW_IMAGE="gcr.io/${PROJECT_ID}/endpoints-runtime-serverless:${CLOUD_RUN_HOSTNAME}-${CONFIG_ID}"
 
+echo "Deploying image to cloud RUN: ${NEW_IMAGE}"
+
 gcloud run deploy crystallography-api \
   --image="${NEW_IMAGE}" \
   --allow-unauthenticated \
