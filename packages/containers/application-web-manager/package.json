@@ -1,0 +1,33 @@
+{
+    "name": "@chemistry/application-web-manager",
+    "private": true,
+    "version": "0.0.1",
+    "description": "Main COD Application",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "Web COD",
+        "crystallography",
+        "Git"
+    ],
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "devEngines": {
+        "node": ">=8.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/application-web-manager",
+    "scripts": {
+        "build": "rimraf dist/* && tsc",
+        "deploy": "./deploy.sh",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+      "express": "4.17.1",
+      "@types/node": "13.1.4",
+      "@types/express": "4.17.2"
+    }
+}
