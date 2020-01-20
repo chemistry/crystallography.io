@@ -20,7 +20,8 @@
         "dist",
         "**/*.test.ts",
         "**/*.check.ts",
-        "**/mocks"
+        "**/mocks",
+        "**/fixtures"
     ],
 
     "awesomeTypescriptLoaderOptions": {
