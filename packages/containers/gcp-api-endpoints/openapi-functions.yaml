@@ -24,14 +24,6 @@ paths:
       operationId: Get-Structures-List
       consumes:
         - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "page"
-          in: "query"
-          type: "number"
-          description: "Page Number"
-          required: false
       x-google-backend:
         address: https://europe-west1-crystallography-api.cloudfunctions.net/api-get-structures-list
       responses:
@@ -39,34 +31,3 @@ paths:
           description: A successful response
           schema:
             type: string
-        '400':
-          description: Invalid Param Provided
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-components:
-  schemas:
-    ErrorResponse:
-      type: object
-      required:
-          - errors
-      errors:
-        type: array
-        items:
-          $ref: "#/components/schemas/Error"
-    Error:
-      type: object
-      required:
-        - code
-        - message
-        - details
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: string
