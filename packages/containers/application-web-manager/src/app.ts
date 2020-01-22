@@ -1,4 +1,5 @@
 import * as express from "express";
+import { componentHTML } from "./renderer";
 
 export interface AppContext {
   log: (message: string) => void;
@@ -10,7 +11,7 @@ export async function startApplication(context: AppContext) {
     const app = express();
 
     app.get("/", (req, res) => {
-        res.end("hi");
+        res.end(componentHTML);
     });
 
     await new Promise((resolve) => {
@@ -19,5 +20,5 @@ export async function startApplication(context: AppContext) {
       });
     });
 
-    log("Application Started");
+    log(`Application Started on port: ${PORT}`);
 }

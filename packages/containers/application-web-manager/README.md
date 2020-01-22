@@ -4,6 +4,9 @@
 
 Main Web Application
 
+## Quick Start
+*  ```nodemon``` - Start Application in Development Mode
+
 ## Commands
 Build Container
 ```bash
