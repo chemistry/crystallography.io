@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as path from "path";
 import { componentHTML } from "./renderer";
 
 export interface AppContext {
@@ -9,6 +10,13 @@ export interface AppContext {
 export async function startApplication(context: AppContext) {
     const { log, PORT } = context;
     const app = express();
+    // add UTF-8 symbols parser
+    app.set("query parser", "simple");
+
+    // Remove header
+    app.disable("x-powered-by");
+
+    app.use(express.static(path.join(__dirname, "/../static"), { index: false }));
 
     app.get("/", (req, res) => {
         res.end(componentHTML);
