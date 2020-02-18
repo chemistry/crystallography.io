@@ -16,6 +16,8 @@ RUN apk add --update python py-pip py-cffi  py-cryptography \
 RUN npm install -g typescript@3.7.3
 RUN npm install -g rimraf@3.0.0
 RUN npm install -g lerna@3.19.0
+RUN npm install -g webpack@4.41.5
+RUN npm install -g webpack-cli@3.3.10
 
 COPY package.json .
 COPY package-lock.json .
