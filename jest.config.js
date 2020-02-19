@@ -10,7 +10,9 @@ module.exports = {
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
   "coveragePathIgnorePatterns": [
-      "/node_modules/", "/dist/"
+      "/node_modules/",
+      "/dist/",
+      "/application-web-manager/"
   ],
   "moduleFileExtensions": [
       "ts",

@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as path from "path";
-import { componentHTML } from "./renderer";
+import { renderToHTML } from "./renderer";
 
 export interface AppContext {
   log: (message: string) => void;
@@ -18,8 +18,16 @@ export async function startApplication(context: AppContext) {
 
     app.use(express.static(path.join(__dirname, "/../static"), { index: false }));
 
-    app.get("/", (req, res) => {
-        res.end(componentHTML);
+    app.use((req, res) => {
+        const { url } = req;
+        const html = renderToHTML({
+            url,
+        });
+
+        res
+          .header("Content-Type", "text/html; charset=utf-8")
+          .status(200)
+          .end(html);
     });
 
     await new Promise((resolve) => {
