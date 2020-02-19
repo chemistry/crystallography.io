@@ -22,6 +22,6 @@ export const renderToHTML = ({ url }: {
 
     return html;
 };
-export const getComponentHTML = () => renderToString((
+const getComponentHTML = () => renderToString((
     <div><App /></div>
 ));

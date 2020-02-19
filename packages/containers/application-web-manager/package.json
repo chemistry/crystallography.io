@@ -24,7 +24,7 @@
         "deploy": "./deploy.sh",
         "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
         "build:backend": "tsc",
-        "build:frontend": "webpack-cli --config webpack.config.js --mode production",
+        "build:frontend": "webpack --config webpack.config.js --mode production",
         "start": "node dist/backend/index.js",
         "_start": "npm run start",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/backend/index.ts"
