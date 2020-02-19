@@ -16,8 +16,8 @@ RUN apk add --update python py-pip py-cffi  py-cryptography \
 RUN npm install -g typescript@3.7.3
 RUN npm install -g rimraf@3.0.0
 RUN npm install -g lerna@3.19.0
-RUN npm install -g webpack@4.41.5
-RUN npm install -g webpack-cli@3.3.10
+# RUN npm install -g webpack@4.41.5
+# RUN npm install -g webpack-cli@3.3.10
 
 COPY package.json .
 COPY package-lock.json .
@@ -28,6 +28,9 @@ COPY packages/containers/application-web-manager/start-script.sh /app/start-scri
 COPY packages/containers/application-web-manager ./packages/containers/application-web-manager
 
 RUN npm install --production
+npm install webpack@4.41.5
+npm install webpack-cli@3.3.10
+
 RUN npm run bootstrap:ci
 
 RUN npm --prefix packages/containers/application-web-manager run build
