@@ -28,8 +28,6 @@ COPY packages/containers/application-web-manager/start-script.sh /app/start-scri
 COPY packages/containers/application-web-manager ./packages/containers/application-web-manager
 
 RUN npm install --production
-npm install webpack@4.41.5
-npm install webpack-cli@3.3.10
 
 RUN npm run bootstrap:ci
 
