@@ -7,6 +7,8 @@ import { StaticRouter } from "react-router";
 import { getLayout } from "../layout";
 import { getPlatformAPI } from "./platform-api";
 
+const platform = getPlatformAPI();
+
 const fileContent = fs.readFileSync(
     path.join(__dirname, "/../static/index.html"),
     "utf8",
@@ -24,8 +26,6 @@ export const renderToHTML = ({ url }: {
 
     return html;
 };
-
-const platform = getPlatformAPI();
 
 const getComponentHTML = ({ url }: {
     url: string,

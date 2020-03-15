@@ -9,9 +9,9 @@ export const getLayout = (
 ) => {
     const { Routes } = getApplication({ platform });
     const Layout = () => (
-      <div id="layout">{
-        renderRoutes(Routes)
-      }</div>
+      <div id="layout">
+        {renderRoutes(Routes)}
+      </div>
     );
     return {
         Layout,
