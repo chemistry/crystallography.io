@@ -4,8 +4,8 @@ import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
-import { renderRoutes } from "react-router-config";
-import { getApplication } from "../common";
+import { getLayout } from "../layout";
+import { getPlatformAPI } from "./platform-api";
 
 const fileContent = fs.readFileSync(
     path.join(__dirname, "/../static/index.html"),
@@ -25,23 +25,18 @@ export const renderToHTML = ({ url }: {
     return html;
 };
 
-const platform = {
-    name: "backend",
-    version: "0.0.1",
-};
+const platform = getPlatformAPI();
 
 const getComponentHTML = ({ url }: {
     url: string,
 }) => {
-
-  const { Routes } = getApplication({ platform });
-  const App = () => renderRoutes(Routes);
+  const { Layout } = getLayout({ platform });
   const context = {};
 
   return renderToString((
       <div>
         <StaticRouter location={url} context={context}>
-          <App />
+          <Layout />
         </StaticRouter>
       </div>
   ));
