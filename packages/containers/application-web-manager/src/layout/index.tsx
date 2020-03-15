@@ -4,7 +4,9 @@ import { getApplication } from "../common";
 import { AppPlatformAPI } from "../interfaces";
 
 // Shared Layout Across Different Platforms
-export const getLayout = ({ platform }: { platform: AppPlatformAPI }) => {
+export const getLayout = (
+  { platform }: { platform: AppPlatformAPI },
+) => {
     const { Routes } = getApplication({ platform });
     const Layout = () => (
       <div id="layout">{
