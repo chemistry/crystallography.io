@@ -1,0 +1,5 @@
+{
+    name: "molview",
+    description: "Application for Molecule View",
+    version: "0.0.1"
+}

@@ -4,10 +4,11 @@ import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
+import { Applications } from "../applications";
 import { getLayout } from "../layout";
 import { getPlatformAPI } from "./platform-api";
 
-const platform = getPlatformAPI();
+const platformAPI = getPlatformAPI();
 
 const fileContent = fs.readFileSync(
     path.join(__dirname, "/../static/index.html"),
@@ -30,7 +31,8 @@ export const renderToHTML = ({ url }: {
 const getComponentHTML = ({ url }: {
     url: string,
 }) => {
-  const { Layout } = getLayout({ platform });
+  const application = Applications.search.getApplication({ platformAPI });
+  const { Layout } = getLayout({ platformAPI, application });
   const context = {};
 
   return renderToString((

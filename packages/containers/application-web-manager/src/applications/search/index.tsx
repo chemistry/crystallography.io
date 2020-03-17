@@ -1,11 +1,7 @@
 import * as React from "react";
-import { renderRoutes } from "react-router-config";
+import { renderRoutes, RouteConfig } from "react-router-config";
 import { Link } from "react-router-dom";
-
-export interface AppPlatform {
-    name: string;
-    version: string;
-}
+import { AppPlatformAPI } from "../../interfaces";
 
 const App = ({ route }: any) => (
     <div>
@@ -33,9 +29,9 @@ const AboutPage = () => (
     <h1>About</h1>
 );
 
-export const getApplication = ({ platform }: { platform: AppPlatform }) => {
-    const { version } = platform;
-    const Routes = [{
+export const getSearchApplication = ({ platformAPI }: { platformAPI: AppPlatformAPI }) => {
+    const { version } = platformAPI;
+    const Routes: RouteConfig[] = [{
         component: App,
         routes: [
             {
