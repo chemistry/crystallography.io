@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/api-get-structures-list",
     "private": true,
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Return structures list from database",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -26,12 +26,12 @@
         "check": "ts-node ./function.check.ts"
     },
     "dependencies": {
-        "@hapi/joi": "16.1.8",
-        "@google-cloud/firestore": "3.4.0"
+        "@google-cloud/firestore": "3.4.0",
+        "@hapi/joi": "16.1.8"
     },
     "devDependencies": {
-        "ts-node": "8.5.4",
         "@types/hapi__joi": "16.0.6",
-        "mock-cloud-firestore": "0.11.0"
+        "mock-cloud-firestore": "0.11.0",
+        "ts-node": "8.5.4"
     }
 }

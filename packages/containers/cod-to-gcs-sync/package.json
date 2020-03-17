@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/containers-cod-to-gcs-sync",
     "private": true,
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Synchronization COD to Google Cloud Storage",
     "author": {
         "name": "Volodymyr Vreshch",
