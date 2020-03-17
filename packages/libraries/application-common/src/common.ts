@@ -1,12 +1,13 @@
-import * as React from "react";
 import { RouteConfig } from "react-router-config";
+
+export const VERSION = "0.0.1";
 
 export interface AppPlatformAPI {
     name: string;
     version: string;
 }
 
-export interface ApplicationLayout {
+export interface AppLayout {
     Layout: JSX.Element;
 }
 
