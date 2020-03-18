@@ -1,5 +1,5 @@
+import { AppPlatformAPI } from "@chemistry/application-common";
 import * as React from "react";
-import { AppPlatformAPI } from "../../interfaces";
 
 const App = ({ route }: any) => (
     <div>

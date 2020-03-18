@@ -1,7 +1,7 @@
+import { AppPlatformAPI } from "@chemistry/application-common";
 import * as React from "react";
 import { renderRoutes, RouteConfig } from "react-router-config";
 import { Link } from "react-router-dom";
-import { AppPlatformAPI } from "../../interfaces";
 
 const App = ({ route }: any) => (
     <div>
