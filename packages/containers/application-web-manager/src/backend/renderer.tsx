@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import { getApplication } from "@chemistry/application-cod-search";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
-import { Applications } from "../applications";
 import { getLayout } from "../layout";
 import { getPlatformAPI } from "./platform-api";
 
@@ -31,11 +31,12 @@ export const renderToHTML = ({ url }: {
 const getComponentHTML = ({ url }: {
     url: string,
 }) => {
-  const application = Applications.search.getApplication({ platformAPI });
-  const { Layout } = getLayout({ platformAPI, application });
-  const context = {};
+ const application = getApplication({ platformAPI });
 
-  return renderToString((
+ const { Layout } = getLayout({ platformAPI, application });
+ const context = {};
+
+ return renderToString((
       <div>
         <StaticRouter location={url} context={context}>
           <Layout />

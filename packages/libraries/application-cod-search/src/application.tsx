@@ -29,7 +29,7 @@ const AboutPage = () => (
     <h1>About</h1>
 );
 
-export const getSearchApplication = ({ platformAPI }: { platformAPI: AppPlatformAPI }) => {
+export const getApplication = ({ platformAPI }: { platformAPI: AppPlatformAPI }) => {
     const { version } = platformAPI;
     const Routes: RouteConfig[] = [{
         component: App,
