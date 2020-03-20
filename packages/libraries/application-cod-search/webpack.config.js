@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 module.exports = {
     mode: 'production',
@@ -18,6 +20,9 @@ module.exports = {
     },
 
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+        }),
         new HtmlWebpackPlugin({
             template: __dirname + '/static/index.html',
             hash: true
@@ -30,6 +35,18 @@ module.exports = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 loader: 'awesome-typescript-loader'
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                  MiniCssExtractPlugin.loader,
+                  // Creates `style` nodes from JS strings
+                  // 'style-loader',
+                  // Translates CSS into CommonJS
+                  'css-loader',
+                  // Compiles Sass to CSS
+                  'sass-loader',
+                ],
             }
         ]
     },
