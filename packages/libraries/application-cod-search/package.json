@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/application-cod-search",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Cod Search Application",
   "author": {
     "name": "Volodymyr Vreshch",
@@ -36,7 +36,7 @@
     "build": "webpack-cli --config webpack.config.js --mode production"
   },
   "dependencies": {
-    "@chemistry/application-common": "^0.0.6",
+    "@chemistry/application-common": "^0.0.8",
     "@types/react-dom": "16.9.5",
     "@types/react-router-config": "5.0.1",
     "@types/react-router-dom": "5.1.3",

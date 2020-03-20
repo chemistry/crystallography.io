@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/application-web-manager",
     "private": true,
-    "version": "0.0.6",
+    "version": "0.0.8",
     "description": "Main COD Application",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -30,8 +30,8 @@
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/backend/index.ts"
     },
     "dependencies": {
-        "@chemistry/application-common": "0.0.6",
         "@chemistry/application-cod-search": "0.0.7",
+        "@chemistry/application-common": "^0.0.8",
         "@types/express": "4.17.2",
         "@types/node": "13.1.4",
         "@types/react": "16.9.19",
