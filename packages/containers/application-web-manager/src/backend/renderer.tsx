@@ -1,20 +1,11 @@
+import { getApplication } from "@chemistry/application-cod-search";
 import * as fs from "fs";
 import * as path from "path";
-// import { getApplication } from "@chemistry/application-cod-search";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import { getLayout } from "../layout";
 import { getPlatformAPI } from "./platform-api";
-
-const getApplication = () => {
-  const Routes: any[] = [{
-      // tslint:disable-next-line
-      component() {},
-      routes: [],
-  }];
-  return { Routes };
-};
 
 const platformAPI = getPlatformAPI();
 
@@ -39,7 +30,7 @@ export const renderToHTML = ({ url }: {
 const getComponentHTML = ({ url }: {
     url: string,
 }) => {
- const application = getApplication();
+ const application = getApplication({ platformAPI });
 
  const { Layout } = getLayout({ platformAPI, application });
  const context = {};
