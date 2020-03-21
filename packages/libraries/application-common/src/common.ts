@@ -11,6 +11,17 @@ export interface AppLayout {
     Layout: JSX.Element;
 }
 
+export interface AppMetaInfo {
+  id: string;
+  path: string;
+  name: string;
+  description: string;
+  resources: {
+      "css": string | string[];
+      "js": string | string[];
+  };
+}
 export interface Application {
     Routes: RouteConfig[];
+    getInfo: () => AppMetaInfo;
 }

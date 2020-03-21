@@ -2,11 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
+const AssetsPlugin = require('assets-webpack-plugin')
 
 module.exports = {
     mode: 'production',
-    devtool:  'source-map',
+    devtool: 'source-map',
+    
     entry: {
         'application': path.resolve(__dirname, './src/index.ts')
     },
@@ -26,6 +27,17 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: __dirname + '/static/index.html',
             hash: true
+        }),
+        new AssetsPlugin({
+            filename: 'app.json',
+            path: path.join(__dirname, 'dist'),
+            includeManifest: true,
+            processOutput: function (assets) {
+                const manifest = {
+                    resources: assets['application']
+                };
+                return JSON.stringify(manifest, null, 4);
+            }
         })
     ],
 
@@ -58,6 +70,8 @@ module.exports = {
     externals: {
       'react': 'react',
       'react-dom': 'react-dom',
-      'react-router': 'react-router'
+      'react-router': 'react-router',
+      'react-router-config': 'react-router-config',
+      'react-router-dom': 'react-router-dom'
     }
 };

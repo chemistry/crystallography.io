@@ -2,7 +2,8 @@ import { Application, AppPlatformAPI } from "@chemistry/application-common";
 import * as React from "react";
 import { renderRoutes } from "react-router-config";
 
-// Factory methof for generating index.html based on metadata
+// Factory method for generating index.html based on metadata
+// Executed on backend, on index.js request and localy during hmr
 export const getApplicationIndexHTML = () => {
     return (
 `<!DOCTYPE html>
