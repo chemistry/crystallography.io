@@ -28,12 +28,12 @@ export async function startApplication(context: ExpresContext) {
           await platform.addPlugins(plugins);
           await platform.initialize();
 
-          const { statusCode, content } = await platform.getContent();
+          const { statusCode, html } = await platform.getContent();
 
           res
             .header("Content-Type", "text/html; charset=utf-8")
             .status(statusCode)
-            .end(content);
+            .end(html);
           next();
         } catch (e) {
           next();

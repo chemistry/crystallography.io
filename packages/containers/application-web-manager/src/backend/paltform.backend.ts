@@ -40,10 +40,21 @@ export const getPlatfom: PlatformFactory = () => {
     };
 
     const getContent = async () => {
-        return {
+        const { middleWares } = context;
+        const initialData = {
             statusCode: 200,
-            content: "Some Content",
+            html: "",
         };
+
+        middleWares.sort((a, b) => {
+            return a.order - b.order;
+        });
+
+        return middleWares
+          .map(({ order, middleWare}) => middleWare)
+          .reduce((acc, res) => {
+              return acc.then(res);
+          }, Promise.resolve(initialData));
     };
     return {
       addPlugins,

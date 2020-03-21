@@ -67,6 +67,32 @@ describe("Backend Platform", ()=> {
           version: expect.any(String),
           addMiddleWare: expect.any(Function)
         }));
+    });
 
+    test('Application getContent should return default content', async ()=> {
+        await sut.initialize();
+        const { statusCode, html } = await sut.getContent();
+
+        expect(statusCode).toEqual(200);
+        expect(html).toEqual('');
+    });
+
+    test('plugin execute middleWare ongenerateContact', async () => {
+        const middleWare1 = jest.fn().mockImplementation(async (data) => {
+            return data;
+        });
+        const plugin: Plugin = {
+            initialize: async (context) => {
+              context.addMiddleWare({
+                  order: 30,
+                  middleWare: middleWare1,
+              });
+            }
+        };
+        await sut.addPlugins([plugin]);
+        await sut.initialize();
+        await sut.getContent();
+
+        expect(middleWare1).toHaveBeenCalled();
     });
 });

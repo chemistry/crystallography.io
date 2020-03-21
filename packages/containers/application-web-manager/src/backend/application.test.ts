@@ -5,7 +5,7 @@ describe("Express Application", () => {
     let platform = {
         addPlugins: jest.fn().mockResolvedValue(''),
         initialize: jest.fn().mockResolvedValue(''),
-        getContent: jest.fn().mockResolvedValue({ statusCode: 200, content: '' }),
+        getContent: jest.fn().mockResolvedValue({ statusCode: 200, html: '' }),
     }
     let mockContext: any = {
       log: () => {},
@@ -60,7 +60,7 @@ describe("Express Application", () => {
 
     test('should respond with platform content', async () => {
         platform.getContent = jest.fn().mockResolvedValue({
-          statusCode: 202, content: 'SOME-CONTENT'
+          statusCode: 202, html: 'SOME-CONTENT'
         });
         const { app } = await startApplication(mockContext);
         const response = await request(app).get('/');

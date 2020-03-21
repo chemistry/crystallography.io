@@ -6,14 +6,8 @@ export type PlatformFactory = () => Platform;
 export interface Platform {
     addPlugins(plugins: Plugin[]): Promise<void>;
     initialize(): Promise<void>;
-    getContent?(): Promise<{ statusCode: number, content: string }>;
+    getContent?(): Promise<{ statusCode: number, html: string }>;
     hydrate?(): string;
-}
-
-export enum ContentBuildState {
-    views = "views",
-    layout = "layout",
-    html = "html",
 }
 
 export interface PlatfomContext {
