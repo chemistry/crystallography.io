@@ -1,19 +1,23 @@
+import { AppPlatformAPI } from "@chemistry/application-common";
 import * as express from "express";
 import * as path from "path";
-
-import { getApplication } from "@chemistry/application-cod-search";
-import { getLayout } from "../layout";
-import { getPlatformAPI } from "./platform-api";
-
 import { renderToHTML } from "./renderer";
 
+export interface AppManager {
+    getApplication: any;
+    getLayout: any;
+}
+
 export interface AppContext {
-  log: (message: string) => void;
-  PORT: number;
+    log: (message: string) => void;
+    platformAPIFactory: () => AppPlatformAPI;
+    appManagerFactory: (param: { url: string }) => AppManager;
+    PORT: number;
 }
 
 export async function startApplication(context: AppContext) {
-    const { log, PORT } = context;
+    const { log, PORT, platformAPIFactory, appManagerFactory } = context;
+
     const app = express();
     // add UTF-8 symbols parser
     app.set("query parser", "simple");
@@ -21,15 +25,15 @@ export async function startApplication(context: AppContext) {
     // Remove header
     app.disable("x-powered-by");
 
-    app.use(express.static(path.join(__dirname, "/../static"), { index: false }));
+    // app.use(express.static(path.join(__dirname, "/../static"), { index: false }));
 
     app.use((req, res) => {
         const { url } = req;
 
-        const platformAPI = getPlatformAPI();
-        // TODO match application by URL
-        // Lazy load coresponding application
-        // Decouple layout with Application
+        const platformAPI = platformAPIFactory();
+        const appManager = appManagerFactory({ url });
+
+        const { getApplication, getLayout } = appManager;
         const application = getApplication({ platformAPI });
         const layout = getLayout({ platformAPI, application });
 
@@ -44,11 +48,5 @@ export async function startApplication(context: AppContext) {
           .end(html);
     });
 
-    await new Promise((resolve) => {
-      app.listen(PORT, "0.0.0.0", () => {
-          resolve(app);
-      });
-    });
-
-    log(`Application Started on port: ${PORT}`);
+    return Promise.resolve({ app });
 }

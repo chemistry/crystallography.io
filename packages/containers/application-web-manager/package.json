@@ -25,7 +25,8 @@
         "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
         "build:backend": "tsc",
         "build:frontend": "webpack --config webpack.config.js --mode production",
-        "start:app": "node dist/backend/index.js",
+        "start": "node dist/backend/index.js",
+        "start:app": "npm run start",
         "serve": "webpack-dev-server  --config webpack-serve.config.js",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/backend/index.ts"
     },
@@ -50,6 +51,7 @@
         "html-webpack-plugin": "3.2.0",
         "nodemon": "1.19.4",
         "rimraf": "3.0.1",
+        "supertest": "^4.0.2",
         "ts-node": "8.5.4",
         "typescript": "3.7.5",
         "webpack": "4.41.5",

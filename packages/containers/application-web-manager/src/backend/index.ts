@@ -1,7 +1,9 @@
 import { AppContext, startApplication } from "./app";
+import { getAppManager } from "./app.manager";
+import { getPlatformAPI } from "./platform-api";
 
 // tslint:disable-next-line
-console.time("App Start");
+console.time("Context Prepare");
 
 const appContext: AppContext = {
    log: (message: string) => {
@@ -15,14 +17,30 @@ const appContext: AppContext = {
         }
         return 8080;
     })(),
+    platformAPIFactory: getPlatformAPI,
+    appManagerFactory: getAppManager,
 };
+// tslint:disable-next-line
+console.timeEnd("Context Prepare");
 
-startApplication(appContext)
-  .then(() => {
-    // tslint:disable-next-line
-    console.timeEnd("App Start");
-  })
-  .catch((e) => {
-    // tslint:disable-next-line
-    console.error(e);
-  });
+// tslint:disable-next-line
+console.time("App Start");
+(async () => {
+    try {
+      const { app } = await startApplication(appContext);
+      const { PORT, log } = appContext;
+
+      await new Promise((resolve) => {
+        app.listen(PORT, "0.0.0.0", () => {
+            resolve(app);
+        });
+      });
+
+      log(`Application Started on port: ${PORT}`);
+      // tslint:disable-next-line
+      console.timeEnd("App Start");
+    } catch (e) {
+      // tslint:disable-next-line
+      console.error(e);
+    }
+})();
