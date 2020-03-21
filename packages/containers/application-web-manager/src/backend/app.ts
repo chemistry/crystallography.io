@@ -10,8 +10,8 @@ export interface AppManager {
 
 export interface AppContext {
     log: (message: string) => void;
-    platformAPIFactory: () => AppPlatformAPI;
-    appManagerFactory: (param: { url: string }) => AppManager;
+    platformAPIFactory?: () => AppPlatformAPI;
+    appManagerFactory?: (param: { url: string }) => AppManager;
     PORT: number;
 }
 

@@ -33,7 +33,11 @@ export const getLayout = ({ platformAPI, application }: {
         {renderRoutes(Routes)}
       </div>
     );
+    const initialize = () => {
+        return Promise.resolve();
+    };
     return {
+        initialize,
         Layout,
         getIndexHTML,
     };
