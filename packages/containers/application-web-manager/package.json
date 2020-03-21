@@ -26,12 +26,12 @@
         "build:backend": "tsc",
         "build:frontend": "webpack --config webpack.config.js --mode production",
         "start": "node dist/backend/index.js",
-        "serve": "webpack-dev-server  --config webpack.config.js",
+        "serve": "webpack-dev-server  --config webpack-serve.config.js",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/backend/index.ts"
     },
     "dependencies": {
-        "@chemistry/application-cod-search": "0.0.7",
-        "@chemistry/application-common": "^0.0.8",
+        "@chemistry/application-common": "0.0.6",
+        "@chemistry/application-cod-search": "0.0.8",
         "@types/express": "4.17.2",
         "@types/node": "13.1.4",
         "@types/react": "16.9.19",
@@ -49,6 +49,7 @@
         "awesome-typescript-loader": "5.2.1",
         "html-webpack-plugin": "3.2.0",
         "nodemon": "1.19.4",
+        "rimraf": "3.0.1",
         "ts-node": "8.5.4",
         "typescript": "3.7.5",
         "webpack": "4.41.5",

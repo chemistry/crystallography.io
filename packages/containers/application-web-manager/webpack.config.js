@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 
@@ -15,14 +14,10 @@ module.exports = {
     output: {
       path: __dirname + '/dist/static/',
       publicPath: '/',
-      filename: '[hash].js'
+      filename: '[name].js'
     },
 
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: __dirname + '/src/static/index.html'
-        })
-    ],
+    plugins: [],
 
     module: {
           rules: [
