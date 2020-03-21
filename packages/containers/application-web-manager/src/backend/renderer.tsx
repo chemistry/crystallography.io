@@ -1,18 +1,15 @@
-import { getApplication } from "@chemistry/application-cod-search";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
-import { getApplicationIndexHTML, getLayout } from "../layout";
-import { getPlatformAPI } from "./platform-api";
 
-const platformAPI = getPlatformAPI();
-const fileContent = getApplicationIndexHTML();
-
-export const renderToHTML = ({ url }: {
+export const renderToHTML = ({ url, layout }: {
     url: string,
+    layout: any,
   }) => {
-    let html = fileContent;
-    const componentHTML = getComponentHTML({ url });
+
+    const { Layout, getIndexHTML } =  layout;
+    let html = getIndexHTML();
+    const componentHTML = getComponentHTML({ url, Layout });
 
     html = html.replace(
         '<div id="app"></div>',
@@ -22,12 +19,10 @@ export const renderToHTML = ({ url }: {
     return html;
 };
 
-const getComponentHTML = ({ url }: {
+const getComponentHTML = ({ url, Layout }: {
     url: string,
+    Layout: any,
 }) => {
- const application = getApplication({ platformAPI });
-
- const { Layout } = getLayout({ platformAPI, application });
  const context = {};
 
  return renderToString((

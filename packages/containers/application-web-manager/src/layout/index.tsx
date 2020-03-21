@@ -4,7 +4,7 @@ import { renderRoutes } from "react-router-config";
 
 // Factory method for generating index.html based on metadata
 // Executed on backend, on index.js request and localy during hmr
-export const getApplicationIndexHTML = () => {
+export const getIndexHTML = () => {
     return (
 `<!DOCTYPE html>
 <html lang="en">
@@ -35,5 +35,6 @@ export const getLayout = ({ platformAPI, application }: {
     );
     return {
         Layout,
+        getIndexHTML,
     };
 };

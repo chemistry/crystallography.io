@@ -25,7 +25,7 @@
         "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
         "build:backend": "tsc",
         "build:frontend": "webpack --config webpack.config.js --mode production",
-        "start": "node dist/backend/index.js",
+        "start:app": "node dist/backend/index.js",
         "serve": "webpack-dev-server  --config webpack-serve.config.js",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/backend/index.ts"
     },

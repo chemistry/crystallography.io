@@ -13,14 +13,14 @@ const platformAPI = getPlatformAPI();
 const application = getApplication({ platformAPI });
 
 // Load Platform Layout and Features
-import { getApplicationIndexHTML, getLayout } from "../layout";
-const { Layout } = getLayout({ platformAPI, application });
+import { getLayout } from "../layout";
+const { Layout, getIndexHTML } = getLayout({ platformAPI, application });
 
 // Replace index.html content with correct content
 // That might happens wwhen wrong HTML were served
 // e.g. for local webpack serve
 if (document.getElementById("app") === null) {
-    const indexHTML = getApplicationIndexHTML();
+    const indexHTML = getIndexHTML();
     document.open("text/html", "replace");
     document.write(indexHTML);
     document.close();

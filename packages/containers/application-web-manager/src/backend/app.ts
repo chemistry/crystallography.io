@@ -1,5 +1,10 @@
 import * as express from "express";
 import * as path from "path";
+
+import { getApplication } from "@chemistry/application-cod-search";
+import { getLayout } from "../layout";
+import { getPlatformAPI } from "./platform-api";
+
 import { renderToHTML } from "./renderer";
 
 export interface AppContext {
@@ -20,8 +25,17 @@ export async function startApplication(context: AppContext) {
 
     app.use((req, res) => {
         const { url } = req;
+
+        const platformAPI = getPlatformAPI();
+        // TODO match application by URL
+        // Lazy load coresponding application
+        // Decouple layout with Application
+        const application = getApplication({ platformAPI });
+        const layout = getLayout({ platformAPI, application });
+
         const html = renderToHTML({
             url,
+            layout,
         });
 
         res
