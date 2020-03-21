@@ -8,28 +8,18 @@ export const getPlatfom: PlatformFactory = () => {
     const context: {
         plugins: Plugin[],
         initialized: boolean,
-        views: any[],
-        resources: any[],
-        indexHtml: any,
+        middleWares: any[];
     } = {
         plugins: [],
         initialized: false,
-        views: [],
-        resources: [],
-        indexHtml: () => "",
+        middleWares: [],
     };
     const publicContext: any = {
         name: "backend-platform",
         type: PlatformType.backend,
         version: "0.0.1",
-        registerView: () => {
-            return;
-        },
-        registerResources: () => {
-            return;
-        },
-        registerIndexHtml: () => {
-            return;
+        addMiddleWare: (middleWareParams: any) => {
+            context.middleWares.push(middleWareParams);
         },
     };
 

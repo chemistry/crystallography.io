@@ -10,27 +10,21 @@ export interface Platform {
     hydrate?(): string;
 }
 
+export enum ContentBuildState {
+    views = "views",
+    layout = "layout",
+    html = "html",
+}
+
 export interface PlatfomContext {
     name: string;
     type: PlatformType;
     version: string;
 
-    registerView(param: {
-        name: string,
-        version: string,
+    addMiddleWare(param: {
         order: number,
-        factory: () => JSX.Element,
+        middleWare: any,
     }): void;
-    registerResources(param: {
-        js: string[],
-        css: string[],
-    }): void;
-    registerIndexHtml(factory: (param: {
-      resources: {
-        css: string[]
-        js: string[],
-      },
-    }) => string): void;
 }
 
 export enum PlatformType {

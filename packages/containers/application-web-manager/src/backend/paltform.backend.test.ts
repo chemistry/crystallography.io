@@ -65,9 +65,7 @@ describe("Backend Platform", ()=> {
           name: expect.any(String),
           type: expect.any(String),
           version: expect.any(String),
-          registerView: expect.any(Function),
-          registerResources: expect.any(Function),
-          registerIndexHtml: expect.any(Function)
+          addMiddleWare: expect.any(Function)
         }));
 
     });
