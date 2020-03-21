@@ -1,4 +1,4 @@
-import { getPlatformAPI } from './platform-api';
+import { getPlatformAPI } from './old.platform-api';
 
 describe("Backend API: Platform", ()=> {
     it('should return platrofm API object', ()=> {

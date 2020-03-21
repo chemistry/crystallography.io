@@ -1,7 +1,7 @@
 import { AppPlatformAPI } from "@chemistry/application-common";
 import * as express from "express";
 import * as path from "path";
-import { renderToHTML } from "./renderer";
+import { renderToHTML } from "./old.renderer";
 
 export interface AppManager {
     getApplication: any;

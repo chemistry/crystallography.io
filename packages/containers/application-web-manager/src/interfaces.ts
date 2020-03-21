@@ -1,6 +1,7 @@
 export interface Plugin {
     initialize(context: PlatfomContext): Promise<void>;
 }
+export type PlatformFactory = () => Platform;
 
 export interface Platform {
     addPlugins(plugins: Plugin[]): Promise<void>;

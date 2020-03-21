@@ -2,17 +2,18 @@ const request = require('supertest');
 import { startApplication } from './application';
 
 describe("Express Application", () => {
+    let platform = {
+        addPlugins: jest.fn().mockResolvedValue(''),
+        initialize: jest.fn().mockResolvedValue(''),
+        getContent: jest.fn().mockResolvedValue({ statusCode: 200, content: '' }),
+    }
     let mockContext: any = {
       log: () => {},
       PORT: '8080',
       applicationManager: {
         getPlugins: jest.fn().mockResolvedValue([])
       },
-      platform: {
-          addPlugins: jest.fn().mockResolvedValue(''),
-          initialize: jest.fn().mockResolvedValue(''),
-          getContent: jest.fn().mockResolvedValue({ statusCode: 200, content: '' }),
-      }
+      platformFactory: () => platform
     };
 
     test("should export start application", async() => {
@@ -47,18 +48,18 @@ describe("Express Application", () => {
         const URL = '/SOME-URL';
         await request(app).get(URL);
 
-        expect(mockContext.platform.addPlugins).toHaveBeenCalledWith([MOCK_PLUGIN])
+        expect(platform.addPlugins).toHaveBeenCalledWith([MOCK_PLUGIN])
     });
 
     test('platform initialize should be called', async () => {
         const { app } = await startApplication(mockContext);
         const URL = '/SOME-URL';
         await request(app).get(URL);
-        expect(mockContext.platform.initialize).toHaveBeenCalled();
+        expect(platform.initialize).toHaveBeenCalled();
     });
 
     test('should respond with platform content', async () => {
-        mockContext.platform.getContent = jest.fn().mockResolvedValue({
+        platform.getContent = jest.fn().mockResolvedValue({
           statusCode: 202, content: 'SOME-CONTENT'
         });
         const { app } = await startApplication(mockContext);

@@ -1,19 +1,16 @@
 import * as express from "express";
-import { Platform, Plugin } from "../interfaces";
+import { PlatformFactory } from "../interfaces";
+import { ApplicationManager } from "./application.manager";
 
-interface ApplicationManager {
-    getPlugins({ url }: { url: string }): Promise<Plugin[]>;
-}
-
-export interface ExpressContext {
+export interface ExpresContext {
     log: (message: string) => void;
     PORT: number;
-    platform: Platform;
+    platformFactory: PlatformFactory;
     applicationManager: ApplicationManager;
 }
 
-export async function startApplication(context: ExpressContext) {
-    const { log, PORT, applicationManager, platform } = context;
+export async function startApplication(context: ExpresContext) {
+    const { applicationManager, platformFactory } = context;
     const app = express();
 
     // add UTF-8 symbols parser
@@ -23,17 +20,24 @@ export async function startApplication(context: ExpressContext) {
     app.disable("x-powered-by");
 
     // Main middleware
-    app.use(async (req, res) => {
-      const plugins = await applicationManager.getPlugins({ url: req.url });
-      await platform.addPlugins(plugins);
-      await platform.initialize();
+    app.use(async (req, res, next) => {
+        try {
+          const plugins = await applicationManager.getPlugins({ url: req.url });
+          const platform = platformFactory();
 
-      const { statusCode, content } = await platform.getContent();
+          await platform.addPlugins(plugins);
+          await platform.initialize();
 
-      res
-        .header("Content-Type", "text/html; charset=utf-8")
-        .status(statusCode)
-        .end(content);
+          const { statusCode, content } = await platform.getContent();
+
+          res
+            .header("Content-Type", "text/html; charset=utf-8")
+            .status(statusCode)
+            .end(content);
+          next();
+        } catch (e) {
+          next();
+        }
     });
 
     return { app };

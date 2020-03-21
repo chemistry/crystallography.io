@@ -1,6 +1,7 @@
-import { PlatfomContext, Platform, PlatformType, Plugin } from "../interfaces";
+import {
+  PlatfomContext, PlatformFactory, PlatformType, Plugin,
+} from "../interfaces";
 
-type PlatformFactory = () => Platform;
 type PlatfomContextFactory = () => PlatfomContext;
 
 export const getPlatfom: PlatformFactory = () => {
@@ -51,12 +52,12 @@ export const getPlatfom: PlatformFactory = () => {
     const getContent = async () => {
         return {
             statusCode: 200,
-            content: 'Some Content'
+            content: "Some Content",
         };
     };
     return {
       addPlugins,
       initialize,
-      getContent
+      getContent,
     };
 };

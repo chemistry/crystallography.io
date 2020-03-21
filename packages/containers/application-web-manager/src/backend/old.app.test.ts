@@ -1,4 +1,4 @@
-import { startApplication } from './app';
+import { startApplication } from './old.app';
 const request = require('supertest');
 
 describe('Should export application', () => {

@@ -1,11 +1,11 @@
-import { AppContext, startApplication } from "./app";
-import { getAppManager } from "./app.manager";
-import { getPlatformAPI } from "./platform-api";
+import { ExpresContext, startApplication } from "./application";
+import { getApplicationManager } from "./application.manager";
+import { getPlatfom } from "./paltform.backend";
 
 // tslint:disable-next-line
 console.time("Context Prepare");
 
-const appContext: AppContext = {
+const appContext: ExpresContext = {
    log: (message: string) => {
       // tslint:disable-next-line
       console.log(message);
@@ -17,8 +17,8 @@ const appContext: AppContext = {
         }
         return 8080;
     })(),
-    platformAPIFactory: getPlatformAPI,
-    appManagerFactory: getAppManager,
+    platformFactory: getPlatfom,
+    applicationManager: getApplicationManager(),
 };
 // tslint:disable-next-line
 console.timeEnd("Context Prepare");
