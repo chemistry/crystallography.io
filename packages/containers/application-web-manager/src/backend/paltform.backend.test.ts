@@ -10,8 +10,9 @@ describe("Backend Platform", ()=> {
     test('should return platrofm API object', ()=> {
         expect(sut).toEqual(
           expect.objectContaining({
-            addPlugin: expect.any(Function),
+            addPlugins: expect.any(Function),
             initialize: expect.any(Function),
+            getContent: expect.any(Function)
           })
         );
     });
@@ -24,8 +25,7 @@ describe("Backend Platform", ()=> {
             initialize: jest.fn()
         };
 
-        await sut.addPlugin(mockPlugin1);
-        await sut.addPlugin(mockPlugin2);
+        await sut.addPlugins([mockPlugin1, mockPlugin2]);
         await sut.initialize();
 
         expect(mockPlugin1.initialize).toHaveBeenCalled();
@@ -41,13 +41,13 @@ describe("Backend Platform", ()=> {
             initialize: jest.fn()
         };
 
-        await sut.addPlugin(mockPlugin1);
+        await sut.addPlugins([mockPlugin1]);
         await sut.initialize();
 
         let thrown = false;
 
         try {
-            await sut.addPlugin(mockPlugin2);
+            await sut.addPlugins([mockPlugin2]);
         } catch (e) {
             thrown = true;
         }
@@ -58,7 +58,7 @@ describe("Backend Platform", ()=> {
         const mockPlugin1: Plugin = {
             initialize: jest.fn()
         };
-        await sut.addPlugin(mockPlugin1);
+        await sut.addPlugins([mockPlugin1]);
         await sut.initialize();
 
         expect(mockPlugin1.initialize).toHaveBeenCalledWith(expect.objectContaining({

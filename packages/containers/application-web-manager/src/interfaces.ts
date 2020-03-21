@@ -3,10 +3,9 @@ export interface Plugin {
 }
 
 export interface Platform {
-    addPlugin(plugin: Plugin): Promise<void>;
+    addPlugins(plugins: Plugin[]): Promise<void>;
     initialize(): Promise<void>;
-    getIndexHTML?(): string;
-    renderToString?(): string;
+    getContent?(): Promise<{ statusCode: number, content: string }>;
     hydrate?(): string;
 }
 

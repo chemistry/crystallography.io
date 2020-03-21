@@ -32,12 +32,12 @@ export const getPlatfom: PlatformFactory = () => {
         },
     };
 
-    const addPlugin = async (plugin: Plugin) => {
+    const addPlugins = async (plg: Plugin[]) => {
         const { initialized, plugins } = context;
         if (initialized) {
             return  Promise.reject();
         }
-        plugins.push(plugin);
+        plugins.push(...plg);
     };
 
     const initialize = async () => {
@@ -47,8 +47,16 @@ export const getPlatfom: PlatformFactory = () => {
         }
         context.initialized = true;
     };
+
+    const getContent = async () => {
+        return {
+            statusCode: 200,
+            content: 'Some Content'
+        };
+    };
     return {
-      addPlugin,
+      addPlugins,
       initialize,
+      getContent
     };
 };
