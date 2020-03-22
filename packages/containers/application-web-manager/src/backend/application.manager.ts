@@ -1,6 +1,7 @@
 import { Plugin } from "../interfaces";
 import {
-    baseHTMLPlugin,
+    backendHTMLPlugin,
+    layoutPlugin,
 } from "../plugins";
 
 export interface ApplicationManager {
@@ -11,7 +12,8 @@ export type ApplicationManagerFactory = () => ApplicationManager;
 export const getApplicationManager: ApplicationManagerFactory = () => {
   const getPlugins = async () => {
       const plugins: Plugin[] = [
-          baseHTMLPlugin,
+          backendHTMLPlugin,
+          layoutPlugin,
       ];
       return plugins;
   };

@@ -1,15 +1,15 @@
 import { Platform } from "../interfaces";
-import { getPlatfom } from '../backend/paltform.backend';
-import { baseHTMLPlugin } from './base-html-plugin';
+import { getPlatfom } from '../backend/platform.backend';
+import { backendHTMLPlugin } from './backend-html-plugin';
 
-describe("Backend Platform", ()=> {
+describe("Backend HTML Plugin", () => {
     let platrofm: Platform;
     beforeEach(()=> {
         platrofm = getPlatfom();
     });
 
     test('should return html document', async ()=> {
-        await platrofm.addPlugins([baseHTMLPlugin]);
+        await platrofm.addPlugins([backendHTMLPlugin]);
         await platrofm.initialize();
         const { statusCode, html } = await platrofm.getContent();
 

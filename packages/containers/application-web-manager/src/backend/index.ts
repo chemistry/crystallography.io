@@ -1,6 +1,6 @@
 import { ExpresContext, startApplication } from "./application";
 import { getApplicationManager } from "./application.manager";
-import { getPlatfom } from "./paltform.backend";
+import { getPlatfom } from "./platform.backend";
 
 // tslint:disable-next-line
 console.time("Context Prepare");

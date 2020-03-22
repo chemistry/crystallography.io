@@ -1,5 +1,5 @@
 import { Platform, Plugin } from '../interfaces';
-import { getPlatfom } from './paltform.backend';
+import { getPlatfom } from './platform.backend';
 
 describe("Backend Platform", ()=> {
     let sut: Platform;

@@ -2,6 +2,18 @@ export interface Plugin {
     initialize(context: PlatfomContext): Promise<void>;
 }
 export type PlatformFactory = () => Platform;
+export type PluginFactory = () => Plugin;
+
+export interface MiddleWareParams {
+    statusCode: number;
+    html: string;
+    layout: () => JSX.Element;
+    views: {
+        [key: string]: () => JSX.Element,
+    };
+}
+
+export type MiddleWare = (param: MiddleWareParams) => Promise<MiddleWareParams>;
 
 export interface Platform {
     addPlugins(plugins: Plugin[]): Promise<void>;
@@ -17,7 +29,7 @@ export interface PlatfomContext {
 
     addMiddleWare(param: {
         order: number,
-        middleWare: any,
+        middleWare: MiddleWare,
     }): void;
 }
 

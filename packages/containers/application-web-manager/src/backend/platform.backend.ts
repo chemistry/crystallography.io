@@ -1,8 +1,6 @@
 import {
-  PlatfomContext, PlatformFactory, PlatformType, Plugin,
+  MiddleWareParams, PlatformFactory, PlatformType, Plugin,
 } from "../interfaces";
-
-type PlatfomContextFactory = () => PlatfomContext;
 
 export const getPlatfom: PlatformFactory = () => {
     const context: {
@@ -41,9 +39,11 @@ export const getPlatfom: PlatformFactory = () => {
 
     const getContent = async () => {
         const { middleWares } = context;
-        const initialData = {
+        const initialData: MiddleWareParams = {
             statusCode: 200,
             html: "",
+            layout: null,
+            views: { },
         };
 
         middleWares.sort((a, b) => {
