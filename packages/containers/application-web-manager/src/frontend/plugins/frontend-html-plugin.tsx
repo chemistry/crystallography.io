@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { MiddleWare, MiddleWareParams, PlatfomContext, PlatformType, Plugin } from "../interfaces";
+import { MiddleWare, MiddleWareParams, PlatfomContext, PlatformType, Plugin } from "../../interfaces";
 
 export const frontendHTMLPlugin: Plugin = {
     async initialize(context: PlatfomContext) {

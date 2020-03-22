@@ -1,8 +1,10 @@
 import { Plugin } from "../interfaces";
 import {
-    backendHTMLPlugin,
-    layoutPlugin,
-} from "../plugins";
+  layoutPlugin,
+} from "../shared";
+import {
+  backendHTMLPlugin,
+} from "./plugins";
 
 export interface ApplicationManager {
     getPlugins({ url }: { url: string }): Promise<Plugin[]>;

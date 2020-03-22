@@ -1,6 +1,7 @@
 import { Plugin } from "../interfaces";
-import { frontendHTMLPlugin, layoutPlugin } from "../plugins";
+import { layoutPlugin } from "../shared";
 import { getPlatfom } from "./platform.frontend";
+import { frontendHTMLPlugin } from "./plugins";
 
 (async () => {
     const plugins: Plugin[] = [

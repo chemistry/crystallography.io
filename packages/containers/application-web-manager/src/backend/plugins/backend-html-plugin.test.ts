@@ -1,5 +1,5 @@
-import { Platform } from "../interfaces";
-import { getPlatfom } from '../backend/platform.backend';
+import { Platform } from "../../interfaces";
+import { getPlatfom } from '../platform.backend';
 import { backendHTMLPlugin } from './backend-html-plugin';
 
 describe("Backend HTML Plugin", () => {

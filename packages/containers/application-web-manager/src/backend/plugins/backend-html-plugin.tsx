@@ -1,6 +1,6 @@
 import * as React from "react";
 import { renderToString } from "react-dom/server";
-import { MiddleWare, MiddleWareParams, PlatfomContext, PlatformType, Plugin } from "../interfaces";
+import { MiddleWare, MiddleWareParams, PlatfomContext, PlatformType, Plugin } from "../../interfaces";
 
 const html = `<!DOCTYPE html>
 <html lang="en">
