@@ -37,7 +37,7 @@ paths:
       consumes:
         - "application/json"
       x-google-backend:
-        address: https://europe-west1-crystallography-api.cloudfunctions.net/api-applications-list-get
+        address: https://europe-west1-crystallography-api.cloudfunctions.net/api-releases-get
       responses:
         '200':
           description: A successful response
@@ -48,7 +48,7 @@ paths:
       consumes:
         - "application/json"
       x-google-backend:
-        address: https://europe-west1-crystallography-api.cloudfunctions.net/api-applications-put
+        address: https://europe-west1-crystallography-api.cloudfunctions.net/api-releases-post
       responses:
         '200':
           description: A successful response
