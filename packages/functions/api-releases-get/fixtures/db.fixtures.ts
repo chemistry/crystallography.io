@@ -1,6 +1,6 @@
 export const DB_CONTENT = {
   __collection__: {
-    applications: {
+    releases: {
       __doc__: {
           "cod-search": {
               id: "cod-search",

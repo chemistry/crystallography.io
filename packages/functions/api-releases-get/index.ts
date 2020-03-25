@@ -32,7 +32,7 @@ export async function handler(
     }
 
     return firestore
-      .collection("applications")
+      .collection("releases")
       .limit(PER_PAGE)
       .offset((page - 1) * PER_PAGE)
       .get()

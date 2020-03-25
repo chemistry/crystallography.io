@@ -28,13 +28,16 @@ class mockRes {
     }
 }
 
+let mockFirebase;
+let mockFiretore: any;
+
 jest.mock('@google-cloud/firestore', () => {
     return {
         Firestore: function() {
 
           const MockFirebase = require('mock-cloud-firestore/dist/mock-cloud-firestore');
-          const mockFirebase = new MockFirebase(DB_CONTENT);
-          const mockFiretore =  mockFirebase.firestore();
+          mockFirebase = new MockFirebase(DB_CONTENT);
+          mockFiretore =  mockFirebase.firestore();
           const _collOriginal = mockFiretore.collection;
           mockFiretore.collection = function(collectionName: string) {
               const obj = _collOriginal.call(this, collectionName);
@@ -43,6 +46,9 @@ jest.mock('@google-cloud/firestore', () => {
               return obj;
           }
           return mockFiretore;
+        },
+        Timestamp: {
+           now: () => new Date()
         }
     }
 });
@@ -63,28 +69,62 @@ describe('Get Structures List', () => {
       expect(handler).toBeDefined();
   });
 
-  test('it should rerurn 400 in case application name is invalid', ()=> {
-      const req: any = { params: { id: "" } };
-      const res: any = new mockRes();
-      handler(req, res);
-
-      expect(res.statusContent).toEqual(200);
-  });
-/*
-  test('it should rerurn 400 in case page is > 99999', ()=> {
-      const req: any = { query: { page: 100000} };
+  test('it should rerurn 400 in case application params is not provided', ()=> {
+      const req: any = { body: { id: "" } };
       const res: any = new mockRes();
       handler(req, res);
 
       expect(res.statusContent).toEqual(400);
   });
 
-  test('it should respond with items from collection', async ()=> {
-      const req: any = { query: { page: 1} };
+  test('it should return 400 for invalid version', ()=> {
+      const req: any = {
+        body: {
+          id: 'mdata',
+          name: 'cod-search',
+          path: 'search',
+          version: '0.0.x'
+      }};
+      const res: any = new mockRes();
+      handler(req, res);
+
+      expect(res.statusContent).toEqual(400);
+  });
+
+  test('it should rerurn 200 for coccrectly provided params', async () => {
+      const req: any = {
+        body: {
+          id: 'mdata',
+          name: 'cod-search',
+          path: 'search',
+          version: '0.0.1'
+      }};
+      const res: any = new mockRes();
+      await handler(req, res);
+      expect(res.statusContent).toEqual(200);
+  });
+
+  test('it should store the object in database', async () => {
+      const data = {
+          id: 'mdata',
+          name: 'cod-search',
+          path: 'search',
+          version: '0.0.1'
+      };
+      const req: any = { body: data };
       const res: any = new mockRes();
       await handler(req, res);
 
-      expect(res.contentContent).toEqual(API_RESPONSE);
+      const doc = await mockFiretore
+        .collection('releases')
+        .doc('mdata')
+        .get('mdata');
+      const { _data } = doc;
+      expect(_data).toEqual(expect.objectContaining({
+          id: 'mdata',
+          name: 'cod-search',
+          path: 'search',
+          version: '0.0.1'
+      }));
   });
-*/
 });
