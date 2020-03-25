@@ -18,7 +18,7 @@ API Support [COD Web UI](http://crystallography-online.com/)
   * [@chemistry/cod-sync-stop-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance) - Stop VM for what finished Synchronization execution
   * [@chemistry/gcs-to-database](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/gcs-to-database) - Read CIF file from storage and save to database;
   * [@chemistry/api-get-structures-list](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/api-get-structures-list) - API Get Structures List
-  * [@chemistry/api-applications-list-get](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/api-applications-list-get) - API Get List of Deployed Applications
+  * [@chemistry/api-releases-get](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/api-releases-get) - API Get Last Application Releases
 
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
