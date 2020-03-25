@@ -31,3 +31,17 @@ paths:
           description: A successful response
           schema:
             type: string
+
+  /applications:
+    get:
+      summary: "Get a list of Applications"
+      operationId: Applications-List-Get
+      consumes:
+        - "application/json"
+      x-google-backend:
+        address: https://europe-west1-crystallography-api.cloudfunctions.net/api-applications-list-get
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
