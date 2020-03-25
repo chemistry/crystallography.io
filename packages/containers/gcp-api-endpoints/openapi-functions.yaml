@@ -30,10 +30,10 @@ paths:
         '200':
           description: A successful response
 
-  /applications:
+  /releases:
     get:
-      summary: "Get a list of Applications"
-      operationId: Applications-List-Get
+      summary: "Get list of Releases"
+      operationId: Releases-List-Get
       consumes:
         - "application/json"
       x-google-backend:
@@ -42,10 +42,9 @@ paths:
         '200':
           description: A successful response
 
-  /applications/{appId}:
-    put:
-      summary: "Get a list of Applications"
-      operationId: Applications-List-Get
+    post:
+      summary: "Add New Release Information"
+      operationId: Releases-Post
       consumes:
         - "application/json"
       x-google-backend:

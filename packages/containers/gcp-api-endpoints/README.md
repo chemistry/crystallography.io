@@ -12,7 +12,7 @@ The deployment scripts build based on [GCP Get Started](https://cloud.google.com
 ## Information
 * Initialize Containers
 ```bash
-./Initialize.sh
+./initialize.sh
 ```
 
 * Deploy Cloud Run Container
