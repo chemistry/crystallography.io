@@ -28,7 +28,6 @@ class mockRes {
     }
 }
 
-let mockFirebase;
 let mockFiretore: any;
 
 jest.mock('@google-cloud/firestore', () => {
@@ -36,7 +35,7 @@ jest.mock('@google-cloud/firestore', () => {
         Firestore: function() {
 
           const MockFirebase = require('mock-cloud-firestore/dist/mock-cloud-firestore');
-          mockFirebase = new MockFirebase(DB_CONTENT);
+          const mockFirebase = new MockFirebase(DB_CONTENT);
           mockFiretore =  mockFirebase.firestore();
           const _collOriginal = mockFiretore.collection;
           mockFiretore.collection = function(collectionName: string) {
@@ -83,12 +82,41 @@ describe('Get Structures List', () => {
           id: 'mdata',
           name: 'cod-search',
           path: 'search',
-          version: '0.0.x'
+          version: '0.0.x',
+          resources: {}
       }};
       const res: any = new mockRes();
       handler(req, res);
 
       expect(res.statusContent).toEqual(400);
+  });
+
+  test('it should return 200 in case version is not provided', async ()=> {
+      const req: any = {
+        body: {
+          id: 'mdata',
+          name: 'cod-search',
+          path: 'search',
+          resources: {}
+      }};
+      const res: any = new mockRes();
+      await handler(req, res);
+      expect(res.statusContent).toEqual(200);
+  });
+
+  test('it should increment version in store in case none provided', async ()=> {
+      const req: any = {
+        body: {
+          id: 'mdata',
+          name: 'cod-search',
+          path: 'search',
+          resources: {}
+      }};
+      const res: any = new mockRes();
+      await handler(req, res);
+
+      const attributes = res.contentContent.data[0].attributes;
+      expect(attributes.version).toEqual('0.0.2');
   });
 
   test('it should rerurn 200 for coccrectly provided params', async () => {
@@ -97,7 +125,8 @@ describe('Get Structures List', () => {
           id: 'mdata',
           name: 'cod-search',
           path: 'search',
-          version: '0.0.1'
+          version: '0.0.1',
+          resources: {}
       }};
       const res: any = new mockRes();
       await handler(req, res);
@@ -109,7 +138,8 @@ describe('Get Structures List', () => {
           id: 'mdata',
           name: 'cod-search',
           path: 'search',
-          version: '0.0.1'
+          version: '0.0.1',
+          resources: {}
       };
       const req: any = { body: data };
       const res: any = new mockRes();
@@ -124,7 +154,8 @@ describe('Get Structures List', () => {
           id: 'mdata',
           name: 'cod-search',
           path: 'search',
-          version: '0.0.1'
+          version: '0.0.1',
+          resources: {}
       }));
   });
 });
