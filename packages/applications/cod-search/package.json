@@ -1,5 +1,5 @@
 {
-  "name": "@chemistry/application-cod-search",
+  "name": "@chemistry/cod-search",
   "version": "0.0.8",
   "description": "Cod Search Application",
   "author": {
@@ -18,7 +18,7 @@
   "devEngines": {
     "node": ">=8.0.0"
   },
-  "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/application-cod-search",
+  "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/applications/cod-search",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
@@ -50,7 +50,6 @@
     "assets-webpack-plugin": "^3.9.12",
     "awesome-typescript-loader": "5.2.1",
     "css-loader": "3.4.2",
-    "html-webpack-plugin": "3.2.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "nodemon": "1.19.4",

@@ -23,7 +23,9 @@ API Support [COD Web UI](http://crystallography-online.com/)
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
   * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
-  * [@chemistry/application-cod-search](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/application-cod-search) - Main application containing Web
+
+### Applications:
+  * [@chemistry/cod-search](https://github.com/chemistry/crystallography-api/tree/master/packages/applications/cod-search) - Cod Search Web Application
 
 ## Technical description:
 * MonoRepo build with lerna

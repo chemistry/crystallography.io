@@ -1,13 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const appJSON = require('./app.json');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AssetsPlugin = require('assets-webpack-plugin')
 
 module.exports = {
     mode: 'production',
     devtool: 'source-map',
-    
+
     entry: {
         'application': path.resolve(__dirname, './src/index.ts')
     },
@@ -17,16 +17,13 @@ module.exports = {
         path: path.resolve(__dirname, './dist'),
         libraryTarget: 'umd',
         library: 'application',
-        umdNamedDefine: true
+        umdNamedDefine: true,
+        filename: '[name].[hash].js'
     },
 
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-        }),
-        new HtmlWebpackPlugin({
-            template: __dirname + '/static/index.html',
-            hash: true
+            filename: '[name].[hash].css',
         }),
         new AssetsPlugin({
             filename: 'app.json',
@@ -34,6 +31,7 @@ module.exports = {
             includeManifest: true,
             processOutput: function (assets) {
                 const manifest = {
+                    ...appJSON,
                     resources: assets['application']
                 };
                 return JSON.stringify(manifest, null, 4);

@@ -3,7 +3,6 @@ import * as React from "react";
 import { renderRoutes, RouteConfig } from "react-router-config";
 import { Link } from "react-router-dom";
 import "./application.scss";
-import { getAppInfo } from "./metadata";
 
 const App = ({ route }: any) => (
     <div className="application">
@@ -53,6 +52,5 @@ export const getApplication = ({ platformAPI }: { platformAPI: AppPlatformAPI })
     }];
     return {
       Routes,
-      getInfo: getAppInfo,
     };
 };
