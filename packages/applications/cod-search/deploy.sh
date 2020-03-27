@@ -25,3 +25,5 @@ fi
 
 # Send Artifacts
 gsutil cp -r ./dist "gs://${STORAGE_HOST}/${RELEASE_APP}/${RELEASE_VERSION}"
+
+echo "Sucessfully released"
