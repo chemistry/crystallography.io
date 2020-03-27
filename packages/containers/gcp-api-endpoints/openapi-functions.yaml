@@ -46,9 +46,23 @@ paths:
       summary: "Add New Release Information"
       operationId: Releases-Post
       consumes:
-        - "application/json"
+        - application/x-www-form-urlencoded
       x-google-backend:
         address: https://europe-west1-crystallography-api.cloudfunctions.net/api-releases-post
+      parameters:
+        - in: formData
+          name: id
+          type: string
+        - in: formData
+          name: name
+          type: string
+        - in: formData
+          name: path
+          type: string
+        - in: formData
+          name: version
+          type: string
+
       responses:
         '200':
           description: A successful response
