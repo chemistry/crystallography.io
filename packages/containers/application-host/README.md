@@ -5,7 +5,8 @@
 Application Host
 
 ## Quick Start
-*  ```nodemon``` - Start Application in Development Mode
+  * ```export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"```- Set environment variable
+  * ```npm run app:host``` - Start Application in Development Mode
 
 ## Commands
 Build Container

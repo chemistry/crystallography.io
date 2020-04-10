@@ -19,7 +19,9 @@ export function mapResponce(item: any): any {
 export async function handler(
   req: Request, res: Response,
 ) {
-    const page = req.query.page || 1;
+    let page: number = parseInt(req.query.page as string, 10);
+    page = page && isFinite(page) ? page : 1;
+
     const validationRes = structurePageValidation.validate(page);
     if (validationRes.error) {
         return res.status(400).json({
