@@ -1,5 +1,6 @@
 FROM mhart/alpine-node:13.5.0
 RUN mkdir /app
+RUN mkdir /static
 WORKDIR /app
 
 # Install rsync

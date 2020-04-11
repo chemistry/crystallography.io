@@ -1,4 +1,4 @@
-import { getReleases } from "./app.releases";
+import { fetchDeployedApps, getReleases } from "./app.releases";
 import { ExpresContext, startApplication } from "./application";
 
 // tslint:disable-next-line
@@ -30,6 +30,9 @@ console.time("App Start");
 (async () => {
     try {
       const context = await getAppContext();
+      const {releases } = context;
+
+      await fetchDeployedApps(releases);
       const { app } = await startApplication(context);
       const { PORT, log } = context;
 
