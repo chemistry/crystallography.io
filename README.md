@@ -11,7 +11,8 @@ API Support [COD Web UI](http://crystallography-online.com/)
 ### Containers:
   * [@chemistry/cod-to-gcs-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync) - Synchronize COD with Google Cloud Storage
   * [@chemistry/gcp-api-endpoints](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/gcp-api-endpoints) - API Endpoint that execute cloud functions
-  * [@chemistry/application-web-manager](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/application-web-manager) - Main Application Host that serve applications
+  * [@chemistry/crystallography-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-web) - Application Web Container 
+
 
 ### Functions:
   * [@chemistry/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)
@@ -24,8 +25,6 @@ API Support [COD Web UI](http://crystallography-online.com/)
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
   * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
 
-### Applications:
-  * [@chemistry/cod-search](https://github.com/chemistry/crystallography-api/tree/master/packages/applications/cod-search) - Cod Search Web Application
 
 ## Technical description:
 * MonoRepo build with lerna

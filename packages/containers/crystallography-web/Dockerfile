@@ -22,13 +22,13 @@ COPY package.json .
 COPY package-lock.json .
 COPY lerna.json .
 COPY tsconfig.json .
-COPY packages/containers/application-host/start-script.sh /app/start-script.sh
-COPY packages/containers/application-host ./packages/containers/application-host
+COPY packages/containers/crystallography-web/start-script.sh /app/start-script.sh
+COPY packages/containers/crystallography-web ./packages/containers/crystallography-web
 
 RUN npm install --production
 
 RUN npm run bootstrap:ci
 
-RUN npm --prefix packages/containers/application-host run build
+RUN npm --prefix packages/containers/crystallography-web run build
 
 CMD /app/start-script.sh

@@ -1,14 +1,12 @@
-import { ExpresContext, startApplication } from "./application";
-import { getApplicationManager } from "./application.manager";
-import { getPlatfom } from "./platform.backend";
+import { startApplication } from "./application";
 
 // tslint:disable-next-line
 console.time("Context Prepare");
 
-const appContext: ExpresContext = {
-   log: (message: string) => {
-      // tslint:disable-next-line
-      console.log(message);
+const context = {
+    log: (message: string) => {
+        // tslint:disable-next-line
+        console.log(message);
     },
     PORT: (() => {
         const port = process.env.PORT;
@@ -17,9 +15,8 @@ const appContext: ExpresContext = {
         }
         return 8080;
     })(),
-    platformFactory: getPlatfom,
-    applicationManager: getApplicationManager(),
 };
+
 // tslint:disable-next-line
 console.timeEnd("Context Prepare");
 
@@ -27,13 +24,11 @@ console.timeEnd("Context Prepare");
 console.time("App Start");
 (async () => {
     try {
-      const { app } = await startApplication(appContext);
-      const { PORT, log } = appContext;
+      const { app } = await startApplication(context);
+      const { PORT, log } = context;
 
       await new Promise((resolve) => {
-        app.listen(PORT, "0.0.0.0", () => {
-            resolve(app);
-        });
+        app.listen(PORT, "0.0.0.0", resolve);
       });
 
       log(`Application Started on port: ${PORT}`);
