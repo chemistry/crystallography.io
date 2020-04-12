@@ -5,7 +5,8 @@ describe("Express Application", () => {
 
     let mockContext: any = {
       log: () => {},
-      PORT: '8080'
+      PORT: '8080',
+      htmlContent: "<html></html>"
     };
 
     test("should export start application", async() => {

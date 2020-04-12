@@ -1,7 +1,13 @@
+import * as fs from "fs";
+import * as path from "path";
 import { startApplication } from "./application";
 
 // tslint:disable-next-line
 console.time("Context Prepare");
+
+const htmlContent = fs.readFileSync(
+  path.join(__dirname, "/../static/index.html"),
+"utf8");
 
 const context = {
     log: (message: string) => {
@@ -15,6 +21,7 @@ const context = {
         }
         return 8080;
     })(),
+    htmlContent,
 };
 
 // tslint:disable-next-line
