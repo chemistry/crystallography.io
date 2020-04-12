@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:13.5.0
+FROM mhart/alpine-node:13.12.0
 RUN mkdir /app
 RUN mkdir /static
 WORKDIR /app
