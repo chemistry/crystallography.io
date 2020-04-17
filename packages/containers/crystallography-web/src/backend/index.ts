@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { AppContextType, ApplicationContext, getApplication } from "../common";
 import { startApplication } from "./application";
 
 // tslint:disable-next-line
@@ -8,6 +9,10 @@ console.time("Context Prepare");
 const htmlContent = fs.readFileSync(
   path.join(__dirname, "/../static/index.html"),
 "utf8");
+
+const appContext: ApplicationContext =  {
+   type: AppContextType.backend,
+};
 
 const context = {
     log: (message: string) => {
@@ -21,7 +26,9 @@ const context = {
         }
         return 8080;
     })(),
+    appFactory: getApplication,
     htmlContent,
+    appContext,
 };
 
 // tslint:disable-next-line

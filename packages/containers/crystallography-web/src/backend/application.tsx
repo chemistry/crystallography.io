@@ -5,25 +5,22 @@ import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
+import { ApplicationContext, ApplicationFactory } from "../common";
 
 export interface ExpresContext {
     log: (message: string) => void;
     PORT: number;
     htmlContent: string;
-}
-
-function App() {
-    return (
-      <h1>App</h1>
-    );
+    appContext: ApplicationContext;
+    appFactory: ApplicationFactory;
 }
 
 function renderHTML(html: string, componentHTML: string): string {
-    return html.replace('<div id="app"></div>', '<div id="app">' + componentHTML + "</div>");
+    return html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + "</div>");
 }
 
 export async function startApplication(context: ExpresContext) {
-    const { htmlContent, log } = context;
+    const { htmlContent, log, appFactory, appContext } = context;
     log("application started");
 
     const app = express();
@@ -42,22 +39,28 @@ export async function startApplication(context: ExpresContext) {
     app.use(express.static(path.join(__dirname, "/../static"), {index: false}));
 
     // Rendering to StaticRouter
-    app.use((req, res) => {
-        const ctx: any = {
-            status: 200,
-        };
+    app.use(async (req, res, next) => {
+      try {
+          const ctx: any = {
+              status: 200,
+          };
+          const { App } = await appFactory(appContext);
 
-        const content = (
-            <StaticRouter location={req.url} context={ctx}>
-                <App />
-            </StaticRouter>
-        );
-        const componentHTML = renderToString(content);
-        const HTML = renderHTML(htmlContent, componentHTML);
-        res
-          .header("Content-Type", "text/html; charset=utf-8")
-          .status(ctx.status)
-          .end(HTML);
+          const content = (
+              <StaticRouter location={req.url} context={ctx}>
+                  <App />
+              </StaticRouter>
+          );
+          const componentHTML = renderToString(content);
+          const HTML = renderHTML(htmlContent, componentHTML);
+          res
+            .header("Content-Type", "text/html; charset=utf-8")
+            .status(ctx.status)
+            .end(HTML);
+
+      } catch (error) {
+          next(error);
+      }
     });
 
     return { app };
