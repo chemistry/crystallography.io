@@ -1,0 +1,21 @@
+@import "node_modules/spectre.css/src/spectre";
+@import "node_modules/spectre.css/src/spectre-icons";
+
+body {
+  background: #f7f8f9!important;
+}
+body, html, #root, .app, .main-content, .main-content > .columns {
+  min-height: 100%;
+  height: 100%;
+}
+.app {
+  min-height: 100%;
+  height: 100%;
+}
+.top-navigation {
+    position: fixed;
+    min-height: 36px;
+}
+.main-content {
+    padding-top: 36px;
+}

@@ -27,7 +27,6 @@
         "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
         "start": "node dist/backend/index.js",
         "serve": "webpack-dev-server  --config ./webpack.config.js",
-
         "app:serve": "npm run serve",
         "app:build": "npm run build",
         "app:start": "npm run start",
@@ -49,7 +48,8 @@
         "react": "16.13.1",
         "react-dom": "16.10.2",
         "react-router": "5.1.2",
-        "react-router-dom": "5.1.2"
+        "react-router-dom": "5.1.2",
+        "spectre.css": "0.5.8"
     },
     "devDependencies": {
         "assets-webpack-plugin": "3.9.12",
