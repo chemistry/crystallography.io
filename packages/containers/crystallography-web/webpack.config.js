@@ -11,13 +11,14 @@ module.exports = {
     devtool:  'source-map',
 
     entry: {
-        'app': path.resolve(__dirname, './src/frontend/app.tsx')
+        'app': path.resolve(__dirname, './src/frontend/app.tsx'),
+        'common': path.resolve(__dirname, './src/common/index.tsx')
     },
-        
+
     output: {
         path: __dirname + '/dist/static/',
         publicPath: '/',
-        filename: '[hash].js'
+        filename: '[name].[hash].js'
     },
 
     plugins: [
