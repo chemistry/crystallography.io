@@ -3,6 +3,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 
@@ -11,8 +14,7 @@ module.exports = {
     devtool:  'source-map',
 
     entry: {
-        'app': path.resolve(__dirname, './src/frontend/app.tsx'),
-        'common': path.resolve(__dirname, './src/common/index.tsx')
+        'main': path.resolve(__dirname, './src/frontend/app.tsx')
     },
 
     output: {
@@ -24,17 +26,75 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             BROWSER: JSON.stringify(true),
-            NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+            PUBLIC_URL: ''
+        }),
+        new webpack.ExtendedAPIPlugin(),
+        new InjectManifest({
+            swSrc:  path.resolve(__dirname, 'src/frontend/service-worker.ts'),
+            swDest: path.resolve(__dirname, 'dist/static/service-worker.js'),
+            include:[
+                /\.html$/,
+                /\.js$/,
+                /\.css$/,
+                /\.woff2$/,
+                /\.jpg$/,
+                /\.png$/,
+                /\.svg$/
+            ]
+        }),
+        new ManifestPlugin({
+            fileName: 'manifest.json',
+            generate: (seed, files, entrypoints) => {
+              const manifestFiles = files.reduce((manifest, file) => {
+                if (file.name.endsWith('.d.ts')) {
+                    return manifest;
+                }
+                manifest[file.name] = file.path;
+                return manifest;
+              }, seed);
+              const entrypointFiles = entrypoints.main.filter(
+                fileName => !fileName.endsWith('.map')
+              );
+
+              return {
+                "short_name": "COD Search",
+                "name": "Crystal Structure Search",
+                "description": "Crystal Structure Search Online",
+                "icons": [
+                    {
+                      "src": "icon-192.png",
+                      "type": "image/png",
+                      "sizes": "192x192"
+                    },
+                    {
+                      "src": "icon-512.png",
+                      "type": "image/png",
+                      "sizes": "512x512"
+                    }
+                ],
+                "files": manifestFiles,
+                "entrypoints": entrypointFiles,
+                "background_color": "#f7f8f9",
+                "start_url": "/",
+                "display": "standalone",
+                "scope": "/"
+              };
+            },
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[hash].css',
         }),
         new HtmlWebpackPlugin({
             template: __dirname + '/src/static/index.html',
-            favicon: __dirname + '/src/static/favicon.ico'
+            favicon: __dirname + '/src/static/favicon.ico',
         }),
         new CopyWebpackPlugin([{
             from: __dirname + '/src/static/favicon.ico'
+        }, {
+            from: __dirname + '/src/static/icon-192.png'
+        }, {
+            from: __dirname + '/src/static/icon-512.png'
         }, {
             from: __dirname + '/src/static/robots.txt'
         }, {
