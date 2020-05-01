@@ -4,10 +4,13 @@
   "private": true,
   "description": "Crystal Structure Search",
   "author": "Volodymyr Vreshch",
-  "main": "./src/main.js",
+  "main": "./build/main/index.js",
   "homepage": "http://crystallography.io",
   "scripts": {
-    "app:start": "electron ."
+    "app:start": "npm run build:electron && npm run build:renderer && npm run app:start:electron",
+    "app:start:electron": "electron .",
+    "build:electron": "tsc",
+    "build:renderer": "webpack-cli --config webpack.config.js --mode production"
   },
   "repository": "https://github.com/chemistry/crystallography.io",
   "keywords": [
@@ -18,8 +21,16 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "awesome-typescript-loader": "5.2.1",
+    "css-loader": "3.4.2",
+    "html-webpack-plugin": "3.2.0",
+    "mini-css-extract-plugin": "0.9.0",
+    "node-sass": "4.13.0",
+    "webpack": "4.41.5",
+    "webpack-cli": "3.3.10",
     "electron": "8.2.3",
-    "electron-builder": "22.6.0"
+    "electron-builder": "22.6.0",
+    "typescript": "3.7.5"
   },
   "build": {
     "appId": "com.vreshch.structure-search",
