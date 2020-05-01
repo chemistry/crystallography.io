@@ -1,11 +1,13 @@
 {
   "name": "structure-search",
-  "version": "0.0.30",
+  "version": "0.0.11",
+  "private": true,
   "description": "Crystal Structure Search",
   "author": "Volodymyr Vreshch",
   "main": "./src/main.js",
+  "homepage": "http://crystallography.io",
   "scripts": {
-    "start": "electron ."
+    "app:start": "electron ."
   },
   "repository": "https://github.com/chemistry/crystallography.io",
   "keywords": [
@@ -23,10 +25,10 @@
     "appId": "com.vreshch.structure-search",
     "productName": "Structure Search",
     "mac": {
-			"category": "public.app-category.lifestyle"
-		},
+      "category": "public.app-category.education"
+    },
     "linux": {
-      "category": "Office"
+      "category": "Science"
     },
     "dmg": {
       "icon": false

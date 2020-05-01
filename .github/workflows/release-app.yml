@@ -1,11 +1,9 @@
-name: Build Application 
+name: Release Application
 
 on:
   push:
-    branches:
-      - master
-    paths:
-      - 'packages/application/**'
+    tags:
+      - 'v*.*.*'
 
 jobs:
   release:

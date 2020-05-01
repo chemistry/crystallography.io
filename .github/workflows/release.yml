@@ -3,7 +3,7 @@ name: Publish Libraries
 on:
   push:
     tags:
-      - 'turn-off-v*.*.*'
+      - 'v*.*.*'
 
 jobs:
   release-on-push-tag:
@@ -72,16 +72,3 @@ jobs:
       run: git push --follow-tags
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Github Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        body: |
-          Release Changes
-        draft: false
-        prerelease: false
