@@ -14,10 +14,10 @@
         "cod"
     ],
     "engines": {
-        "node": ">=8.0.0"
+        "node": ">=10.0.0"
     },
     "devEngines": {
-        "node": ">=8.0.0"
+        "node": ">=10.0.0"
     },
     "repository": {
         "type": "git",
@@ -31,6 +31,7 @@
         "bootstrap": "lerna bootstrap --hoist",
         "bootstrap:ci": "lerna exec npm install",
         "build": "lerna run build",
+        "app:build": "lerna run app:build",
         "check": "export GOOGLE_APPLICATION_CREDENTIALS='/home/vreshch/projects/crystallography-api/credentials.json' && lerna run check",
         "deploy": "GIT_PREVIOUS_COMMIT=$(git rev-parse --short 'HEAD^') && lerna run --since $GIT_PREVIOUS_COMMIT deploy",
         "updated": "lerna updated",

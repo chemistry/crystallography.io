@@ -27,11 +27,11 @@
         "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
         "start": "node dist/backend/index.js",
         "serve": "webpack-dev-server  --config ./webpack.config.js",
-        "app:serve": "npm run serve",
-        "app:build": "npm run build",
-        "app:start": "npm run start",
-        "app:nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts",
-        "app:build:frontend": "npm run build:frontend"
+        "web:serve": "npm run serve",
+        "web:build": "npm run build",
+        "web:start": "npm run start",
+        "web:nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts",
+        "web:build:frontend": "npm run build:frontend"
     },
     "dependencies": {
         "@google-cloud/firestore": "3.4.0",

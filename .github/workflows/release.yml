@@ -1,9 +1,9 @@
-name: Publish
+name: Publish Libraries
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'turn-off-v*.*.*'
 
 jobs:
   release-on-push-tag:

@@ -1,0 +1,35 @@
+{
+  "name": "structure-search",
+  "version": "0.0.30",
+  "description": "Crystal Structure Search",
+  "author": "Volodymyr Vreshch",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/chemistry/crystallography.io",
+  "keywords": [
+    "crystallography",
+    "structure search",
+    "cod",
+    "ccdc"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "8.2.3",
+    "electron-builder": "22.6.0"
+  },
+  "build": {
+    "appId": "com.vreshch.structure-search",
+    "productName": "Structure Search",
+    "mac": {
+			"category": "public.app-category.lifestyle"
+		},
+    "linux": {
+      "category": "Office"
+    },
+    "dmg": {
+      "icon": false
+    }
+  }
+}
