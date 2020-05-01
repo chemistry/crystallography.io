@@ -1,24 +1,32 @@
-// Modules to control application life and create native browser window
 import { app, BrowserWindow} from "electron";
 import * as path from "path";
+import { updateApplication } from "./updater";
 
-function createWindow() {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
+async function createWindow() {
+  const win = new BrowserWindow({
     width: 800,
     height: 600,
+    show: false,
     webPreferences: {
     },
   });
 
-  // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+  win.on("ready-to-show", () => {
+    win.show();
+  });
+  // await win.loadFile(path.join(__dirname, "../renderer/index.html"));
+
+  await win.loadURL("https://crystallography.io");
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
 
-app.whenReady().then(createWindow);
+(async () => {
+  await app.whenReady();
+  await createWindow();
+
+})();
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

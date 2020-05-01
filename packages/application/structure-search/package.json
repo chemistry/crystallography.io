@@ -20,6 +20,11 @@
     "ccdc"
   ],
   "license": "MIT",
+  "dependencies": {
+    "electron-log": "4.1.2",
+    "electron-updater": "4.3.1",
+    "electron-util": "0.14.1"
+  },
   "devDependencies": {
     "awesome-typescript-loader": "5.2.1",
     "css-loader": "3.4.2",
