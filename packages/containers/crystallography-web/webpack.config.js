@@ -118,6 +118,14 @@ module.exports = {
                 ],
             },
             {
+                test: /\.css$/i,
+                use: [
+                  MiniCssExtractPlugin.loader,
+                  // 'style-loader',
+                  'css-loader'
+                ],
+            },
+            {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 loader: 'awesome-typescript-loader'
