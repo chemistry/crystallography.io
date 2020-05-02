@@ -34,5 +34,6 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "webpack-cli --config webpack.config.js --mode production"
-  }
+  },
+  "gitHead": "a97cb8f77d7053bfb70026998eed49ad5737c6d0"
 }
