@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/cif-2-json",
-    "version": "0.0.8",
+    "version": "0.0.15",
     "description": "Tool for converting CIF to JSON and manipulate with content",
     "author": {
         "name": "Volodymyr Vreshch",

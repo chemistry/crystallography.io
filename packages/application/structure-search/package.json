@@ -1,6 +1,6 @@
 {
   "name": "structure-search",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "description": "Crystal Structure Search",
   "author": "Volodymyr Vreshch",
@@ -30,19 +30,19 @@
   "devDependencies": {
     "awesome-typescript-loader": "5.2.1",
     "css-loader": "3.4.2",
+    "electron": "8.2.3",
+    "electron-builder": "22.6.0",
     "html-webpack-plugin": "3.2.0",
     "mini-css-extract-plugin": "0.9.0",
     "node-sass": "4.13.0",
+    "typescript": "3.7.5",
     "webpack": "4.41.5",
-    "webpack-cli": "3.3.10",
-    "electron": "8.2.3",
-    "electron-builder": "22.6.0",
-    "typescript": "3.7.5"
+    "webpack-cli": "3.3.10"
   },
   "build": {
     "files": [
       "!**/*",
-			"./build/**/*",
+      "./build/**/*",
       "package.json"
     ],
     "appId": "com.vreshch.structure-search",

@@ -1,7 +1,7 @@
 {
     "name": "@chemistry/api-release-post",
     "private": true,
-    "version": "0.0.8",
+    "version": "0.0.15",
     "description": "Update Application information",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -32,8 +32,8 @@
     },
     "devDependencies": {
         "@types/hapi__joi": "16.0.12",
-        "mock-cloud-firestore": "0.11.0",
         "@types/semver": "7.1.0",
+        "mock-cloud-firestore": "0.11.0",
         "ts-node": "8.5.4"
     }
 }
