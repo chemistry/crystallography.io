@@ -28,7 +28,7 @@ jobs:
       run: npm run test
 
     - name: Build
-      run: npm run build
+      run: npm run build && npm run app:build
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

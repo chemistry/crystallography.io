@@ -1,13 +1,15 @@
 {
   "name": "structure-search",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "private": true,
   "description": "Crystal Structure Search",
   "author": "Volodymyr Vreshch",
   "main": "./build/main/index.js",
   "homepage": "http://crystallography.io",
   "scripts": {
-    "app:start": "npm run build:electron && npm run build:renderer && npm run app:start:electron",
+    "app:build": "npm run app:build:js && electron-builder --linux",
+    "app:build:js": "npm run build:electron && npm run build:renderer",
+    "app:start": "npm run app:build:js && npm run app:start:electron",
     "app:start:electron": "electron .",
     "build:electron": "tsc",
     "build:renderer": "webpack-cli --config webpack.config.js --mode production"
@@ -38,6 +40,11 @@
     "typescript": "3.7.5"
   },
   "build": {
+    "files": [
+      "!**/*",
+			"./build/**/*",
+      "package.json"
+    ],
     "appId": "com.vreshch.structure-search",
     "productName": "Structure Search",
     "mac": {

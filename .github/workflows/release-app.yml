@@ -42,6 +42,7 @@ jobs:
           github_token: ${{ secrets.github_token }}
 
           package_root: 'packages/application/structure-search'
+          build_script_name: 'app:build:js'
 
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building

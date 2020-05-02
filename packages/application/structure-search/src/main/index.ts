@@ -17,7 +17,6 @@ async function createWindow() {
   // await win.loadFile(path.join(__dirname, "../renderer/index.html"));
 
   await win.loadURL("https://crystallography.io");
-
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
