@@ -1,18 +1,18 @@
-# Crystallography API
+# Crystal Structure Search Application
 [![Release version](https://img.shields.io/github/v/release/chemistry/crystallography-api?color=green.svg)](https://github.com/chemistry/crystallography-api/releases)
 [![Codecov](https://codecov.io/gh/chemistry/crystallography-api/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/crystallography-api)
 [![GitHub Build Status](https://github.com/chemistry/crystallography-api/workflows/CI/badge.svg)](https://github.com/chemistry/crystallography-api/actions?query=workflow%3ACI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
-API Support [COD Web UI](http://crystallography-online.com/)
+Website: [Crystal Structure Search](http://crystallography.io/)
+Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/chemistry/crystallography.io/releases)
 
 ## Include Packages:
 ### Containers:
   * [@chemistry/cod-to-gcs-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync) - Synchronize COD with Google Cloud Storage
   * [@chemistry/gcp-api-endpoints](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/gcp-api-endpoints) - API Endpoint that execute cloud functions
-  * [@chemistry/crystallography-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-web) - Application Web Container 
-
+  * [@chemistry/crystallography-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-web) - Application Web Container
 
 ### Functions:
   * [@chemistry/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)
