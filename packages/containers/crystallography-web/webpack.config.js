@@ -9,7 +9,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 
-    mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
+    mode: process.env.WEBPACK_DEV_SERVER ? 'development' : 'production',
 
     devtool:  'source-map',
 
@@ -29,59 +29,63 @@ module.exports = {
             NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
             PUBLIC_URL: ''
         }),
-        new webpack.ExtendedAPIPlugin(),
-        new InjectManifest({
-            swSrc:  path.resolve(__dirname, 'src/frontend/service-worker.ts'),
-            swDest: path.resolve(__dirname, 'dist/static/service-worker.js'),
-            include:[
-                /\.html$/,
-                /\.js$/,
-                /\.css$/,
-                /\.woff2$/,
-                /\.jpg$/,
-                /\.png$/,
-                /\.svg$/
-            ]
-        }),
-        new ManifestPlugin({
-            fileName: 'manifest.json',
-            generate: (seed, files, entrypoints) => {
-              const manifestFiles = files.reduce((manifest, file) => {
-                if (file.name.endsWith('.d.ts')) {
-                    return manifest;
-                }
-                manifest[file.name] = file.path;
-                return manifest;
-              }, seed);
-              const entrypointFiles = entrypoints.main.filter(
-                fileName => !fileName.endsWith('.map')
-              );
 
-              return {
-                "short_name": "COD Search",
-                "name": "Crystal Structure Search",
-                "description": "Crystal Structure Search Online",
-                "icons": [
-                    {
-                      "src": "icon-192.png",
-                      "type": "image/png",
-                      "sizes": "192x192"
-                    },
-                    {
-                      "src": "icon-512.png",
-                      "type": "image/png",
-                      "sizes": "512x512"
-                    }
-                ],
-                "files": manifestFiles,
-                "entrypoints": entrypointFiles,
-                "background_color": "#f7f8f9",
-                "start_url": "/",
-                "display": "standalone",
-                "scope": "/"
-              };
-            },
-        }),
+        ... (process.env.WEBPACK_DEV_SERVER ? []: ([
+          new webpack.ExtendedAPIPlugin(),
+          new InjectManifest({
+              swSrc:  path.resolve(__dirname, 'src/frontend/service-worker.ts'),
+              swDest: path.resolve(__dirname, 'dist/static/service-worker.js'),
+              include:[
+                  /\.html$/,
+                  /\.js$/,
+                  /\.css$/,
+                  /\.woff2$/,
+                  /\.jpg$/,
+                  /\.png$/,
+                  /\.svg$/
+              ]
+          }),
+          new ManifestPlugin({
+              fileName: 'manifest.json',
+              generate: (seed, files, entrypoints) => {
+                const manifestFiles = files.reduce((manifest, file) => {
+                  if (file.name.endsWith('.d.ts')) {
+                      return manifest;
+                  }
+                  manifest[file.name] = file.path;
+                  return manifest;
+                }, seed);
+                const entrypointFiles = entrypoints.main.filter(
+                  fileName => !fileName.endsWith('.map')
+                );
+
+                return {
+                  "short_name": "COD Search",
+                  "name": "Crystal Structure Search",
+                  "description": "Crystal Structure Search Online",
+                  "icons": [
+                      {
+                        "src": "icon-192.png",
+                        "type": "image/png",
+                        "sizes": "192x192"
+                      },
+                      {
+                        "src": "icon-512.png",
+                        "type": "image/png",
+                        "sizes": "512x512"
+                      }
+                  ],
+                  "files": manifestFiles,
+                  "entrypoints": entrypointFiles,
+                  "background_color": "#f7f8f9",
+                  "start_url": "/",
+                  "display": "standalone",
+                  "scope": "/"
+                };
+              },
+          }),
+        ])),
+
         new MiniCssExtractPlugin({
             filename: '[name].[hash].css',
         }),
