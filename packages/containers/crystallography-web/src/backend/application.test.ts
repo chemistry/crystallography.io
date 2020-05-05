@@ -10,8 +10,10 @@ describe("Express Application", () => {
         htmlContent: '<html><div id="root"></div></html>',
         appContext: null,
         appFactory: () => {
-            const App = () => React.createElement("h1", null, 'App');
-            return Promise.resolve({ App });
+            const Routes = [{
+                component: () => React.createElement("h1", null, 'App')
+            }];
+            return Promise.resolve({ Routes });
         }
     };
 

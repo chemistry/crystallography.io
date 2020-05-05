@@ -5,6 +5,7 @@ import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
+import { matchRoutes, renderRoutes } from "react-router-config";
 import { ApplicationContext, ApplicationFactory } from "../common";
 
 export interface ExpresContext {
@@ -44,7 +45,10 @@ export async function startApplication(context: ExpresContext) {
           const ctx: any = {
               status: 200,
           };
-          const { App } = await appFactory(appContext);
+          const { Routes } = await appFactory(appContext);
+          const App = () => {
+              return renderRoutes(Routes);
+          };
 
           const content = (
               <StaticRouter location={req.url} context={ctx}>

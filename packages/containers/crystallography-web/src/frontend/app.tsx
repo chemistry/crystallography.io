@@ -1,6 +1,10 @@
+import { createBrowserHistory } from "history";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { AppContextType, ApplicationContext, ApplicationFactory, getApplication } from "../common";
+import { renderRoutes } from "react-router-config";
+import { Router } from "react-router-dom";
+import { AppContextType, ApplicationContext, getApplication } from "../common";
+
 import { registerSW } from "./register-sw";
 
 const appContext: ApplicationContext =  {
@@ -8,11 +12,13 @@ const appContext: ApplicationContext =  {
 };
 
 (async () => {
-
-  const { App } = await getApplication(appContext);
+  const history = createBrowserHistory();
+  const { Routes } = await getApplication(appContext);
 
   ReactDOM.render(
-      <App />,
+      <Router
+          history={history}
+      >{renderRoutes(Routes)}</Router>,
       document.getElementById("root"),
   );
 
