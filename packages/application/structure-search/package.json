@@ -1,6 +1,6 @@
 {
   "name": "structure-search",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "private": true,
   "description": "Crystal Structure Search",
   "author": "Volodymyr Vreshch",
@@ -47,6 +47,7 @@
     "files": [
       "!**/*",
       "./build/**/*",
+      "./node_modules/**/*",
       "package.json"
     ],
     "appId": "com.vreshch.structure-search",
