@@ -11,6 +11,8 @@
     "app:build:js": "npm run build:electron && npm run build:renderer",
     "app:start": "npm run app:build:js && npm run app:start:electron",
     "app:start:electron": "electron .",
+    "app:start:electron:dev": "electron . --app-host=http://localhost:8080",
+    "start:dev": "npm run app:build:js && npm run app:start:electron:dev",
     "build:electron": "tsc",
     "build:renderer": "webpack-cli --config webpack.config.js --mode production"
   },
@@ -23,6 +25,8 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@types/command-line-args": "5.0.0",
+    "command-line-args": "5.1.1",
     "electron-log": "4.1.2",
     "electron-updater": "4.3.1",
     "electron-util": "0.14.1"

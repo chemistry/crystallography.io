@@ -31,7 +31,7 @@
         "bootstrap": "lerna bootstrap --hoist",
         "bootstrap:ci": "lerna exec npm install",
         "build": "lerna run build",
-        "app:start": "lerna run app:start",
+        "start": "lerna run start:dev --parallel --stream",
         "app:build": "lerna run app:build",
         "check": "export GOOGLE_APPLICATION_CREDENTIALS='/home/vreshch/projects/crystallography-api/credentials.json' && lerna run check",
         "deploy": "GIT_PREVIOUS_COMMIT=$(git rev-parse --short 'HEAD^') && lerna run --since $GIT_PREVIOUS_COMMIT deploy",

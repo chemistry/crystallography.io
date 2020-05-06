@@ -1,6 +1,15 @@
+import * as commandLineArgs from "command-line-args";
 import { app, BrowserWindow} from "electron";
 import * as path from "path";
 import { updateApplication } from "./updater";
+
+interface AppOptions {
+   "app-host": string;
+}
+const optionDefinitions = [
+    { name: "app-host", type: String, defaultValue: "https://crystallography.io" },
+];
+const options: AppOptions = commandLineArgs(optionDefinitions) as any;
 
 async function createWindow() {
   const win = new BrowserWindow({
@@ -16,7 +25,11 @@ async function createWindow() {
   });
   // await win.loadFile(path.join(__dirname, "../renderer/index.html"));
 
-  await win.loadURL("https://crystallography.io");
+  const appHost = options["app-host"];
+  // tslint:disable-next-line
+  console.log(`Opening application at following host: ${appHost}`);
+
+  await win.loadURL(appHost);
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }

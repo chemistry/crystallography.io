@@ -8,6 +8,10 @@
 Website: [Crystal Structure Search](http://crystallography.io/)
 Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/chemistry/crystallography.io/releases)
 
+## Development Quick Start
+  * `npm install && npm run bootstrap` Install dependencies
+  * `npm start` Start Development in Local mode
+
 ## Include Packages:
 ### Containers:
   * [@chemistry/cod-to-gcs-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync) - Synchronize COD with Google Cloud Storage
@@ -33,13 +37,6 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
 * Isomorphic (for Node & browsers)
 * Auto tests with JEST
 * ~100% code coverage
-
-## Development Quick Start
-```bash
-npm install
-npm run bootstrap
-npm run build
-```
 
 ## Delivery
 ### Libraries
