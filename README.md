@@ -38,13 +38,11 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
 * Auto tests with JEST
 * ~100% code coverage
 
-## Delivery
-### Libraries
-- Released on tag push
- ```bash
- git tag v0.1.0
- git push --tags
- ```
+## Release
+- Application and libraries release on tag push
+* Libraries: `git tag l0.0.17 &&  git push --tags`
+* Applications: `git tag v0.0.18 &&  git push --tags`
+
 ### Cloud functions
 - Continuous deployment to Google Cloud on push to master
 

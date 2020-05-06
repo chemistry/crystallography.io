@@ -3,7 +3,7 @@ name: Publish Libraries
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'l*.*.*'
 
 jobs:
   release-on-push-tag:
