@@ -23,13 +23,19 @@ async function createWindow() {
   win.on("ready-to-show", () => {
     win.show();
   });
-  // await win.loadFile(path.join(__dirname, "../renderer/index.html"));
 
   const appHost = options["app-host"];
   // tslint:disable-next-line
   console.log(`Opening application at following host: ${appHost}`);
 
-  await win.loadURL(appHost);
+  try {
+      await win.loadURL(appHost);
+  } catch (e) {
+      // console.log(e);
+      // Load Simple Fallback URL
+      await win.loadFile(path.join(__dirname, "../renderer/index.html"));
+  }
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
@@ -37,7 +43,7 @@ async function createWindow() {
 (async () => {
   await app.whenReady();
   await createWindow();
-
+  await updateApplication();
 })();
 
 app.on("window-all-closed", () => {

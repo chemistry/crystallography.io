@@ -2,7 +2,7 @@
 [![GitHub Build Status](https://github.com/chemistry/crystallography-api/workflows/CI/badge.svg)](https://github.com/chemistry/crystallography-api/actions?query=workflow%3ACI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 
-Alternative Web UI for COD search [crystallography-online.com](http://crystallography-online.com/)
+Alternative Web UI for COD search [crystallography.io](https://crystallography.io/)
 
 ## Quick Start
   * ```export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"```- Set environment variable
