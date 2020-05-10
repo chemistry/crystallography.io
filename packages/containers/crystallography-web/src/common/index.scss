@@ -1,85 +1,115 @@
 // Import Customized Spetctre Styles
-@import 'styles/spectre.scss';
+@import 'styles/main.scss';
 @import 'styles/spectre-icons.scss';
 
-body {
-  background: #f7f8f9!important;
-}
 body, html, #root, .app {
   min-height: 100%;
+  max-height: 100% !important;
   height: 100%;
 }
-$side_bar_closed: 64px;
-$side_bar_open: 210px;
 
+$side-bar-open-width: 244px;
+$header-nav-height: 66px;
+
+.app-navigation, .app-layout {
+  height: 100%;
+  max-height: 100%;
+  position: relative;
+}
+
+// Main Layout
 .app {
   display: flex;
   align-items: stretch;
 
-  &.open &-side-bar {
-    width: $side_bar_open;
-    flex: 0 0 $side_bar_open;
-  }
-  &-side-bar {
-    width: $side_bar_closed;
-    flex: 0 0 $side_bar_closed;
-    border-right: 1px solid $gray-color;
+  &-navigation {
+    user-select: none;
+    width: $side-bar-open-width;
+    flex: 0 0 $side-bar-open-width;
+    background-color: var(--color-grey-black);
+    color: var(--white-color);
 
-    transition: all 0.6s;
+    &-header {
+      height: $header-nav-height;
+      min-height: $header-nav-height;
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.09);
 
-    &__menu {
-        border-bottom: 1px solid $gray-color;
+      padding: 17px 25px;
+      line-height: 25px;
+
+      &-logo {
+        float: left;
+      }
+      &-menu {
+        display: inline-block;
+        float: right;
+      }
+      @include clearfix();
     }
   }
-
-  &-menu-icon {
-      display: block;
-
-      // height: 64px;
-      line-height: 64px;
-      &__wrap {
-        cursor: pointer;
-        width: 40px;
-        margin: 12px;
-        line-height: 40px;
-        border-radius: 6px;
-        text-align: center;
-      }
-      &__wrap.active, &__wrap:hover {
-          background: #edf2ff;
-      }
-  }
-
   &-layout {
     flex: 1;
-    background: #f0f0f0;
+    background: var(--color-grey-background);
+
+    &-header {
+        height: $header-nav-height;
+        min-height: $header-nav-height;
+        background: var(--white-color);
+        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.09);
+    }
+    &-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: $header-nav-height;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
   }
-
-
-  &.open &-header {
-    left: $side_bar_open;
-
+}
+.nav-menu {
+  margin: 1rem 0;
+  &-title {
+    padding: 0 1rem 0 0.5rem;
+    line-height: 2rem;
+    &-text {
+      float: left;
+    }
+    &-icon {
+      font-size: 0.7rem;
+      margin-top: 0.15rem;
+      float: right;
+    }
+    @include clearfix();
   }
-
-  &-header {
-    position: fixed;
-    display: block;
-    min-height: 64px;
-    height: 64px;
-    left: $side_bar_closed;
-    right: 0px;
-    background: $primary-color;
-
-    transition: left 0.6s;
+  &-list {
+    list-style: none;
+    &, li {
+      margin: 0;
+      padding: 0;
+    }
   }
-  &-logo {
-    user-select: none;
-    color: #ffffff;
-    line-height: 64px;
-    padding-left: 32px;
-  }
-
-  &-content {
-    padding-top: 64px;
+  &-item {
+      line-height: 2rem;
+      display: block;
+      &, &:hover, &:active, &:focus, &.active {
+        color: var(--white-color);
+        text-decoration: none;
+        outline: none;
+        box-shadow: none;
+        padding-left: 1rem;
+        margin-left: 2px;
+      }
+      &:hover, &:active,  &.active {
+        background-color: var(--color-grey-pastel-grey);
+      }
+      &.active {
+        margin-left: 0px;
+        border-left: 2px solid var(--primary-color);
+      }
+      .icon {
+        padding-right: 0.5rem;
+      }
   }
 }

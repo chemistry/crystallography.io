@@ -4,23 +4,23 @@
 
 /*! Spectre.css v#{$version} | MIT License | github.com/picturepan2/spectre */
 // Reset and dependencies
-@import "normalize";
-@import "base";
+//-----  @import "normalize";
+//----- @import "base";
 
 // Elements
-@import "typography";
+//----- @import "typography";
 // @import "asian";
 // @import "tables";
-@import "buttons";
-@import "forms";
-@import "labels";
+//----- @import "buttons";
+//----- @import "forms";
+//----- @import "labels";
 // @import "codes";
-@import "media";
+//----- @import "media";
 
 // Layout
-@import "layout";
+//----- @import "layout";
 // @import "hero";
-@import "navbar";
+//----- @import "navbar";
 
 // Components
 // @import "accordions";
@@ -32,7 +32,7 @@
 // @import "chips";
 // @import "dropdowns";
 // @import "empty";
-@import "menus";
+//----- @import "menus";
 // @import "modals";
 // @import "navs";
 // @import "pagination";
@@ -45,5 +45,5 @@
 // @import "tooltips";
 
 // Utility classes
-@import "animations";
-@import "utilities";
+//----- @import "animations";
+//----- @import "utilities";

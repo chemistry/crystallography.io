@@ -1,0 +1,91 @@
+// Core variables
+$version: "0.5.8";
+
+// Core features
+$rtl: false !default;
+
+// Fonts
+// Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
+$base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto !default;
+$mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Courier, monospace !default;
+$fallback-font-family: "Helvetica Neue", sans-serif !default;
+$body-font-family: $base-font-family, $fallback-font-family !default;
+
+/* Style for "Base" Grey Colors */
+$grey-black: #334150;
+$grey-dark-grey: #7f8fa4;
+$grey-grey: #bfc7d1;
+$grey-light-grey: #e1e8ee;
+$grey-background: #f5f6f7;
+
+$grey-pastel-black: rgba($grey-black, .09);
+$grey-pastel-dark-grey: rgba($grey-dark-grey, .09);
+$grey-pastel-grey: rgba($grey-light-grey, .09);
+$grey-pastel-light_grey: rgba($grey-light-grey,.09);
+$grey-pastel-background: rgba($grey-background,.09);
+
+// Information Colors
+$primary-color: #249af3;
+$success-color: #16d761;
+$error-color: #ff4444;
+$warning-color: #f8c21e;
+
+// Additional Colors
+$orange-color: #f68136;
+$purple-color: #aa3af3;
+$white-color: #ffffff;
+
+// Other colors
+$link-color: #249af3;
+$link-color-dark: darken($link-color, 10%) !default;
+$link-color-light: lighten($link-color, 10%) !default;
+
+:root {
+  --color-grey-black: #{$grey-black};
+  --color-grey-dark-grey: #{$grey-dark-grey};
+  --color-grey-grey: #{$grey-grey};
+  --color-grey-light-grey: #{$grey-light-grey};
+  --color-grey-background: #{$grey-background};
+
+  --color-grey-pastel-black: #{$grey-pastel-black};
+  --color-grey-pastel-dark-grey: #{$grey-pastel-dark-grey};
+  --color-grey-pastel-grey: #{$grey-pastel-grey};
+  --color-grey-pastel-light-grey: #{$grey-pastel-light_grey};
+
+  // Information Colors
+  --primary-color: #{$primary-color};
+  --success-color: #{$success-color};
+  --error-color: #{$error-color};
+  --warning-color: #{$warning-color};
+  --orange-color: #{$orange-color};
+  --purple-color: #{$purple-color};
+  --white-color: #{$white-color};
+
+  --link-color: #{$link-color};
+  --link-color-dark: #{$link-color-dark};
+  --link-color-light: #{$link-color-light};
+}
+
+// Unit sizes
+$unit-o: .05rem !default;
+$unit-h: .1rem !default;
+$unit-1: .2rem !default;
+$unit-2: .4rem !default;
+$unit-3: .6rem !default;
+$unit-4: .8rem !default;
+$unit-5: 1rem !default;
+$unit-6: 1.2rem !default;
+$unit-7: 1.4rem !default;
+$unit-8: 1.6rem !default;
+$unit-9: 1.8rem !default;
+$unit-10: 2rem !default;
+$unit-12: 2.4rem !default;
+$unit-16: 3.2rem !default;
+
+// Font sizes
+$html-font-size: 16px !default;
+$html-line-height: 1.5 !default;
+$font-size: .875rem !default;
+$font-size-sm: .75rem !default;
+$font-size-lg: .9rem !default;
+$line-height: 1.2rem !default;

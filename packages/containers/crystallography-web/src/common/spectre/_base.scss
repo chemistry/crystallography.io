@@ -13,8 +13,8 @@ html {
 }
 
 body {
-  background: var(--color-grey-background);
-  color: var(--color-grey-black);
+  background: $body-bg;
+  color: $body-font-color;
   font-family: $body-font-family;
   font-size: $font-size;
   overflow-x: hidden;
@@ -22,7 +22,7 @@ body {
 }
 
 a {
-  color: var(--link-color);
+  color: $link-color;
   outline: none;
   text-decoration: none;
 
@@ -34,11 +34,11 @@ a {
   &:hover,
   &:active,
   &.active {
-    color: var(--link-color-dark);
+    color: $link-color-dark;
     text-decoration: underline;
   }
 
   &:visited {
-    color: var(--link-color-light);
+    color: $link-color-light;
   }
 }

@@ -1,8 +1,7 @@
-// Variables and mixins
-@import "variables";
-@import "mixins";
+$icon-border-width: 1px !default;
+$border-radius: 2px !default;
 
-/*! Spectre.css Icons v#{$version} | MIT License | github.com/picturepan2/spectre */
+/*! Spectre.css Icons | MIT License | github.com/picturepan2/spectre */
 // Icons
 @import "icons/icons-core";
 @import "icons/icons-navigation";
