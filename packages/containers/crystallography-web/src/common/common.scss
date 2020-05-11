@@ -1,0 +1,12 @@
+// Import Customized Spetctre Styles
+@import './styles/main.scss';
+@import './styles/spectre-icons.scss';
+
+$side-bar-open-width: 244px;
+$header-nav-height: 66px;
+
+body, html, #root, .app {
+  min-height: 100%;
+  max-height: 100% !important;
+  height: 100%;
+}

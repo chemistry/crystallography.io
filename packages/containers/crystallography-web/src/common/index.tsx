@@ -1,7 +1,6 @@
 import * as React from "react";
-import {
-  AboutPage, App, MainPage, NewsPage, NotFoundPage,
-} from "./app";
+import { App } from "./app";
+import { AboutPage, MainPage, NewsPage, NotFoundPage } from "./pages";
 
 export enum AppContextType {
     frontend = "frontend",
