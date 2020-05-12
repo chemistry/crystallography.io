@@ -69,6 +69,16 @@ module.exports = {
                   "description": "Crystal Structure Search Online",
                   "icons": [
                       {
+                        "src": "icon-48.png",
+                        "type": "image/png",
+                        "sizes": "48x48"
+                      },
+                      {
+                        "src": "icon-96.png",
+                        "type": "image/png",
+                        "sizes": "96x96"
+                      },
+                      {
                         "src": "icon-192.png",
                         "type": "image/png",
                         "sizes": "192x192"
@@ -99,6 +109,10 @@ module.exports = {
         }),
         new CopyWebpackPlugin([{
             from: __dirname + '/src/static/favicon.ico'
+        }, {
+            from: __dirname + '/src/static/icon-48.png'
+        }, {
+            from: __dirname + '/src/static/icon-96.png'
         }, {
             from: __dirname + '/src/static/icon-192.png'
         }, {
