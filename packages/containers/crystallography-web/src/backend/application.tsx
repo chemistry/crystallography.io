@@ -1,6 +1,6 @@
 import * as bodyParser from "body-parser";
-import * as timeout from "connect-timeout";
-import * as express from "express";
+import timeout from "connect-timeout";
+import express from "express";
 import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
@@ -24,7 +24,7 @@ export async function startApplication(context: ExpresContext) {
     const { htmlContent, log, appFactory, appContext } = context;
     log("application started");
 
-    const app = express();
+    const app: any = express();
 
     // Add UTF-8 symbols parser
     app.set("query parser", "simple");
@@ -40,12 +40,14 @@ export async function startApplication(context: ExpresContext) {
     app.use(express.static(path.join(__dirname, "/../static"), {index: false}));
 
     // Rendering to StaticRouter
-    app.use(async (req, res, next) => {
+    app.use(async (req: any, res: any, next: any) => {
+
       try {
           const ctx: any = {
               status: 200,
           };
           const { Routes } = await appFactory(appContext);
+
           const App = () => {
               return renderRoutes(Routes);
           };

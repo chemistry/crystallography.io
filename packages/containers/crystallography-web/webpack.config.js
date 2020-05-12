@@ -30,7 +30,11 @@ module.exports = {
             PUBLIC_URL: ''
         }),
 
-        ... (process.env.WEBPACK_DEV_SERVER ? []: ([
+        ... (process.env.WEBPACK_DEV_SERVER ? [
+          new ManifestPlugin({
+              fileName: 'manifest.json',
+          })
+        ]: ([
           new webpack.ExtendedAPIPlugin(),
           new InjectManifest({
               swSrc:  path.resolve(__dirname, 'src/frontend/service-worker.ts'),
