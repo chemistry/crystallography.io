@@ -1,4 +1,4 @@
-import * as commandLineArgs from "command-line-args";
+import commandLineArgs from "command-line-args";
 import { app, BrowserWindow} from "electron";
 import * as path from "path";
 import { updateApplication } from "./updater";
@@ -9,7 +9,7 @@ interface AppOptions {
 const optionDefinitions = [
     { name: "app-host", type: String, defaultValue: "https://crystallography.io" },
 ];
-const options: AppOptions = commandLineArgs(optionDefinitions) as any;
+const options: AppOptions = commandLineArgs(optionDefinitions as any) as any;
 
 async function createWindow() {
   const win = new BrowserWindow({
