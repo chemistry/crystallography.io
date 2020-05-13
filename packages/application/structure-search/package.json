@@ -1,6 +1,6 @@
 {
   "name": "structure-search",
-  "version": "0.0.22",
+  "version": "0.0.24",
   "private": true,
   "description": "Crystal Structure Search",
   "author": "Volodymyr Vreshch",
@@ -25,13 +25,13 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@types/command-line-args": "5.0.0",
     "command-line-args": "5.1.1",
     "electron-log": "4.1.2",
     "electron-updater": "4.3.1",
     "electron-util": "0.14.1"
   },
   "devDependencies": {
+    "@types/command-line-args": "5.0.0",
     "awesome-typescript-loader": "5.2.1",
     "css-loader": "3.4.2",
     "electron": "8.2.3",
@@ -47,6 +47,7 @@
   "build": {
     "files": [
       "!**/*",
+      "node_modules/",
       "./build/**/*",
       "package.json"
     ],
