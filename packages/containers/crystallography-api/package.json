@@ -1,0 +1,46 @@
+{
+    "name": "@chemistry/crystallography-api",
+    "private": true,
+    "version": "0.0.18",
+    "description": "Crystallography API",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "Application",
+        "crystallography",
+        "Git"
+    ],
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "devEngines": {
+        "node": ">=8.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-api",
+    "scripts": {
+        "deploy": "./deploy.sh",
+        "build": "rimraf dist/* && tsc",
+        "start": "node dist/backend/index.js",
+        "nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts"
+    },
+    "dependencies": {
+        "@google-cloud/firestore": "3.4.0",
+        "@google-cloud/storage": "4.2.0",
+        "@types/express": "4.17.2",
+        "@types/node": "13.1.4",
+        "body-parser": "1.19.0",
+        "connect-timeout": "1.9.0",
+        "cross-env": "5.2.0",
+        "express": "4.17.1",
+        "firebase": "7.14.3"
+    },
+    "devDependencies": {
+        "nodemon": "1.19.4",
+        "supertest": "4.0.2",
+        "ts-node": "8.5.4",
+        "typescript": "3.7.5"
+    }
+}
