@@ -22,8 +22,8 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-api",
     "scripts": {
         "deploy": "./deploy.sh",
-        "build": "rimraf dist/* && tsc",
-        "start": "node dist/backend/index.js",
+        "build": "tsc",
+        "start": "node dist/index.js",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts"
     },
     "dependencies": {

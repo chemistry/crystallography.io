@@ -1,6 +1,6 @@
 #!/bin/bash
 PROJECT_ID='crystallography-api'
-CLOUD_RUN_SERVICE_NAME='crystallography-api'
+CLOUD_RUN_SERVICE_NAME='crystallography-gcf-api'
 
 gcloud config set run/region europe-west1
 
