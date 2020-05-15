@@ -4,35 +4,24 @@
 
 API for accessing COD database [crystallography.io](https://crystallography.io/)
 
+# Endpoints path:
+ - GET: api/v1/structures?page=x
+
 ## Quick Start
   * ```export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"```- Set environment variable
-  * ```npm run app:host``` - Start Application in Development Mode
+  * ```npm run start``` - Start Application
+  * ```npm run build``` - Build Application
 
 ## Commands
-Build Container
-```bash
-cd ../../../ && docker build -t gcr.io/crystallography-api/crystallography-api -f packages/containers/crystallography-api/Dockerfile .
-```
 
 Execute container
 ```bash
-docker run --rm -e GCP_SA_KEY="..." --name containers-cod-to-gcs-sync gcr.io/crystallography-api/crystallography-api
-```
-
-Push container
-```bash
-# gcloud auth configure-docker
-docker push gcr.io/crystallography-api/crystallography-api
+docker run --rm -e GCP_SA_KEY="..." --name crystallography-api/crystallography-api
 ```
 
 Prepare $GCP_SA_KEY env varible
 ```
 cat credentials.json | base64 >> credentials.base64.json
-```
-
-Setting environment variable
-```
-GCP_SA_KEY=$(cat credentials.json | base64) &&  echo $GCP_SA_KEY
 ```
 
 ## Commands:

@@ -1,6 +1,8 @@
+import { Firestore } from "@google-cloud/firestore";
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
 import express from "express";
+import { getRouters } from "./routers";
 
 export interface ExpresContext {
     log: (message: string) => void;
@@ -12,6 +14,7 @@ export async function startApplication(context: ExpresContext) {
     log("application started");
 
     const app = express();
+    const firestore = new Firestore();
 
     // Add UTF-8 symbols parser
     app.set("query parser", "simple");
@@ -27,6 +30,8 @@ export async function startApplication(context: ExpresContext) {
     app.get("/", (req, res) => {
       res.send("OK");
     });
+
+    app.use("/api/v1", getRouters({ firestore }));
 
     return { app };
 }
