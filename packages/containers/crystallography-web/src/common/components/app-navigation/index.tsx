@@ -15,8 +15,6 @@ export const AppNavigation = () => {
                <div className="app-navigation-header-menu"><i className="icon icon-menu"></i></div>
            </div>
        </header>
-
-       <NavMenu />
        <NavMenu />
       </>
     );

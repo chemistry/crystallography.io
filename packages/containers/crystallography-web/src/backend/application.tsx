@@ -27,9 +27,15 @@ const loadSiteData = (routes: any, url: string, dispatch: any) => {
   const branch = matchRoutes(routes, url);
 
   const promises = branch.map(({ route, match }) => {
-    return route.loadData ? route.loadData(dispatch, match) : Promise.resolve(null);
+    if (!route.loadData) {
+        return Promise.resolve();
+    }
+    const preParams: any = match.params || {};
+    const params = Object.keys(preParams).reduce((acc, key) => {
+        return { ...acc, [key]: decodeURIComponent(preParams[key] || "") };
+    }, {});
+    return route.loadData(dispatch, params);
   });
-
   return Promise.all(promises);
 };
 

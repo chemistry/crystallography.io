@@ -6,7 +6,10 @@ import structuresSlice from "./structures.slice";
 const reducer = combineReducers({
   structures: structuresSlice,
 });
-const middleware = [...getDefaultMiddleware(), logger];
+const middleware = [
+    ...getDefaultMiddleware(),
+    ...(process.env.BROWSER ? [logger] : []),
+];
 export type RootState = ReturnType<typeof reducer>;
 
 export const getStore = (preloadedState: RootState | null) => {

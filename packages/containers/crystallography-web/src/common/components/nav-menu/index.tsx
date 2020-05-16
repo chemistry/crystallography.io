@@ -18,18 +18,33 @@ export const NavMenu = () => {
         </div>
         <ul className="nav-menu-list">
           <li>
-              <NavLink to="/" strict className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-people"></i>&nbsp;&nbsp;Messages
+              <NavLink to="/" exact strict className="nav-menu-item" activeClassName="active">
+                  <i className="icon icon-people"></i>Search
+              </NavLink>
+          </li>
+          <li>
+              <NavLink to="/authors" className="nav-menu-item" activeClassName="active">
+                  <i className="icon icon-mail"></i>Authors
+              </NavLink>
+          </li>
+          <li>
+              <NavLink to="/catalog" className="nav-menu-item" activeClassName="active">
+                  <i className="icon icon-time"></i>Catalog
               </NavLink>
           </li>
           <li>
               <NavLink to="/about" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-mail"></i>&nbsp;&nbsp;Mail
+                  <i className="icon icon-time"></i>About
               </NavLink>
           </li>
           <li>
               <NavLink to="/news" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>&nbsp;&nbsp;Time
+                  <i className="icon icon-time"></i>News
+              </NavLink>
+          </li>
+          <li>
+              <NavLink to="/contact" className="nav-menu-item" activeClassName="active">
+                  <i className="icon icon-time"></i>Contact
               </NavLink>
           </li>
         </ul>
