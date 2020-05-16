@@ -1,6 +1,8 @@
+import { EnhancedStore } from "@reduxjs/toolkit";
 import * as React from "react";
 import { App } from "./app";
 import { AboutPage, MainPage, NewsPage, NotFoundPage } from "./pages";
+import { getStore } from "./store";
 
 export enum AppContextType {
     frontend = "frontend",
@@ -11,10 +13,12 @@ export interface ApplicationContext {
 }
 export interface Application {
     Routes: any;
+    getStore: (initialState: any) => EnhancedStore;
 }
 export type ApplicationFactory = (context: ApplicationContext) =>  Promise<Application>;
 
 export const getApplication: ApplicationFactory = async (context: ApplicationContext) => {
+
   const Routes = [{
       component: App,
       routes: [
@@ -38,5 +42,5 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
       ],
   }];
 
-  return Promise.resolve({ Routes });
+  return Promise.resolve({ Routes, getStore });
 };

@@ -4,6 +4,7 @@ import express from "express";
 import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
+import { Provider } from "react-redux";
 import { StaticRouter } from "react-router";
 import { matchRoutes, renderRoutes } from "react-router-config";
 import { ApplicationContext, ApplicationFactory } from "../common";
@@ -46,16 +47,19 @@ export async function startApplication(context: ExpresContext) {
           const ctx: any = {
               status: 200,
           };
-          const { Routes } = await appFactory(appContext);
+          const { Routes, getStore } = await appFactory(appContext);
+          const store = getStore(null);
 
           const App = () => {
               return renderRoutes(Routes);
           };
 
           const content = (
-              <StaticRouter location={req.url} context={ctx}>
-                  <App />
-              </StaticRouter>
+              <Provider store={store}>
+                  <StaticRouter location={req.url} context={ctx}>
+                      <App />
+                  </StaticRouter>
+              </Provider>
           );
           const componentHTML = renderToString(content);
           const HTML = renderHTML(htmlContent, componentHTML);

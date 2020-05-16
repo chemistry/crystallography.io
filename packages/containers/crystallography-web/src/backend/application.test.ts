@@ -1,5 +1,6 @@
 const request = require('supertest');
 import * as React from "react";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { startApplication } from './application';
 
 describe("Express Application", () => {
@@ -13,7 +14,19 @@ describe("Express Application", () => {
             const Routes = [{
                 component: () => React.createElement("h1", null, 'App')
             }];
-            return Promise.resolve({ Routes });
+            const mockSlice = createSlice({
+              name: "structures",
+              initialState: [],
+              reducers: { },
+            });
+            const getStore = ()=> {
+               return configureStore({
+                  reducer: {
+                    structures: mockSlice.reducer
+                  }
+               })
+            }
+            return Promise.resolve({ Routes, getStore });
         }
     };
 
