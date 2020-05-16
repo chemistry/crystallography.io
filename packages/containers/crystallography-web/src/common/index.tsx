@@ -1,8 +1,10 @@
 import { EnhancedStore } from "@reduxjs/toolkit";
 import * as React from "react";
+import { Dispatch } from "redux";
 import { App } from "./app";
 import { AboutPage, MainPage, NewsPage, NotFoundPage } from "./pages";
 import { getStore } from "./store";
+import { fetchStructures } from "./store/structures.slice";
 
 export enum AppContextType {
     frontend = "frontend",
@@ -26,6 +28,7 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               path: "/",
               exact: true,
               component: MainPage,
+              loadData: (dispatch: Dispatch<any>) => dispatch(fetchStructures()),
           },
           {
               path: "/news",

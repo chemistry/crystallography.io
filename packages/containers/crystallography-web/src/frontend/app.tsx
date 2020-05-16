@@ -20,9 +20,11 @@ const appContext: ApplicationContext =  {
   const store = getStore(initialState);
 
   ReactDOM.render(
-      <Router
-          history={history}
-      >{renderRoutes(Routes)}</Router>,
+      <Provider store={store}>
+        <Router
+            history={history}
+        >{renderRoutes(Routes)}</Router>
+      </Provider>,
       document.getElementById("root"),
   );
 

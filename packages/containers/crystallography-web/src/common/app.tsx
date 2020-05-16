@@ -1,5 +1,6 @@
 import * as React from "react";
-import { renderRoutes } from "react-router-config";
+import { useSelector } from "react-redux";
+import { renderRoutes, RouteConfig } from "react-router-config";
 import { AppNavigation } from "./components";
 import { useFirebase } from "./services";
 
@@ -8,9 +9,7 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-export const App = (props: any) => {
-    const isLoaded = useFirebase();
-
+export const App = (props: { route: { routes: RouteConfig[] }}) => {
     return (
         <main className="app">
             <aside className="app-navigation">
@@ -20,7 +19,7 @@ export const App = (props: any) => {
                 <header className="app-layout-header">
                 </header>
                 <div className="app-layout-content">
-                  {isLoaded}
+                  {renderRoutes(props.route.routes)}
                 </div>
             </section>
         </main>

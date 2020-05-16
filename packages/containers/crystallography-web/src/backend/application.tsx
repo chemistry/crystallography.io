@@ -17,9 +17,21 @@ export interface ExpresContext {
     appFactory: ApplicationFactory;
 }
 
-function renderHTML(html: string, componentHTML: string): string {
-    return html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + "</div>");
+function renderHTML(html: string, componentHTML: string, initialState: any): string {
+    let res = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + "</div>");
+    res = res.replace("window.__INITIAL_STATE__={};", "window.__INITIAL_STATE__=" + JSON.stringify(initialState) + ";");
+    return res;
 }
+
+const loadSiteData = (routes: any, url: string, dispatch: any) => {
+  const branch = matchRoutes(routes, url);
+
+  const promises = branch.map(({ route, match }) => {
+    return route.loadData ? route.loadData(dispatch, match) : Promise.resolve(null);
+  });
+
+  return Promise.all(promises);
+};
 
 export async function startApplication(context: ExpresContext) {
     const { htmlContent, log, appFactory, appContext } = context;
@@ -50,6 +62,8 @@ export async function startApplication(context: ExpresContext) {
           const { Routes, getStore } = await appFactory(appContext);
           const store = getStore(null);
 
+          await loadSiteData(Routes, req.url, store.dispatch);
+
           const App = () => {
               return renderRoutes(Routes);
           };
@@ -61,8 +75,10 @@ export async function startApplication(context: ExpresContext) {
                   </StaticRouter>
               </Provider>
           );
+
           const componentHTML = renderToString(content);
-          const HTML = renderHTML(htmlContent, componentHTML);
+          const initialState = store.getState();
+          const HTML = renderHTML(htmlContent, componentHTML, initialState);
           res
             .header("Content-Type", "text/html; charset=utf-8")
             .status(ctx.status)
