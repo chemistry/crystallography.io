@@ -1,6 +1,7 @@
 import { Firestore } from "@google-cloud/firestore";
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
+import cors from "cors";
 import express from "express";
 import { getRouters } from "./routers";
 
@@ -18,6 +19,8 @@ export async function startApplication(context: ExpresContext) {
 
     // Add UTF-8 symbols parser
     app.set("query parser", "simple");
+
+    app.use(cors());
 
     app.use(timeout("5s"));
 
