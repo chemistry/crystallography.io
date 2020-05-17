@@ -13,22 +13,24 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
   * `npm start` Start Development in Local mode
 
 ## Include Packages:
+### Application:
+  * [@chemistry/structure-search](https://github.com/chemistry/crystallography-api/tree/master/packages/application/structure-search) - Main Electron Application
+
 ### Containers:
   * [@chemistry/cod-to-gcs-sync](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-to-gcs-sync) - Synchronize COD with Google Cloud Storage
   * [@chemistry/gcp-api-endpoints](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/gcp-api-endpoints) - API Endpoint that execute cloud functions
   * [@chemistry/crystallography-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-web) - Application Web Container
+  * [@chemistry/crystallography-api](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-api) - Application Endpoints
 
 ### Functions:
   * [@chemistry/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)
   * [@chemistry/cod-sync-stop-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance) - Stop VM for what finished Synchronization execution
   * [@chemistry/gcs-to-database](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/gcs-to-database) - Read CIF file from storage and save to database;
   * [@chemistry/api-get-structures-list](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/api-get-structures-list) - API Get Structures List
-  * [@chemistry/api-releases-get](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/api-releases-get) - API Get Last Application Releases
 
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
   * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
-
 
 ## Technical description:
 * MonoRepo build with lerna
