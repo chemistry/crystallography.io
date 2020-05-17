@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { renderRoutes, RouteConfig } from "react-router-config";
+import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
 import { AppNavigation } from "./components";
 import { useFirebase } from "./services";
 
@@ -9,7 +9,21 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-export const App = (props: { route: { routes: RouteConfig[] }}) => {
+const extractTitleMetaInfo = (branches: Array<MatchedRoute<{}>>) => {
+    return branches
+      .map(({ route: { title } }) => title)
+      .filter((title) => !!title)
+      .join(",");
+};
+
+export const App = (props: { route: { routes: RouteConfig[] }, location: { pathname: string }}) => {
+    const branches = matchRoutes(props.route.routes, props.location.pathname);
+    const title = extractTitleMetaInfo(branches);
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
     return (
         <main className="app">
             <aside className="app-navigation">

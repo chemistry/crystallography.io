@@ -12,7 +12,7 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
   useLoadedData(props.route);
 
   return (<div>
-      <h1>Messages</h1>
+      <h1>Catalog</h1>
       <hr/>
       <ul>
         <li><NavLink to="/catalog/1">1</NavLink></li>

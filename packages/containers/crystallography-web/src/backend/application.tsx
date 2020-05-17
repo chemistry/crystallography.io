@@ -1,6 +1,7 @@
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
 import express from "express";
+import escapeHTML from "lodash.escape";
 import * as path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
@@ -17,10 +18,23 @@ export interface ExpresContext {
     appFactory: ApplicationFactory;
 }
 
-function renderHTML(html: string, componentHTML: string, initialState: any): string {
-    let res = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + "</div>");
-    res = res.replace("window.__INITIAL_STATE__={};", "window.__INITIAL_STATE__=" + JSON.stringify(initialState) + ";");
-    return res;
+function renderHTML(
+    fileContent: string, componentHTML: string, initialState: any, metaData: { title: string, description: string },
+): string {
+    let html = fileContent;
+    if (metaData && metaData.title) {
+        html = html.replace("<title>Crystallography Online Website</title>", "<title>" + escapeHTML(metaData.title) + "</title>");
+    }
+    if (metaData && metaData.description) {
+        html = html.replace(
+          '<meta name="description" content="" />',
+          '<meta name="description" content="' + escapeHTML(metaData.description) + '" />',
+        );
+    }
+
+    html = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + "</div>");
+    html = html.replace("window.__INITIAL_STATE__={};", "window.__INITIAL_STATE__=" + JSON.stringify(initialState) + ";");
+    return html;
 }
 
 const loadSiteData = (routes: any, url: string, dispatch: any) => {
@@ -37,6 +51,24 @@ const loadSiteData = (routes: any, url: string, dispatch: any) => {
     return route.loadData(dispatch, params);
   });
   return Promise.all(promises);
+};
+
+const getMetadata = (routes: any, url: string) => {
+  const branches = matchRoutes(routes, url);
+
+  const titleRes = branches
+    .map(({ route: { title } }) => title)
+    .filter((title) => !!title)
+    .join(",");
+
+  const descriptionRes = branches
+      .map(({ route: { description } }) => description)
+      .filter((description) => !!description)
+      .join(",");
+  return {
+      title: titleRes,
+      description: descriptionRes,
+  };
 };
 
 export async function startApplication(context: ExpresContext) {
@@ -69,6 +101,7 @@ export async function startApplication(context: ExpresContext) {
           const store = getStore(null);
 
           await loadSiteData(Routes, req.url, store.dispatch);
+          const metaData = getMetadata(Routes, req.url);
 
           const App = () => {
               return renderRoutes(Routes);
@@ -84,7 +117,7 @@ export async function startApplication(context: ExpresContext) {
 
           const componentHTML = renderToString(content);
           const initialState = store.getState();
-          const HTML = renderHTML(htmlContent, componentHTML, initialState);
+          const HTML = renderHTML(htmlContent, componentHTML, initialState, metaData);
           res
             .header("Content-Type", "text/html; charset=utf-8")
             .status(ctx.status)
