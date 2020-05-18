@@ -7,11 +7,13 @@ import {
   AuthorsPage,
   CatalogPage,
   ContactsPage,
-  MainPage,
+  LoginPage,
   NewsPage,
   NotFoundPage,
+  RegisterPage,
   SearchPage,
 } from "./pages";
+import { setup } from "./setup";
 import { getStore } from "./store";
 import { fetchStructures } from "./store/structures.slice";
 
@@ -29,7 +31,10 @@ export interface Application {
 export type ApplicationFactory = (context: ApplicationContext) =>  Promise<Application>;
 
 export const getApplication: ApplicationFactory = async (context: ApplicationContext) => {
-
+  const { type }  = context;
+  // if (type == AppContextType.frontend) {
+  setup();
+  // }
   const Routes = [{
       component: App,
       routes: [
@@ -70,6 +75,18 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               component: NewsPage,
               title: "News",
               description: "News of Crystal Structure Search",
+          },
+          {
+              path: "/login",
+              component: LoginPage,
+              title: "Login",
+              description: "User Login - Crystal Structure Search",
+          },
+          {
+              path: "/register",
+              component: RegisterPage,
+              title: "Register",
+              description: "Register User - Crystal Structure Search",
           },
           {
               path: "*",

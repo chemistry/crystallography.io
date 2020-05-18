@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
 import { AppNavigation } from "./components";
-import { useFirebase } from "./services";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line

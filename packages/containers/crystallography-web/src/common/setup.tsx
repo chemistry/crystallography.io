@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
-import "firebase/firestore";
-import * as React from "react";
-const { useState, useEffect } = React;
+import "firebase/auth";
+// import "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDRa3uBbcFFy7K2VSB4Y-C2mpy-M7MaIm4",
@@ -14,12 +13,6 @@ const firebaseConfig = {
      // measurementId: "G-NLV54MH4T5"
 };
 
-export const useFirebase = () => {
-  const [isLoaded, setData] = useState(false);
-
-  useEffect(() => {
+export const setup = () => {
     firebase.initializeApp(firebaseConfig);
-    return setData(true);
-  }, []);
-  return isLoaded;
 };

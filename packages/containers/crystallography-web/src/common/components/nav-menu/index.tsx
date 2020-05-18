@@ -47,6 +47,16 @@ export const NavMenu = () => {
                   <i className="icon icon-time"></i>Contact
               </NavLink>
           </li>
+          <li>
+              <NavLink to="/login" className="nav-menu-item" activeClassName="active">
+                  <i className="icon icon-time"></i>Login
+              </NavLink>
+          </li>
+          <li>
+              <NavLink to="/register" className="nav-menu-item" activeClassName="active">
+                  <i className="icon icon-time"></i>Register
+              </NavLink>
+          </li>
         </ul>
     </div>);
 };
