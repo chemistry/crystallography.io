@@ -44,16 +44,25 @@ let auth: any = null;
 const getAuth = () => {
   return auth = auth ? auth : firebase.auth();
 };
+
 export const loginUser = (
     { email, password }: { email: string; password: string; },
 ): AppThunk => async (dispatch) => {
 
   try {
-    const res = await getAuth().signInWithEmailAndPassword(
+    const user = await getAuth().signInWithEmailAndPassword(
       email,
       password,
     );
-    dispatch(userLoginSucess(res));
+    const idToken = await user.user.getIdToken();
+
+    // Send request to backend, so cookies will be set
+    await axios.post(`/sessionLogin`, { idToken });
+    await firebase.auth().signOut();
+
+    // Reload Application Page
+    window.location.assign("/profile");
+    dispatch(userLoginSucess(user));
   } catch (err) {
     const { code, message } = err;
     dispatch(userLoginFailed({ code, message }));

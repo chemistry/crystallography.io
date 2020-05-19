@@ -10,6 +10,7 @@ import {
   LoginPage,
   NewsPage,
   NotFoundPage,
+  ProfilePage,
   RegisterPage,
   SearchPage,
 } from "./pages";
@@ -32,9 +33,9 @@ export type ApplicationFactory = (context: ApplicationContext) =>  Promise<Appli
 
 export const getApplication: ApplicationFactory = async (context: ApplicationContext) => {
   const { type }  = context;
-  // if (type == AppContextType.frontend) {
-  setup();
-  // }
+  if (type === AppContextType.frontend) {
+    setup();
+  }
   const Routes = [{
       component: App,
       routes: [
@@ -75,6 +76,12 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               component: NewsPage,
               title: "News",
               description: "News of Crystal Structure Search",
+          },
+          {
+              path: "/profile",
+              component: ProfilePage,
+              title: "Profile",
+              description: "User Profile Page",
           },
           {
               path: "/login",

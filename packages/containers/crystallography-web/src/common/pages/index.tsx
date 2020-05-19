@@ -7,3 +7,4 @@ export * from "./register";
 export * from "./news";
 export * from "./not-found";
 export * from "./search";
+export * from "./profile";
