@@ -1,7 +1,10 @@
 import { NextFunction, Request, Response, Router } from "express";
-import * as admin from "firebase-admin";
+// import * as admin from "firebase-admin";
 
-admin.initializeApp();
+// admin.initializeApp();
+const admin: any  = {
+
+};
 
 export const getAuthRouter = () => {
     const router = Router();
