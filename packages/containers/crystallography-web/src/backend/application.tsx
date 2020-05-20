@@ -1,6 +1,6 @@
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import escapeHTML from "lodash.escape";
 import * as path from "path";
 import * as React from "react";
@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { StaticRouter } from "react-router";
 import { matchRoutes, renderRoutes } from "react-router-config";
 import { ApplicationContext, ApplicationFactory } from "../common";
+import { getAuthRouter } from "./auth.router";
 
 export interface ExpresContext {
     log: (message: string) => void;
@@ -75,7 +76,7 @@ export async function startApplication(context: ExpresContext) {
     const { htmlContent, log, appFactory, appContext } = context;
     log("application started");
 
-    const app: any = express();
+    const app = express();
 
     // Add UTF-8 symbols parser
     app.set("query parser", "simple");
@@ -90,8 +91,10 @@ export async function startApplication(context: ExpresContext) {
     // Serve static files
     app.use(express.static(path.join(__dirname, "/../static"), {index: false}));
 
+    app.use(getAuthRouter());
+
     // Rendering to StaticRouter
-    app.use(async (req: any, res: any, next: any) => {
+    app.use(async (req: Request, res: Response, next: NextFunction) => {
 
       try {
           const ctx: any = {
