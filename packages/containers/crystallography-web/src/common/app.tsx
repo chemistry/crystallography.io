@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
 import { AppNavigation } from "./components";
+import { LogoIcon, TitleIcon } from "./icons";
+// import LogoTitle from "./title.svg";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -30,6 +32,12 @@ export const App = (props: { route: { routes: RouteConfig[] }, location: { pathn
             </aside>
             <section className="app-layout">
                 <header className="app-layout-header">
+                    <div className="app-layout-header-image">
+                      <LogoIcon />
+                    </div>
+                    <div className="app-layout-header-title">
+                      <TitleIcon />
+                    </div>
                 </header>
                 <div className="app-layout-content">
                   {renderRoutes(props.route.routes)}

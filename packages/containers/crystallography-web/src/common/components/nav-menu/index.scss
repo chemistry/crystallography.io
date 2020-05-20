@@ -1,20 +1,7 @@
 @import '../../common.scss';
 
 .nav-menu {
-  margin: 1rem 0;
-  &-title {
-    padding: 0 1rem 0 0.5rem;
-    line-height: 2rem;
-    &-text {
-      float: left;
-    }
-    &-icon {
-      font-size: 0.7rem;
-      margin-top: 0.15rem;
-      float: right;
-    }
-    @include clearfix();
-  }
+
   &-list {
     list-style: none;
     &, li {
@@ -23,25 +10,24 @@
     }
   }
   &-item {
-      line-height: 2rem;
+      min-height: 48px;
+      line-height: 48px;
+      text-align: center;
       display: block;
-      &, &:hover, &:active, &:focus, &.active {
+
+      & { opacity: 0.65; }
+      &, &:hover, &:active, &:focus, &.active, &:visited {
         color: var(--white-color);
         text-decoration: none;
         outline: none;
         box-shadow: none;
-        padding-left: 1rem;
-        margin-left: 2px;
       }
       &:hover, &:active,  &.active {
+        opacity: 1;
         background-color: var(--color-grey-pastel-grey);
       }
       &.active {
-        margin-left: 0px;
-        border-left: 2px solid var(--primary-color);
-      }
-      .icon {
-        margin-right: 0.75rem;
+        opacity: 1;
       }
   }
 }

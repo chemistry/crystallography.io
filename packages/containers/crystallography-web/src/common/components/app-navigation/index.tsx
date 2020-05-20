@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavMenu } from "../nav-menu";
+import { NavMenu, NavMenuBottom } from "../nav-menu";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -10,12 +10,14 @@ export const AppNavigation = () => {
    return (
      <>
        <header className="app-navigation-header">
-           <div className="">
-               <div className="app-navigation-header-logo"><h2>Structure Search</h2></div>
-               <div className="app-navigation-header-menu"><i className="icon icon-menu"></i></div>
-           </div>
+           <i className="icon icon-menu"></i>
        </header>
-       <NavMenu />
+       <div className="app-navigation-menu-top">
+          <NavMenu />
+       </div>
+       <div className="app-navigation-menu-bottom">
+          <NavMenuBottom />
+       </div>
       </>
     );
 };

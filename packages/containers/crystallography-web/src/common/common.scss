@@ -3,7 +3,8 @@
 @import './styles/spectre-icons.scss';
 
 $side-bar-open-width: 244px;
-$header-nav-height: 66px;
+$side-bar-closed-width: 78px;
+$header-nav-height: 48px;
 
 body, html, #root, .app {
   min-height: 100%;

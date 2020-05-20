@@ -6,55 +6,44 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
+export const NavMenuBottom = () => {
+    return (<div className="nav-menu">
+        <ul className="nav-menu-list">
+          <li>
+              <NavLink to="/login" strict className="nav-menu-item" activeClassName="">
+                  <i className="icon icon-shutdown"></i>
+              </NavLink>
+          </li>
+        </ul>
+    </div>);
+};
+
 export const NavMenu = () => {
     return (<div className="nav-menu">
-        <div className="h3 nav-menu-title">
-          <div className="nav-menu-title-text">
-            Main Menu
-          </div>
-          <div className="nav-menu-title-icon">
-            <i className="icon icon-arrow-down"></i>
-          </div>
-        </div>
         <ul className="nav-menu-list">
           <li>
               <NavLink to="/" exact strict className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-people"></i>Search
+                  <i className="icon icon-search"></i>
               </NavLink>
           </li>
           <li>
               <NavLink to="/authors" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-mail"></i>Authors
+                  <i className="icon icon-people"></i>
               </NavLink>
           </li>
           <li>
               <NavLink to="/catalog" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>Catalog
-              </NavLink>
-          </li>
-          <li>
-              <NavLink to="/about" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>About
-              </NavLink>
-          </li>
-          <li>
-              <NavLink to="/news" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>News
-              </NavLink>
-          </li>
-          <li>
-              <NavLink to="/contact" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>Contact
+                  <i className="icon icon-apps"></i>
               </NavLink>
           </li>
           <li>
               <NavLink to="/login" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>Login
+                  <i className="icon icon-time"></i>
               </NavLink>
           </li>
           <li>
               <NavLink to="/register" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>Register
+                  <i className="icon icon-message"></i>
               </NavLink>
           </li>
         </ul>

@@ -24,8 +24,11 @@ $grey-pastel-grey: rgba($grey-light-grey, .09);
 $grey-pastel-light_grey: rgba($grey-light-grey,.09);
 $grey-pastel-background: rgba($grey-background,.09);
 
+// Main Colors
+$primary-color: #0F256E;
+$secondary-color: #FFB994;
+
 // Information Colors
-$primary-color: #249af3;
 $success-color: #16d761;
 $error-color: #ff4444;
 $warning-color: #f8c21e;
@@ -54,6 +57,8 @@ $link-color-light: lighten($link-color, 10%) !default;
 
   // Information Colors
   --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+
   --success-color: #{$success-color};
   --error-color: #{$error-color};
   --warning-color: #{$warning-color};
