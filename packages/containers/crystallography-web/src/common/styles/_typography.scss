@@ -1,5 +1,15 @@
 // Typography
 // Headings
+@font-face {
+    font-family: 'Lato';
+    src: url('fonts/Lato-Regular.eot');
+    src: url('fonts/Lato-Regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/Lato-Regular.woff2') format('woff2'),
+        url('fonts/Lato-Regular.woff') format('woff'),
+        url('fonts/Lato-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 h1,
 h2,
 h3,
@@ -8,7 +18,7 @@ h5,
 h6 {
   color: inherit;
   font-weight: 500;
-  line-height: 1.2;
+  line-height: var(--base-line-heigh);
   margin-bottom: .5em;
   margin-top: 0;
 }
@@ -22,33 +32,33 @@ h6 {
 }
 h1,
 .h1 {
-  font-size: 1.5rem;
-  color: var(--primary-color);
+  font-size: 3rem;
 }
 h2,
 .h2 {
-  font-size: 1.2rem;
+  font-size: 2rem;
 }
 h3,
 .h3 {
-  font-size: 1.0rem;
+  font-size: 1.75rem;
 }
 h4,
 .h4 {
-  font-size: 0.8rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 h5,
 .h5 {
-  font-size: 0.6rem;
+  font-size: 1.5rem;
 }
 h6,
 .h6 {
-  font-size: 0.6rem;
+  font-size: 1.25rem;
 }
 
 // Paragraphs
 p {
-  margin: 0 0 $line-height;
+  margin: 0 0 1.25rem;
 }
 // Semantic text elements
 a,
@@ -61,19 +71,6 @@ abbr[title] {
   cursor: help;
   text-decoration: none;
 }
-
-/*
-// Blockquote
-blockquote {
-  border-left: $border-width-lg solid $border-color;
-  margin-left: 0;
-  padding: $unit-2 $unit-4;
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-}
-*/
 
 // Lists
 ul,

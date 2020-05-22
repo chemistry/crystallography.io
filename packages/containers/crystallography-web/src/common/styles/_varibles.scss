@@ -4,72 +4,53 @@ $version: "0.5.8";
 // Core features
 $rtl: false !default;
 
-// Fonts
-// Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
-$base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto !default;
-$mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Courier, monospace !default;
-$fallback-font-family: "Helvetica Neue", sans-serif !default;
-$body-font-family: $base-font-family, $fallback-font-family !default;
-
-/* Style for "Base" Grey Colors */
-$grey-black: #334150;
-$grey-dark-grey: #7f8fa4;
-$grey-grey: #bfc7d1;
-$grey-light-grey: #e1e8ee;
-$grey-background: #f5f6f7;
-
-$grey-pastel-black: rgba($grey-black, .09);
-$grey-pastel-dark-grey: rgba($grey-dark-grey, .09);
-$grey-pastel-grey: rgba($grey-light-grey, .09);
-$grey-pastel-light_grey: rgba($grey-light-grey,.09);
-$grey-pastel-background: rgba($grey-background,.09);
-
 // Main Colors
-$primary-color: #0F256E;
-$secondary-color: #FFB994;
+$primary-color: #02356A;
+$secondary-color: #FFBB94;
+$additional-color: #81AEF1;
+
+// Main Opacity
+$primary-opacity-color: rgba($primary-color, .86);
+$secondary-opacity-color: rgba($secondary-color, 0.86);
+$additional-opacity-color: rgba($additional-color, 0.86);
+
+// Basic Colors
+$black-color: #303742;
+$white-color: #ffffff;
+
+// Grey
+$dark-grey-color: #334150;
+$grey-color: #7f8fa4;
+$light-grey-color: #bfc7d1;
+$clear-grey-color: #e1e8ee;
+$background-color: #f5f6f7;
 
 // Information Colors
-$success-color: #16d761;
-$error-color: #ff4444;
-$warning-color: #f8c21e;
+$default-color: #DFE7F2;
+$active-color: #3B98F5;
+$success-color: #43B652;
+$warning-color: #FFC70F;
+$error-color: #FF4242;
+
+// Information background
+$default-background-color: rgba($default-color, 0.3);
+$active-background-color: rgba($active-color, 0.3);
+$success-background-color: rgba($success-color, 0.3);
+$warning-background-color: rgba($warning-color, 0.3);
+$error-background-color: rgba($error-color, 0.3);
+
+// Overlay Colors
+$overlay-30-color: rgba(48, 55, 66, 0.5);
+$overlay-70-color: rgba(48, 55, 66, 0.7);
 
 // Additional Colors
 $orange-color: #f68136;
 $purple-color: #aa3af3;
-$white-color: #ffffff;
 
 // Other colors
 $link-color: #249af3;
 $link-color-dark: darken($link-color, 10%) !default;
 $link-color-light: lighten($link-color, 10%) !default;
-
-:root {
-  --color-grey-black: #{$grey-black};
-  --color-grey-dark-grey: #{$grey-dark-grey};
-  --color-grey-grey: #{$grey-grey};
-  --color-grey-light-grey: #{$grey-light-grey};
-  --color-grey-background: #{$grey-background};
-
-  --color-grey-pastel-black: #{$grey-pastel-black};
-  --color-grey-pastel-dark-grey: #{$grey-pastel-dark-grey};
-  --color-grey-pastel-grey: #{$grey-pastel-grey};
-  --color-grey-pastel-light-grey: #{$grey-pastel-light_grey};
-
-  // Information Colors
-  --primary-color: #{$primary-color};
-  --secondary-color: #{$secondary-color};
-
-  --success-color: #{$success-color};
-  --error-color: #{$error-color};
-  --warning-color: #{$warning-color};
-  --orange-color: #{$orange-color};
-  --purple-color: #{$purple-color};
-  --white-color: #{$white-color};
-
-  --link-color: #{$link-color};
-  --link-color-dark: #{$link-color-dark};
-  --link-color-light: #{$link-color-light};
-}
 
 // Unit sizes
 $unit-o: .05rem !default;
@@ -87,10 +68,58 @@ $unit-10: 2rem !default;
 $unit-12: 2.4rem !default;
 $unit-16: 3.2rem !default;
 
+// Fonts
+// Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
+$main-font-family: "Lato", "Roboto" !default;
+$mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", "Menlo", "Courier", monospace !default;
+$fallback-font-family: "Arial", "Helvetica Neue", "sans-serif" !default;
+
 // Font sizes
-$html-font-size: 16px !default;
-$html-line-height: 1.5 !default;
-$font-size: .875rem !default;
-$font-size-sm: .75rem !default;
-$font-size-lg: .9rem !default;
-$line-height: 1.2rem !default;
+$base-font-family: $main-font-family, $fallback-font-family !default;
+$base-font-size: 16px !default;
+$base-line-heigh: 1.25;
+
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --additional-color: #{$additional-color};
+
+  --primary-opacity-color: #{$primary-opacity-color};
+  --secondary-opacity-color: #{$secondary-opacity-color};
+  --additional-opacity-color: #{$additional-opacity-color};
+
+  --black-color: #{$black-color};
+  --white-color: #{$white-color};
+
+  --dark-grey-color: #{$dark-grey-color};
+  --grey-color: #{$grey-color};
+  --light-grey-color: #{$light-grey-color};
+  --clear-grey-color: #{$clear-grey-color};
+  --background-color: #{$background-color};
+
+  --default-color: #{$default-color};
+  --active-color: #{$active-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --error-color: #{$error-color};
+
+  --default-background-color: #{$default-background-color};
+  --active-background-color: #{$active-background-color};
+  --success-background-color: #{$success-background-color};
+  --warning-background-color: #{$warning-background-color};
+  --error-background-color: #{$error-background-color};
+
+  --overlay-30-color: #{$overlay-30-color};
+  --overlay-70-color: #{$overlay-70-color};
+
+  --orange-color: #{$orange-color};
+  --purple-color: #{$purple-color};
+
+  --link-color: #{$link-color};
+  --link-color-dark: #{$link-color-dark};
+  --link-color-light: #{$link-color-light};
+
+  --base-font-size: #{$base-font-size};
+  --base-font-family: #{$base-font-family};
+  --base-line-heigh: #{$base-line-heigh};
+}

@@ -7,16 +7,16 @@
 
 html {
   box-sizing: border-box;
-  font-size: $html-font-size;
-  line-height: $html-line-height;
+  font-size: var(--base-font-size);
+  line-height: var(--base-line-heigh);
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--color-grey-background);
-  color: var(--color-grey-black);
-  font-family: $body-font-family;
-  font-size: $font-size;
+  background: var(--background-color);
+  color: var(--black-color);
+  font-family: var(--base-font-family);
+  font-size: var(--base-font-size);
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
 }

@@ -1,4 +1,13 @@
+@import './styles/main.scss';
+@import './styles/spectre-icons.scss';
+
 @import 'common.scss';
+
+body, html, #root, .app {
+  min-height: 100%;
+  max-height: 100% !important;
+  height: 100%;
+}
 
 // Main Layout
 #root {

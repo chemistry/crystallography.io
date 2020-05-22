@@ -91,7 +91,7 @@ module.exports = {
                   ],
                   "files": manifestFiles,
                   "entrypoints": entrypointFiles,
-                  "background_color": "#f7f8f9",
+                  "background_color": "#f5f6f7",
                   "start_url": "/",
                   "display": "standalone",
                   "scope": "/"
@@ -126,6 +126,7 @@ module.exports = {
 
     module: {
           rules: [
+            { test: /\.(woff|woff2|ttf|eot)/, loader: ['url-loader?limit=1'] },
             { test: /\.png$/, loader: 'url-loader?limit=10000&mimetype=image/png' },
             {
                 test: /\.s[ac]ss$/i,
