@@ -1,26 +1,14 @@
 // Background color utility mixin
-@mixin bg-color-variant($name: ".bg-primary", $color: $primary-color) {
+@mixin bg-color-variant($name: ".bg-primary", $color: "primary-color", $text-color: "white-color") {
   #{$name} {
-    background: $color !important;
-    @if (lightness($color) < 60) {
-      color: $white-color;
-    }
+    background: var(--#{$color});
+    color: var(--#{$text-color}); 
   }
 }
 
 // Text color utility mixin
-@mixin text-color-variant($name: ".text-primary", $color: $primary-color) {
+@mixin text-color-variant($name: ".text-primary", $color: "primary-color") {
   #{$name} {
-    color: $color !important;
-  }
-
-  a#{$name} {
-    &:focus,
-    &:hover {
-      color: darken($color, 5%);
-    }
-    &:visited {
-      color: lighten($color, 5%);
-    }
+    color: var(--#{$color});
   }
 }

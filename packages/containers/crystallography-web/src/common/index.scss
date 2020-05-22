@@ -43,18 +43,12 @@ body, html, #root, .app {
       background: var(--white-color);
       box-shadow: 0px 1px 1px rgba(196, 196, 196, 0.2);
 
-      &-image, &-title {
+      &-image {
         display: inline-block;
         float: left;
         line-height: $header-nav-height;
-      }
-      &-image {
         padding-left: 1rem;
         padding-top: 6px;
-      }
-      &-title {
-        padding-left: 0.5rem;
-        padding-top: 3px;
       }
     }
 

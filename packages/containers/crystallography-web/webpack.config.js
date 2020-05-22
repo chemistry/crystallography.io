@@ -91,9 +91,10 @@ module.exports = {
                   ],
                   "files": manifestFiles,
                   "entrypoints": entrypointFiles,
-                  "background_color": "#f5f6f7",
+                  "background_color": "#F4F6F9",
                   "start_url": "/",
                   "display": "standalone",
+                  "theme_color": "#0E4575",
                   "scope": "/"
                 };
               },

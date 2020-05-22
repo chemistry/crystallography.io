@@ -1,12 +1,12 @@
 // Typography
 // Headings
 @font-face {
-    font-family: 'Lato';
-    src: url('fonts/Lato-Regular.eot');
-    src: url('fonts/Lato-Regular.eot?#iefix') format('embedded-opentype'),
-        url('fonts/Lato-Regular.woff2') format('woff2'),
-        url('fonts/Lato-Regular.woff') format('woff'),
-        url('fonts/Lato-Regular.ttf') format('truetype');
+    font-family: 'Roboto';
+    src: url('styles/fonts/Roboto-Regular.eot');
+    src: url('styles/fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+        url('styles/fonts/Roboto-Regular.woff2') format('woff2'),
+        url('styles/fonts/Roboto-Regular.woff') format('woff'),
+        url('styles/fonts/Roboto-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -32,7 +32,7 @@ h6 {
 }
 h1,
 .h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 h2,
 .h2 {
@@ -54,11 +54,13 @@ h5,
 h6,
 .h6 {
   font-size: 1.25rem;
+  text-transform: uppercase;
 }
 
 // Paragraphs
 p {
   margin: 0 0 1.25rem;
+  line-height: 1.5;
 }
 // Semantic text elements
 a,
@@ -111,4 +113,13 @@ dl {
   dd {
     margin: $unit-2 0 $unit-4 0;
   }
+}
+
+hr {
+  margin: 0 0.5rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1);
+  height: 0;
+  overflow: visible;
 }

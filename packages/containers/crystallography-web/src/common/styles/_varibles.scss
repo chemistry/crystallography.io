@@ -5,9 +5,9 @@ $version: "0.5.8";
 $rtl: false !default;
 
 // Main Colors
-$primary-color: #02356A;
-$secondary-color: #FFBB94;
-$additional-color: #81AEF1;
+$primary-color: #0E4575;
+$secondary-color: #F5B895;
+$additional-color: #658DC6;
 
 // Main Opacity
 $primary-opacity-color: rgba($primary-color, .86);
@@ -15,22 +15,22 @@ $secondary-opacity-color: rgba($secondary-color, 0.86);
 $additional-opacity-color: rgba($additional-color, 0.86);
 
 // Basic Colors
-$black-color: #303742;
+$black-color: #373838;
 $white-color: #ffffff;
 
 // Grey
-$dark-grey-color: #334150;
-$grey-color: #7f8fa4;
-$light-grey-color: #bfc7d1;
-$clear-grey-color: #e1e8ee;
-$background-color: #f5f6f7;
+$dark-grey-color: #7F8FA4;
+$grey-color: #B8C0CC;
+$light-grey-color: #DCE6F5;
+$clear-grey-color: #F4F6F9;;
+$background-color: #F4F6F9;
 
 // Information Colors
-$default-color: #DFE7F2;
+$default-color: #DCE6F5;
 $active-color: #3B98F5;
-$success-color: #43B652;
-$warning-color: #FFC70F;
-$error-color: #FF4242;
+$success-color: #32B85F;
+$warning-color: #EDAD3E;
+$error-color: #DB433D;
 
 // Information background
 $default-background-color: rgba($default-color, 0.3);
@@ -40,8 +40,8 @@ $warning-background-color: rgba($warning-color, 0.3);
 $error-background-color: rgba($error-color, 0.3);
 
 // Overlay Colors
-$overlay-30-color: rgba(48, 55, 66, 0.5);
-$overlay-70-color: rgba(48, 55, 66, 0.7);
+$overlay-30-color: rgba(55, 56, 56, 0.5);
+$overlay-70-color: rgba(55, 56, 56, 0.7);
 
 // Additional Colors
 $orange-color: #f68136;
@@ -70,7 +70,7 @@ $unit-16: 3.2rem !default;
 
 // Fonts
 // Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
-$main-font-family: "Lato", "Roboto" !default;
+$main-font-family: "Roboto", "Ubuntu" !default;
 $mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", "Menlo", "Courier", monospace !default;
 $fallback-font-family: "Arial", "Helvetica Neue", "sans-serif" !default;
 

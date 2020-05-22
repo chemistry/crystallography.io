@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
 import { AppNavigation } from "./components";
-import { LogoIcon, TitleIcon } from "./icons";
+import { LogoIcon } from "./icons";
 // import LogoTitle from "./title.svg";
 
 if (process.env.BROWSER) {
@@ -34,9 +34,6 @@ export const App = (props: { route: { routes: RouteConfig[] }, location: { pathn
                 <header className="app-layout-header">
                     <div className="app-layout-header-image">
                       <LogoIcon />
-                    </div>
-                    <div className="app-layout-header-title">
-                      <TitleIcon />
                     </div>
                 </header>
                 <div className="app-layout-content">
