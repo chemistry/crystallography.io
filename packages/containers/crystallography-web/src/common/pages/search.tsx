@@ -15,6 +15,7 @@ export const SearchPage = () => {
       <hr />
       <p><span className="text-primary p-1">primary color</span></p>
       <p><span className="text-secondary p-1">secondary color</span></p>
+      <p><span className="text-additional p-1">additional color</span></p>
       <p><span className="text-dark p-1">dark color</span></p>
       <p><span className="text-gray p-1">gray color</span></p>
       <p><span className="text-light p-1">light color</span></p>
@@ -25,6 +26,7 @@ export const SearchPage = () => {
 
       <p><span className="bg-primary p-1">primary bg</span></p>
       <p><span className="bg-secondary p-1">secondary bg</span></p>
+      <p><span className="bg-additional p-1">additional color</span></p>
       <p><span className="bg-dark p-1">dark bg</span></p>
       <p><span className="bg-gray p-1">gray bg</span></p>
       <p><span className="bg-active p-1">active bg</span></p>

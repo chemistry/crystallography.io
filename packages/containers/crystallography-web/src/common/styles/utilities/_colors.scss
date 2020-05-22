@@ -3,6 +3,8 @@
 
 @include text-color-variant(".text-secondary", $secondary-color);
 
+@include text-color-variant(".text-additional", $additional-color);
+
 @include text-color-variant(".text-gray", $grey-color);
 
 @include text-color-variant(".text-light", $light-grey-color);
@@ -21,6 +23,8 @@
 @include bg-color-variant(".bg-primary", $primary-color);
 
 @include bg-color-variant(".bg-secondary", $secondary-color);
+
+@include bg-color-variant(".bg-additional", $additional-color);
 
 @include bg-color-variant(".bg-dark", $dark-grey-color);
 
