@@ -24,7 +24,7 @@
       }
       &:hover, &:active,  &.active {
         opacity: 1;
-        background-color: var(--color-grey-pastel-grey);
+        background-color: var(--active-background-color);
       }
       &.active {
         opacity: 1;
