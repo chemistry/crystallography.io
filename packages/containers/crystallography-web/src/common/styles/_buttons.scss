@@ -1,0 +1,70 @@
+.btn {
+  appearance: none;
+  background: var(--clear-grey-color);
+  border: var(--control-border-width) solid var(--primary-color);
+  border-radius: var(--control-border-radius);
+
+  color: var(--primary-color);
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: var(--control-font-size);
+  height: var(--control-height);
+  line-height: var(--control-line-height);
+  outline: none;
+  padding: $control-padding-y $control-padding-x;
+  text-align: center;
+  text-decoration: none;
+  transition: background .2s, border .2s, box-shadow .2s, color .2s;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &:focus {
+    @include control-shadow();
+  }
+  &:focus,
+  &:hover {
+    border-color: darken($primary-color-dark, 2%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: var(--primary-color);
+    border-color: darken($primary-color-dark, 2%);
+    color: var(--light-grey-color);
+    text-decoration: none;
+    &.loading {
+      &::after {
+        border-bottom-color: var(--white-color);
+        border-left-color: var(--white-color);
+      }
+    }
+  }
+  &[disabled],
+  &:disabled,
+  &.disabled {
+    cursor: default;
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  // Button Colors
+  &.btn-active {
+    @include button-variant($active-color);
+  }
+  &.btn-primary {
+    @include button-variant($primary-color);
+  }
+
+  &.btn-success {
+    @include button-variant($success-color);
+  }
+
+  &.btn-error {
+    @include button-variant($error-color);
+  }
+  &.btn-warning {
+    @include button-variant($warning-color);
+  }
+}

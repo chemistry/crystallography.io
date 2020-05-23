@@ -9,6 +9,8 @@ $primary-color: #0E4575;
 $secondary-color: #F5B895;
 $additional-color: #658DC6;
 
+$primary-color-dark: darken($primary-color, 5%);
+
 // Main Opacity
 $primary-opacity-color: rgba($primary-color, .86);
 $secondary-opacity-color: rgba($secondary-color, 0.86);
@@ -24,6 +26,7 @@ $grey-color: #B8C0CC;
 $light-grey-color: #DCE6F5;
 $clear-grey-color: #F4F6F9;;
 $background-color: #F4F6F9;
+
 
 // Information Colors
 $default-color: #DCE6F5;
@@ -79,10 +82,25 @@ $base-font-family: $main-font-family, $fallback-font-family !default;
 $base-font-size: 16px !default;
 $base-line-heigh: 1.25;
 
+// Some other base constants
+$control-border-radius: 0.2rem;
+$control-border-width: 0.05rem;
+$control-input-font-size: 0.8rem;
+$control-height: 1.8rem;
+$control-line-height: 1.2rem;
+
+$control-padding-x: 0.4rem;
+$control-padding-y: 0.25rem;
+
+$default-shadow: 2px 2px 2px rgba(36, 154, 243, 0.1);
+$dropdown-shadow: 0px 4px 6px rgba(36, 154, 243, 0.1);
+
+
 :root {
   --primary-color: #{$primary-color};
   --secondary-color: #{$secondary-color};
   --additional-color: #{$additional-color};
+
 
   --primary-opacity-color: #{$primary-opacity-color};
   --secondary-opacity-color: #{$secondary-opacity-color};
@@ -122,4 +140,15 @@ $base-line-heigh: 1.25;
   --base-font-size: #{$base-font-size};
   --base-font-family: #{$base-font-family};
   --base-line-heigh: #{$base-line-heigh};
+
+  --control-border-width: #{$control-border-width};
+  --control-border-radius: #{$control-border-radius};
+  --control-font-size: #{$control-input-font-size};
+  --control-line-height: #{$control-line-height};
+  --control-height: #{$control-height};
+  --control-padding-x: #{$control-padding-x};
+  --control-padding-y: #{$control-padding-y};
+
+  --default-shadow: #{$default-shadow};
+  --dropdown-shadow: #{$dropdown-shadow};
 }
