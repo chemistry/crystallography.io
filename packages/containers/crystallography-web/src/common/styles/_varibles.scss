@@ -29,6 +29,13 @@ $light-grey-color: #DCE6F5;
 $clear-grey-color: #F4F6F9;;
 $background-color: #F4F6F9;
 
+$bg-color: lighten($black-color, 75%) !default;
+$bg-color-dark: darken($bg-color, 3%) !default;
+$bg-color-light: $light-color !default;
+
+$border-color: $light-grey-color;
+$border-color-dark: darken($border-color, 10%) !default;
+$border-color-light: lighten($border-color, 8%) !default;
 
 // Information Colors
 $default-color: #DCE6F5;
@@ -96,6 +103,7 @@ $layout-spacing-lg: $unit-4 !default;
 // Some other base constants
 $border-radius: 2px;
 $border-width: 1px;
+$border-width-lg: 1px;
 $control-font-size: 1rem;
 $control-height: 2.0rem;
 $line-height: 1.2rem;

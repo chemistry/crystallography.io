@@ -4,10 +4,85 @@ import { useState } from "react";
 export const SearchPage = () => {
 
     return (
-    <>
+    <div>
       <h1 className="text-primary">Application Styling</h1>
+      <hr/>
+
+        <h3 className="text-primary">Form radio</h3>
+        <div className="form-group">
+            <label className="form-radio">
+                <input type="radio" name="gender" checked />
+                <i className="form-icon"></i> Male
+            </label>
+            <label className="form-radio">
+                <input type="radio" name="gender" />
+                <i className="form-icon"></i> Female
+            </label>
+        </div>
+        < hr/>
+
+        <h3 className="text-primary">Checkbox</h3>
+        <div className="form-group">
+            <label className="form-checkbox">
+                <input type="checkbox" />
+                <i className="form-icon"></i> Remember me
+            </label>
+        </div>
+        < hr/>
+        <h3 className="text-primary">Form switch</h3>
+        <div className="form-group">
+            <label className="form-switch">
+                <input type="checkbox" />
+                <i className="form-icon"></i> Send me emails with news and tips
+            </label>
+        </div>
+    <hr/>
+        <h3 className="text-primary">Disabled State</h3>
+
+  <fieldset disabled>
+    <div className="form-group">
+      <label className="form-label">Name</label>
+      <input className="form-input" type="text" id="input-example-19" placeholder="Name" />
+    </div>
+    <div className="form-group">
+      <label className="form-label">Gender</label>
+      <label className="form-radio">
+        <input type="radio" name="gender" disabled />
+        <i className="form-icon"></i> Male
+      </label>
+      <label className="form-radio">
+        <input type="radio" name="gender" disabled />
+        <i className="form-icon"></i> Female
+      </label>
+    </div>
+    <div className="form-group">
+      <select className="form-select" disabled >
+        <option>Choose an option</option>
+        <option>Slack</option>
+        <option>Skype</option>
+        <option>Hipchat</option>
+      </select>
+    </div>
+    <div className="form-group">
+      <label className="form-switch">
+        <input type="checkbox" disabled />
+        <i className="form-icon"></i> Send me emails with news and tips
+      </label>
+    </div>
+    <div className="form-group">
+      <label className="form-label">Message</label>
+      <textarea className="form-input" id="input-example-20" placeholder="Textarea" disabled></textarea>
+    </div>
+    <div className="form-group">
+      <label className="form-checkbox">
+        <input type="checkbox" disabled />
+        <i className="form-icon"></i> Remember me
+      </label>
+    </div>
+  </fieldset>
+
       <hr />
-        <h2 className="text-primary">Forms</h2>
+        <h3 className="text-primary">Inputs</h3>
 
         <div className="form-group">
             <select className="form-select">
@@ -38,7 +113,23 @@ export const SearchPage = () => {
             <input className="form-input" type="text" id="input-example-1" placeholder="Password" />
             <div className="form-input-hint">Passwords must have at least 8 characters.</div>
         </div>
-
+        <hr />
+        <br />
+        <h3 className="text-primary">Inputs with icons</h3>
+        <div className="form-group">
+            <div className="has-icon-right">
+                <input type="text" className="form-input" placeholder="..." />
+                <i className="form-icon loading"></i>
+            </div>
+        </div>
+        <br />
+        <div className="form-group">
+            <div className="has-icon-left">
+                <input type="text" className="form-input" placeholder="..." />
+                <i className="form-icon icon icon-check"></i>
+            </div>
+        </div>
+        <br />
         <hr/>
         <h2 className="text-primary">Labels</h2>
         <div className="p-2">
@@ -124,6 +215,6 @@ export const SearchPage = () => {
         <li>list item 3</li>
       </ul>
       <hr />
-    </>
+    </div>
   );
 };
