@@ -7,7 +7,7 @@
 
 html {
   box-sizing: border-box;
-  font-size: var(--base-font-size);
+  font-size: var(--font-size);
   line-height: var(--base-line-heigh);
   -webkit-tap-highlight-color: transparent;
 }
@@ -16,7 +16,7 @@ body {
   background: var(--background-color);
   color: var(--black-color);
   font-family: var(--base-font-family);
-  font-size: var(--base-font-size);
+  font-size: var(--font-size);
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
 }

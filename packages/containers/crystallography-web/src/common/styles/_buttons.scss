@@ -1,8 +1,9 @@
 .btn {
   appearance: none;
-  background: var(--clear-grey-color);
-  border: var(--control-border-width) solid var(--primary-color);
-  border-radius: var(--control-border-radius);
+  background: var(--default-color);
+  border: var(--border-width) solid var(--primary-color);
+  border-radius: var(--border-radius);
+
 
   color: var(--primary-color);
   cursor: pointer;
@@ -10,7 +11,7 @@
 
   font-size: var(--control-font-size);
   height: var(--control-height);
-  line-height: var(--control-line-height);
+  line-height: var(--line-height);
   outline: none;
   padding: $control-padding-y $control-padding-x;
   text-align: center;

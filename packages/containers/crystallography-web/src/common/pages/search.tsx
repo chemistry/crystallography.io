@@ -1,9 +1,62 @@
 import * as React from "react";
+import { useState } from "react";
 
 export const SearchPage = () => {
-  return (
+
+    return (
     <>
       <h1 className="text-primary">Application Styling</h1>
+      <hr />
+        <h2 className="text-primary">Forms</h2>
+
+        <div className="form-group">
+            <select className="form-select">
+                <option>Choose an option</option>
+                <option>Slack</option>
+                <option>Skype</option>
+                <option>Hipchat</option>
+            </select>
+        </div>
+
+        <div className="form-group">
+            <label className="form-label label-sm">Name</label>
+            <input className="form-input" type="text" id="input-example-1" placeholder="Name" />
+        </div>
+        <div className="form-group">
+             <label className="form-label label-sm">Message</label>
+             <textarea className="form-input" id="input-example-3" placeholder="Textarea"></textarea>
+        </div>
+
+        <div className="form-group">
+            <label className="form-label label-sm">Name</label>
+            <input className="form-input is-success" type="text" id="input-example-1" placeholder="Name" />
+            <div className="form-input-hint">The name is valid</div>
+        </div>
+
+        <div className="form-group has-error">
+            <label className="form-label label-sm">Password</label>
+            <input className="form-input" type="text" id="input-example-1" placeholder="Password" />
+            <div className="form-input-hint">Passwords must have at least 8 characters.</div>
+        </div>
+
+        <hr/>
+        <h2 className="text-primary">Labels</h2>
+        <div className="p-2">
+            <span className="label">default label</span>&nbsp;&nbsp;
+            <span className="label label-primary">primary label</span>&nbsp;&nbsp;
+            <span className="label label-secondary">secondary label</span>&nbsp;&nbsp;
+            <span className="label label-success">success label</span>&nbsp;&nbsp;
+            <span className="label label-warning">warning label</span>&nbsp;&nbsp;
+            <span className="label label-error">error label</span>&nbsp;&nbsp;
+        </div>
+        <div className="p-2">
+            <span className="label label-rounded">default label</span>&nbsp;
+            <span className="label label-rounded label-primary">primary label</span>&nbsp;&nbsp;
+            <span className="label label-rounded label-secondary">secondary label</span>&nbsp;&nbsp;
+            <span className="label label-rounded label-success">success label</span>&nbsp;&nbsp;
+            <span className="label label-rounded label-warning">warning label</span>&nbsp;&nbsp;
+            <span className="label label-rounded label-error">error label</span>&nbsp;&nbsp;
+        </div>
       <hr />
         <h2 className="text-primary">Buttons</h2>
         <div className="p-2 m-2">
@@ -25,6 +78,7 @@ export const SearchPage = () => {
             <button className="btn loading">button</button>&nbsp;
             <button className="btn btn-primary loading">primary button</button>
         </div>
+
       <hr/>
       <h2 className="text-primary">Headings</h2>
       <h1>Headline 1</h1>
@@ -33,7 +87,7 @@ export const SearchPage = () => {
       <h4>Headline 4</h4>
       <h5>Headline 5</h5>
       <h6>Headline 6</h6>
-      <p>Default Paragraph - body1</p>
+      <p>Default Paragraph - body1  <a href="/">user link</a></p>
       <hr />
         <h2 className="text-primary">Badges</h2>
         <p><span className="text-primary p-1">primary color</span></p>
