@@ -7,38 +7,16 @@
 
 html {
   box-sizing: border-box;
-  font-size: var(--font-size);
+  font-size: var(--base-font-size);
   line-height: var(--base-line-heigh);
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background: var(--background-color);
-    color: var(--black-color);
+    color: var(--base-font-color);
     font-family: var(--base-font-family);
-    font-size: var(--font-size);
+    font-size: var(--base-font-size);
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
-}
-
-a {
-  color: var(--link-color);
-  outline: none;
-  text-decoration: none;
-
-  &:focus {
-    @include control-shadow();
-  }
-
-  &:focus,
-  &:hover,
-  &:active,
-  &.active {
-    color: var(--link-color-dark);
-    text-decoration: underline;
-  }
-
-  &:visited {
-    color: var(--link-color-light);
-  }
 }

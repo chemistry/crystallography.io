@@ -9,8 +9,6 @@ $primary-color: #0E4575;
 $secondary-color: #F5B895;
 $additional-color: #658DC6;
 
-$primary-color-dark: darken($primary-color, 5%);
-
 // Main Opacity
 $primary-opacity-color: rgba($primary-color, .86);
 $secondary-opacity-color: rgba($secondary-color, 0.86);
@@ -19,23 +17,15 @@ $additional-opacity-color: rgba($additional-color, 0.86);
 // Basic Colors
 $black-color: #373838;
 $white-color: #ffffff;
-$body-font-color: $black-color;
-$light-color: $white-color;
 
 // Grey
 $dark-grey-color: #7F8FA4;
 $grey-color: #B8C0CC;
 $light-grey-color: #DCE6F5;
-$clear-grey-color: #F4F6F9;;
-$background-color: #F4F6F9;
+$clear-grey-color: #EFF3F9;
+$grey-background-color: #F5F6F7;
 
-$bg-color: lighten($black-color, 75%) !default;
-$bg-color-dark: darken($bg-color, 3%) !default;
-$bg-color-light: $light-color !default;
-
-$border-color: $light-grey-color;
-$border-color-dark: darken($border-color, 10%) !default;
-$border-color-light: lighten($border-color, 8%) !default;
+// $border-color: $light-grey-color;
 
 // Information Colors
 $default-color: #DCE6F5;
@@ -45,11 +35,12 @@ $warning-color: #EDAD3E;
 $error-color: #DB433D;
 
 // Information background
-$default-background-color: rgba($default-color, 0.3);
-$active-background-color: rgba($active-color, 0.3);
-$success-background-color: rgba($success-color, 0.3);
-$warning-background-color: rgba($warning-color, 0.3);
-$error-background-color: rgba($error-color, 0.3);
+$default-background-color: rgba($default-color, 0.26);
+$active-background-color: rgba($active-color, 0.26);
+$success-background-color: rgba($success-color, 0.26);
+$warning-background-color: rgba($warning-color, 0.26);
+$error-background-color: rgba($error-color, 0.26);
+$additional-background-color: rgba($additional-color, 0.26);
 
 // Overlay Colors
 $overlay-30-color: rgba(55, 56, 56, 0.5);
@@ -60,9 +51,7 @@ $orange-color: #f68136;
 $purple-color: #aa3af3;
 
 // Other colors
-$link-color: #249af3;
-$link-color-dark: darken($link-color, 10%) !default;
-$link-color-light: lighten($link-color, 10%) !default;
+$link-color: $active-color;
 
 // Unit sizes
 $unit-o: .05rem !default;
@@ -88,14 +77,15 @@ $fallback-font-family: "Arial", "Helvetica Neue", "sans-serif" !default;
 
 // Font sizes
 $base-font-family: $main-font-family, $fallback-font-family !default;
-$font-size: 16px !default;
-$font-size-text: 0.875rem;
-$font-size-sm: 0.75rem;
-$font-size-lg: $font-size;
+$base-font-size: 16px !default;
 $base-line-heigh: 1.25;
+
+
+$border-radius: 4px;
+$border-width: 1px;
+
+/*
 $control-input-font-size: 0.875rem;
-
-
 $layout-spacing: $unit-2 !default;
 $layout-spacing-sm: $unit-1 !default;
 $layout-spacing-lg: $unit-4 !default;
@@ -122,15 +112,14 @@ $control-padding-y-sm: ($control-size-sm - $line-height) / 2 !default;
 $control-padding-y-lg: ($control-size-lg - $line-height) / 2 !default;
 $control-icon-size: .8rem !default;
 
-
 $default-shadow: 2px 2px 2px rgba(36, 154, 243, 0.1);
 $dropdown-shadow: 0px 4px 6px rgba(36, 154, 243, 0.1);
+*/
 
 :root {
   --primary-color: #{$primary-color};
   --secondary-color: #{$secondary-color};
   --additional-color: #{$additional-color};
-
 
   --primary-opacity-color: #{$primary-opacity-color};
   --secondary-opacity-color: #{$secondary-opacity-color};
@@ -143,7 +132,8 @@ $dropdown-shadow: 0px 4px 6px rgba(36, 154, 243, 0.1);
   --grey-color: #{$grey-color};
   --light-grey-color: #{$light-grey-color};
   --clear-grey-color: #{$clear-grey-color};
-  --background-color: #{$background-color};
+  --grey-background-color: #{$grey-background-color};
+  --background-color: #{$white-color};
 
   --default-color: #{$default-color};
   --active-color: #{$active-color};
@@ -156,6 +146,8 @@ $dropdown-shadow: 0px 4px 6px rgba(36, 154, 243, 0.1);
   --success-background-color: #{$success-background-color};
   --warning-background-color: #{$warning-background-color};
   --error-background-color: #{$error-background-color};
+  --additional-background-color: #{$additional-background-color};
+
 
   --overlay-30-color: #{$overlay-30-color};
   --overlay-70-color: #{$overlay-70-color};
@@ -164,28 +156,12 @@ $dropdown-shadow: 0px 4px 6px rgba(36, 154, 243, 0.1);
   --purple-color: #{$purple-color};
 
   --link-color: #{$link-color};
-  --link-color-dark: #{$link-color-dark};
-  --link-color-light: #{$link-color-light};
 
-  --font-size: #{$font-size};
-  --font-size-text: #{$font-size-text};
-  --font-size-sm: #{$font-size-sm};
-
+  --base-font-size: #{$base-font-size};
+  --base-font-color: #{$black-color};
   --base-font-family: #{$base-font-family};
   --base-line-heigh: #{$base-line-heigh};
 
-  --border-width: #{$border-width};
   --border-radius: #{$border-radius};
-  --line-height: #{$line-height};
-  --control-input-font-size: #{$control-input-font-size};
-  --control-font-size: #{$control-font-size};
-
-
-  --control-height: #{$control-height};
-  --control-padding-x: #{$control-padding-x};
-  --control-padding-y: #{$control-padding-y};
-  --control-border-color: #{$light-grey-color};
-
-  --default-shadow: #{$default-shadow};
-  --dropdown-shadow: #{$dropdown-shadow};
+  --border-width: #{$border-width};
 }

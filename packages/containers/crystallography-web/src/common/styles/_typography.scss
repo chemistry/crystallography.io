@@ -17,7 +17,7 @@ h4,
 h5,
 h6 {
   color: inherit;
-  font-weight: 500;
+  font-weight: normal;
   line-height: var(--base-line-heigh);
   margin-bottom: .5em;
   margin-top: 0;
@@ -59,8 +59,26 @@ h6,
 
 // Paragraphs
 p {
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.25rem;
   line-height: 1.5;
+}
+
+a {
+  color: var(--link-color);
+  outline: none;
+  text-decoration: none;
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--link-color);
+  }
 }
 // Semantic text elements
 a,
