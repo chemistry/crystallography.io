@@ -63,7 +63,6 @@ export const SearchPage = () => {
   );
 };
 
-
 /*
 
 <h2 className="text-primary">Badges</h2>
@@ -88,7 +87,6 @@ export const SearchPage = () => {
 <p><span className="bg-warning p-1">warning bg</span></p>
 <p><span className="bg-error p-1">error bg</span></p>
 <hr/>
-
 
 <h3 className="text-primary">Form radio</h3>
 <div className="form-group">
