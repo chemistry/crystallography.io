@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import classNames = require("classnames");
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
 import { AppNavigation } from "./components";
-import { LogoIcon } from "./icons";
+import { CollapseIcon } from "./icons";
 // import LogoTitle from "./title.svg";
 
 if (process.env.BROWSER) {
@@ -20,21 +21,23 @@ const extractTitleMetaInfo = (branches: Array<MatchedRoute<{}>>) => {
 export const App = (props: { route: { routes: RouteConfig[] }, location: { pathname: string }}) => {
     const branches = matchRoutes(props.route.routes, props.location.pathname);
     const title = extractTitleMetaInfo(branches);
+    const [isOpen, setOpen] = useState(false);
 
     useEffect(() => {
         document.title = title;
     }, [title]);
 
     return (
-        <main className="app">
+        <main className={classNames({ "app": true, "is-open-navigation": isOpen })}>
             <aside className="app-navigation">
                 <AppNavigation />
             </aside>
+            <div className="app-collapse-button" onClick={() => setOpen(!isOpen)}>
+                <CollapseIcon />
+            </div>
             <section className="app-layout">
                 <header className="app-layout-header">
-                    <div className="app-layout-header-image">
-                      <LogoIcon />
-                    </div>
+                    <h2 className="text-primary">Crystal Structure Search</h2>
                 </header>
                 <div className="app-layout-content">
                   {renderRoutes(props.route.routes)}
