@@ -6,15 +6,22 @@
   &-header {
     height: $header-nav-height;
     min-height: $header-nav-height;
-    padding-top: 2rem;
-    padding-left: 1rem;
+
+    &-logo {
+      width: $side-bar-open-width;
+      margin-top: 2rem;
+      margin-left: 20px;
+      height: 40px;
+    }
+
+    &__logo-icon {
+      display: inline-block;
+    }
+    &__logo-title {
+      display: inline-block;
+      position: relative;
+      top: -8px;
+      right: -20px;
+    }
   }
-  /*
-      &-menu-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-      }
-  */
 }

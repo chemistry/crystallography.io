@@ -13,6 +13,9 @@ body, html, #root, .app {
 #root {
   position: relative;
 }
+
+
+
 .app {
   position: absolute;
   left: 0;
@@ -53,7 +56,8 @@ body, html, #root, .app {
 
   &-layout {
     position: absolute;
-    left: $side-bar-closed-width;
+    left: 0;
+    transform: translateX($side-bar-closed-width);
     top: 0;
     bottom: 0;
     right: 0;
@@ -61,11 +65,13 @@ body, html, #root, .app {
     transition: left 0.5s ease;
 
     &-header {
+      width: 100%;
       height: $header-nav-height;
       min-height: $header-nav-height;
       background: var(--white-color);
       padding: 2rem;
       border-bottom: 1px solid var(--light-grey-color);
+      overflow: hidden;
     }
 
     &-content {
@@ -81,6 +87,65 @@ body, html, #root, .app {
   }
 
   &.is-open-navigation &-layout {
-    left: $side-bar-open-width - 12px;
+    left: $side-bar-open-width - $side-bar-closed-width -12px;
   }
+
+  &-mobile-navigation {
+    display: none;
+  }
+}
+
+// Mobile Layout
+@media screen and (max-width: 480px) {
+    .app {
+        &-mobile-navigation {
+          display: block;
+          z-index: 1;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          width: 100%;
+          height: $mobile-navigation-height;
+          min-height: $mobile-navigation-height;
+          background: var(--primary-color);
+
+          &-icon {
+            display: block;
+            float: left;
+            padding: 1rem;
+            cursor: pointer;
+          }
+          &-logo {
+            display: block;
+            float: left;
+            padding: 0.75rem 0;
+          }
+          &:after {
+            @include clearfix();
+          }
+        }
+         &-navigation {
+           display: none;
+         }
+         &-collapse-button {
+           display: none;
+         }
+         &-layout {
+           top: $mobile-navigation-height;
+           left: 0;
+           transform: translateX(0);
+           transition: none;
+           h2 {
+             margin-bottom: 0;
+           }
+         }
+         &.is-open-navigation &-layout {
+           left: 0;
+         }
+
+         &-layout-header {
+           padding: 1rem;
+         }
+    }
 }
