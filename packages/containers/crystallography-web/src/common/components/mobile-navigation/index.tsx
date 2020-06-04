@@ -1,6 +1,6 @@
 import * as React from "react";
 import { LogoMobileIcon, NavBtnIcon } from "../../icons";
-import { NavMenu, NavMenuBottom } from "../nav-menu";
+import { NavMenuBottom, NavMenuTop } from "../nav-menu";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line

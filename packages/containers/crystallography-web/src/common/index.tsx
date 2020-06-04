@@ -7,11 +7,13 @@ import {
   AuthorsPage,
   CatalogPage,
   ContactsPage,
+  InfoPage,
   LoginPage,
   NewsPage,
   NotFoundPage,
   ProfilePage,
   RegisterPage,
+  SearchHistoryPage,
   SearchPage,
 } from "./pages";
 import { setup } from "./setup";
@@ -78,6 +80,12 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               description: "News of Crystal Structure Search",
           },
           {
+              path: "/info",
+              component: InfoPage,
+              title: "Info",
+              description: "Information about Crystal Structure Search",
+          },
+          {
               path: "/profile",
               component: ProfilePage,
               title: "Profile",
@@ -94,6 +102,12 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               component: RegisterPage,
               title: "Register",
               description: "Register User - Crystal Structure Search",
+          },
+          {
+              path: "/search-history",
+              component: SearchHistoryPage,
+              title: "Search History",
+              description: "Search History - Crystal Structure Search",
           },
           {
               path: "*",

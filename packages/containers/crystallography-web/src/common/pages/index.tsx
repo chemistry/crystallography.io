@@ -8,3 +8,5 @@ export * from "./news";
 export * from "./not-found";
 export * from "./search";
 export * from "./profile";
+export * from "./info";
+export * from "./search-history";

@@ -1,5 +1,9 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
+import {
+  MenuAuthorsIcon, MenuInfoIcon, MenuNewsIcon, MenuSearchIcon, SearchHistoryIcon,
+  SignInIcon,
+} from "../../icons";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -11,41 +15,48 @@ export const NavMenuBottom = () => {
         <ul className="nav-menu-list">
           <li>
               <NavLink to="/login" strict className="nav-menu-item" activeClassName="">
-                  <i className="icon icon-shutdown"></i>
+                  <div className="nav-menu-item__icon"><SignInIcon /></div>
+                  <div className="nav-menu-item__title">Login</div>
               </NavLink>
           </li>
         </ul>
     </div>);
 };
 
-export const NavMenu = () => {
+export const NavMenuTop = () => {
     return (<div className="nav-menu">
         <ul className="nav-menu-list">
           <li>
               <NavLink to="/" exact strict className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-search"></i>
+                  <div className="nav-menu-item__icon"><MenuSearchIcon /></div>
+                  <div className="nav-menu-item__title">Search</div>
+              </NavLink>
+          </li>
+          <li>
+              <NavLink to="/search-history" className="nav-menu-item" activeClassName="active">
+                  <div className="nav-menu-item__icon"><SearchHistoryIcon /></div>
+                  <div className="nav-menu-item__title">Search History</div>
               </NavLink>
           </li>
           <li>
               <NavLink to="/authors" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-people"></i>
+                  <div className="nav-menu-item__icon"><MenuAuthorsIcon /></div>
+                  <div className="nav-menu-item__title">Authors</div>
               </NavLink>
           </li>
           <li>
-              <NavLink to="/catalog" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-apps"></i>
+              <NavLink to="/info" className="nav-menu-item" activeClassName="active">
+                  <div className="nav-menu-item__icon"><MenuInfoIcon /></div>
+                  <div className="nav-menu-item__title">Info</div>
               </NavLink>
           </li>
           <li>
-              <NavLink to="/login" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-time"></i>
+              <NavLink to="/news" className="nav-menu-item" activeClassName="active">
+                  <div className="nav-menu-item__icon"><MenuNewsIcon /></div>
+                  <div className="nav-menu-item__title">News</div>
               </NavLink>
           </li>
-          <li>
-              <NavLink to="/register" className="nav-menu-item" activeClassName="active">
-                  <i className="icon icon-message"></i>
-              </NavLink>
-          </li>
+
         </ul>
     </div>);
 };
