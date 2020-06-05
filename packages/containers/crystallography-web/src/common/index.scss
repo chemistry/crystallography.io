@@ -93,6 +93,10 @@ body, html, #root, .app {
   &-mobile-navigation {
     display: none;
   }
+
+  .app-navigation-menu-layout {
+    display: block;
+  }
 }
 
 // Mobile Layout
@@ -147,5 +151,36 @@ body, html, #root, .app {
          &-layout-header {
            padding: 1rem;
          }
+    }
+
+    // Menu for mobile
+    .app {
+
+      &-navigation-menu {
+          display: none;
+          z-index: 5;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: $side-bar-open-width;
+          background: var(--primary-color);
+      }
+
+      &.is-open-navigation &-navigation-menu {
+        display: block;
+      }
+
+      &.is-open-navigation .app-navigation-menu-layout {
+        cursor: pointer;
+        display: block;
+        z-index: 4;
+        background: rgba(55, 56, 56, 0.7);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+      }
     }
 }

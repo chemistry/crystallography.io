@@ -14,7 +14,7 @@ export const NavMenuBottom = () => {
     return (<div className="nav-menu">
         <ul className="nav-menu-list">
           <li>
-              <NavLink to="/login" strict className="nav-menu-item" activeClassName="">
+              <NavLink to="/login" strict className="nav-menu-item" activeClassName="active">
                   <div className="nav-menu-item__icon"><SignInIcon /></div>
                   <div className="nav-menu-item__title">Login</div>
               </NavLink>

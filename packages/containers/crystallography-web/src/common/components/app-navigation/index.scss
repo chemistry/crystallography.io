@@ -31,13 +31,13 @@
         top: 5px;
       }
     }
-
     &-menu-top {
       margin-top: 1.5rem;
     }
     &-menu-bottom {
       position: absolute;
       bottom: 0;
+      width: 100%;
     }
   }
 }

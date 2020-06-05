@@ -2,7 +2,7 @@ import classNames = require("classnames");
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
-import { AppMobileNavigation, AppNavigation } from "./components";
+import { AppMobileNavigation, AppNavigation  } from "./components";
 import { CollapseIcon, LogoMobileIcon, NavBtnIcon } from "./icons";
 // import LogoTitle from "./title.svg";
 
@@ -30,9 +30,13 @@ export const App = (props: { route: { routes: RouteConfig[] }, location: { pathn
     return (
         <main className={classNames({ "app": true, "is-open-navigation": isOpen })}>
             <aside className="app-mobile-navigation">
-               <div className="app-mobile-navigation-icon"><NavBtnIcon /></div>
+               <div className="app-mobile-navigation-icon" onClick={() => setOpen(!isOpen)}><NavBtnIcon /></div>
                <div className="app-mobile-navigation-logo"><LogoMobileIcon /></div>
             </aside>
+            <aside className="app-navigation-menu">
+              <AppMobileNavigation onClick={() => setOpen(!isOpen)} />
+            </aside>
+            <aside className="app-navigation-menu-layout" onClick={() => setOpen(false)}></aside>
             <aside className="app-navigation">
                 <AppNavigation />
             </aside>

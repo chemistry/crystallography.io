@@ -12,3 +12,4 @@ export * from "./menu-shutdown";
 export * from "./menu-profile";
 export * from "./search-history";
 export * from "./sign-in";
+export * from "./close-icon";
