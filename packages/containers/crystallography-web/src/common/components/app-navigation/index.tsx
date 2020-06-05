@@ -30,11 +30,3 @@ export const AppNavigation = () => {
       </>
     );
 };
-/*
-  <div className="app-navigation-menu-top">
-
-  </div>
-  <div className="app-navigation-menu-bottom">
-     <NavMenuBottom />
-  </div>
-*/

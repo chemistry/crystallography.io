@@ -53,7 +53,7 @@ export const NavMenuTop = () => {
           <li>
               <NavLink to="/news" className="nav-menu-item" activeClassName="active">
                   <div className="nav-menu-item__icon"><MenuNewsIcon /></div>
-                  <div className="nav-menu-item__title">News</div>
+                  <div className="nav-menu-item__title">Updates</div>
               </NavLink>
           </li>
 
