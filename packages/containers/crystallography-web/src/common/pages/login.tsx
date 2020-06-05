@@ -15,7 +15,11 @@ export const LoginPage = () => {
   };
 
   return (
-      <>
+    <div>
+        <header className="app-layout-header">
+            <h2 className="text-primary">Login</h2>
+        </header>
+        <div className="app-layout-content">
         <h1>Login</h1>
         <hr/>
           <div><b>{auth ? "Logged IN" : null}</b></div>
@@ -33,6 +37,7 @@ export const LoginPage = () => {
             </div>
           </div>
         </form>
-      </>
+        </div>
+    </div>
   );
 };

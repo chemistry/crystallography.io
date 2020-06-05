@@ -45,9 +45,9 @@ export const NavMenuTop = () => {
               </NavLink>
           </li>
           <li>
-              <NavLink to="/info" className="nav-menu-item" activeClassName="active">
+              <NavLink to="/about" className="nav-menu-item" activeClassName="active">
                   <div className="nav-menu-item__icon"><MenuInfoIcon /></div>
-                  <div className="nav-menu-item__title">Info</div>
+                  <div className="nav-menu-item__title">About Us</div>
               </NavLink>
           </li>
           <li>

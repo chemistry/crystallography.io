@@ -7,25 +7,30 @@ export const RegisterPage = () => {
   const onSubmit = (data: any) => {
   };
   return (
-      <>
-        <h1>Register</h1>
-        <hr/>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div style={{ padding: "20px" }}>
-            <div >Name:
-              <input type="text"  name="name" ref={register} />
+    <div>
+      <header className="app-layout-header">
+          <h2 className="text-primary">Register</h2>
+      </header>
+      <div className="app-layout-content">
+          <h1>Register</h1>
+          <hr/>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ padding: "20px" }}>
+              <div >Name:
+                <input type="text"  name="name" ref={register} />
+              </div>
+              <div >Email:
+                <input type="text"  name="email" ref={register} />
+              </div>
+              <div>Pwd:
+                <input type="text" name="password" ref={register}  />
+              </div>
+              <div>
+                <input type="submit" name="Submit" />
+              </div>
             </div>
-            <div >Email:
-              <input type="text"  name="email" ref={register} />
-            </div>
-            <div>Pwd:
-              <input type="text" name="password" ref={register}  />
-            </div>
-            <div>
-              <input type="submit" name="Submit" />
-            </div>
-          </div>
-        </form>
-      </>
+          </form>
+      </div>
+    </div>
   );
 };

@@ -1,5 +1,14 @@
 import * as React from "react";
 
 export const ProfilePage = () => {
-  return (<h1>Profile</h1>);
+  return (
+      <div>
+        <header className="app-layout-header">
+            <h2 className="text-primary">Profile</h2>
+        </header>
+        <div className="app-layout-content">
+          Profile
+        </div>
+      </div>
+  );
 };

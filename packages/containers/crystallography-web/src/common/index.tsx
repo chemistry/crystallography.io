@@ -7,7 +7,6 @@ import {
   AuthorsPage,
   CatalogPage,
   ContactsPage,
-  InfoPage,
   LoginPage,
   NewsPage,
   NotFoundPage,
@@ -51,7 +50,7 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
           {
               path: "/about",
               component: AboutPage,
-              title: "About",
+              title: "About Us",
               description: "About Crystal Structure Search",
           },
           {
@@ -78,12 +77,6 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               component: NewsPage,
               title: "News",
               description: "News of Crystal Structure Search",
-          },
-          {
-              path: "/info",
-              component: InfoPage,
-              title: "Info",
-              description: "Information about Crystal Structure Search",
           },
           {
               path: "/profile",

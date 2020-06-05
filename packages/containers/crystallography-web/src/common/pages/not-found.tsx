@@ -1,5 +1,14 @@
 import * as React from "react";
 
 export const NotFoundPage = () => {
-  return (<h1>Not Found Page</h1>);
+  return (
+      <div>
+        <header className="app-layout-header">
+            <h2 className="text-primary">Not Found</h2>
+        </header>
+        <div className="app-layout-content">
+          Not Found
+        </div>
+      </div>
+  );
 };

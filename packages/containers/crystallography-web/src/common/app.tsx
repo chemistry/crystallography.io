@@ -44,12 +44,7 @@ export const App = (props: { route: { routes: RouteConfig[] }, location: { pathn
                 <CollapseIcon />
             </div>
             <section className="app-layout">
-                <header className="app-layout-header">
-                    <h2 className="text-primary">Crystal Structure Search</h2>
-                </header>
-                <div className="app-layout-content">
                   {renderRoutes(props.route.routes)}
-                </div>
             </section>
         </main>
     );

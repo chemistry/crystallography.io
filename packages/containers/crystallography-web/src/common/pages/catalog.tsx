@@ -11,14 +11,20 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
   const structures = useSelector((state: RootState) => state.structures);
   useLoadedData(props.route);
 
-  return (<div>
-      <h1>Catalog</h1>
-      <hr/>
-      <ul>
-        <li><NavLink to="/catalog/1">1</NavLink></li>
-        <li><NavLink to="/catalog/2">2</NavLink></li>
-      </ul>
-
-      <pre>{JSON.stringify(structures, null, 4)}</pre>
-  </div>);
+  return (
+      <div>
+          <header className="app-layout-header">
+              <h2 className="text-primary">Catalog</h2>
+          </header>
+          <div className="app-layout-content">
+            Authors <hr />
+            <ul>
+              <li><NavLink to="/catalog/1">1</NavLink></li>
+              <li><NavLink to="/catalog/2">2</NavLink></li>
+            </ul>
+            <hr />
+            <pre>{JSON.stringify(structures, null, 4)}</pre>
+          </div>
+      </div>
+  );
 };
