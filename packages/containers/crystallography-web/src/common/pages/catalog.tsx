@@ -17,7 +17,6 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
               <h2 className="text-primary">Catalog</h2>
           </header>
           <div className="app-layout-content">
-            Authors <hr />
             <ul>
               <li><NavLink to="/catalog/1">1</NavLink></li>
               <li><NavLink to="/catalog/2">2</NavLink></li>
