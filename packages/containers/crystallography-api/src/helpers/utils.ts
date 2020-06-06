@@ -26,6 +26,14 @@ export function mapStructure() {
             return acc;
         }, {} as any);
 
+        if (Object.keys(item).length === 1) {
+            return  {
+                id: item.id,
+                type: "structure",
+                attributes: null,
+            };
+        }
+
         return {
             id: item.id,
             type: "structure",

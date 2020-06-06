@@ -22,7 +22,7 @@ export async function startApplication(context: ExpresContext) {
 
     app.use(cors());
 
-    app.use(timeout("5s"));
+    app.use(timeout("10s"));
 
     app.use(bodyParser.urlencoded({ extended: true }));
 

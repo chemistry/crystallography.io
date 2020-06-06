@@ -4,6 +4,9 @@ import { Request, Response, Router } from "express";
 import { mapStructure } from "../../helpers";
 
 const structurePageValidation = Joi.number().integer().min(1).max(99999);
+const structureIdValidation = Joi.number().integer().min(1000000).max(9999999);
+const structureListValidation = Joi.array().items(structureIdValidation).min(1).max(100);
+
 const PER_PAGE = 100;
 const structureMaper = mapStructure();
 
@@ -52,6 +55,56 @@ export const getStructureRouter = ({ firestore }: { firestore: Firestore }) => {
             meta: {},
           });
       });
+  });
+
+  // post - get structures by Id's
+  router.post("/", (req: Request, res: Response) => {
+
+    const { ids } = req?.body || { ids: "[]"};
+    let structuresIds: number[] = null;
+    try {
+        structuresIds = JSON.parse(ids);
+    } catch (e) {
+        structuresIds = [];
+    }
+    const validationRes = structureListValidation.validate(structuresIds);
+    if (validationRes.error) {
+        return res.status(400).json({
+            errors: [{
+                status: 400,
+                title: "Incorrect structure ids",
+                detail: "Incorrect structure ids",
+            }],
+        });
+    }
+
+    const refs = structuresIds.map((id) => firestore.doc(`structures/${id}`));
+
+    return firestore
+        .getAll(...refs)
+        .then((docs) => {
+            const data = docs
+            .map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data(),
+                };
+            })
+            .map(structureMaper);
+
+            return res.status(200).json({
+                errors: [],
+                meta: {},
+                data,
+            });
+        })
+        .catch((e) => {
+            return res.status(500).json({
+              errors: [String(e)],
+              meta: {},
+            });
+        });
+
   });
 
   return router;

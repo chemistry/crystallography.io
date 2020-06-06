@@ -4,7 +4,6 @@ import { getStructureRouter } from "./structure";
 
 export const getRouters = ({ firestore }: { firestore: Firestore }) => {
     const router = Router();
-    // router.get("/structures", getStructureRouter({ firestore }));
 
     router.get("/s", (req, res) => {
        return res.json({
