@@ -10,11 +10,11 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-export const NavMenuBottom = () => {
+export const NavMenuBottom = ({ onClick }: { onClick?: () => void }) => {
     return (<div className="nav-menu">
         <ul className="nav-menu-list">
           <li>
-              <NavLink to="/login" strict className="nav-menu-item" activeClassName="active">
+              <NavLink to="/login" strict className="nav-menu-item" activeClassName="active" onClick={onClick}>
                   <div className="nav-menu-item__icon"><SignInIcon /></div>
                   <div className="nav-menu-item__title">Login</div>
               </NavLink>
@@ -23,35 +23,35 @@ export const NavMenuBottom = () => {
     </div>);
 };
 
-export const NavMenuTop = () => {
+export const NavMenuTop = ({ onClick }: { onClick?: () => void }) => {
     return (<div className="nav-menu">
         <ul className="nav-menu-list">
           <li>
-              <NavLink to="/" exact strict className="nav-menu-item" activeClassName="active">
+              <NavLink to="/" exact strict className="nav-menu-item" activeClassName="active" onClick={onClick}>
                   <div className="nav-menu-item__icon"><MenuSearchIcon /></div>
                   <div className="nav-menu-item__title">Search</div>
               </NavLink>
           </li>
           <li>
-              <NavLink to="/search-history" className="nav-menu-item" activeClassName="active">
+              <NavLink to="/search-history" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                   <div className="nav-menu-item__icon"><SearchHistoryIcon /></div>
                   <div className="nav-menu-item__title">Search History</div>
               </NavLink>
           </li>
           <li>
-              <NavLink to="/authors" className="nav-menu-item" activeClassName="active">
+              <NavLink to="/authors" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                   <div className="nav-menu-item__icon"><MenuAuthorsIcon /></div>
                   <div className="nav-menu-item__title">Authors</div>
               </NavLink>
           </li>
           <li>
-              <NavLink to="/about" className="nav-menu-item" activeClassName="active">
+              <NavLink to="/about" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                   <div className="nav-menu-item__icon"><MenuInfoIcon /></div>
                   <div className="nav-menu-item__title">About Us</div>
               </NavLink>
           </li>
           <li>
-              <NavLink to="/news" className="nav-menu-item" activeClassName="active">
+              <NavLink to="/news" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                   <div className="nav-menu-item__icon"><MenuNewsIcon /></div>
                   <div className="nav-menu-item__title">Updates</div>
               </NavLink>

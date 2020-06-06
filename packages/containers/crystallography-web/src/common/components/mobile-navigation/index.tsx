@@ -16,10 +16,10 @@ export const AppMobileNavigation = ({ onClick }: { onClick: () => void}) => {
           </div>
           <div className="app-mobile-menu-content">
               <div className="app-mobile-menu-content-top">
-                  <NavMenuTop />
+                  <NavMenuTop onClick={onClick} />
               </div>
               <div className="app-mobile-menu-content-bottom">
-                 <NavMenuBottom />
+                 <NavMenuBottom onClick={onClick} />
               </div>
           </div>
        </div>
