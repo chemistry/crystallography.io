@@ -8,7 +8,7 @@ import { RootState } from "../store";
 
 export const CatalogPage = (props: { route: RouteConfig }) => {
   // Page Navigation
-  const structures = useSelector((state: RootState) => state.structures);
+  const structures = useSelector((state: RootState) => state.catalogPage);
   useLoadedData(props.route);
 
   return (

@@ -17,7 +17,7 @@ import {
 } from "./pages";
 import { setup } from "./setup";
 import { getStore } from "./store";
-import { fetchStructures } from "./store/structures.slice";
+import { fetchCatalogData } from "./store/catalog-page.slice";
 
 export enum AppContextType {
     frontend = "frontend",
@@ -64,7 +64,7 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               component: CatalogPage,
               title: "Crystal Structures List",
               description: "Crystal Structures List",
-              loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchStructures(params)),
+              loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchCatalogData(params)),
           },
           {
               path: "/contact",

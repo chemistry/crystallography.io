@@ -1,11 +1,11 @@
 import { combineReducers, configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
 import logger from "redux-logger";
 
-import structuresSlice from "./structures.slice";
+import catalogPageReducer from "./catalog-page.slice";
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
-  structures: structuresSlice,
+  catalogPage: catalogPageReducer,
   user: userSlice,
 });
 
@@ -21,6 +21,6 @@ export const getStore = (preloadedState: RootState | null) => {
       reducer,
       middleware,
       devTools: !isDevelopment,
-      preloadedState: preloadedState ? preloadedState : {},
+      preloadedState: (preloadedState ? preloadedState : {}) as any,
     });
 };
