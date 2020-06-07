@@ -43,6 +43,7 @@ const processStructureBatch = async ({ startAfter, page }: {
         const structures = ids.slice(i * CATALOG_PAGE_SIZE, (i + 1) * CATALOG_PAGE_SIZE);
         const sfDocRef = firestore.collection("catalog").doc(`${i + pageShift + 1}`);
         sfDocRef.set({
+            id: (i + pageShift + 1),
             structures,
         });
     }

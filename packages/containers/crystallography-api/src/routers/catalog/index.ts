@@ -38,7 +38,7 @@ export const getCatalogRouter = ({ firestore }: { firestore: Firestore }) => {
 
     return firestore
       .collection("catalog")
-      .orderBy(FieldPath.documentId())
+      .orderBy("id")
       .limit(PER_PAGE)
       .offset((page - 1) * PER_PAGE)
       .get()
