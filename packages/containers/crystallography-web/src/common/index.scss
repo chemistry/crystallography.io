@@ -59,8 +59,8 @@ body, html, #root, .app {
     left: 0;
     transform: translateX($side-bar-closed-width);
     top: 0;
+    right: $side-bar-closed-width;
     bottom: 0;
-    right: 0;
     background: var(--background-color);
     transition: left 0.5s ease;
 
@@ -77,17 +77,17 @@ body, html, #root, .app {
     &-content {
         position: absolute;
         left: 0;
-        right: 0;
+        width: 100%;
         top: $header-nav-height;
         bottom: 0;
         overflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: scroll;
         padding: 1rem;
     }
 
     &-page {
       display: block;
-      max-width: 750px;
+      max-width: 950px;
       background: var(--white-color);
       border: 1px solid var (--clear-grey-color);
       border-radius: 8px;

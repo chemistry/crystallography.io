@@ -72,8 +72,8 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
             </header>
             <div className="app-layout-content" ref={containerRef}>
                 <div className="app-layout-page-transparent">
-                    <Pagination currentPage={currentPage} maxPages={10} totalPages={4000} />
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
+                        <Pagination currentPage={currentPage} maxPages={10} totalPages={4000} />
                         <StructuresList list={structures} />
                     </Loader>
                 </div>
