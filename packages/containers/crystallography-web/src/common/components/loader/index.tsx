@@ -28,7 +28,7 @@ export const Loader: React.SFC<{ isVisible: boolean, scrollElement: MutableRefOb
             const h1 = Math.max(parentOffsetTop - scrollTop, 0);
             const h2 = Math.min(parentOffsetTop + parentHeight - scrollTop, h);
 
-            const pos = ((h1 + h2) / 2) + scrollTop - parentOffsetTop - 20;
+            const pos = ((h1 + h2) / 2) + scrollTop - parentOffsetTop - 5;
             const mTop = parseInt(top, 10);
             if (mTop &&  Math.abs(mTop - pos) > 2) {
                 setTop(`${pos}px`);
