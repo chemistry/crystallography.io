@@ -8,6 +8,7 @@ const catalogPageSlice = createSlice({
   initialState: {
     data: {
         structureById: {},
+        structureIdsLoaded: [],
         structureIds: [],
     },
     error: null,
@@ -17,15 +18,12 @@ const catalogPageSlice = createSlice({
     loadCatalogPageStarted(state, action) {
         state.isLoading = true;
         state.error = null;
-        state.data = {
-            structureById: {},
-            structureIds: [],
-        };
+        state.data.structureIdsLoaded = [];
     },
     loadStructureIdsSuccess(state, action) {
         state.isLoading = true;
         state.error = null;
-        state.data.structureIds = action.payload;
+        state.data.structureIdsLoaded = action.payload;
     },
     loadStructureListSuccess(state, { payload }) {
         state.isLoading = false;
@@ -35,14 +33,12 @@ const catalogPageSlice = createSlice({
             structures[element.id] = element.attributes;
         });
         state.data.structureById = structures;
+        state.data.structureIds = state.data.structureIdsLoaded;
+        state.data.structureIdsLoaded = [];
     },
     loadCatalogPageFailed(state, action) {
         state.isLoading = false;
         state.error = action.payload;
-        state.data = {
-            structureById: {},
-            structureIds: [],
-        };
     },
   },
 });

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 import {
-  MenuAuthorsIcon, MenuInfoIcon, MenuNewsIcon, MenuSearchIcon, SearchHistoryIcon,
-  SignInIcon,
+  MenuAuthorsIcon, MenuCatalogIcon, MenuInfoIcon, MenuNewsIcon, MenuSearchIcon,
+  SearchHistoryIcon, SignInIcon,
 } from "../../icons";
 
 if (process.env.BROWSER) {
@@ -46,6 +46,12 @@ export const NavMenuTop = ({ onClick }: { onClick?: () => void }) => {
                 </NavLink>
             </li>
             <li>
+                <NavLink to="/catalog" className="nav-menu-item" activeClassName="active" onClick={onClick}>
+                    <div className="nav-menu-item__icon"><MenuCatalogIcon /></div>
+                    <div className="nav-menu-item__title">Catalog</div>
+                </NavLink>
+            </li>
+            <li>
                 <NavLink to="/about" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                     <div className="nav-menu-item__icon"><MenuInfoIcon /></div>
                     <div className="nav-menu-item__title">About Us</div>
@@ -55,13 +61,6 @@ export const NavMenuTop = ({ onClick }: { onClick?: () => void }) => {
                 <NavLink to="/news" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                     <div className="nav-menu-item__icon"><MenuNewsIcon /></div>
                     <div className="nav-menu-item__title">Updates</div>
-                </NavLink>
-            </li>
-
-            <li>
-                <NavLink to="/catalog" className="nav-menu-item" activeClassName="active" onClick={onClick}>
-                    <div className="nav-menu-item__icon"><MenuNewsIcon /></div>
-                    <div className="nav-menu-item__title">Catalog</div>
                 </NavLink>
             </li>
             </ul>

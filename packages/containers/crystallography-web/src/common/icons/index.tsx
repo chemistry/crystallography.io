@@ -13,3 +13,4 @@ export * from "./menu-profile";
 export * from "./search-history";
 export * from "./sign-in";
 export * from "./close-icon";
+export * from "./menu-catalog";

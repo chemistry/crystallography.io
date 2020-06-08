@@ -1,0 +1,24 @@
+.c-structure-list {
+    &-item {
+        width: 100%;
+        background: var(--white-color);
+        border: 1px solid var(--light-grey-color);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        min-height: 180px;
+        padding: 1rem;
+
+        &__name {
+            font-size: 1.125rem;
+            font-weight: bold;
+            line-height: 150%;
+        }
+        &__unit-cell, &__journal {
+            font-size: 0.875rem;
+        }
+        &__unit-cell {
+            color: var(--primary-color);
+            margin-bottom: 0;
+        }
+    }
+}

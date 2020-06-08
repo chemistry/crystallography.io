@@ -1,0 +1,28 @@
+.c-pagination {
+    text-align: center;
+}
+.c-page-item {
+    list-style: none;
+    display: inline-block;
+
+    &.active .c-page-link {
+        color: var(--active-color);
+        text-decoration: none;
+    }
+}
+.c-page-link {
+    padding: 0 0.5rem;
+    font-size: 1rem;
+    color: var(--dark-grey-color);
+
+    &, &:visited {
+        color: var(--dark-grey-color);
+    }
+    &, &:visited, &:hover, &:active {
+        text-decoration: none;
+    }
+    &:hover, &:active, &.active {
+        color: var(--active-color);
+        text-decoration: none;
+    }
+}
