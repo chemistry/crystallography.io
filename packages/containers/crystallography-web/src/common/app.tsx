@@ -2,8 +2,8 @@ import classNames = require("classnames");
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
-import { AppMobileNavigation, AppNavigation  } from "./components";
 import { CollapseIcon, LogoMobileIcon, NavBtnIcon } from "./icons";
+import { AppMobileNavigation, AppNavigation  } from "./layout";
 // import LogoTitle from "./title.svg";
 
 if (process.env.BROWSER) {

@@ -70,6 +70,18 @@ $unit-10: 2rem !default;
 $unit-12: 2.4rem !default;
 $unit-16: 3.2rem !default;
 
+// Responsive breakpoints
+$size-xs: 480px !default;
+$size-sm: 600px !default;
+$size-md: 840px !default;
+$size-lg: 960px !default;
+$size-xl: 1280px !default;
+$size-2x: 1440px !default;
+
+$layout-spacing: $unit-2 !default;
+$layout-spacing-sm: $unit-1 !default;
+$layout-spacing-lg: $unit-4 !default;
+
 // Fonts
 // Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
 $main-font-family: "Roboto", "Ubuntu" !default;

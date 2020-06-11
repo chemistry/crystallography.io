@@ -10,14 +10,14 @@ import { useParams } from "react-router-dom";
 
 export const useLoadedData = (route: any) => {
   const dispatch = useDispatch();
-  const { page } = useParams();
+  const params = useParams();
 
   const fetchData = () => {
     if (route && route.loadData ) {
-        route.loadData(dispatch, { page });
+        route.loadData(dispatch, params);
     }
   };
   useEffect(() => {
       fetchData();
-  }, [page]);
+  }, [...Object.keys(params), ...Object.values(params)]);
 };

@@ -18,6 +18,7 @@ export async function createWindow() {
     height: 600,
     show: false,
     webPreferences: {
+
     },
   });
 

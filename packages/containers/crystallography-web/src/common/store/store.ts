@@ -2,11 +2,13 @@ import { combineReducers, configureStore, getDefaultMiddleware} from "@reduxjs/t
 import logger from "redux-logger";
 
 import catalogPageReducer from "./catalog-page.slice";
+import detailsPageReducer from "./details-page.slice";
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
-  catalogPage: catalogPageReducer,
-  user: userSlice,
+    catalogPage: catalogPageReducer,
+    detailsPage: detailsPageReducer,
+    user: userSlice,
 });
 
 const isDevelopment = (process.env.NODE_ENV !== "production");

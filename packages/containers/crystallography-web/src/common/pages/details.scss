@@ -1,0 +1,21 @@
+.c-details-page {
+
+}
+.c-square {
+    position: relative;
+    width: 100%;
+
+    &::after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+    }
+}
+
+.c-content {
+    border-radius: 8px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #212529;
+}

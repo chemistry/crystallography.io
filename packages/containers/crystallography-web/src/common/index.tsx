@@ -7,6 +7,7 @@ import {
   AuthorsPage,
   CatalogPage,
   ContactsPage,
+  DetailsPage,
   LoginPage,
   NewsPage,
   NotFoundPage,
@@ -18,6 +19,7 @@ import {
 import { setup } from "./setup";
 import { getStore } from "./store";
 import { fetchCatalogData } from "./store/catalog-page.slice";
+import { fetchStructureDetailsData } from "./store/details-page.slice";
 
 export enum AppContextType {
     frontend = "frontend",
@@ -65,6 +67,13 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               title: "Crystal Structures List",
               description: "Crystal Structures List",
               loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchCatalogData(params)),
+          },
+          {
+            path: "/structure/:id",
+            component: DetailsPage,
+            title: "Crystal Structure",
+            description: "Crystal Structure",
+            loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchStructureDetailsData(params)),
           },
           {
               path: "/contact",

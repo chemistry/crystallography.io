@@ -24,7 +24,9 @@ const StructuresList = ({ list }: { list: StructureModel[]}) => {
                 return (
                     <div className="c-structure-list-item" key={item.id}>
                         <h2  className="c-structure-list-item__name">
-                            <CompoundName model={item} />
+                            <NavLink to={`/structure/${item.id}`}>
+                                <CompoundName model={item} />
+                            </NavLink>
                         </h2>
                         <p className="c-structure-list-item__formula">
                             <CompoundFormula model={item} />

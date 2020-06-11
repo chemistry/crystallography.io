@@ -9,3 +9,4 @@ export * from "./not-found";
 export * from "./search";
 export * from "./profile";
 export * from "./search-history";
+export * from "./details";
