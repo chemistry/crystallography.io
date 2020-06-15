@@ -42,9 +42,9 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
         <PageContainer HeadComponent={HeadComponent}>
             <div className="columns">
                 <div className="column col-md-12 col-7">
-                <div className="c-square">
-                    <div className="c-content"></div>
-                </div>
+                    <div className="c-square">
+                        <div className="c-content"></div>
+                    </div>
                 </div>
                 <div className="column col-md-5 col-5">
                 <table className="table">
@@ -111,10 +111,13 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
                     </div>
                 </div>
                 <div className="c-details-page__publication">
-                    <div>
-                        <span className="text-bold">Publication:</span>
-                        <span dangerouslySetInnerHTML={{__html: structure.articleHtml}}></span>
-                    </div>
+                    {
+                        structure.articleHtml ?
+                        <div>
+                            <span className="text-bold">Publication:</span>
+                            <span dangerouslySetInnerHTML={{__html: structure.articleHtml}}></span>
+                        </div> : null
+                    }
                 </div>
         </PageContainer>
     );
