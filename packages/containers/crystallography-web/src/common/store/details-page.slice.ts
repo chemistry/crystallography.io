@@ -24,9 +24,10 @@ const detailsPageSlice = createSlice({
         state.error = null;
         if (
             Array.isArray(payload) &&
-            payload.length === 1
+            payload.length === 1 &&
+            action.payload[0].attributes
         ) {
-            state.data.details = action.payload[0];
+            state.data.details = action.payload[0].attributes;
         }
     },
     loadStructureFailed(state, action) {

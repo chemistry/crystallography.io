@@ -1,0 +1,50 @@
+// Tables
+.table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+
+
+    &.table-striped {
+      tbody {
+        tr:nth-of-type(odd) {
+          background: var(--light-grey-color);
+        }
+      }
+    }
+
+    &,
+    &.table-striped {
+      tbody {
+        tr {
+          &.active {
+            background: var(--light-grey-color);
+          }
+        }
+      }
+    }
+
+    &.table-hover {
+      tbody {
+        tr {
+          &:hover {
+            background: var(--light-grey-color);
+          }
+        }
+      }
+    }
+
+    // Scollable tables
+    &.table-scroll {
+      display: block;
+      overflow-x: auto;
+      padding-bottom: .75rem;
+      white-space: nowrap;
+    }
+
+    td,
+    th {
+      border: 1px solid var(--default-color);
+      padding: $unit-3 $unit-4;
+    }
+  }

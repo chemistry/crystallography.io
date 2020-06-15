@@ -17,7 +17,7 @@ export const CompoundName: React.SFC<{ model: StructureModel, highlight?: Highli
     }
 
     return (
-        <span>{ CapitalizeFirstLetter(compoundName) || model.id}</span>
+        <span>{ compoundName ? CapitalizeFirstLetter(compoundName) : "" || model.id}</span>
     );
 };
 
