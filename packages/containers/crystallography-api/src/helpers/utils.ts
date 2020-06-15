@@ -4,19 +4,35 @@ const structureCommonAttributes = [
     "__authors",
 ];
 
+const structureCommonAttributesDetails = [
+    "diffrtemp", "diffrpressure",
+    "sg", "sgHall",
+    "radType", "wavelength",
+    "Rall", "Robs", "Rref", "wRall", "wRobs", "wRref",
+    "loops",
+];
+
 const structureCommonCalcAttributes = [
     "title", "journal", "year", "volume", "issue", "firstpage", "lastpage", "doi",
 ];
 
-export function getStructureAttributes(): string[] {
-    return [
+export function getStructureAttributes(expand: boolean = false): string[] {
+    let res = [
         ...structureCommonAttributes,
         ...structureCommonCalcAttributes,
     ];
+    if (expand) {
+        res = [
+            ...res,
+            ...structureCommonAttributesDetails,
+        ];
+    }
+
+    return res;
 }
 
-export function mapStructure() {
-    const attributes = getStructureAttributes();
+export function mapStructure(expand: boolean = false) {
+    const attributes = getStructureAttributes(expand);
 
     return (item: any) => {
         const itemFilted = attributes.reduce((acc: any, attr: string) => {
@@ -41,10 +57,19 @@ export function mapStructure() {
                 ...itemFilted,
                 id: item.id,
                 articleHtml: getarticleHtml(item),
-                loops: [],
+                loops: expand ? filterLoopArray(item.loops) : [],
             },
         };
     };
+}
+
+function filterLoopArray(loops: any) {
+    if (!Array.isArray(loops)) {
+        return [];
+    }
+    return loops.filter((item) => {
+        return (item.columns.indexOf("_atom_site_fract_x") !== -1);
+    });
 }
 
 function getarticleHtml(item: any): string {

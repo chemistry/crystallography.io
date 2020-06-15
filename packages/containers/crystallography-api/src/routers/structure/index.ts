@@ -8,7 +8,6 @@ const structureIdValidation = Joi.number().integer().min(1000000).max(9999999);
 const structureListValidation = Joi.array().items(structureIdValidation).min(1).max(100);
 
 const PER_PAGE = 100;
-const structureMaper = mapStructure();
 
 export const getStructureRouter = ({ firestore }: { firestore: Firestore }) => {
   const router = Router();
@@ -18,6 +17,7 @@ export const getStructureRouter = ({ firestore }: { firestore: Firestore }) => {
     let page: number = parseInt(req.query.page as string, 10);
     page = page && isFinite(page) ? page : 1;
 
+    const structureMaper = mapStructure();
     const validationRes = structurePageValidation.validate(page);
     if (validationRes.error) {
         return res.status(400).json({
@@ -60,7 +60,9 @@ export const getStructureRouter = ({ firestore }: { firestore: Firestore }) => {
   // post - get structures by Id's
   router.post("/", (req: Request, res: Response) => {
 
-    const { ids } = req?.body || { ids: "[]"};
+    const { ids, expand } = req?.body || { ids: "[]", expand: false};
+    const structureMaper = mapStructure(expand);
+
     let structuresIds: number[] = null;
     try {
         structuresIds = JSON.parse(ids);
