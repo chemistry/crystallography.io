@@ -3,6 +3,8 @@ RUN mkdir /app
 RUN mkdir /static
 WORKDIR /app
 
+ENV NODE_ENV production
+
 # Install rsync
 RUN apk add --update subversion rsync openssh
 

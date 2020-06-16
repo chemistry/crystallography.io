@@ -114,7 +114,7 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
                     {
                         structure.articleHtml ?
                         <div>
-                            <span className="text-bold">Publication:</span>
+                            <span className="text-bold">Publication:</span>&nbsp;
                             <span dangerouslySetInnerHTML={{__html: structure.articleHtml}}></span>
                         </div> : null
                     }
