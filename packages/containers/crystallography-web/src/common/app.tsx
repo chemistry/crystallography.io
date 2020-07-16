@@ -11,7 +11,7 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-const extractTitleMetaInfo = (branches: Array<MatchedRoute<{}>>) => {
+const extractTitleMetaInfo = (branches: MatchedRoute<{}>[]) => {
     return branches
       .map(({ route: { title } }) => title)
       .filter((title) => !!title)

@@ -32,6 +32,6 @@
         "@google-cloud/storage": "4.2.0"
     },
     "devDependencies": {
-        "ts-node": "8.5.4"
+        "ts-node": "8.10.2"
     }
 }
