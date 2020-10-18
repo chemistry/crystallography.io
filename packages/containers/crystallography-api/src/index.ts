@@ -34,6 +34,7 @@ console.time("App Start");
       log(`Application Started on port: ${PORT}`);
       // tslint:disable-next-line
       console.timeEnd("App Start");
+
     } catch (e) {
       // tslint:disable-next-line
       console.error(e);
