@@ -41,11 +41,10 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
     }
 
     useEffect(() => {
-        debugger;
         let viewer = new Mol3DView({
             bgcolor: "#212529"
         });
-        var element = document.getElementById('viewer');
+        const element = document.getElementById('viewer');
         viewer.append(element);
         viewer.onInit();
 

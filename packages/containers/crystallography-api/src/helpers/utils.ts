@@ -69,6 +69,11 @@ function filterLoopArray(loops: any) {
     }
     return loops.filter((item) => {
         return (item.columns.indexOf("_atom_site_fract_x") !== -1);
+    }).map(({ columns, data})=> {
+        return {
+            columns: JSON.parse(columns),
+            data: JSON.parse(data)
+        }
     });
 }
 
