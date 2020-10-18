@@ -149,5 +149,3 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
         </PageContainer>
     );
 };
-
-// {JSON.stringify(structure, null, 4)}
