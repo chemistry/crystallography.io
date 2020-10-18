@@ -37,6 +37,7 @@
     "dependencies": {
         "@google-cloud/firestore": "3.4.0",
         "@google-cloud/storage": "4.2.0",
+        "@chemistry/crystalview": "1.0.8",
         "@reduxjs/toolkit": "1.4.0",
         "@svgr/webpack": "5.4.0",
         "@types/classnames": "2.2.10",

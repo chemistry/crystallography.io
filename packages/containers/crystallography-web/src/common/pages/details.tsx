@@ -2,10 +2,12 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { RouteConfig } from "react-router-config";
 import { useParams } from "react-router-dom";
+import { Mol3DView }  from '@chemistry/crystalview';
 import { PageContainer } from "../layout";
 import { useLoadedData } from "../services";
 import { RootState } from "../store";
 import { CompoundName } from "../utils";
+import { useEffect } from "react";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -38,12 +40,38 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
         );
     }
 
+    useEffect(() => {
+        debugger;
+        let viewer = new Mol3DView({
+            bgcolor: "#212529"
+        });
+        var element = document.getElementById('viewer');
+        viewer.append(element);
+        viewer.onInit();
+
+        if (structure) {
+            try {
+                viewer.load(structure);
+            // tslint:disable-next-line
+            } catch (e) { }
+        }
+        return () => {
+            if (viewer) {
+                element.innerHTML = '<div></div>';
+                viewer.onDestroy();
+                viewer = null;
+            }
+        }
+    }, [structure]);
+
+
+
     return (
         <PageContainer HeadComponent={HeadComponent}>
             <div className="columns">
                 <div className="column col-md-12 col-7">
                     <div className="c-square">
-                        <div className="c-content"></div>
+                        <div className="c-content" id="viewer"></div>
                     </div>
                 </div>
                 <div className="column col-md-5 col-5">
