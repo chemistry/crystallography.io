@@ -4,7 +4,7 @@ import { RouteConfig } from "react-router-config";
 import { useParams } from "react-router-dom";
 import { Mol3DView }  from '@chemistry/crystalview';
 import { PageContainer } from "../layout";
-import { useLoadedData } from "../services";
+import { useInBrowser, useLoadedData } from "../services";
 import { RootState } from "../store";
 import { CompoundName } from "../utils";
 import { useEffect } from "react";
@@ -40,7 +40,7 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
         );
     }
 
-    useEffect(() => {
+    useInBrowser(() => {
         let viewer = new Mol3DView({
             bgcolor: "#212529"
         });
