@@ -16,7 +16,7 @@ const isStoreDataMissed = () => {
 };
 
 export const useInBrowser = (effect: React.EffectCallback, deps?: React.DependencyList) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         useEffect(effect, deps);
     }
 }
