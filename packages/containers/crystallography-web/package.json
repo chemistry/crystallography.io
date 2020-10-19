@@ -57,7 +57,7 @@
         "cross-env": "7.0.2",
         "express": "4.17.1",
         "firebase": "7.16.0",
-        "firebase-admin": "8.12.1",
+        "firebase-admin": "8.13.0",
         "lodash.escape": "4.0.1",
         "react": "16.13.1",
         "react-dom": "16.13.1",
