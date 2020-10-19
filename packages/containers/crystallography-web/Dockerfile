@@ -1,9 +1,7 @@
-FROM mhart/alpine-node:13.12.0
+FROM node:14.14.0-alpine3.10
 RUN mkdir /app
 RUN mkdir /static
 WORKDIR /app
-
-ENV NODE_ENV production
 
 # Install rsync
 RUN apk add --update subversion rsync openssh
@@ -33,6 +31,7 @@ RUN npm install --production
 
 RUN npm run bootstrap:ci
 
+ENV NODE_ENV production
 RUN npm --prefix packages/containers/crystallography-web run build
 
 CMD /app/start-script.sh
