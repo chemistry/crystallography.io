@@ -26,7 +26,6 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
   * [@chemistry/cod-sync-start-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-start-instance) - Start VM for COD Synchronization execution (labels.codsync eq true)
   * [@chemistry/cod-sync-stop-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance) - Stop VM for what finished Synchronization execution
   * [@chemistry/gcs-to-database](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/gcs-to-database) - Read CIF file from storage and save to database;
-  * [@chemistry/api-get-structures-list](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/api-get-structures-list) - API Get Structures List
 
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
