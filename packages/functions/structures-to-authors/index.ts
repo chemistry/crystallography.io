@@ -3,7 +3,7 @@ import { Firestore, FieldValue } from "@google-cloud/firestore";
 // tslint:disable:no-var-requires
 const isEqual = require('lodash.isequal');
 
-import { extractAuthorDetails } from "./authorHelper";
+import { extractAuthorDetails, extractAuthorsList } from "./authorHelper";
 const firestore = new Firestore();
 
 interface Document {
@@ -144,20 +144,6 @@ const unmapLoops = (doc: FirebaseFirestore.DocumentData) => {
         ...doc,
         loops
     }
-}
-
-const extractAuthorsList = (doc: {[key: string]: any}): string[] => {
-    const theLoops = (doc.loops || []).filter((item: any) => {
-        return (item.columns || []).indexOf("_publ_author_name") !== -1;
-    });
-    if (theLoops.length !== 1) {
-        return;
-    }
-    const colIdx = theLoops[0].columns.indexOf("_publ_author_name");
-
-    return (theLoops[0].data || []).map((row: any) => {
-        return row[colIdx];
-    });
 }
 
 const getAuthorFullByDetails = (autorDB: {

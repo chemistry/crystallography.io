@@ -102,6 +102,24 @@ const to = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 const fromRegex = from.map((str) => new RegExp(escapeRegExp(str), "g"));
 
 const regexSymbol = new RegExp("&#x([0-9ABCDEF]{4});", "g");
+
+export const extractAuthorsList = (doc: {[key: string]: any}): string[] => {
+    const theLoops = (doc.loops || []).filter((item: any) => {
+        return (item.columns || []).indexOf("_publ_author_name") !== -1;
+    });
+    if (theLoops.length !== 1) {
+        return;
+    }
+    const colIdx = theLoops[0].columns.indexOf("_publ_author_name");
+
+    return (theLoops[0].data || []).map((row: any) => {
+        if (typeof row === "string") {
+            return row;
+        }
+        return row[colIdx];
+    });
+}
+
 export function extractAuthorDetails(author: string) {
     author = author.trim().replace(/\s\s+/g, " ");
     author = author.replace(/\\/g, "");
