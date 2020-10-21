@@ -31,7 +31,7 @@
         "@types/lodash.isequal": "4.5.5"
     },
     "devDependencies": {
-        "mock-cloud-firestore": "0.11.0",
-        "ts-node": "8.10.2"
+        "mock-cloud-firestore": "0.12.0",
+        "ts-node": "9.0.0"
     }
 }

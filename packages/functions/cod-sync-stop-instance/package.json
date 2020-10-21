@@ -26,6 +26,6 @@
     },
     "dependencies": {
         "@chemistry/common-functions": "^0.0.18",
-        "@google-cloud/compute": "1.1.8"
+        "@google-cloud/compute": "2.3.0"
     }
 }
