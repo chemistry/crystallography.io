@@ -87,12 +87,19 @@ const saveAuthorRecord  = async (recordData: {
 
     await document.set({
         ...row,
-        structures: FieldValue.arrayUnion(recordData.docId)
+        structures: FieldValue.arrayUnion(recordData.docId),
+    }, {
+        merge: true
+    });
+
+    const doc = await document.get();
+    const count = doc.data().structures.length;
+    await document.set({
+        count
     }, {
         merge: true
     });
 }
-
 
 const saveAuthorsToDoc = (
     document: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>,

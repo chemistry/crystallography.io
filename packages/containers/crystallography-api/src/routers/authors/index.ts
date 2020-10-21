@@ -5,8 +5,22 @@ import { Request, Response, Router } from "express";
 const authorsPageValidation = Joi.number().integer().min(1).max(99999);
 const AUTHORS_PER_PAGE = 300;
 
-const authorMaper = (data: any) => {
-    return data;
+const authorMaper = (showDetails: boolean) => {
+
+    return (item: any)=> {
+        const o = {
+            id: item.id,
+            type: "author",
+            attributes: {
+                full: item.full,
+                count: item.count,
+            },
+        } as any;
+        if (showDetails  && Array.isArray(item.structures)) {
+            o.attributes.structures = item.structures;
+        }
+        return o;
+    }
 }
 
 export const getAuthorRouter = ({ firestore }: { firestore: Firestore }) => {
@@ -30,6 +44,7 @@ export const getAuthorRouter = ({ firestore }: { firestore: Firestore }) => {
     return firestore
       .collection("authors")
       .limit(AUTHORS_PER_PAGE)
+      .orderBy('count', "desc")
       .offset((page - 1) * AUTHORS_PER_PAGE)
       .get()
       .then((querySnapshot) => {
@@ -39,7 +54,7 @@ export const getAuthorRouter = ({ firestore }: { firestore: Firestore }) => {
                 ...doc.data(),
               };
           })
-          .map(authorMaper);
+          .map(authorMaper(false));
 
           return res.status(200).json({
             errors: [],
