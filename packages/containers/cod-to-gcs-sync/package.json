@@ -26,8 +26,8 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
-        "@google-cloud/pubsub": "1.2.0",
-        "@types/shelljs": "0.8.6",
-        "shelljs": "0.8.3"
+        "@google-cloud/pubsub": "2.6.0",
+        "@types/shelljs": "0.8.8",
+        "shelljs": "0.8.4"
     }
 }
