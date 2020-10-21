@@ -22,7 +22,7 @@ export const DetailsPage = (props: { route: RouteConfig }) => {
     const isLoading = useSelector((state: RootState) => state.detailsPage.isLoading);
     const structure: any = useSelector((state: RootState) => state.detailsPage.data.details);
 
-    const { id } = useParams();
+    const { id } = useParams() as any;
     const currentId = parseInt(id, 10);
 
     const HeadComponent: React.SFC = () => {

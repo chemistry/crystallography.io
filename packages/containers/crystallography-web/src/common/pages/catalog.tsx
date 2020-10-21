@@ -51,7 +51,7 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
     // Page Navigation
     useLoadedData(props.route);
 
-    const { page } = useParams();
+    const { page } = useParams() as any;
     let currentPage = parseInt(page, 10);
     currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
 
