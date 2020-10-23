@@ -95,7 +95,8 @@ const saveAuthorRecord  = async (recordData: {
     const doc = await document.get();
     const count = doc.data().structures.length;
     await document.set({
-        count
+        count,
+        timestamp: Date.now()
     }, {
         merge: true
     });
