@@ -93,10 +93,15 @@ const saveAuthorRecord  = async (recordData: {
     });
 
     const doc = await document.get();
-    const count = doc.data().structures.length;
+    const docData = doc.data();
+    const count = docData.structures.length;
+    const created = docData.created ? docData.created: FieldValue.serverTimestamp();
+    const modified = FieldValue.serverTimestamp();
+
     await document.set({
         count,
-        timestamp: Date.now()
+        created,
+        modified
     }, {
         merge: true
     });
