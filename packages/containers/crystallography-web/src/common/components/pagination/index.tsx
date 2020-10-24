@@ -6,8 +6,8 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-export const Pagination: React.SFC<{ currentPage: number, maxPages: number, totalPages: number }> = ({
-    currentPage, maxPages, totalPages,
+export const Pagination: React.SFC<{ currentPage: number, maxPages: number, totalPages: number, url: string }> = ({
+    currentPage, maxPages, totalPages, url
 }) => {
     if (totalPages < 1) {
         return null;
@@ -34,7 +34,7 @@ export const Pagination: React.SFC<{ currentPage: number, maxPages: number, tota
 
     const pageLinkTemplate = (pageNum: number) => {
         return (
-            <NavLink to={"/catalog/" + pageNum} className="c-page-link">{pageNum}</NavLink>
+            <NavLink to={ url + "/" + pageNum} className="c-page-link">{pageNum}</NavLink>
         );
     };
 

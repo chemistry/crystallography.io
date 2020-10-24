@@ -18,7 +18,7 @@ const authorsListPageSlice = createSlice({
         state.data.authorsList = [];
     },
     loadAuthorsListSuccess(state, action) {
-        state.isLoading = true;
+        state.isLoading = false;
         state.error = null;
 
         const { payload } = action;
@@ -55,7 +55,7 @@ export const fetchAuthorsListData = (
     dispatch(loadAuthorsListPageStarted({}));
 
     // Load corresponding catalog page
-    const res = await axios.get(`https://api.crystallography.io/api/v1/authors?page=${Math.ceil(pageQ / 100)}`);
+    const res = await axios.get(`https://api.crystallography.io/api/v1/authors?page=${pageQ}`);
     const data = res.data?.data;
 
     dispatch(loadAuthorsListSuccess(data));
