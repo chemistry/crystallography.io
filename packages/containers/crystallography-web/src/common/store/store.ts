@@ -3,11 +3,13 @@ import logger from "redux-logger";
 
 import catalogPageReducer from "./catalog-page.slice";
 import detailsPageReducer from "./details-page.slice";
+import authorsListPageReducer from "./author-list-page.slice";
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
     catalogPage: catalogPageReducer,
     detailsPage: detailsPageReducer,
+    authorsListPage: authorsListPageReducer,
     user: userSlice,
 });
 

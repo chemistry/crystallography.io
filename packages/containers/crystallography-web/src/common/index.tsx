@@ -18,6 +18,7 @@ import {
 } from "./pages";
 import { setup } from "./setup";
 import { getStore } from "./store";
+import { fetchAuthorsListData } from "./store/author-list-page.slice";
 import { fetchCatalogData } from "./store/catalog-page.slice";
 import { fetchStructureDetailsData } from "./store/details-page.slice";
 
@@ -60,6 +61,7 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
               component: AuthorsPage,
               title: "Crystallographers List",
               description: "Top Crystallographers by published Structures count (based on cod database)",
+              loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchAuthorsListData(params)),
           },
           {
               path: "/catalog/:page?",
