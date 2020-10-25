@@ -43,3 +43,6 @@ jobs: # Jobs List
 
       - name: Deploy
         run: npm run deploy
+        env:
+            GCP_BOTO_KEY: ${{ secrets.GCP_BOTO_KEY }}
+            GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

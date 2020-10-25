@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:13.5.0
+FROM node:14.14.0-alpine3.10
 RUN mkdir /app
 WORKDIR /app
 
@@ -13,9 +13,9 @@ RUN apk add --update python py-pip py-cffi  py-cryptography \
   && apk del build-deps \
   && rm -rf /var/cache/apk/*
 
-RUN npm install -g typescript@3.7.3
-RUN npm install -g rimraf@3.0.0
-RUN npm install -g lerna@3.19.0
+RUN npm install -g typescript@4.0.3
+RUN npm install -g rimraf@3.0.2
+RUN npm install -g lerna@3.22.1
 
 COPY package.json .
 COPY package-lock.json .

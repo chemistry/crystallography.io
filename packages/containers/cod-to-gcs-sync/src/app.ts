@@ -9,6 +9,12 @@ export interface AppContext {
 export async function App(context: AppContext) {
     const { log, exec } = context;
 
+    log("Cleanup svn");
+
+    if (exec("svn cleanup").code !== 0) {
+        return Promise.reject(`Error: Clean up svn failed`);
+    }
+
     log("Syncronize cif form crystallography.net");
     if (exec("svn update /home/cod/cif").code !== 0) {
         return Promise.reject(`Error: Synchronization of CIF from crystallography.net to Disk Failed`);
