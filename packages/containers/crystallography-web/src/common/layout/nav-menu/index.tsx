@@ -30,15 +30,19 @@ export const NavMenuTop = ({ onClick }: { onClick?: () => void }) => {
             <li>
                 <NavLink to="/" exact strict className="nav-menu-item" activeClassName="active" onClick={onClick}>
                     <div className="nav-menu-item__icon"><MenuSearchIcon /></div>
-                    <div className="nav-menu-item__title">Search</div>
+                    <div className="nav-menu-item__title">Search Structure</div>
                 </NavLink>
             </li>
-            <li>
-                <NavLink to="/search-history" className="nav-menu-item" activeClassName="active" onClick={onClick}>
-                    <div className="nav-menu-item__icon"><SearchHistoryIcon /></div>
-                    <div className="nav-menu-item__title">Search History</div>
-                </NavLink>
-            </li>
+            {
+                /*
+                    <li>
+                        <NavLink to="/search-history" className="nav-menu-item" activeClassName="active" onClick={onClick}>
+                            <div className="nav-menu-item__icon"><SearchHistoryIcon /></div>
+                            <div className="nav-menu-item__title">Search History</div>
+                        </NavLink>
+                    </li>
+                */
+            }
             <li>
                 <NavLink to="/authors" className="nav-menu-item" activeClassName="active" onClick={onClick}>
                     <div className="nav-menu-item__icon"><MenuAuthorsIcon /></div>

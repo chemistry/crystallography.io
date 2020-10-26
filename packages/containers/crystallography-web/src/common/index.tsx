@@ -13,6 +13,11 @@ import {
   NotFoundPage,
   ProfilePage,
   RegisterPage,
+  SearchByAuthorsPage,
+  SearchByFormulaPage,
+  SearchByNamePage,
+  SearchByStructurePage,
+  SearchByUnitCellPage,
   SearchHistoryPage,
   SearchPage,
 } from "./pages";
@@ -46,9 +51,33 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
           {
               path: "/",
               exact: true,
-              component: SearchPage,
+              component: SearchByStructurePage,
               title: "Crystal Structure Search",
               description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
+          },
+          {
+            path: "/search/author",
+            component: SearchByAuthorsPage,
+            title: "Crystal Structure Search",
+            description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
+          },
+          {
+            path: "/search/name",
+            component: SearchByNamePage,
+            title: "Crystal Structure Search",
+            description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
+          },
+          {
+            path: "/search/formula",
+            component: SearchByFormulaPage,
+            title: "Crystal Structure Search",
+            description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
+          },
+          {
+            path: "/search/unitcell",
+            component: SearchByUnitCellPage,
+            title: "Crystal Structure Search",
+            description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
           },
           {
               path: "/about",

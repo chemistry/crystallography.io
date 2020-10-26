@@ -23,9 +23,13 @@ export const AppNavigation = () => {
           <div className="app-navigation-header-menu-top">
               <NavMenuTop />
           </div>
-          <div className="app-navigation-header-menu-bottom">
-             <NavMenuBottom />
-          </div>
+          {
+              /*
+                <div className="app-navigation-header-menu-bottom">
+                    <NavMenuBottom />
+                </div>
+            */
+          }
        </header>
       </>
     );
