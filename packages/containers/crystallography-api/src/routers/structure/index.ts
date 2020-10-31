@@ -1,5 +1,5 @@
 import { Firestore } from "@google-cloud/firestore";
-import * as Joi from "@hapi/joi";
+import Joi from "joi";
 import { Request, Response, Router } from "express";
 import { mapStructure } from "../../helpers";
 

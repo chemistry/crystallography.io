@@ -1,5 +1,5 @@
 import { FieldPath, Firestore } from "@google-cloud/firestore";
-import * as Joi from "@hapi/joi";
+import Joi from "joi";
 import { Request, Response, Router } from "express";
 
 const authorsPageValidation = Joi.number().integer().min(1).max(99999);
