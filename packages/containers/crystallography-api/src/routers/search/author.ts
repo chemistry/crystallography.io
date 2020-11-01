@@ -23,13 +23,14 @@ export const getAuthorSearchRouter = ({ firestore }: { firestore: Firestore }) =
         const nameChars = "\\w\\u00C0-\\u021B\\-\\`'’ιλḰṕḾŃḱóOů̅ουḿα\u2019";
         name = name.replace(new RegExp("[^" + nameChars + "\\.\\-\\s]"), "").replace(/\s+/g, " ").trim();
 
-
-        const validationRes = Joi.validate({
-            name, page,
-        }, Joi.object().keys({
+        const pageNameValidation = Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
             page: Joi.number().integer().min(1).max(99999).required(),
-        }));
+        });
+
+        const validationRes = pageNameValidation.validate({
+            name, page,
+        });
 
         if (validationRes.error) {
             return res.status(400).json({

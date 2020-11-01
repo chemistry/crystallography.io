@@ -13,8 +13,8 @@ const GCP_BOTO_KEY = process.env.GCP_BOTO_KEY || '';
 const config: any = {
     "kind": "compute#instance",
     "name": "cod-sync",
-    "zone": "europe-west1-b",
-    "machineType": "n1-standard-1",
+    "zone": "projects/crystallography-api/zones/europe-west1-b",
+    "machineType": "projects/crystallography-api/zones/europe-west1-b/machineTypes/e2-small",
     "metadata": {
         "kind": "compute#metadata",
         "items": [{
