@@ -1,13 +1,11 @@
 import { Firestore, FieldValue } from "@google-cloud/firestore";
 import { Client } from 'elasticsearch';
 
-// tslint:disable:no-var-requires
 // tslint:disable:no-console
 const firestore = new Firestore();
-const elasticsearch = require('elasticsearch');
 
 // instantiate an Elasticsearch client
-const client = new elasticsearch.Client({
+const client = new Client({
     hosts: [ 'http://elasticsearch.crystallography.io']
  });
 
@@ -57,14 +55,13 @@ export async function handler(
     client.index({
         id: documentSnapshot.id,
         index: 'structures.documents',
-        type: 'doc',
+        type: '_doc',
         body: {
             ...bodyToStore,
         }
-    }, (err: any, resp: any, status: any) =>{
+    }, (err: any, resp: any) =>{
         console.log(err);
         console.log(resp);
-        console.log(status);
     });
 
 
