@@ -27,6 +27,8 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
   * [@chemistry/cod-sync-stop-instance](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance) - Stop VM for what finished Synchronization execution
   * [@chemistry/gcs-to-database](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/gcs-to-database) - Read CIF file from storage and save to database;
 
+  * [@chemistry/structures-to-index](https://github.com/chemistry/crystallography-api/tree/master/packages/functions/structures-to-index) - Store information about document in Elastic search for further processing
+
 ### Libraries:
   * [@chemistry/common-functions](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/common-functions) - Common code shared across cloud function
   * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
