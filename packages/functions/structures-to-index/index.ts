@@ -3,8 +3,6 @@ import { Client } from 'elasticsearch';
 
 // tslint:disable:no-var-requires
 // tslint:disable:no-console
-const isEqual = require('lodash.isequal');
-
 const firestore = new Firestore();
 const elasticsearch = require('elasticsearch');
 
