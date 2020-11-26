@@ -1,6 +1,7 @@
 import { Client } from 'elasticsearch';
 const client = new Client({
-   hosts: [ 'http://elasticsearch.crystallography.io']
+   hosts: [ 'http://elasticsearch.crystallography.io'],
+   apiVersion: '7.2',
 });
 // tslint:disable:no-console
 
@@ -15,6 +16,14 @@ client.ping({
      }
 });
 
+
+client.indices.delete({
+    index: 'structures.documents'
+})
+.then((data)=> {
+    console.log(JSON.stringify(data));
+});
+
 client.indices.create({
     index: 'structures.documents',
     "body": {
@@ -22,19 +31,8 @@ client.indices.create({
             "analysis": {
                 "analyzer": {
                     "indexing_analyzer": {
-                        "tokenizer": "whitespace",
-                        "filter":  ["lowercase", "edge_ngram_filter"]
-                    },
-                    "search_analyze": {
-                        "tokenizer": "whitespace",
-                        "filter":  "lowercase"
-                    }
-            },
-            "filter": {
-                    "edge_ngram_filter": {
-                        "type": "edge_ngram",
-                        "min_gram": 1,
-                        "max_gram": 20
+                        "tokenizer": "standard",
+                        "filter": ["lowercase"]
                     }
                 }
             }
@@ -44,22 +42,18 @@ client.indices.create({
                 "mineral": {
                     "type": "text",
                     "analyzer":"indexing_analyzer",
-                    "search_analyzer": "search_analyze"
                 },
                 "commonname": {
                     "type": "text",
                     "analyzer":"indexing_analyzer",
-                    "search_analyzer": "search_analyze"
                 },
                 "chemname": {
                     "type": "text",
                     "analyzer":"indexing_analyzer",
-                    "search_analyzer": "search_analyze"
                 },
                 "title": {
                     "type": "text",
                     "analyzer":"indexing_analyzer",
-                    "search_analyzer": "search_analyze"
                 }
             }
         }
@@ -73,6 +67,6 @@ client.indices.create({
     } else {
         console.log("created a new index", response);
     }
-})
+});
 
 

@@ -38,9 +38,11 @@
         "cors": "2.8.5",
         "cross-env": "7.0.2",
         "express": "4.17.1",
+        "elasticsearch": "16.7.1",
         "joi": "17.3.0"
     },
     "devDependencies": {
+        "@types/elasticsearch": "5.0.36",
         "mock-cloud-firestore": "0.12.0",
         "nodemon": "2.0.6",
         "supertest": "6.0.0",
