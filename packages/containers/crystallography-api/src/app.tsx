@@ -11,16 +11,17 @@ export interface ExpresContext {
     PORT: number;
 }
 
-
 export async function startApplication(context: ExpresContext) {
     const { log } = context;
     log("application started");
 
     const app = express();
 
+    const ES_KEY = process.env.ES_KEY || '';
     const firestore = new Firestore();
     const elasticSearch = new Client({
-        hosts: [ 'http://elasticsearch.crystallography.io'],
+        host: 'http://elasticsearch.crystallography.io',
+        httpAuth: ES_KEY,
         apiVersion: '7.2',
     });
     elasticSearch.ping({

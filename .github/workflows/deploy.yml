@@ -46,3 +46,5 @@ jobs: # Jobs List
         env:
             GCP_BOTO_KEY: ${{ secrets.GCP_BOTO_KEY }}
             GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+            ES_KEY: ${{ secrets.ES_KEY }}
+

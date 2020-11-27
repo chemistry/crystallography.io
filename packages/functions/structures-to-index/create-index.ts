@@ -1,6 +1,9 @@
 import { Client } from 'elasticsearch';
+
+const ES_KEY = process.env.ES_KEY || '';
 const client = new Client({
-   hosts: [ 'http://elasticsearch.crystallography.io'],
+   host: 'http://search.crystallography.io',
+   httpAuth: ES_KEY,
    apiVersion: '7.2',
 });
 // tslint:disable:no-console
@@ -17,15 +20,17 @@ client.ping({
 });
 
 
-client.indices.delete({
-    index: 'structures.documents'
-})
-.then((data)=> {
-    console.log(JSON.stringify(data));
-});
+/*
+    client.indices.delete({
+        index: 'temp2_structures.documents'
+    })
+    .then((data)=> {
+        console.log(JSON.stringify(data));
+    });
+*/
 
 client.indices.create({
-    index: 'structures.documents',
+    index: 'temp3_structures.documents',
     "body": {
         "settings": {
             "analysis": {
