@@ -1,4 +1,5 @@
-.search-layout-tabs {
+.search-layout {
+  &-tabs {
     .app-layout-header {
         height: 126px;
         min-height: 126px;
@@ -6,4 +7,9 @@
     .app-layout-content {
         top: 126px;
     }
+  }
+
+  &__search-icon {
+    color: var(--dark-grey-color);
+  }
 }
