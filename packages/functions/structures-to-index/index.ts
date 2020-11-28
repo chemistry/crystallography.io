@@ -8,7 +8,7 @@ const firestore = new Firestore();
 // instantiate an Elasticsearch client
 const ES_KEY = process.env.ES_KEY || '';
 const client = new Client({
-    host: 'http://elasticsearch.crystallography.io',
+    host: 'http://search.crystallography.io',
     httpAuth: ES_KEY,
     apiVersion: '7.2',
 });
