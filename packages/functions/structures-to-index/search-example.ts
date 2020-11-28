@@ -2,7 +2,7 @@ import { Client } from 'elasticsearch';
 
 const ES_KEY = process.env.ES_KEY || '';
 const client = new Client({
-   host: 'http://elasticsearch.crystallography.io',
+   host: 'http://search.crystallography.io',
    httpAuth: ES_KEY,
    apiVersion: '7.2',
 });

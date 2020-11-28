@@ -40,7 +40,6 @@ export async function handler(
     event: FirestoreChangeEvent,
 ) {
     console.time("process");
-    console.log(JSON.stringify(event));
     const { value: { name }} = event;
     const documentPath = name.split('/documents/')[1];
     const document = firestore.doc(documentPath);

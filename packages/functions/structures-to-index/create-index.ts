@@ -30,7 +30,7 @@ client.ping({
 */
 
 client.indices.create({
-    index: 'temp3_structures.documents',
+    index: 'structures.documents',
     "body": {
         "settings": {
             "analysis": {

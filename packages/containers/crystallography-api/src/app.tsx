@@ -20,7 +20,7 @@ export async function startApplication(context: ExpresContext) {
     const ES_KEY = process.env.ES_KEY || '';
     const firestore = new Firestore();
     const elasticSearch = new Client({
-        host: 'http://elasticsearch.crystallography.io',
+        host: 'http://search.crystallography.io',
         httpAuth: ES_KEY,
         apiVersion: '7.2',
     });
@@ -32,7 +32,7 @@ export async function startApplication(context: ExpresContext) {
             console.error('Elasticsearch cluster is down!');
         } else {
             // tslint:disable-next-line
-            console.log('Everything is ok');
+            console.log('successfully connected to elastic search');
         }
    });
 
