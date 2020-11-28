@@ -18,6 +18,7 @@ export async function startApplication(context: ExpresContext) {
     const app = express();
 
     const ES_KEY = process.env.ES_KEY || '';
+
     const firestore = new Firestore();
     const elasticSearch = new Client({
         host: 'http://search.crystallography.io',

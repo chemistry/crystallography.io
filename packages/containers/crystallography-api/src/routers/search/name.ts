@@ -4,6 +4,23 @@ import Joi from "joi";
 import { Router, Request, Response } from "express";
 
 
+const hitsMaper = (hits: any) => {
+    if (hits && hits.hits && Array.isArray(hits.hits)) {
+        return hits.hits.map((item: any)=> {
+            const { _id, _score } = item;
+            return {
+                id: _id,
+                type: "structure",
+                attributes: {
+                    id: _id,
+                    score: _score
+                },
+            };
+        });
+    }
+    return [];
+}
+
 export const getNameSearchRouter = ({ firestore, elasticSearch }: { firestore: Firestore, elasticSearch: Client }) => {
     const router = Router();
 
@@ -55,13 +72,16 @@ export const getNameSearchRouter = ({ firestore, elasticSearch }: { firestore: F
             }
         })
         .then((data: any)=> {
+            const { took, time_out, hits } = data;
             return res.status(200).json({
                 meta: {
                     total: 0,
                     pages: 0,
+                    took,
+                    time_out,
                     searchString: req.body.name,
                 },
-                data
+                data: hitsMaper(hits)
             });
         })
         .catch((e: any) => {
