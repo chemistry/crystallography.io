@@ -63,10 +63,8 @@ export async function handler(
             ...bodyToStore,
         }
     }, (err: any, resp: any) =>{
-        console.log(err);
-        console.log(resp);
+        console.error(err);
     });
-
 
     console.timeEnd("process");
 }

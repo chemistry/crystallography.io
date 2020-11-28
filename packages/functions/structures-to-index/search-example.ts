@@ -13,9 +13,9 @@ client.ping({
      requestTimeout: 30000,
  }, (error: any) => {
      if (error) {
-         console.error('Elasticsearch cluster is down!');
+        console.error('Elasticsearch cluster is down!');
      } else {
-         console.log('Everything is ok');
+        console.log('Everything is ok');
      }
 });
 
@@ -58,7 +58,7 @@ client.search({
     body: {
         query: {
             "multi_match": {
-                "query": 'diopside',
+                "query": 'strontium',
                 "fields": [
                     'commonname^4', 'mineral^4', 'chemname^4', 'title'
                 ]
