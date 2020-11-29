@@ -1,6 +1,14 @@
 const request = require('supertest');
 import { startApplication } from './app';
 
+jest.mock('elasticsearch', ()=> ({
+    Client: function () {
+        return {
+            ping: jest.fn()
+        }
+    }
+}));
+
 describe("Express Application", () => {
     let mockContext: any = {
         log: () => {},
