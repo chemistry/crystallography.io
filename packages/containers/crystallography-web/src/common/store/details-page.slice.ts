@@ -45,16 +45,16 @@ export default detailsPageSlice.reducer;
 export const fetchStructureDetailsData = (
     { id }: { id: string },
 ): AppThunk => async (dispatch) => {
-  try {
-    dispatch(loadStructureStarted({}));
+    try {
+        dispatch(loadStructureStarted({}));
 
-    const res = await axios.post(`https://api.crystallography.io/api/v1/structure`, `ids=[${id}]&expand=true`, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-    });
-    const data = res.data?.data;
-    dispatch(loadStructureSuccess(data));
+        const res = await axios.post(`https://api.crystallography.io/api/v1/structure`, `ids=[${id}]&expand=true`, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+        const data = res.data?.data;
+        dispatch(loadStructureSuccess(data));
   } catch (err) {
     dispatch(loadStructureFailed(err.toString()));
   }

@@ -248,7 +248,7 @@ textarea.form-input {
     }
 
     .form-input {
-      padding-left: $control-icon-size + $control-padding-y * 2;
+      padding-left: $control-icon-size + $control-padding-y * 2 - 0.25;
     }
   }
 

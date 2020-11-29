@@ -4,12 +4,14 @@ import logger from "redux-logger";
 import catalogPageReducer from "./catalog-page.slice";
 import detailsPageReducer from "./details-page.slice";
 import authorsListPageReducer from "./author-list-page.slice";
+import searchByNameSliceReducer from "./search-name-page.slice";
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
     catalogPage: catalogPageReducer,
     detailsPage: detailsPageReducer,
     authorsListPage: authorsListPageReducer,
+    searchByNameSlice: searchByNameSliceReducer,
     user: userSlice,
 });
 

@@ -1,12 +1,52 @@
+import { debug } from "console";
 import * as React from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { SearchTab } from "../../components";
+import { searchStructureByName } from "../../store/search-name-page.slice";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
     require("./search-main.scss");
 }
 
+interface SearchFormData {
+    name: string;
+}
+
+const SearchByNameForm = ({ onSubmit }: { onSubmit: (data: SearchFormData) => void }) => {
+    const [name, setName] = useState('');
+
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        setName(event.target.value);
+    }
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        onSubmit({ name });
+    }
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="form-group">
+                <div className="has-icon-left has-button-right">
+                    <i className="form-icon icon icon-search search-layout__search-icon"></i>
+                    <input type="text" value={name} onChange={handleNameChange} className="form-input" placeholder="Enter keyword" />
+                    <button className="form-button btn">Search</button>
+                </div>
+            </div>
+        </form>
+    )
+}
+
 export const SearchByStructurePage = () => {
+
+    const dispatch = useDispatch();
+
+    const handleSubmit = (data: SearchFormData) => {
+        dispatch(searchStructureByName(data));
+    }
+
     return (
         <div className="search-layout-tabs">
             <header className="app-layout-header">
@@ -15,13 +55,7 @@ export const SearchByStructurePage = () => {
             </header>
             <div className="app-layout-content">
                 <div className="column col-md-12 col-8">
-                    <div className="form-group">
-                        <div className="has-icon-left has-button-right">
-                            <i className="form-icon icon icon-search search-layout__search-icon"></i>
-                            <input type="text" className="form-input" placeholder="Enter keyword" />
-                            <button className="form-button btn">Search</button>
-                        </div>
-                    </div>
+                    <SearchByNameForm onSubmit={handleSubmit}/>
                 </div>
             </div>
 
