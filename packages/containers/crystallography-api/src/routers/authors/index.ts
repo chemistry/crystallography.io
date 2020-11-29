@@ -64,10 +64,12 @@ export const getAuthorRouter = ({ firestore }: { firestore: Firestore }) => {
           });
       })
       .catch((e) => {
-          return res.status(500).json({
-            errors: [String(e)],
-            meta: {},
-          });
+            // tslint:disable-next-line
+            console.error(e.stack);
+            return res.status(500).json({
+                errors: [String(e)],
+                meta: {},
+            });
       });
   });
 

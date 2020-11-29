@@ -85,6 +85,8 @@ export const getNameSearchRouter = ({ firestore, elasticSearch }: { firestore: F
             });
         })
         .catch((e: any) => {
+             // tslint:disable-next-line
+             console.error(e.stack);
             return res.status(500).json({
                 status: 500,
                 title: "Something wrong with connection to elastic search",

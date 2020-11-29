@@ -67,6 +67,9 @@ export const getAuthorSearchRouter = ({ firestore }: { firestore: Firestore }) =
             });
         })
         .catch((e) => {
+            // tslint:disable-next-line
+            console.error(e.stack);
+
             return res.status(500).json({
                 errors: [String(e)],
                 meta: {},

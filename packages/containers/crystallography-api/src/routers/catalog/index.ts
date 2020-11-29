@@ -58,6 +58,8 @@ export const getCatalogRouter = ({ firestore }: { firestore: Firestore }) => {
           });
       })
       .catch((e) => {
+            // tslint:disable-next-line
+           console.error(e.stack);
           return res.status(500).json({
             errors: [String(e)],
             meta: {},
