@@ -56,7 +56,7 @@ export async function startApplication(context: ExpresContext) {
 
     app.use("/api/v1", getRouters({ firestore, elasticSearch }));
 
-    app.use((err: any, req: any, res: any) => {
+    app.use((err: any, req: any, res: any, next: any) => {
         // tslint:disable-next-line
         console.error(err.stack);
         res.status(500).send('Something broke!');
