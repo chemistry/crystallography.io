@@ -45,7 +45,7 @@ const searchByNameSlice = createSlice({
         const { pages, total, searchString } = meta;
 
         state.data.structureIds = ids;
-        state.status = SearchState.success;
+        state.status = SearchState.processing;
         state.meta.totalPages = pages;
         state.meta.totalResults = total;
         state.meta.searchString = searchString;
