@@ -2,6 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppThunk } from "./common";
 
+export enum SearchState {
+    empty,
+    started,
+    processing,
+    success,
+    failed
+}
+
 const searchByNameSlice = createSlice({
   name: "searchByName",
   initialState: {
@@ -12,29 +20,43 @@ const searchByNameSlice = createSlice({
     meta: {
         totalPages: 0,
         totalResults: 0,
-        hasResults: false,
+        searchString: ''
     },
+    status: SearchState.empty,
     currentPage: 1,
     name: '',
     error: null,
     isLoading: false,
   },
   reducers: {
-    searchStructureByNameStart(state, action) {
+    searchStructureByNameStart(state, action: {payload : { name: string }}) {
+        const { payload } = action;
+        const { name } = payload;
         state.isLoading = true;
         state.error = null;
+        state.status = SearchState.started;
     },
-    searchStructureByNameIdsSuccess(state, action: { payload: { ids: string[]} }) {
+
+    searchStructureByNameIdsSuccess(state, action: {
+        payload: { ids: string[], meta: { searchString: string; pages: number, total: number } }
+    }) {
         const { payload } = action;
-        const { ids } = payload;
+        const { ids, meta } = payload;
+        const { pages, total, searchString } = meta;
 
         state.data.structureIds = ids;
+        state.status = SearchState.success;
+        state.meta.totalPages = pages;
+        state.meta.totalResults = total;
+        state.meta.searchString = searchString;
+
         state.isLoading = true;
         state.error = null;
     },
     loadStructureListSuccess(state, { payload }) {
         state.isLoading = false;
         state.error = null;
+        state.status = SearchState.success;
         const structures: any = { };
         payload.forEach((element: any) => {
             structures[element.id] = element.attributes;
@@ -44,6 +66,7 @@ const searchByNameSlice = createSlice({
     },
     searchStructureByNameSuccessFailed(state, action) {
         state.isLoading = false;
+        state.status = SearchState.failed,
         state.error = action.payload;
     },
   },
@@ -76,7 +99,7 @@ export const searchStructureByName = (
     { name }: { name : string },
 ): AppThunk => async (dispatch) => {
     try {
-        dispatch(searchStructureByNameStart({}));
+        dispatch(searchStructureByNameStart({ name }));
 
         const res = await axios.post(`https://api.crystallography.io/api/v1/search/name`, `name=${name}`, {
             headers: {
@@ -93,7 +116,7 @@ export const searchStructureByName = (
             });
         }
 
-        dispatch(searchStructureByNameIdsSuccess({ ids: structuresToLoad }));
+        dispatch(searchStructureByNameIdsSuccess({ ids: structuresToLoad, meta: data.meta }));
 
         let data2: any[] = [];
         if (structuresToLoad.length > 0) {

@@ -1,9 +1,10 @@
-import { debug } from "console";
 import * as React from "react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { SearchTab } from "../../components";
-import { searchStructureByName } from "../../store/search-name-page.slice";
+import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader, Pagination, SearchTab } from "../../components";
+import { StructuresList } from "../../components/structure-list/structure-list";
+import { RootState } from "../../store";
+import { SearchState, searchStructureByName } from "../../store/search-by-name-page.slice";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -14,8 +15,8 @@ interface SearchFormData {
     name: string;
 }
 
-const SearchByNameForm = ({ onSubmit }: { onSubmit: (data: SearchFormData) => void }) => {
-    const [name, setName] = useState('');
+const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
+    const [name, setName] = useState(initialValue);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -23,7 +24,9 @@ const SearchByNameForm = ({ onSubmit }: { onSubmit: (data: SearchFormData) => vo
     }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        onSubmit({ name });
+        if (name !== '') {
+            onSubmit({ name });
+        }
     }
 
     return (
@@ -39,6 +42,50 @@ const SearchByNameForm = ({ onSubmit }: { onSubmit: (data: SearchFormData) => vo
     )
 }
 
+const SearchSummary = ({ totalPages, status }: {totalPages: number, status: SearchState })=> {
+    if ([SearchState.processing, SearchState.started, SearchState.success].includes(status)) {
+        return (
+            <div className="search-layout__results-header">
+                <h4 className="text-primary">Resutlts: {totalPages}</h4>
+            </div>
+        )
+    }
+
+    return null;
+}
+
+const SearchResults = ()=> {
+    const containerRef = useRef(null);
+    const isLoading = useSelector((state: RootState) => state.searchByNameSlice.isLoading);
+    const structures = useSelector((state: RootState) => {
+        const structuresIds = state.searchByNameSlice.data.structureIds;
+        const structuresById: any = state.searchByNameSlice.data.structureById;
+
+        return structuresIds.map((id) => {
+            return structuresById[id];
+        }).filter((item) => !!item);
+    });
+    const totalResults = useSelector((state: RootState) => state.searchByNameSlice.meta.totalResults);
+    const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
+    const totalPages = useSelector((state: RootState) => state.searchByNameSlice.meta.totalPages);
+    const status = useSelector((state: RootState) => state.searchByNameSlice.status);
+
+
+    return (
+        <div>
+            <div className="search-layout__results-list">
+                <div ref={containerRef}>
+                    <SearchSummary totalPages={totalResults} status={status} />
+                    <Loader isVisible={isLoading} scrollElement={containerRef}>
+                        <Pagination currentPage={currentPage} maxPages={10} totalPages={totalPages} url={'/catalog'} />
+                        <StructuresList list={structures} />
+                    </Loader>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export const SearchByStructurePage = () => {
 
     const dispatch = useDispatch();
@@ -46,6 +93,7 @@ export const SearchByStructurePage = () => {
     const handleSubmit = (data: SearchFormData) => {
         dispatch(searchStructureByName(data));
     }
+    const searchString = useSelector((state: RootState) => state.searchByNameSlice.meta.searchString);
 
     return (
         <div className="search-layout-tabs">
@@ -54,11 +102,15 @@ export const SearchByStructurePage = () => {
                   <SearchTab />
             </header>
             <div className="app-layout-content">
-                <div className="column col-md-12 col-8">
-                    <SearchByNameForm onSubmit={handleSubmit}/>
+                <div className="search-layout__page">
+                    <div>
+                        <SearchByNameForm onSubmit={handleSubmit} initialValue={searchString}/>
+                    </div>
+                    <div>
+                        <SearchResults />
+                    </div>
                 </div>
             </div>
-
         </div>
     );
 }

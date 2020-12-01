@@ -4,7 +4,7 @@ import logger from "redux-logger";
 import catalogPageReducer from "./catalog-page.slice";
 import detailsPageReducer from "./details-page.slice";
 import authorsListPageReducer from "./author-list-page.slice";
-import searchByNameSliceReducer from "./search-name-page.slice";
+import searchByNameSliceReducer from "./search-by-name-page.slice";
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
@@ -16,9 +16,10 @@ const reducer = combineReducers({
 });
 
 const isDevelopment = (process.env.NODE_ENV !== "production");
+const isNode = (typeof module !== 'undefined' && module.exports);
 const middleware = [
     ...getDefaultMiddleware(),
-    ...(isDevelopment ? [logger] : []),
+    ...((isDevelopment  && !isNode)? [logger] : []),
 ];
 export type RootState = ReturnType<typeof reducer>;
 
