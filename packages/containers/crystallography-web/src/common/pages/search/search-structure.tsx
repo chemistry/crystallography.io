@@ -16,13 +16,74 @@ interface SearchFormData {
     name: string;
 }
 
+
+const renderItemValue = (item: any, search: any) => {
+    // escape special characters
+    search = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const re = new RegExp('(^' + search.split(' ').join('|') + ')', 'gi');
+
+    // If the data OK - return values
+    if (item.value && item.count) {
+        let valueWords = item.value.split(' ');
+        valueWords = valueWords.map((word: any) => {
+            return word.replace(re, '<b>$1</b>');
+        });
+
+        const html = valueWords.join(' ');
+        return (
+            <span>
+                <span dangerouslySetInnerHTML={{ __html: html }} />
+                <span className="comments">{item.count}</span>
+            </span>
+        );
+    }
+}
+
+const autoCompleteSource = (value: any, response: any) => {
+
+    fetch('/api/v1/autocomplete/name?name=' + encodeURIComponent(value), {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then((res)=> {
+        return res.json();
+    })
+    .then((data)=> {
+        if (data.data && Array.isArray(data.data)) {
+            const responseData = data.data.map((item: any) => {
+                return {
+                    value: item.name,
+                    count: item.count,
+                };
+            });
+            response(value, responseData);
+            return;
+        }
+        response(value, []);
+    })
+    .catch(()=> {
+        response(value, []);
+    });
+}
+
 const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
-    const [name, setName] = useState(initialValue);
+
+    const [name, setName ] = useState(initialValue);
+
+    const autoCompleteOptions = {
+        minChars: 1,
+        delay: 100,
+        source: autoCompleteSource,
+        renderItemValue,
+    };
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         setName(event.target.value);
     }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (name !== '') {
@@ -35,8 +96,13 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
             <div className="form-group">
                 <div className="has-icon-left has-button-right">
                     <i className="form-icon icon icon-search search-layout__search-icon"></i>
-                    <Input value={name} onChange={handleNameChange} placeholder="Enter keyword" />
-
+                    <Input
+                        initialValue={initialValue}
+                        name="name"
+                        onChange={handleNameChange}
+                        placeholder="Enter keyword"
+                        autoCompleteOptions={autoCompleteOptions}
+                    />
                     <button className="form-button btn">Search</button>
                 </div>
             </div>
@@ -44,10 +110,10 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
     )
 }
 
-const SearchSummary = ({ totalPages }: {totalPages: number })=> {
+const SearchSummary = ({ totalResults }: {totalResults: number })=> {
     return (
         <div className="search-layout__results-header">
-            <h4 className="text-primary">Resutlts: {totalPages}</h4>
+            <h4 className="text-primary">Results: {totalResults}</h4>
         </div>
     )
 }
@@ -91,7 +157,6 @@ const SearchResults = ()=> {
             return structuresById[id];
         }).filter((item) => !!item);
     });
-    const totalResults = useSelector((state: RootState) => state.searchByNameSlice.meta.totalResults);
     const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
     const totalPages = useSelector((state: RootState) => state.searchByNameSlice.meta.totalPages);
     const hasNoResults = useSelector((state: RootState) => {
@@ -99,6 +164,12 @@ const SearchResults = ()=> {
         const resultCount = Object.keys(state.searchByNameSlice.data.structureById).length;
         return (status === SearchState.success && resultCount === 0);
     });
+    const totalResults = useSelector((state: RootState) =>{
+        return Math.max(
+            Object.keys(state.searchByNameSlice.data.structureById).length,
+            state.searchByNameSlice.meta.totalResults
+        );
+    })
     const showSummary = useSelector((state: RootState) => {
         const status = state.searchByNameSlice.status;
         const resultCount = Math.max(
@@ -113,7 +184,7 @@ const SearchResults = ()=> {
         <div>
             <div className="search-layout__results-list">
                 <div ref={containerRef}>
-                    { showSummary ? <SearchSummary totalPages={totalResults}/> : null }
+                    { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
                     { hasNoResults ? <NoSearchResults /> : null }
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <Pagination currentPage={currentPage} maxPages={10} totalPages={totalPages} url={'/catalog'} />

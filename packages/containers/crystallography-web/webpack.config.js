@@ -168,6 +168,13 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.svg']
     },
     devServer:{
-      historyApiFallback: true
+        historyApiFallback: true,
+        proxy: {
+            '/api': {
+                target: 'http://crystallography-online.com',
+                changeOrigin: true
+                // pathRewrite: {'^/api' : ''}
+            }
+        }
     }
 };

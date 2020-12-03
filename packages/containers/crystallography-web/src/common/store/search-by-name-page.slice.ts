@@ -32,6 +32,10 @@ const searchByNameSlice = createSlice({
     searchStructureByNameStart(state, action: {payload : { name: string }}) {
         const { payload } = action;
         const { name } = payload;
+        state.data = {
+            structureById: {},
+            structureIds: [],
+        };
         state.isLoading = true;
         state.error = null;
         state.status = SearchState.started;
@@ -106,6 +110,7 @@ export const searchStructureByName = (
                 "Content-Type": "application/x-www-form-urlencoded",
             },
         });
+
         const data: SearchNameResponse = res.data as SearchNameResponse;
 
         let structuresToLoad: string[] = [];
