@@ -19,4 +19,5 @@ body {
     font-size: var(--base-font-size);
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
+    caret-color: var(--active-color);
 }

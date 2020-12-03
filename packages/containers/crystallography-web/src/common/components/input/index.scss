@@ -1,6 +1,23 @@
 .c-form-input{
     position: relative;
 
+    .form-input:focus {
+        border-color: var(--light-grey-color);
+        box-shadow: 0px 1px 2px rgba(36, 154, 243, 0.1);
+    }
+
+    &--has-recommendation .form-input {
+        border-width: 1px 1px 0 1px;
+        border-color: var(--light-grey-color);
+        border-radius: var(--border-radius) var(--border-radius) 0 0 ;
+        box-shadow: 0px 1px 2px rgba(36, 154, 243, 0.1);
+    }
+
+    &-suggestion-divider {
+        display: block;
+        border-top: 1px solid var(--light-grey-color);
+        margin: 0 0.5rem;
+    }
     &-suggestions {
         cursor: default;
 
@@ -13,9 +30,8 @@
         border: 1px solid var(--light-grey-color);
         background: var(--white-color);
         border-radius: 0 0 var(--border-radius) var(--border-radius);
-
-        // background: #fff;
-        // box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+        box-shadow: 0px 1px 2px rgba(36, 154, 243, 0.1);
+        border-width: 0px 1px 1px 1px;
 
         max-height: 242px;
         overflow: hidden;
@@ -37,7 +53,7 @@
         &-item {
             cursor: pointer;
             position: relative;
-            padding: .2rem .6rem;
+            padding: 0 1rem 0 2.1rem;
 
             height: 3rem;
             line-height: 3rem;

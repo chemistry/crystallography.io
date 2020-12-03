@@ -14,11 +14,12 @@
         min-height: 100%;
         padding: 0.5rem 1rem;
     }
-
     &__search-icon {
         color: var(--dark-grey-color);
     }
-
+    .form-group:focus-within &__search-icon {
+        color: var(--active-color);
+    }
     &__results-header {
         padding: 0.75rem 0 0 0;
     }

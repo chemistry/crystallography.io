@@ -180,9 +180,10 @@ export const Input = ({
     }
 
     const options = (Object as any).assign({}, defaultAutocompleteOptions, autoCompleteOptions);
+    const inputFormClassnames = suggestionsVisible ? 'c-form-input c-form-input--has-recommendation': 'c-form-input';
 
     return (
-        <div className="c-form-input">
+        <div className={inputFormClassnames}>
             <input type="text"
                 className="form-input"
                 name={name}
@@ -206,7 +207,7 @@ const Suggestions = ({
         suggestions, onSelectSuggestion, renderItemValue, value
     }: { suggestions: ISuggestedItem[], onSelectSuggestion: any, renderItemValue: any, value: string }) => {
     return (
-        <div className="c-form-input-suggestions">{
+        <div className="c-form-input-suggestions"><div className="c-form-input-suggestion-divider"></div>{
             suggestions.map((item, i)=> {
                 const classN = item.isSelected ? 'c-form-input-suggestions-item selected' : 'c-form-input-suggestions-item';
                 return (<div key={i} className={classN} onClick={onSelectSuggestion(i)}>
