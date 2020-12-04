@@ -22,7 +22,7 @@ export async function startApplication(context: ExpresContext) {
     const firestore = new Firestore();
     const elasticSearch = new Client({
         host: 'http://search.crystallography.io',
-        httpAuth: ES_KEY,
+        httpAuth: 'search:1a802d24ec79c04812d5270071321c2c035d8456',
         apiVersion: '7.2',
     });
     elasticSearch.ping({

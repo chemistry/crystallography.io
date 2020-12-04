@@ -5,7 +5,7 @@ import { getCatalogRouter } from "./catalog";
 import { getStructureRouter } from "./structure";
 import { getAuthorRouter } from "./authors";
 import { getSearchRouters } from './search';
-
+import { getAutocompletehRouters } from './autocomplete';
 
 export const getRouters = ({ firestore, elasticSearch }: { firestore: Firestore, elasticSearch: Client }) => {
     const router = Router();
@@ -20,6 +20,7 @@ export const getRouters = ({ firestore, elasticSearch }: { firestore: Firestore,
     router.use("/catalog", getCatalogRouter({ firestore }));
     router.use("/authors", getAuthorRouter({ firestore }));
     router.use("/search", getSearchRouters({ firestore, elasticSearch }));
+    router.use("/autocomplete", getAutocompletehRouters({ firestore, elasticSearch }));
 
     return router;
 };
