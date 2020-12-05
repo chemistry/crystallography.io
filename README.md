@@ -12,6 +12,9 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
   * `npm install && npm run bootstrap` Install dependencies
   * `npm start` Start Development in Local mode
 
+## Setup Infrastructure
+ * [Swarm Cluster](https://github.com/chemistry/crystallography-api/tree/master/setup)
+
 ## Include Packages:
 ### Application:
   * [@chemistry/structure-search](https://github.com/chemistry/crystallography-api/tree/master/packages/application/structure-search) - Main Electron Application
