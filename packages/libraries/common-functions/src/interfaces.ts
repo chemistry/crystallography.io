@@ -1,6 +1,8 @@
+// tslint:disable-next-line
 export interface CodSyncScheduleInstanceStartPayload {
 }
 
+// tslint:disable-next-line
 export interface CodSyncScheduleInstanceStopPayload {
 }
 

@@ -52,12 +52,19 @@ export async function handler(
         mineral: data.mineral || "",
         commonname: data.commonname || "",
         chemname: data.chemname || "",
-        title: data.title || ""
+        title: data.title || "",
+        mineral_suggest: data.mineral || "",
+        commonname_suggest: data.commonname || "",
+        chemname_suggest: data.chemname || "",
+        title_suggest: data.title || "",
+        commonname_autocomplete: data.commonname || "",
+        chemname_autocomplete: data.chemname || "",
+        title_autocomplete: data.title || "",
     };
 
     client.index({
         id: documentSnapshot.id,
-        index: 'structures.documents',
+        index: 'structures',
         type: '_doc',
         body: {
             ...bodyToStore,

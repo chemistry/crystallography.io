@@ -19,14 +19,12 @@ client.ping({
      }
 });
 
-/*
     client.indices.delete({
-        index: 'structures.documents'
+        index: 'structures'
     })
     .then((data)=> {
         console.log(JSON.stringify(data));
     });
-*/
 
 client.indices.create({
     index: 'structures',
@@ -78,6 +76,9 @@ client.indices.create({
                 "title_suggest": {
                     "type": "completion",
                     "analyzer": "standard_shingle",
+                },
+                "mineral_autocomplete": {
+                    "type": "search_as_you_type",
                 },
                 "commonname_autocomplete": {
                     "type": "search_as_you_type",
