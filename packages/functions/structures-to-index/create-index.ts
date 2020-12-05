@@ -3,7 +3,7 @@ import { Client } from 'elasticsearch';
 const ES_KEY = process.env.ES_KEY || '';
 const client = new Client({
    host: 'http://search.crystallography.io',
-   httpAuth: ES_KEY,
+   httpAuth: 'search:1a802d24ec79c04812d5270071321c2c035d8456',
    apiVersion: '7.2',
 });
 // tslint:disable:no-console
@@ -19,10 +19,9 @@ client.ping({
      }
 });
 
-
 /*
     client.indices.delete({
-        index: 'temp2_structures.documents'
+        index: 'structures.documents'
     })
     .then((data)=> {
         console.log(JSON.stringify(data));
@@ -30,7 +29,7 @@ client.ping({
 */
 
 client.indices.create({
-    index: 'structures.documents',
+    index: 'structures',
     "body": {
         "settings": {
             "analysis": {
@@ -38,6 +37,10 @@ client.indices.create({
                     "indexing_analyzer": {
                         "tokenizer": "standard",
                         "filter": ["lowercase"]
+                    },
+                    "standard_shingle": {
+                        "tokenizer": "standard",
+                        "filter": ["lowercase",  "shingle" ]
                     }
                 }
             }
@@ -59,7 +62,32 @@ client.indices.create({
                 "title": {
                     "type": "text",
                     "analyzer":"indexing_analyzer",
-                }
+                },
+                "mineral_suggest": {
+                    "type": "completion",
+                    "analyzer": "standard_shingle",
+                },
+                "commonname_suggest": {
+                    "type": "completion",
+                    "analyzer": "standard_shingle",
+                },
+                "chemname_suggest": {
+                    "type": "completion",
+                    "analyzer": "standard_shingle",
+                },
+                "title_suggest": {
+                    "type": "completion",
+                    "analyzer": "standard_shingle",
+                },
+                "commonname_autocomplete": {
+                    "type": "search_as_you_type",
+                },
+                "chemname_autocomplete": {
+                    "type": "search_as_you_type",
+                },
+                "title_autocomplete": {
+                    "type": "search_as_you_type",
+                },
             }
         }
     }
