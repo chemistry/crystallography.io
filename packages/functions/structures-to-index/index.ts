@@ -39,6 +39,9 @@ export async function handler(
     event: FirestoreChangeEvent,
 ) {
     const { value: { name }} = event;
+    if (!name) {
+        return console.error(`unknown event format: ${JSON.stringify(event)}`);
+    }
     const documentPath = name.split('/documents/')[1];
     const document = firestore.doc(documentPath);
 
