@@ -34,18 +34,12 @@ jobs: # Jobs List
       - name: Reset to master
         run: git checkout master && git reset --hard
 
-#      - name: Verify build
-#        run: npm run lint && npm run test
-
-#      - name: Build
-#        run: npm run build
-#        env:
-#            GH_TOKEN: ${{ secrets.github_token }}
-
       - name: Build Images
-        run: docker-compose -f docker-compose.yml
-#        env:
-#            GCP_BOTO_KEY: ${{ secrets.GCP_BOTO_KEY }}
-#            GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-#            ES_KEY: ${{ secrets.ES_KEY }}
+        run: docker-compose -f docker-compose.yml build
+
+      - name: Push Images
+        run: docker-compose -f docker-compose.yml push
+
+#      - name: Deploy Stack to Swarm Cluster
+
 
