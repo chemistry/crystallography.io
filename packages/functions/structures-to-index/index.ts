@@ -38,15 +38,23 @@ interface FirestoreChangeEvent {
 export async function handler(
     event: FirestoreChangeEvent,
 ) {
-    const { value: { name }} = event;
-    if (!name) {
-        return console.error(`unknown event format: ${JSON.stringify(event)}`);
+    const { value } = event;
+    if (Object.keys(value).length === 0 && value.constructor === Object) {
+        // Delete operation
+        return;
     }
+    const { name } = value;
+    if (!name){
+        throw new Error(`unknown event format: ${JSON.stringify(event)}`);
+    }
+
     const documentPath = name.split('/documents/')[1];
     const document = firestore.doc(documentPath);
 
     const documentSnapshot  = await document.get();
     const data = documentSnapshot.data();
+
+    const dateStr = (new Date()).toISOString();
 
     const bodyToStore = {
         id: documentSnapshot.id,
@@ -61,11 +69,13 @@ export async function handler(
         commonname_autocomplete: data.commonname || "",
         chemname_autocomplete: data.chemname || "",
         title_autocomplete: data.title || "",
+        created: dateStr,
+        modified: dateStr
     };
 
     client.index({
         id: documentSnapshot.id,
-        index: 'structures',
+        index: 'structures.data',
         type: '_doc',
         body: {
             ...bodyToStore,

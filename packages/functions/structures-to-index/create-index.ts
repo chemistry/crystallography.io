@@ -3,7 +3,7 @@ import { Client } from 'elasticsearch';
 const ES_KEY = process.env.ES_KEY || '';
 const client = new Client({
    host: 'http://search.crystallography.io',
-   httpAuth: ES_KEY,
+   httpAuth: 'search:1a802d24ec79c04812d5270071321c2c035d8456',
    apiVersion: '7.2',
 });
 // tslint:disable:no-console
@@ -27,7 +27,7 @@ client.indices.delete({
 });
 
 client.indices.create({
-    index: 'structures',
+    index: 'structures.data',
     "body": {
         "settings": {
             "analysis": {
@@ -98,6 +98,12 @@ client.indices.create({
                 },
                 "title_autocomplete": {
                     "type": "search_as_you_type",
+                },
+                "created": {
+                    "type": "date"
+                },
+                "modified": {
+                    "type": "date"
                 }
             }
         }
