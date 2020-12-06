@@ -15,6 +15,24 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
 ## Setup Infrastructure
  * [Swarm Cluster](https://github.com/chemistry/crystallography-api/tree/master/setup)
 
+## Local development
+ * Start application
+```bash
+docker-compose up -d
+```
+ * View Application Logs
+```bash
+docker-compose logs
+```
+ * Deploy to swarm cluster
+```bash
+docker-compose -f docker-compose.yml config > docker-stack.yml
+docker-auto-labels docker-stack.yml
+docker stack deploy -c docker-stack.yml --with-registry-auth "crystallography-io"
+```
+## Deploy changes to swarm cluster
+
+
 ## Include Packages:
 ### Application:
   * [@chemistry/structure-search](https://github.com/chemistry/crystallography-api/tree/master/packages/application/structure-search) - Main Electron Application

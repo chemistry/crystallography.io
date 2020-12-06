@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+    cod-to-disk:
+        image: 'gcr.io/crystallography-api/containers-cod-to-disk'
+
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/cod-to-disk/Dockerfile

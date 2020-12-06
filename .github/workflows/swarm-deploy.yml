@@ -1,0 +1,51 @@
+name: Deploy Swarm
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/swarm/**'
+
+
+jobs: # Jobs List
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            ref: master
+            fetch-depth: 2
+
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+            version: '275.0.0'
+            service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Check Google Cloud
+        run: gcloud info && gcloud auth configure-docker -q
+
+      - name: Install dependencies
+        run: npm ci && npm run bootstrap:ci
+
+      - name: Reset to master
+        run: git checkout master && git reset --hard
+
+#      - name: Verify build
+#        run: npm run lint && npm run test
+
+#      - name: Build
+#        run: npm run build
+#        env:
+#            GH_TOKEN: ${{ secrets.github_token }}
+
+      - name: Build Images
+        run: docker-compose -f docker-compose.yml
+#        env:
+#            GCP_BOTO_KEY: ${{ secrets.GCP_BOTO_KEY }}
+#            GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+#            ES_KEY: ${{ secrets.ES_KEY }}
+

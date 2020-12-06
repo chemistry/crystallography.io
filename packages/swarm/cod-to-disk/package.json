@@ -1,0 +1,32 @@
+{
+    "name": "@chemistry/containers-cod-to-disk",
+    "private": true,
+    "version": "0.0.18",
+    "description": "Synchronization COD to Disk",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "COD syncronization",
+        "crystallography",
+        "Git"
+    ],
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "devEngines": {
+        "node": ">=10.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/cod-to-disk",
+    "scripts": {
+        "build": "rimraf dist/* && tsc",
+        "deploy": "./deploy.sh",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+        "@types/shelljs": "0.8.8",
+        "shelljs": "0.8.4"
+    }
+}
