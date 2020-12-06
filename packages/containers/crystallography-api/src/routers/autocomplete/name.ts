@@ -25,14 +25,48 @@ export const getNameAutocompleteRouter = ({ firestore, elasticSearch }: { firest
             });
         }
 
+
+/* ---- This query works quite well
+"suggest": {
+    "title-suggest": {
+      "prefix":  name,
+      "completion": {
+        "field": "title_suggest",
+        "fuzzy": {
+            "fuzziness": 2
+        },
+        "size": 10
+      }
+    }
+}
+*/
+
+/*
+"query": {
+    "multi_match": {
+        "query": name,
+        "type": "bool_prefix",
+        "fields": [
+            "title",
+            "title._2gram",
+            "title._3gram"
+        ]
+    }
+}
+*/
+// "Pristinamycin complex solved using Shake-and-Bake",
         elasticSearch.search({
-            index: 'structures.documents',
+            index: 'structures',
             body: {
                 "suggest": {
-                    "job-suggest": {
-                      "prefix": name,
+                    "commonname-suggest": {
+                      "prefix":  name,
                       "completion": {
-                        "field": 'suggest'
+                        "field": "commonname_suggest",
+                        "fuzzy": {
+                            "fuzziness": 2
+                        },
+                        "size": 10
                       }
                     }
                 }

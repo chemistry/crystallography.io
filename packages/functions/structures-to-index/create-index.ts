@@ -3,7 +3,7 @@ import { Client } from 'elasticsearch';
 const ES_KEY = process.env.ES_KEY || '';
 const client = new Client({
    host: 'http://search.crystallography.io',
-   httpAuth: 'search:1a802d24ec79c04812d5270071321c2c035d8456',
+   httpAuth: ES_KEY,
    apiVersion: '7.2',
 });
 // tslint:disable:no-console
@@ -19,12 +19,12 @@ client.ping({
      }
 });
 
-    client.indices.delete({
-        index: 'structures'
-    })
-    .then((data)=> {
-        console.log(JSON.stringify(data));
-    });
+client.indices.delete({
+    index: 'structures'
+})
+.then((data)=> {
+    console.log(JSON.stringify(data));
+});
 
 client.indices.create({
     index: 'structures',
@@ -33,12 +33,22 @@ client.indices.create({
             "analysis": {
                 "analyzer": {
                     "indexing_analyzer": {
+                        "type": "custom",
                         "tokenizer": "standard",
                         "filter": ["lowercase"]
                     },
                     "standard_shingle": {
+                        "type": "custom",
                         "tokenizer": "standard",
-                        "filter": ["lowercase",  "shingle" ]
+                        "filter": ["lowercase",  "my_shingle_filter"]
+                    }
+                },
+                "filter": {
+                    "my_shingle_filter": {
+                        "type": "shingle",
+                        "min_shingle_size": 2,
+                        "max_shingle_size": 3,
+                        "output_unigrams":"true"
                     }
                 }
             }
@@ -88,16 +98,13 @@ client.indices.create({
                 },
                 "title_autocomplete": {
                     "type": "search_as_you_type",
-                },
+                }
             }
         }
     }
 }, (error: any, response: any, status: any) => {
-    console.log(status);
-    console.log(response);
-
     if (error) {
-        console.log(error);
+        console.error(error);
     } else {
         console.log("created a new index", response);
     }

@@ -35,11 +35,9 @@ interface FirestoreChangeEvent {
     value: Document
 }
 
-
 export async function handler(
     event: FirestoreChangeEvent,
 ) {
-    console.time("process");
     const { value: { name }} = event;
     const documentPath = name.split('/documents/')[1];
     const document = firestore.doc(documentPath);
@@ -72,6 +70,4 @@ export async function handler(
     }, (err: any, resp: any) =>{
         console.error(err);
     });
-
-    console.timeEnd("process");
 }
