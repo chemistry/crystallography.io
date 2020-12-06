@@ -27,9 +27,15 @@ interface FirestoreChangeEvent {
 export async function handler(
     event: FirestoreChangeEvent,
 ) {
-    console.time("process");
-    console.log(JSON.stringify(event));
-    const { value: { name }} = event;
+    const { value } = event;
+    if (Object.keys(value).length === 0 && value.constructor === Object) {
+        // Delete operation
+        return;
+    }
+    const { name } = value;
+    if (!name){
+        throw new Error(`unknown event format: ${JSON.stringify(event)}`);
+    }
     const documentPath = name.split('/documents/')[1];
     const document = firestore.doc(documentPath);
 
@@ -58,7 +64,6 @@ export async function handler(
 
     console.log(`document changed: ${JSON.stringify(data)}`);
     console.log(`Authors to save: ${JSON.stringify(authorsToSave)}`);
-    console.timeEnd("process");
 }
 const saveAuthorRecord  = async (recordData: {
     docId: string;

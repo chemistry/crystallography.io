@@ -22,7 +22,7 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/functions/stuctures-to-catalog",
     "scripts": {
         "build": "rimraf dist/* && tsc && cp ./package.json ./dist && cp ./package-lock.json ./dist",
-        "deploy": "gcloud functions deploy stuctures-to-catalog --entry-point handler --runtime nodejs10 --project crystallography-api --source ./dist --trigger-topic structures-to-catalog  --region europe-west1",
+        "deploy": "gcloud functions deploy stuctures-to-catalog --entry-point handler --runtime nodejs12 --memory=1024MB --max-instances=1 --project crystallography-api --source ./dist --trigger-topic structures-to-catalog  --region europe-west1",
         "check": "ts-node ./function.check.ts"
     },
     "dependencies": {

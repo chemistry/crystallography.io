@@ -22,7 +22,7 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/functions/cod-sync-stop-instance",
     "scripts": {
         "build": "rimraf dist/* && tsc && cp ./package.json ./dist && cp ./package-lock.json ./dist",
-        "deploy": "gcloud functions deploy codSyncStopInstance --runtime nodejs10 --project crystallography-api --source ./dist --trigger-topic cod-sync-schedule-instance-stop --region europe-west1"
+        "deploy": "gcloud functions deploy codSyncStopInstance --runtime nodejs12 --memory=256MB --max-instances=1 --project crystallography-api --source ./dist --trigger-topic cod-sync-schedule-instance-stop --region europe-west1"
     },
     "dependencies": {
         "@chemistry/common-functions": "^0.0.18",
