@@ -24,6 +24,8 @@ jobs: # Jobs List
             version: '275.0.0'
             service_account_email: ${{ secrets.GCP_SA_EMAIL }}
             service_account_key: ${{ secrets.GCP_SA_KEY }}
+            ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+            ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
 
       - name: Check Google Cloud
         run: gcloud info && gcloud auth configure-docker -q
@@ -35,11 +37,23 @@ jobs: # Jobs List
         run: git checkout master && git reset --hard
 
       - name: Build Images
-        run: docker-compose -f docker-compose.yml build
+        run: docker-compose -f docker-compose.yaml build
 
       - name: Push Images
-        run: docker-compose -f docker-compose.yml push
+        run: docker-compose -f docker-compose.yaml  push
 
-#      - name: Deploy Stack to Swarm Cluster
+      - name: Generate Stack File
+        run: docker-compose -f docker-compose.yaml config > docker-stack.yaml
 
-
+      - name: Deploy to Docker swarm
+        uses: wshihadeh/docker-deployment-action@v1
+        with:
+            remote_docker_host: root@host.crystallography.io
+            ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+            ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+            deployment_mode: docker-swarm
+            copy_stack_file: true
+            deploy_path: /root
+            stack_file_name: docker-stack.yaml
+            keep_files: 5
+            args: --with-registry-auth crystallography-io

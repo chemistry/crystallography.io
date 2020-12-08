@@ -1,7 +1,7 @@
 version: "3.3"
 services:
     cod-to-disk:
-        image: 'gcr.io/crystallography-api/containers-cod-to-disk'
+        image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
 
         build:
             context: ./

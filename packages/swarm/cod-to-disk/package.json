@@ -2,7 +2,7 @@
     "name": "@chemistry/containers-cod-to-disk",
     "private": true,
     "version": "0.0.18",
-    "description": "Synchronization COD to Disk",
+    "description": "Synchronization COD to Disk ",
     "author": {
         "name": "Volodymyr Vreshch",
         "url": "http://vreshch.com/"
