@@ -1,11 +1,17 @@
 version: "3.3"
 services:
-
     rabbitmq:
         image: rabbitmq:3.6-management-alpine
         ports:
           - 5672:5672
           - 15672:15672
+
+    mongo:
+        image: mongo:4.1.8-xenial
+        ports:
+          - 27017:27017
+        volumes:
+        - dbdata:/data/db
 
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
@@ -15,5 +21,15 @@ services:
             context: ./
             dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
 
+    disk-to-db:
+        image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
+        volumes:
+          - cod-data:/home/data
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/disk-to-db/Dockerfile
+
 volumes:
     cod-data:
+    dbdata:
+

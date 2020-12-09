@@ -1,0 +1,37 @@
+{
+    "name": "@chemistry/containers-disk-to-db",
+    "private": true,
+    "version": "0.0.18",
+    "description": "Disk Files to Database ",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "COD syncronization",
+        "crystallography",
+        "Git"
+    ],
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "devEngines": {
+        "node": ">=10.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/swarm/disk-to-db",
+    "scripts": {
+        "build": "rimraf dist/* && tsc",
+        "deploy": "./deploy.sh",
+        "check": "ts-node ./src/check.ts",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+        "@chemistry/cif-2-json": "^0.0.18",
+        "amqplib": "0.6.0",
+        "mongodb": "3.6.3"
+    },
+    "devDependencies": {
+        "@types/mongodb": "3.6.3"
+    }
+}
