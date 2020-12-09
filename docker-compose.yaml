@@ -1,8 +1,19 @@
 version: "3.3"
 services:
+
+    rabbitmq:
+        image: rabbitmq:3.6-management-alpine
+        ports:
+          - 5672:5672
+          - 15672:15672
+
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
-
+        volumes:
+          - cod-data:/home/data
         build:
             context: ./
             dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
+
+volumes:
+    cod-data:

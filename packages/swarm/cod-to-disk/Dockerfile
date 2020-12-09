@@ -14,12 +14,15 @@ COPY lerna.json .
 COPY tsconfig.json .
 COPY package-lock.json .
 
-COPY packages/swarm/cod-to-disk/start-script.sh /app/start-script.sh
-COPY packages/swarm/cod-to-disk ./packages/swarm/cod-to-disk
-
 RUN npm install --production
+
+COPY packages/swarm/cod-to-disk/start-script.sh /app/start-script.sh
+COPY packages/swarm/cod-to-disk/package.json ./packages/swarm/cod-to-disk/package.json
+COPY packages/swarm/cod-to-disk/package-lock.json ./packages/swarm/cod-to-disk/package-lock.json
 RUN npm run bootstrap:ci
 
+
+COPY packages/swarm/cod-to-disk ./packages/swarm/cod-to-disk
 RUN npm --prefix packages/swarm/cod-to-disk run build
 
 CMD /app/start-script.sh

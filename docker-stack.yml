@@ -1,8 +1,0 @@
-services:
-  cod-to-disk:
-    build:
-      context: /home/vreshch/projects/crystallography.io
-      dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
-    image: gcr.io/crystallography-api/containers-cod-to-disk:latest
-version: '3.3'
-
