@@ -1,4 +1,6 @@
 import { MongoClient } from "mongodb";
+import * as shell from "shelljs";
+import { ExecOptions, ShellString } from "shelljs";
 import { app, AppContext } from "./app";
 
 
@@ -29,6 +31,9 @@ const getContext = async (): Promise<AppContext> => {
         },
         getChanel: () => {
             return chanel;
+        },
+        exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
+            return shell.exec(command);
         },
         db,
         QUEUE_NAME

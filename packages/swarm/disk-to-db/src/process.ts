@@ -1,6 +1,7 @@
 import { parse } from "@chemistry/cif-2-json";
 import { Db, MongoClient } from "mongodb";
 import * as fs from "fs";
+import * as path from "path";
 import * as util from "util";
 import { cleanupJCif } from "./helpers";
 import { AppContext } from "./app";
@@ -12,37 +13,38 @@ export interface CodFileRecord {
 
 const readFile = util.promisify(fs.readFile);
 
-export const processMessage = ({ db }: AppContext) => async ({ fileName, codId }: CodFileRecord) => {
+export const processMessage = ({ db, exec }: AppContext) => async ({ fileName, codId }: CodFileRecord) => {
 
-/*
-    const collection = db.collection("structures");
+    try {
+        const collection = db.collection("structures");
+        const fileContent = await readFile(fileName);
+        const jcif: any = parse(fileContent.toString());
 
-    // tslint:disable-next-line
-    console.log({ fileName, codId });
+        await new Promise(res => setTimeout(res, 1000));
 
-    await new Promise(res => setTimeout(res, 1000));
+        const dataNames = Object.keys(jcif);
 
-    let fileContent = await readFile(fileName);
-    let jcif: any = parse(fileContent.toString());
+        if (dataNames.length === 0) {
+            // tslint:disable-next-line
+            console.error("error while parsing processing file", fileName);
+            throw new Error("wrong data format");
+        }
 
-    const dataNames = Object.keys(jcif);
+        const dataToSave = cleanupJCif(jcif[dataNames[0]]);
 
-    if (dataNames.length === 0) {
-        console.error("error while parsing processing file", fileName);
-        throw new Error("wrong data format");
+        await collection.findOneAndUpdate({
+            _id: codId,
+        }, { '$set':  {
+            _id: codId,
+            ...dataToSave,
+        } }, {
+            upsert: true,
+            returnOriginal: false,
+        });
+
+    } catch(e) {
+        // tslint:disable-next-line
+        console.error(e);
     }
-    let dataToSave = cleanupJCif(jcif[dataNames[0]]);
-
-    await collection.findOneAndUpdate({
-        _id: codId,
-    }, {
-        _id: codId,
-        ...dataToSave,
-    }, {
-        upsert: true,
-        returnOriginal: false,
-    });
-    console.log('success');
-*/
 }
 

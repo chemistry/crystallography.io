@@ -1,5 +1,6 @@
 import { Db } from 'mongodb';
 import { Collection, MongoClient } from 'mongodb';
+import { ExecOptions, ShellString } from 'shelljs';
 import { CodFileRecord, processMessage } from './process';
 
 export interface AppContext {
@@ -7,6 +8,7 @@ export interface AppContext {
   getChanel: () => any;
   QUEUE_NAME: string;
   db: Db;
+  exec: (command: string, options?: ExecOptions & { async?: false }) => ShellString;
 }
 
 export const app = async(context: AppContext) => {
