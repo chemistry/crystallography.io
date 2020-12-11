@@ -21,6 +21,7 @@ const getContext = async (): Promise<AppContext> => {
     process.on('exit', (code) => {
          // tslint:disable-next-line
         console.log(`About to exit with code: ${code}`);
+        mongoClient.close();
         chanel.close();
     });
 

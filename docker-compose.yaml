@@ -5,6 +5,12 @@ services:
         ports:
           - 5672:5672
           - 15672:15672
+        networks:
+          - net
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
 
     mongo:
         image: mongo:4.1.8-xenial
@@ -12,11 +18,19 @@ services:
           - 27017:27017
         volumes:
         - dbdata:/data/db
+        networks:
+          - net
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
 
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
         volumes:
           - cod-data:/home/data
+        networks:
+          - net
         build:
             context: ./
             dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
@@ -25,9 +39,41 @@ services:
         image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
         volumes:
           - cod-data:/home/data
+        networks:
+          - net
         build:
             context: ./
             dockerfile: ./packages/swarm/disk-to-db/Dockerfile
+
+    api:
+        image: 'gcr.io/crystallography-api/containers-crystallography-io-api:latest'
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/cod-api/Dockerfile
+        networks:
+          - net
+          - traefik-public
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
+            labels:
+                - traefik.enable=true
+                - traefik.docker.network=traefik-public
+                - traefik.constraint-label=traefik-public
+                - traefik.http.routers.swarmpit-http.rule=api.crystallography.io
+                - traefik.http.routers.swarmpit-http.entrypoints=http
+                - traefik.http.routers.swarmpit-http.middlewares=https-redirect
+                - traefik.http.routers.swarmpit-https.rule=api.crystallography.io
+                - traefik.http.routers.swarmpit-https.entrypoints=https
+                - traefik.http.routers.swarmpit-https.tls=true
+                - traefik.http.routers.swarmpit-https.tls.certresolver=le
+                - traefik.http.services.swarmpit.loadbalancer.server.port=8080
+
+networks:
+  net:
+  traefik-public:
+    external: true
 
 volumes:
     cod-data:

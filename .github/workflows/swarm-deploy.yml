@@ -53,6 +53,7 @@ jobs: # Jobs List
             ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
             deployment_mode: docker-swarm
             copy_stack_file: true
+            pull_images_first: true
             deploy_path: /root
             stack_file_name: docker-stack.yaml
             keep_files: 5

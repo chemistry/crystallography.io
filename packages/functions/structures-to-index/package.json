@@ -28,8 +28,8 @@
     },
     "dependencies": {
         "@chemistry/common-functions": "0.0.18",
-        "@types/elasticsearch": "5.0.36",
         "@google-cloud/firestore": "4.4.0",
+        "@types/elasticsearch": "5.0.36",
         "elasticsearch": "16.7.1"
     },
     "devDependencies": {

@@ -27,8 +27,8 @@
     },
     "dependencies": {
         "@google-cloud/firestore": "4.4.0",
-        "lodash.isequal": "4.5.0",
-        "@types/lodash.isequal": "4.5.5"
+        "@types/lodash.isequal": "4.5.5",
+        "lodash.isequal": "4.5.0"
     },
     "devDependencies": {
         "mock-cloud-firestore": "0.12.0",

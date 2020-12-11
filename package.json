@@ -45,9 +45,9 @@
         "release": "lerna publish --no-git-reset --no-push --yes "
     },
     "devDependencies": {
+        "@types/express": "4.17.8",
         "@types/jest": "26.0.15",
         "@types/node": "14.14.2",
-        "@types/express": "4.17.8",
         "awesome-typescript-loader": "5.2.1",
         "codecov": "3.8.0",
         "jest": "26.6.0",
