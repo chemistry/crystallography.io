@@ -42,9 +42,6 @@ jobs: # Jobs List
       - name: Push Images
         run: docker-compose -f docker-compose.yaml  push
 
-      - name: Generate Stack File
-        run: docker-compose -f docker-compose.yaml config > docker-stack.yaml
-
       - name: Deploy to Docker swarm
         uses: wshihadeh/docker-deployment-action@v1
         with:
@@ -55,6 +52,6 @@ jobs: # Jobs List
             copy_stack_file: true
             pull_images_first: true
             deploy_path: /root
-            stack_file_name: docker-stack.yaml
+            stack_file_name: docker-compose.yaml
             keep_files: 5
             args: --with-registry-auth crystallography-io
