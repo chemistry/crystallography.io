@@ -45,6 +45,34 @@ services:
             context: ./
             dockerfile: ./packages/swarm/disk-to-db/Dockerfile
 
+    web:
+        image: 'gcr.io/crystallography-api/containers-crystallography-io-web:latest'
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/cod-web/Dockerfile
+        networks:
+          - net
+          - traefik-public
+        environment:
+          - PORT=8060
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
+            labels:
+                - traefik.enable=true
+                - traefik.docker.network=traefik-public
+                - traefik.constraint-label=traefik-public
+                - traefik.http.routers.web-http.rule=Host(`crystallography.io`)
+                - traefik.http.routers.web-http.entrypoints=http
+                - traefik.http.routers.web-http.middlewares=https-redirect
+                - traefik.http.routers.web-https.priority=10
+                - traefik.http.routers.web-https.rule=Host(`crystallography.io`)
+                - traefik.http.routers.web-https.entrypoints=https
+                - traefik.http.routers.web-https.tls=true
+                - traefik.http.routers.web-https.tls.certresolver=le
+                - traefik.http.services.web.loadbalancer.server.port=8060
+
     api:
         image: 'gcr.io/crystallography-api/containers-crystallography-io-api:latest'
         build:
@@ -63,14 +91,12 @@ services:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
-                - traefik.http.routers.web-http.rule=Host(`crystallography.io`) && Path(`/api`)
-                - traefik.http.routers.web-http.entrypoints=http
-                - traefik.http.routers.web-http.middlewares=https-redirect
-                - traefik.http.routers.web-https.rule=Host(`crystallography.io`) && Path(`/api`)
-                - traefik.http.routers.web-https.entrypoints=https
-                - traefik.http.routers.web-https.tls=true
-                - traefik.http.routers.web-https.tls.certresolver=le
-                - traefik.http.services.web.loadbalancer.server.port=8070
+                - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && PathPrefix(`/api`))
+                - traefik.http.routers.api-https.entrypoints=https
+                - traefik.http.routers.api-https.tls=true
+                - traefik.http.routers.api-https.tls.certresolver=le
+                - traefik.http.services.api.loadbalancer.server.port=8070
+
 
 networks:
   net:
@@ -80,4 +106,3 @@ networks:
 volumes:
     cod-data:
     dbdata:
-

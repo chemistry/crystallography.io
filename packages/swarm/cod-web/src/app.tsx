@@ -28,11 +28,11 @@ export async function startApplication(context: ExpressContext) {
 
     // Serve static files
     app.get("/", (req, res) => {
-      res.send("api/: OK");
+      res.send("cod web: OK");
     });
 
     app.get("/api", (req, res) => {
-        res.send("api: OK");
+        res.send("cod web: OK");
     });
 
     app.use((err: any, req: any, res: any, next: any) => {
