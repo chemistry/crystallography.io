@@ -1,0 +1,5 @@
+version: "3.3"
+
+networks:
+  traefik-public:
+    external: false

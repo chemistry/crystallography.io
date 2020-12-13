@@ -2,6 +2,7 @@ version: "3.3"
 services:
     rabbitmq:
         image: rabbitmq:3.6-management-alpine
+        restart: always
         ports:
           - 5672:5672
           - 15672:15672
@@ -14,16 +15,26 @@ services:
 
     mongo:
         image: mongo:4.1.8-xenial
+        restart: always
         ports:
           - 27017:27017
         volumes:
-        - dbdata:/data/db
+          - dbdata:/data/db
+        env_file:
+          - ./.env
         networks:
           - net
+          - traefik-public
         deploy:
             placement:
                 constraints:
                     - node.role == manager
+            labels:
+                - traefik.tcp.routers.mongo.rule=HostSNI(`mongodb.crystallography.io`)
+                - traefik.tcp.routers.mongo.entrypoints=mongodb
+                - traefik.tcp.routers.mongo.tls.passthrough=true
+                - traefik.tcp.routers.mongo.service=mongo
+                - traefik.tcp.services.mongo.loadbalancer.server.port=27017
 
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
@@ -39,6 +50,8 @@ services:
         image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
         volumes:
           - cod-data:/home/data
+        env_file:
+          - ./.env
         networks:
           - net
         build:
@@ -81,6 +94,8 @@ services:
         networks:
           - net
           - traefik-public
+        env_file:
+          - ./.env
         environment:
           - PORT=8070
         deploy:
@@ -96,7 +111,6 @@ services:
                 - traefik.http.routers.api-https.tls=true
                 - traefik.http.routers.api-https.tls.certresolver=le
                 - traefik.http.services.api.loadbalancer.server.port=8070
-
 
 networks:
   net:

@@ -8,14 +8,23 @@ const QUEUE_NAME = 'COD_FILE_UPDATED';
 
 const getContext = async (): Promise<AppContext> => {
 
-    await new Promise(res => setTimeout(res, 15000));
+    await new Promise(res => setTimeout(res, 20000));
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
     await chanel.assertQueue(QUEUE_NAME);
 
-    const mongoClient = await MongoClient.connect('mongodb://mongo/crystallography', {
+    const MONGO_INITDB_ROOT_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME || '';
+    const MONGO_INITDB_ROOT_PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD || '';
+
+    let connectionString = 'mongodb://mongo';
+    if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
+        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017`;
+    }
+
+    const mongoClient = await MongoClient.connect(connectionString, {
         useNewUrlParser: true
     });
+
     const db = mongoClient.db("crystallography");
 
     process.on('exit', (code) => {
