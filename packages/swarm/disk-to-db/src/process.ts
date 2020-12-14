@@ -13,14 +13,11 @@ export interface CodFileRecord {
 
 const readFile = util.promisify(fs.readFile);
 
-export const processMessage = ({ db, exec }: AppContext) => async ({ fileName, codId }: CodFileRecord) => {
-
+export const processMessage = async ({ fileName, codId, context }: { fileName: string, codId: string; context: AppContext}) => {
     try {
-        const collection = db.collection("structures");
-        const fileContent = await readFile(fileName);
-        const jcif: any = parse(fileContent.toString());
-
-        await new Promise(res => setTimeout(res, 1000));
+        let collection = context.db.collection("structures");
+        let fileContent = await readFile(fileName);
+        let jcif: any = parse(fileContent.toString());
 
         const dataNames = Object.keys(jcif);
 
@@ -30,17 +27,29 @@ export const processMessage = ({ db, exec }: AppContext) => async ({ fileName, c
             throw new Error("wrong data format");
         }
 
-        const dataToSave = cleanupJCif(jcif[dataNames[0]]);
+        let dataToSave = cleanupJCif(jcif[dataNames[0]]);
+        const now = (new Date());
 
         await collection.findOneAndUpdate({
             _id: codId,
-        }, { '$set':  {
-            _id: codId,
-            ...dataToSave,
-        } }, {
+        }, {
+            '$set':  {
+                _id: codId,
+                ...dataToSave,
+                'updated': now,
+            },
+            '$min' : {
+                'created': now
+            }
+        }, {
             upsert: true,
             returnOriginal: false,
         });
+
+        collection = null;
+        fileContent = null;
+        jcif = null;
+        dataToSave = null;
 
     } catch(e) {
         // tslint:disable-next-line

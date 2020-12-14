@@ -44,7 +44,9 @@ const extractDataFromLogs = new Transform({
 const getSendMessageToQueueStream = ({ sendToQueue }: AppContext)=> new Writable({
     objectMode: true,
     write: (chunk, _encoding, done) => {
-        sendToQueue(chunk);
+        if (Array.isArray(chunk) && chunk.length >0){
+            sendToQueue(chunk);
+        }
         done();
     }
 });

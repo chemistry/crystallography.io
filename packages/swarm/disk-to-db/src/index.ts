@@ -12,6 +12,7 @@ const getContext = async (): Promise<AppContext> => {
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
     await chanel.assertQueue(QUEUE_NAME);
+    await chanel.prefetch(1);
 
     const MONGO_INITDB_ROOT_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME || '';
     const MONGO_INITDB_ROOT_PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD || '';
@@ -22,7 +23,8 @@ const getContext = async (): Promise<AppContext> => {
     }
 
     const mongoClient = await MongoClient.connect(connectionString, {
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     });
 
     const db = mongoClient.db("crystallography");

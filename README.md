@@ -18,7 +18,7 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
 ## Local development
  * Start application
 ```bash
-docker-compose up -d
+docker-compose down -v && docker-compose up --build -d
 ```
  * View Application Logs
 ```bash
