@@ -2,7 +2,7 @@
     "name": "@chemistry/containers-disk-to-db",
     "private": true,
     "version": "0.0.18",
-    "description": "Disk Files to Database ",
+    "description": "Disk Files to Database",
     "author": {
         "name": "Volodymyr Vreshch",
         "url": "http://vreshch.com/"

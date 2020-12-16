@@ -59,10 +59,10 @@ services:
             dockerfile: ./packages/swarm/disk-to-db/Dockerfile
 
     web:
-        image: 'gcr.io/crystallography-api/containers-crystallography-io-web:latest'
+        image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'
         build:
             context: ./
-            dockerfile: ./packages/swarm/cod-web/Dockerfile
+            dockerfile: ./packages/swarm/crystallography-web/Dockerfile
         networks:
           - net
           - traefik-public

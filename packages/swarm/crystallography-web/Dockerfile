@@ -3,8 +3,6 @@ RUN mkdir /app
 RUN mkdir /static
 WORKDIR /app
 
-# Install rsync
-RUN apk add --update subversion rsync openssh
 
 # Install gsutil
 RUN apk add --update python py-pip py-cffi  py-cryptography \
@@ -17,21 +15,19 @@ RUN apk add --update python py-pip py-cffi  py-cryptography \
 RUN npm install -g typescript@3.7.3
 RUN npm install -g rimraf@3.0.0
 RUN npm install -g lerna@3.19.0
-RUN npm install -g webpack@4.43.0
-RUN npm install -g webpack-cli@3.3.12
 
 COPY package.json .
 COPY package-lock.json .
 COPY lerna.json .
 COPY tsconfig.json .
-COPY packages/containers/crystallography-web/start-script.sh /app/start-script.sh
-COPY packages/containers/crystallography-web ./packages/containers/crystallography-web
+COPY packages/swarm/crystallography-web/start-script.sh /app/start-script.sh
+COPY packages/swarm/crystallography-web ./packages/swarm/crystallography-web
 
 RUN npm install --production
 
 RUN npm run bootstrap:ci
 
 ENV NODE_ENV production
-RUN npm --prefix packages/containers/crystallography-web run build
+RUN npm --prefix packages/swarm/crystallography-web run build
 
 CMD /app/start-script.sh

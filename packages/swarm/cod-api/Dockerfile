@@ -3,9 +3,6 @@ RUN mkdir /app
 RUN mkdir /static
 WORKDIR /app
 
-# Install rsync
-RUN apk add --update subversion rsync openssh
-
 # Install gsutil
 RUN apk add --update python py-pip py-cffi  py-cryptography \
   && pip install --upgrade pip \
