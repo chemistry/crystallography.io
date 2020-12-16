@@ -8,5 +8,12 @@ API for accessing COD database [crystallography.io](https://crystallography.io/)
  - GET: api/v1/structures?page=x
 
 
+
+## Configuring enviroment
+ - Set enviroment valibles to connect locally to MongoDB
+    MONGO_INITDB_ROOT_USERNAME
+    MONGO_INITDB_ROOT_PASSWORD
+    MONGO_INITDB_HOST
 ## Commands:
   * Build project: `npm run build`
+  * Local Development `npm run nodemon`

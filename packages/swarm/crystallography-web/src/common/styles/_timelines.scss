@@ -33,6 +33,7 @@
       width: 10px;
       &::before {
         border: 8px solid var(--active-color);
+        background: var(--active-color);
         border-radius: 50%;
         content: "";
         display: block;
