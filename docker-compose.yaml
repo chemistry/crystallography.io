@@ -36,6 +36,16 @@ services:
                 - traefik.tcp.routers.mongo.service=mongo
                 - traefik.tcp.services.mongo.loadbalancer.server.port=27017
 
+    scheduler:
+        image: 'gcr.io/crystallography-api/containers-scheduler:latest'
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/scheduler/Dockerfile
+        networks:
+          - net
+        env_file:
+          - ./.env
+
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
         volumes:
@@ -111,7 +121,6 @@ services:
                 - traefik.http.routers.api-https.tls=true
                 - traefik.http.routers.api-https.tls.certresolver=le
                 - traefik.http.services.api.loadbalancer.server.port=8070
-
 networks:
   net:
   traefik-public:

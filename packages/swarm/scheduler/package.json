@@ -1,0 +1,33 @@
+{
+    "name": "@chemistry/scheduler",
+    "private": true,
+    "version": "0.0.18",
+    "description": "Synchronization Scheduler",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "COD syncronization",
+        "scheduler",
+        "crystallography"
+    ],
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "devEngines": {
+        "node": ">=10.0.0"
+    },
+    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/swarm/scheduler",
+    "scripts": {
+        "build": "rimraf dist/* && tsc",
+        "deploy": "./deploy.sh",
+        "start": "node dist/run.js"
+    },
+    "dependencies": {
+        "@types/shelljs": "0.8.8",
+        "amqplib": "0.6.0",
+        "shelljs": "0.8.4"
+    }
+}
