@@ -26,6 +26,7 @@
         "start": "node dist/run.js"
     },
     "dependencies": {
+        "@google-cloud/logging": "9.0.0",
         "@types/shelljs": "0.8.8",
         "amqplib": "0.6.0",
         "shelljs": "0.8.4"

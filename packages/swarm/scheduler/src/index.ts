@@ -1,12 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
-
+import { Logging } from '@google-cloud/logging';
 
 const TOPIC = 'SCHEDULER_CATALOG';
 export interface AppContext {
-  log: (message: string) => void;
-  sendToQueue: (data: object) => void;
-  version: string;
+    logger: {
+        info: (message: string) => Promise<void>;
+        error: (message: string) => Promise<void>;
+    },
+    sendToQueue: (data: object) => void;
+    version: string;
 }
 
 const getContext = async (): Promise<AppContext> => {
@@ -16,6 +19,18 @@ const getContext = async (): Promise<AppContext> => {
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
     await chanel.assertQueue(TOPIC);
+
+    // Creates a client
+    const logging = new Logging({
+        projectId: 'crystallography-io',
+        keyFilename: '/usr/credentials.json'
+    });
+      // Selects the log to write to
+    const log = logging.log('scheduler');
+    const metadata = {
+        resource: { type: 'global' },
+        severity: 'INFO',
+    };
 
     process.on("uncaughtException", (err) => {
         // tslint:disable-next-line
@@ -32,15 +47,35 @@ const getContext = async (): Promise<AppContext> => {
     });
 
     return {
-        log: (message: string) => {
-            // tslint:disable-next-line
-            console.log(message);
+        logger: {
+            info: async (message: string) => {
+                const entry = log.entry({
+                    ...metadata,
+                    severity: 'INFO'
+                }, message);
+                await log.write(entry);
+            },
+            error: async (message: string) => {
+                const entry = log.entry({
+                    ...metadata,
+                    severity: 'ERROR'
+                }, message);
+                await log.write(entry);
+            }
         },
         sendToQueue: (data: object): void => {
-            chanel.sendToQueue(Buffer.from(JSON.stringify(data)));
+            // chanel.sendToQueue(Buffer.from(JSON.stringify(data)));
         },
         version: packageJSON.version
     }
+}
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        // tslint:disable-next-line
+        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+         return v.toString(16);
+    });
 }
 
 (async () => {
@@ -50,13 +85,15 @@ const getContext = async (): Promise<AppContext> => {
 
         const eventName = process.argv.slice(2) || '';
 
-        const { sendToQueue , log } = await getContext();
+        const { sendToQueue , logger } = await getContext();
 
-        sendToQueue({
-            time: new Date()
-        });
-        log('sending event to Queue');
+        const message = {
+            'trace-id': uuidv4(),
+            'time': new Date()
+        };
+        sendToQueue(message);
 
+        logger.info(JSON.stringify(JSON.stringify({ source: 'scheduler', message })));
 
         // tslint:disable-next-line
         console.timeEnd('application start');
