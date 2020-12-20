@@ -1,36 +1,27 @@
 import * as fs from "fs";
-import { MongoClient } from "mongodb";
 import * as path from "path";
+import { MongoClient } from "mongodb";
+import { app, AppContext } from "./app";
 
-const TOPIC = 'SCHEDULER_MAINTENANCE';
-export interface AppContext {
-    logger: {
-        info: (message: object) => Promise<void>;
-        error: (message: object) => Promise<void>;
-        setTraceId: (id: string) => void;
-    },
-    sendToQueue: (data: object) => void;
-    version: string;
-    close: () => void;
-}
+
+const QUEUE_NAME = 'COD_FILE_UPDATED';
 
 const getContext = async (): Promise<AppContext> => {
     const packagePath = path.resolve(__dirname, "../package.json");
     const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
+    await new Promise(res => setTimeout(res, 20000));
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
-    await chanel.assertQueue(TOPIC);
+    await chanel.assertQueue(QUEUE_NAME);
+    await chanel.prefetch(1);
 
-    const {
-        MONGO_INITDB_ROOT_USERNAME,
-        MONGO_INITDB_ROOT_PASSWORD,
-        MONGO_INITDB_HOST
-    }  = process.env;
+    const MONGO_INITDB_ROOT_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME || '';
+    const MONGO_INITDB_ROOT_PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD || '';
 
-    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
+    let connectionString = 'mongodb://mongo';
     if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
+        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017`;
     }
 
     const mongoClient = await MongoClient.connect(connectionString, {
@@ -41,14 +32,6 @@ const getContext = async (): Promise<AppContext> => {
     });
 
     const db = mongoClient.db("crystallography");
-
-    process.on("uncaughtException", (err) => {
-        // tslint:disable-next-line
-        console.error('uncaughtException: ', err.message);
-        // tslint:disable-next-line
-        console.error(err.stack);
-        process.exit(1);
-    });
 
     process.on('exit', (code) => {
          // tslint:disable-next-line
@@ -61,8 +44,8 @@ const getContext = async (): Promise<AppContext> => {
         version: packageJSON.version,
         service: packageJSON.name,
     };
-    let traceId = '';
 
+    let traceId = '';
     return {
         logger: {
             info: async (message: object) => {
@@ -87,48 +70,24 @@ const getContext = async (): Promise<AppContext> => {
                 traceId = id;
             }
         },
-        sendToQueue: (data: object): void => {
-            chanel.sendToQueue(Buffer.from(JSON.stringify(data)));
+        getChanel: () => {
+            return chanel;
         },
-        close: () => {
-           process.exit(0);
-        },
-        version: packageJSON.version,
+        db,
+        QUEUE_NAME
     }
-}
-
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        // tslint:disable-next-line
-        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-         return v.toString(16);
-    });
 }
 
 (async () => {
     try {
-        // tslint:disable-next-line
-        console.time('scheduler run');
-
-        const eventName = process.argv.slice(2) || '';
-
-        const { sendToQueue , logger, close } = await getContext();
-        logger.setTraceId(uuidv4());
-
-        const message = {
-            'text': 'scheduler event'
-        };
-        sendToQueue(message);
-
-        logger.info({
-            'sendMessage': message
-        });
+        const context = await getContext();
 
         // tslint:disable-next-line
-        console.timeEnd('scheduler run');
+        console.time('application start');
+        await app(context);
 
-        close();
-
+        // tslint:disable-next-line
+        console.timeEnd('application start');
     } catch(e) {
         // tslint:disable-next-line
         console.error(e);

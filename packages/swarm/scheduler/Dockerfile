@@ -3,7 +3,7 @@ RUN mkdir /app
 WORKDIR /app
 
 RUN apk add --update subversion curl && rm -rf /var/cache/apk/*
-RUN echo '45 */1 * * *     /app/start.sh' > /etc/crontabs/root
+RUN echo '05 */1 * * *     /app/start.sh MAINTENANCE' > /etc/crontabs/root
 
 RUN npm install -g typescript@4.0.3
 RUN npm install -g rimraf@3.0.2

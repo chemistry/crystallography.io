@@ -46,6 +46,16 @@ services:
         env_file:
           - ./.env
 
+    maintenance:
+        image: 'gcr.io/crystallography-api/containers-maintenance:latest'
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/maintenance/Dockerfile
+        networks:
+          - net
+        env_file:
+          - ./.env
+
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
         volumes:
