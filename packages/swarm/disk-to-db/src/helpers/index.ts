@@ -123,8 +123,8 @@ function prepareCoordLoop(coordLoop: any) {
 
 function strLoops(loops: any) {
   return {
-    columns: JSON.stringify(loops.columns),
-    data: JSON.stringify(loops.data),
+    columns: loops.columns,
+    data: loops.data,
   };
 }
 

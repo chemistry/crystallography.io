@@ -31,10 +31,10 @@ export const processMessage = async ({ fileName, codId, context }: { fileName: s
         const now = (new Date());
 
         await collection.findOneAndUpdate({
-            _id: codId,
+            _id: Number(codId),
         }, {
             '$set':  {
-                _id: codId,
+                _id: Number(codId),
                 ...dataToSave,
                 'updated': now,
             },
