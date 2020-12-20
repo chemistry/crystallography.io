@@ -43,11 +43,12 @@ jobs: # Jobs List
         run: docker-compose -f docker-compose.yaml  push
 
       - name: Deploy to Docker swarm
-        uses: wshihadeh/docker-deployment-action@v2
+        uses: vreshch/docker-deployment-action@master
         with:
             remote_docker_host: root@host.crystallography.io
             ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
             ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+            pre_deployment_step_command: gcloud info && gcloud auth configure-docker -q
             deployment_mode: docker-swarm
             copy_stack_file: true
             pull_images_first: true

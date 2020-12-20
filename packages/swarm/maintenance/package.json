@@ -2,7 +2,7 @@
     "name": "@chemistry/maintenance",
     "private": true,
     "version": "0.0.18",
-    "description": "Simple script required for maintenance",
+    "description": "Simple script required for maintenance ",
     "author": {
         "name": "Volodymyr Vreshch",
         "url": "http://vreshch.com/"
