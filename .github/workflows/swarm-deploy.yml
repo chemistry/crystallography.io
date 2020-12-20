@@ -43,7 +43,7 @@ jobs: # Jobs List
         run: docker-compose -f docker-compose.yaml  push
 
       - name: Deploy to Docker swarm
-        uses: wshihadeh/docker-deployment-action@v1
+        uses: wshihadeh/docker-deployment-action@v2
         with:
             remote_docker_host: root@host.crystallography.io
             ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}

@@ -1,15 +1,16 @@
 import * as fs from "fs";
+import { MongoClient } from "mongodb";
 import * as path from "path";
-import { Logging } from '@google-cloud/logging';
 
 const TOPIC = 'SCHEDULER_CATALOG';
 export interface AppContext {
     logger: {
-        info: (message: string) => Promise<void>;
-        error: (message: string) => Promise<void>;
+        info: (message: object) => Promise<void>;
+        error: (message: object) => Promise<void>;
     },
     sendToQueue: (data: object) => void;
     version: string;
+    close: () => void;
 }
 
 const getContext = async (): Promise<AppContext> => {
@@ -20,17 +21,25 @@ const getContext = async (): Promise<AppContext> => {
     const chanel = await connection.createChannel();
     await chanel.assertQueue(TOPIC);
 
-    // Creates a client
-    const logging = new Logging({
-        projectId: 'crystallography-io',
-        keyFilename: '/usr/credentials.json'
+    const {
+        MONGO_INITDB_ROOT_USERNAME,
+        MONGO_INITDB_ROOT_PASSWORD,
+        MONGO_INITDB_HOST
+    }  = process.env;
+
+    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
+    if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
+        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
+    }
+
+    const mongoClient = await MongoClient.connect(connectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        reconnectTries: 60,
+        reconnectInterval: 1000,
     });
-      // Selects the log to write to
-    const log = logging.log('scheduler');
-    const metadata = {
-        resource: { type: 'global' },
-        severity: 'INFO',
-    };
+
+    const db = mongoClient.db("crystallography");
 
     process.on("uncaughtException", (err) => {
         // tslint:disable-next-line
@@ -43,30 +52,40 @@ const getContext = async (): Promise<AppContext> => {
     process.on('exit', (code) => {
          // tslint:disable-next-line
         console.log(`About to exit with code: ${code}`);
+        mongoClient.close();
         chanel.close();
     });
 
+    const meta = {
+        version: packageJSON.version,
+        service: packageJSON.name,
+        created: new Date(),
+    };
+
     return {
         logger: {
-            info: async (message: string) => {
-                const entry = log.entry({
-                    ...metadata,
-                    severity: 'INFO'
-                }, message);
-                await log.write(entry);
+            info: async (message: object) => {
+                await db.collection('logs').insertOne({
+                    severity: 'INFO',
+                    ...meta,
+                    message,
+                });
             },
-            error: async (message: string) => {
-                const entry = log.entry({
-                    ...metadata,
-                    severity: 'ERROR'
-                }, message);
-                await log.write(entry);
+            error: async (message: object) => {
+                await db.collection('logs').insertOne({
+                    severity: 'ERROR',
+                    ...meta,
+                    message,
+                });
             }
         },
         sendToQueue: (data: object): void => {
-            // chanel.sendToQueue(Buffer.from(JSON.stringify(data)));
+            chanel.sendToQueue(Buffer.from(JSON.stringify(data)));
         },
-        version: packageJSON.version
+        close: () => {
+           process.exit(0);
+        },
+        version: packageJSON.version,
     }
 }
 
@@ -81,22 +100,26 @@ function uuidv4() {
 (async () => {
     try {
         // tslint:disable-next-line
-        console.time('application start');
+        console.time('scheduler run');
 
         const eventName = process.argv.slice(2) || '';
 
-        const { sendToQueue , logger } = await getContext();
+        const { sendToQueue , logger, close } = await getContext();
 
         const message = {
             'trace-id': uuidv4(),
-            'time': new Date()
+            'data': new Date(),
+            'message': 'scheduler event'
         };
         sendToQueue(message);
 
-        logger.info(JSON.stringify(JSON.stringify({ source: 'scheduler', message })));
+        logger.info(message);
 
         // tslint:disable-next-line
-        console.timeEnd('application start');
+        console.timeEnd('scheduler run');
+
+        close();
+
     } catch(e) {
         // tslint:disable-next-line
         console.error(e);
