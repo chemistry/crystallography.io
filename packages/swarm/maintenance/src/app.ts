@@ -27,9 +27,17 @@ export const app = async(context: AppContext) => {
             'receivedMessage': message
         });
 
-        // @TODO: Process message
+        const start = +new Date();
+
+
         await processMessage({ context });
 
+        const end = +new Date();
+
+        logger.info({
+            'text': `processed in ${end-start}`,
+            'time': (end-start)
+        });
 
         chanel.ack(originalMessage);
     }, { noAck: false });
