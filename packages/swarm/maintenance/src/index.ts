@@ -4,7 +4,7 @@ import { MongoClient } from "mongodb";
 import { app, AppContext } from "./app";
 
 
-const QUEUE_NAME = 'COD_FILE_UPDATED';
+const QUEUE_NAME = 'SCHEDULER_MAINTENANCE';
 
 const getContext = async (): Promise<AppContext> => {
     const packagePath = path.resolve(__dirname, "../package.json");
