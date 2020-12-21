@@ -10,7 +10,7 @@ import { StaticRouter } from "react-router";
 import { matchRoutes, renderRoutes } from "react-router-config";
 import { ApplicationContext, ApplicationFactory } from "../common";
 import { getAuthRouter } from "./auth.router";
-
+import morgan from 'morgan';
 export interface ExpresContext {
     log: (message: string) => void;
     PORT: number;
@@ -87,6 +87,9 @@ export async function startApplication(context: ExpresContext) {
 
     // Remove header
     app.disable("x-powered-by");
+
+    // Add Logs to application
+    app.use(morgan('combined'));
 
     // Serve static files
     app.use(express.static(path.join(__dirname, "/../static"), {index: false}));

@@ -55,7 +55,7 @@ export const fetchAuthorsListData = (
     dispatch(loadAuthorsListPageStarted({}));
 
     // Load corresponding catalog page
-    const res = await axios.get(`https://api.crystallography.io/api/v1/authors?page=${pageQ}`);
+    const res = await axios.get(`https://crystallography.io/api/v1/authors?page=${pageQ}`);
     const data = res.data?.data;
 
     dispatch(loadAuthorsListSuccess(data));

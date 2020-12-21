@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
 import cors from "cors";
 import express from "express";
+import morgan from 'morgan';
 import { getRouters } from "./routers";
 
 export interface ExpressContext {
@@ -49,6 +50,8 @@ export async function startApplication(context: ExpressContext) {
 
     // Remove header
     app.disable("x-powered-by");
+
+    app.use(morgan('combined'));
 
     // Serve static files
     app.get("/", (req, res) => {

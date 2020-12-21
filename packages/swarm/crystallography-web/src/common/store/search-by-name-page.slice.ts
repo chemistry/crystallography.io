@@ -105,7 +105,7 @@ export const searchStructureByName = (
     try {
         dispatch(searchStructureByNameStart({ name }));
 
-        const res = await axios.post(`https://api.crystallography.io/api/v1/search/name`, `name=${name}`, {
+        const res = await axios.post(`https://crystallography.io/api/v1/search/name`, `name=${name}`, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
@@ -125,7 +125,7 @@ export const searchStructureByName = (
 
         let data2: any[] = [];
         if (structuresToLoad.length > 0) {
-            const res2 = await axios.post(`https://api.crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
+            const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },

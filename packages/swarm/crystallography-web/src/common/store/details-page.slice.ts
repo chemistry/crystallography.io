@@ -48,7 +48,7 @@ export const fetchStructureDetailsData = (
     try {
         dispatch(loadStructureStarted({}));
 
-        const res = await axios.post(`https://api.crystallography.io/api/v1/structure`, `ids=[${id}]&expand=true`, {
+        const res = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${id}]&expand=true`, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
