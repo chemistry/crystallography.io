@@ -10,6 +10,7 @@ export interface AppContext {
     getChanel: () => any;
     QUEUE_NAME: string;
     db: Db;
+    close: ()=> Promise<void>;
 }
 
 export const app = async(context: AppContext) => {

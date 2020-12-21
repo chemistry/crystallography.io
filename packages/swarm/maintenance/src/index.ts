@@ -16,19 +16,19 @@ const getContext = async (): Promise<AppContext> => {
     await chanel.assertQueue(QUEUE_NAME);
     await chanel.prefetch(1);
 
-    const MONGO_INITDB_ROOT_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME || '';
-    const MONGO_INITDB_ROOT_PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD || '';
+    const {
+        MONGO_INITDB_ROOT_USERNAME,
+        MONGO_INITDB_ROOT_PASSWORD,
+        MONGO_INITDB_HOST
+    }  = process.env;
 
-    let connectionString = 'mongodb://mongo';
+    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
     if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017`;
+        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
     }
-
     const mongoClient = await MongoClient.connect(connectionString, {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        reconnectTries: 60,
-        reconnectInterval: 1000,
+        useUnifiedTopology: true
     });
 
     const db = mongoClient.db("crystallography");
@@ -72,6 +72,9 @@ const getContext = async (): Promise<AppContext> => {
         },
         getChanel: () => {
             return chanel;
+        },
+        close: ()=> {
+            return mongoClient.close();
         },
         db,
         QUEUE_NAME

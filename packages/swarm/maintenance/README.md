@@ -10,8 +10,9 @@ cd ../../../ && docker build -t gcr.io/crystallography-io/maintenance -f package
 
 Execute container
 ```bash
-docker run --rm --name cod-to-disk gcr.io/crystallography-io/maintenance
+docker run --rm -e MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD -e MONGO_INITDB_HOST=$MONGO_INITDB_HOST --name maintenance gcr.io/crystallography-io/maintenance
 ```
+
 
 Push container to GCP
 ```bash

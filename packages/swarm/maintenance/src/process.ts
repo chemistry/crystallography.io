@@ -11,8 +11,7 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
         const ids: number[] = await db.collection("structures").find({}, {
             sort: "_id",
             _id: 1,
-        } as any).map(({_id}: {_id: number}) => _id).toArray();
-
+        } as any).map(({_id}: {_id: number}) => Number(_id)).toArray();
 
         const structureCatalogDocs = [];
         for (let i = 0; i < Math.ceil(ids.length / CATALOG_PAGE_SIZE); i++) {
@@ -23,9 +22,8 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
                 structures,
             });
         }
-        await db.collection("catalogs").remove({});
-        await db.collection("catalogs").insertMany(structureCatalogDocs);
-
+        await db.collection("catalog").remove({});
+        await db.collection("catalog").insertMany(structureCatalogDocs);
 
         // save sitemap catalog
         const sitemapDocs = [];
@@ -37,8 +35,8 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
             });
         }
 
-        await db.collection("sitemaps").remove({});
-        await db.collection("sitemaps").insertMany(sitemapDocs);
+        await db.collection("sitemap").remove({});
+        await db.collection("sitemap").insertMany(sitemapDocs);
 
         logger.info({ text: 'processing message .... ' });
 
