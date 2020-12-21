@@ -4,17 +4,11 @@ import { MongoClient } from "mongodb";
 import { app, AppContext } from "./app";
 
 
-const QUEUE_NAME = 'SCHEDULER_MAINTENANCE';
-
 const getContext = async (): Promise<AppContext> => {
     const packagePath = path.resolve(__dirname, "../package.json");
     const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
     await new Promise(res => setTimeout(res, 20000));
-    const connection = await require('amqplib').connect('amqp://rabbitmq');
-    const chanel = await connection.createChannel();
-    await chanel.assertQueue(QUEUE_NAME);
-    await chanel.prefetch(1);
 
     const {
         MONGO_INITDB_ROOT_USERNAME,
@@ -37,7 +31,6 @@ const getContext = async (): Promise<AppContext> => {
          // tslint:disable-next-line
         console.log(`About to exit with code: ${code}`);
         mongoClient.close();
-        chanel.close();
     });
 
     const meta = {
@@ -56,6 +49,8 @@ const getContext = async (): Promise<AppContext> => {
                     ...meta,
                     message,
                 });
+                // tslint:disable-next-line
+                console.log(message);
             },
             error: async (message: object) => {
                 await db.collection('logs').insertOne({
@@ -65,19 +60,17 @@ const getContext = async (): Promise<AppContext> => {
                     ...meta,
                     message,
                 });
+                // tslint:disable-next-line
+                console.error(message);
             },
             setTraceId: (id: string)=> {
                 traceId = id;
             }
         },
-        getChanel: () => {
-            return chanel;
-        },
         close: ()=> {
             return mongoClient.close();
         },
         db,
-        QUEUE_NAME
     }
 }
 

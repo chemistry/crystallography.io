@@ -38,14 +38,10 @@ const getMockContext = async (): Promise<AppContext> => {
                 console.log(id);
             }
         },
-        getChanel: () => {
-            return null;
-        },
         close: ()=> {
             return mongoClient.close();
         },
         db,
-        QUEUE_NAME: ''
     }
 }
 

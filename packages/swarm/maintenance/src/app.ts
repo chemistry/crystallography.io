@@ -1,4 +1,5 @@
 import { Db } from 'mongodb';
+import * as cron from 'node-cron'
 import { processMessage } from './process';
 
 export interface AppContext {
@@ -7,30 +8,28 @@ export interface AppContext {
         error: (message: object) => Promise<void>;
         setTraceId: (id: string) => void;
     },
-    getChanel: () => any;
-    QUEUE_NAME: string;
     db: Db;
     close: ()=> Promise<void>;
 }
 
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        // tslint:disable-next-line
+        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+         return v.toString(16);
+    });
+}
+
 export const app = async(context: AppContext) => {
-    const { logger, getChanel, QUEUE_NAME } = context;
-    const chanel = context.getChanel();
+    const { logger } = context;
 
-    chanel.consume(QUEUE_NAME, async (originalMessage: any) => {
-        const message = JSON.parse(originalMessage.content.toString());
-
-        const { traceId } = message;
-        logger.setTraceId(traceId);
-
+    cron.schedule('00 36 */1 * * *', async () => {
+        logger.setTraceId(uuidv4());
         logger.info({
-            'text': 'received message',
-            'receivedMessage': message
+            'text': 'job executed',
         });
 
         const start = +new Date();
-
-
         await processMessage({ context });
 
         const end = +new Date();
@@ -39,11 +38,9 @@ export const app = async(context: AppContext) => {
             'text': `processed in ${end-start}`,
             'time': (end-start)
         });
-
-        chanel.ack(originalMessage);
-    }, { noAck: false });
+    });
 
     logger.info({
-        'text': 'subscribed to updates',
+        'text': 'subscribed cron events',
     });
 }

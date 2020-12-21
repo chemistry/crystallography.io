@@ -6,7 +6,7 @@ const SITEMAP_PAGE_SIZE = 1000;
 
 export const processMessage = async ({ context }: { context: AppContext}) => {
     try {
-        const { logger, db } = context;
+        const { db } = context;
 
         const ids: number[] = await db.collection("structures").find({}, {
             sort: "_id",
@@ -37,8 +37,6 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
 
         await db.collection("sitemap").remove({});
         await db.collection("sitemap").insertMany(sitemapDocs);
-
-        logger.info({ text: 'processing message .... ' });
 
     } catch(e) {
         // tslint:disable-next-line
