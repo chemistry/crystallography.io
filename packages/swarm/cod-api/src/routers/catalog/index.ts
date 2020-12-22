@@ -7,12 +7,11 @@ const PER_PAGE = 100;
 
 
 const catalogMapper = (item: any) => {
-
     return {
-        id: item.id,
+        id: item._id,
         type: "catalog",
         attributes: {
-            id: item.id,
+            id: item._id,
             structures: item.structures
         },
     };
