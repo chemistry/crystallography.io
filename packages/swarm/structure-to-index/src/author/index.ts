@@ -76,13 +76,19 @@ async function saveAuthorRecord(authorsDB: any, recordData: any) {
         authorStructures.push(recordData.docId);
     }
 
+    const now = (new Date());
+
     await authorsDB.findOneAndUpdate({
-        _id: authorDoc._id,
+        _id: Number(authorDoc._id),
     }, {
         $set: {
             structures: authorStructures,
             count: authorStructures.length,
+            updated: now,
         },
+        $min: {
+            created: now
+        }
     });
 }
 
