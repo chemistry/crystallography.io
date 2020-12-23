@@ -36,11 +36,11 @@ services:
                 - traefik.tcp.routers.mongo.service=mongo
                 - traefik.tcp.services.mongo.loadbalancer.server.port=27017
 
-    scheduler:
-        image: 'gcr.io/crystallography-api/containers-scheduler:latest'
+    structure-to-index:
+        image: 'gcr.io/crystallography-api/structure-to-index:latest'
         build:
             context: ./
-            dockerfile: ./packages/swarm/scheduler/Dockerfile
+            dockerfile: ./packages/swarm/structure-to-index/Dockerfile
         networks:
           - net
         env_file:

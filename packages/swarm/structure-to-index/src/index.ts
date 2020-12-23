@@ -1,18 +1,15 @@
 import { MongoClient } from "mongodb";
-import * as shell from "shelljs";
-import { ExecOptions, ShellString } from "shelljs";
 import { app, AppContext } from "./app";
 
 
-const READ_QUEUE_NAME = 'COD_FILE_CHANGED';
-const NOTICE_WRITE_QUEUE = 'STRUCTURE_CHANGED';
+const QUEUE_NAME = 'STRUCTURE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
 
     await new Promise(res => setTimeout(res, 20000));
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
-    await chanel.assertQueue(READ_QUEUE_NAME);
+    await chanel.assertQueue(QUEUE_NAME);
     await chanel.prefetch(1);
 
     const {
@@ -47,14 +44,8 @@ const getContext = async (): Promise<AppContext> => {
         getChanel: () => {
             return chanel;
         },
-        exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
-            return shell.exec(command);
-        },
-        sendNoticeToQueue: (data: object): void => {
-            chanel.sendToQueue(NOTICE_WRITE_QUEUE, Buffer.from(JSON.stringify(data)));
-        },
         db,
-        QUEUE_NAME: READ_QUEUE_NAME
+        QUEUE_NAME
     }
 }
 

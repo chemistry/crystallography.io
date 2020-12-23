@@ -4,7 +4,7 @@ import { ShellString, ExecOptions } from "shelljs";
 import { app, AppContext } from "./app";
 
 
-const QUEUE_NAME = 'COD_FILE_UPDATED';
+const QUEUE_NAME = 'COD_FILE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
 

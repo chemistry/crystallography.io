@@ -1,8 +1,8 @@
 {
-    "name": "@chemistry/scheduler",
+    "name": "@chemistry/containers-structure-to-index",
     "private": true,
     "version": "0.0.18",
-    "description": "Synchronization Scheduler",
+    "description": "Crystal Structure Indexed updates",
     "author": {
         "name": "Volodymyr Vreshch",
         "url": "http://vreshch.com/"
@@ -10,8 +10,8 @@
     "license": "MIT",
     "keywords": [
         "COD syncronization",
-        "scheduler",
-        "crystallography"
+        "crystallography",
+        "Git"
     ],
     "engines": {
         "node": ">=10.0.0"
@@ -19,11 +19,12 @@
     "devEngines": {
         "node": ">=10.0.0"
     },
-    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/swarm/scheduler",
+    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/swarm/structure-to-index",
     "scripts": {
         "build": "rimraf dist/* && tsc",
         "deploy": "./deploy.sh",
-        "start": "node dist/run.js"
+        "check": "ts-node ./src/check.ts",
+        "start": "node dist/index.js"
     },
     "dependencies": {
         "amqplib": "0.6.0",
