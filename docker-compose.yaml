@@ -45,6 +45,24 @@ services:
           - net
         env_file:
           - ./.env
+        deploy:
+            mode: replicated
+            replicas: 2
+
+    disk-to-db:
+        image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
+        volumes:
+          - cod-data:/home/data
+        env_file:
+          - ./.env
+        networks:
+          - net
+        build:
+            context: ./
+            dockerfile: ./packages/swarm/disk-to-db/Dockerfile
+        deploy:
+            mode: replicated
+            replicas: 2
 
     maintenance:
         image: 'gcr.io/crystallography-api/containers-maintenance:latest'
@@ -65,18 +83,6 @@ services:
         build:
             context: ./
             dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
-
-    disk-to-db:
-        image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
-        volumes:
-          - cod-data:/home/data
-        env_file:
-          - ./.env
-        networks:
-          - net
-        build:
-            context: ./
-            dockerfile: ./packages/swarm/disk-to-db/Dockerfile
 
     web:
         image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'

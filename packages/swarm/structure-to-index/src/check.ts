@@ -30,6 +30,9 @@ import { processMessage } from './process';
         getChanel: (): any => {
             return null;
         },
+        close: () => {
+            mongoClient.close();
+        },
         QUEUE_NAME: 'QUEUE_NAME',
         db
     };
@@ -40,6 +43,8 @@ import { processMessage } from './process';
     await processMessage({
         structureId: 1000000, context
     });
+
+    context.close();
 
     // tslint:disable-next-line
     console.timeEnd('process-files');

@@ -2,11 +2,11 @@ import { Db } from 'mongodb';
 import { processMessage } from './process';
 
 export interface AppContext {
-  log: (message: string) => void;
-  getChanel: () => any;
-  QUEUE_NAME: string;
-
-  db: Db;
+    log: (message: string) => void;
+    getChanel: () => any;
+    QUEUE_NAME: string;
+    close: () => void;
+    db: Db;
 }
 
 export const app = async(context: AppContext) => {

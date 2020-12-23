@@ -44,8 +44,12 @@ const getContext = async (): Promise<AppContext> => {
         getChanel: () => {
             return chanel;
         },
+        close: () => {
+            mongoClient.close();
+            chanel.close();
+        },
         db,
-        QUEUE_NAME
+        QUEUE_NAME,
     }
 }
 
