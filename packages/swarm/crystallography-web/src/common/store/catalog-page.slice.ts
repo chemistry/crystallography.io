@@ -6,6 +6,9 @@ import { AppThunk} from "./common";
 const catalogPageSlice = createSlice({
   name: "catalogPage",
   initialState: {
+    meta: {
+        pages: 0
+    },
     data: {
         structureById: {},
         structureIdsLoaded: [],
@@ -16,14 +19,17 @@ const catalogPageSlice = createSlice({
   },
   reducers: {
     loadCatalogPageStarted(state, action) {
+        state.meta = { pages: 0 };
         state.isLoading = true;
         state.error = null;
         state.data.structureIdsLoaded = [];
     },
     loadStructureIdsSuccess(state, action) {
+        const { data, meta } = action.payload;
         state.isLoading = true;
         state.error = null;
-        state.data.structureIdsLoaded = action.payload;
+        state.data.structureIdsLoaded = data;
+        state.meta = meta;
     },
     loadStructureListSuccess(state, { payload }) {
         state.isLoading = false;
@@ -59,7 +65,7 @@ export const fetchCatalogData = (
 
     // Load corresponding catalog page
     const res = await axios.get(`https://crystallography.io/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`);
-    const data = res.data?.data;
+    const { data, meta } = res.data;
 
     let structuresToLoad = [];
     // Extract Structures To Load
@@ -70,7 +76,7 @@ export const fetchCatalogData = (
             structuresToLoad  = pageResponse[0]?.attributes?.structures;
         }
     }
-    dispatch(loadStructureIdsSuccess(structuresToLoad));
+    dispatch(loadStructureIdsSuccess({ data: structuresToLoad, meta }));
 
     let data2: any[] = [];
     if (structuresToLoad.length > 0) {

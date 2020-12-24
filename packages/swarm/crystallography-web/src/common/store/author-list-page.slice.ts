@@ -5,6 +5,10 @@ import { AppThunk } from "./common";
 const authorsListPageSlice = createSlice({
   name: "authorsListPage",
   initialState: {
+    meta: {
+        total: 0,
+        pages: 0
+    },
     data: {
         authorsList: [],
     },
@@ -13,6 +17,7 @@ const authorsListPageSlice = createSlice({
   },
   reducers: {
     loadAuthorsListPageStarted(state, action) {
+        state.meta = { pages: 0, total: 0 };
         state.isLoading = true;
         state.error = null;
         state.data.authorsList = [];
@@ -21,17 +26,18 @@ const authorsListPageSlice = createSlice({
         state.isLoading = false;
         state.error = null;
 
-        const { payload } = action;
+        const { data, meta } = action.payload;
         let authors: any[] = [];
-        if (Array.isArray(payload)) {
-            authors = payload.map((element : any)=> {
+        if (Array.isArray(data)) {
+            authors = data.map((element : any)=> {
                 return {
                     id: element.id,
                     ...element.attributes
                 }
-            })
+            });
         }
         state.data.authorsList = authors;
+        state.meta = meta || {};
     },
     loadAuthorsListFailed(state, action) {
         state.isLoading = false;
@@ -56,7 +62,7 @@ export const fetchAuthorsListData = (
 
     // Load corresponding catalog page
     const res = await axios.get(`https://crystallography.io/api/v1/authors?page=${pageQ}`);
-    const data = res.data?.data;
+    const data = res.data || {};
 
     dispatch(loadAuthorsListSuccess(data));
 

@@ -8,7 +8,6 @@ import { Loader } from "../components/loader";
 import { Pagination } from "../components/pagination";
 
 
-
 const formatDate = (date: Date): string => {
     const dayOfMonth = `${date.getDate() < 9 ? '0': ''}${date.getDate()}`;
     const month =  `${date.getMonth() < 9 ? '0': ''}${date.getMonth() + 1}`;
@@ -56,6 +55,9 @@ const AuthorsTable = ({ authors }: {authors: AuthorsRecord[] }) => {
     )
 }
 
+const numberWithSpaces = (x: number): string => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
 export const AuthorsPage = (props: { route: RouteConfig }) => {
 
@@ -68,6 +70,8 @@ export const AuthorsPage = (props: { route: RouteConfig }) => {
 
     const isLoading = useSelector((state: RootState) => state.authorsListPage.isLoading);
     const containerRef = React.useRef(null);
+
+    const { total, pages } = useSelector((state: RootState)=> state.authorsListPage.meta);
 
     const authors: AuthorsRecord[] = useSelector((state: RootState) => {
         return state.authorsListPage.data.authorsList;
@@ -90,7 +94,7 @@ export const AuthorsPage = (props: { route: RouteConfig }) => {
             <div className="app-layout-content">
                 <div className="columns">
                     <div className="column col-10">
-                        <h4 className="text-primary">Total: 29 988</h4>
+                        <h4 className="text-primary">{ total ? `Total: ${numberWithSpaces(total)}`: null }</h4>
                     </div>
                 </div>
 
@@ -106,7 +110,7 @@ export const AuthorsPage = (props: { route: RouteConfig }) => {
 
                     <div className="columns">
                         <div className="column col-10">
-                            <Pagination currentPage={currentPage} maxPages={10} totalPages={4000}  url={'/authors'} />
+                            <Pagination currentPage={currentPage} maxPages={10} totalPages={pages}  url={'/authors'} />
                         </div>
                     </div>
                 </Loader>

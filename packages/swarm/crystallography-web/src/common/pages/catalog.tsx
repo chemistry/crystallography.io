@@ -23,6 +23,7 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
     currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
 
     const isLoading = useSelector((state: RootState) => state.catalogPage.isLoading);
+    const pages = useSelector((state: RootState)=> state.catalogPage.meta.pages);
     const containerRef = useRef(null);
 
     const structures = useSelector((state: RootState) => {
@@ -42,7 +43,7 @@ export const CatalogPage = (props: { route: RouteConfig }) => {
             <div className="app-layout-content" ref={containerRef}>
                 <div className="app-layout-page-transparent">
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
-                        <Pagination currentPage={currentPage} maxPages={10} totalPages={4000} url={'/catalog'} />
+                        <Pagination currentPage={currentPage} maxPages={10} totalPages={pages} url={'/catalog'} />
                         <StructuresList list={structures} />
                     </Loader>
                 </div>

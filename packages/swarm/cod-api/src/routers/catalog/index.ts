@@ -37,6 +37,7 @@ export const getCatalogRouter = ({ db }: { db: Db}) => {
         }
 
         try {
+            const pages = await db.collection("catalog").count({})
             const catalog = await db.collection("catalog")
                 .find({})
                 .sort({ 'id': 1 })
@@ -46,7 +47,9 @@ export const getCatalogRouter = ({ db }: { db: Db}) => {
                 .toArray();
 
             res.json({
-                meta: { },
+                meta: {
+                    pages
+                },
                 errors: [],
                 data: catalog,
             });
