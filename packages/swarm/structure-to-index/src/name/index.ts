@@ -7,9 +7,8 @@ export const processNamesIndex = async ({ structureId, context }: { structureId:
     const { log, db } = context;
 
     const namesDB = db.collection("names");
-    await ensureStructureNamesIndexes(namesDB);
-
     const structuresDB  = db.collection("structures")
+    await ensureStructureNamesIndexes(namesDB);
 
     const doc = await structuresDB.findOne({ _id: structureId })
     if (!doc) {

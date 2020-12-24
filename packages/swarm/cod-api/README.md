@@ -7,8 +7,6 @@ API for accessing COD database [crystallography.io](https://crystallography.io/)
 # Endpoints path:
  - GET: api/v1/structures?page=x
 
-
-
 ## Configuring enviroment
  - Set enviroment valibles to connect locally to MongoDB
     MONGO_INITDB_ROOT_USERNAME

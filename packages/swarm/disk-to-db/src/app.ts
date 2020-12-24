@@ -20,9 +20,12 @@ export const app = async(context: AppContext) => {
         for (const message of messages) {
             await processMessage({ ...message, context });
 
-            const { codId } = message;
-            if (codId && isFinite(Number(codId))) {
+            if (message && message.codId && isFinite(Number(message.codId))) {
+                const { codId } = message;
                 sendNoticeToQueue({ structureId: Number(codId) });
+            } else {
+                // tslint:disable-next-line
+                log(JSON.stringify(message));
             }
         }
         chanel.ack(originalMessage);
