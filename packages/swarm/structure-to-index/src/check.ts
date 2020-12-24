@@ -41,7 +41,7 @@ import { processMessage } from './process';
     console.time('process-files');
 
     await processMessage({
-        structureId: 1000000, context
+        structureId: 1000024, context
     });
 
     context.close();
