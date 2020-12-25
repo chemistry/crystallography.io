@@ -44,7 +44,7 @@ const searchByAuthorSlice = createSlice({
     },
 
     searchStructureByAuthorIdsSuccess(state, action: {
-        payload: { ids: string[], meta: { searchString: string; pages: number, total: number } }
+        payload: { ids: number[], meta: { searchString: string; pages: number, total: number } }
     }) {
         const { payload } = action;
         const { ids, meta } = payload;
@@ -91,21 +91,45 @@ interface SearchAuthorResponse {
         took: number
         searchString: string
     },
-    data: [{
-        id: string
-        type: string
-        attributes: {
-            id: string
-            score: number
-        }
-    }]
+    data: {
+        structures: number[];
+    }
 }
 
 export const searchStructureByAuthor = (
     { name, page }: { name : string, page: number },
 ): AppThunk => async (dispatch) => {
     try {
-        // @TODO - add Authors Search
+        dispatch(searchStructureByAuthorStart({ name, page }));
+
+        const res = await axios.post(`https://crystallography.io/api/v1/search/author`, `page=${page}&name=${encodeURIComponent(name)}`, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+
+        const data: SearchAuthorResponse = res.data as SearchAuthorResponse;
+
+        let structuresToLoad: number[] = [];
+
+        if (data.data && data.data.structures && Array.isArray(data.data.structures)) {
+            structuresToLoad = data.data.structures;
+        }
+
+        dispatch(searchStructureByAuthorIdsSuccess({ ids: structuresToLoad, meta: data.meta }));
+
+        let data2: any[] = [];
+        if (structuresToLoad.length > 0) {
+            const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
+            data2 = res2.data?.data;
+        }
+
+        dispatch(loadStructureListSuccess(data2));
+
     } catch (err) {
         dispatch(searchStructureByAuthorSuccessFailed(err.toString()));
     }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Loader, Pagination, SearchTab } from "../../components";
+import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { Input } from "../../components/input";
 import { StructuresList } from "../../components/structure-list/structure-list";
 import { RootState } from "../../store";
@@ -114,6 +114,80 @@ const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, 
     )
 }
 
+const SearchSummary = ({ totalResults }: {totalResults: number })=> {
+    return (
+        <div className="search-layout__results-header">
+            <h4 className="text-primary">Results: {totalResults}</h4>
+        </div>
+    )
+}
+
+const SearchResults = ()=> {
+    const dispatch = useDispatch();
+    const containerRef = useRef(null);
+    const isLoading = useSelector((state: RootState) => state.searchByAuthorSlice.isLoading);
+    const structures = useSelector((state: RootState) => {
+        const structuresIds = state.searchByAuthorSlice.data.structureIds;
+        const structuresById: any = state.searchByAuthorSlice.data.structureById;
+
+        return structuresIds.map((id) => {
+            return structuresById[id];
+        }).filter((item) => !!item);
+    });
+    const currentPage = useSelector((state: RootState) => state.searchByAuthorSlice.currentPage);
+    const totalPages = useSelector((state: RootState) => state.searchByAuthorSlice.meta.totalPages);
+    const hasNoResults = useSelector((state: RootState) => {
+        const status = state.searchByAuthorSlice.status;
+        const resultCount = Object.keys(state.searchByAuthorSlice.data.structureById).length;
+        return (status === SearchState.success && resultCount === 0);
+    });
+    const totalResults = useSelector((state: RootState) =>{
+        return Math.max(
+            Object.keys(state.searchByAuthorSlice.data.structureById).length,
+            state.searchByAuthorSlice.meta.totalResults
+        );
+    });
+    const searchString = useSelector((state: RootState) => state.searchByAuthorSlice.meta.searchString);
+
+    const showSummary = useSelector((state: RootState) => {
+        const status = state.searchByAuthorSlice.status;
+        const resultCount = Math.max(
+            Object.keys(state.searchByAuthorSlice.data.structureById).length,
+            state.searchByAuthorSlice.meta.totalResults
+        );
+
+        return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
+    });
+
+    const onPageNavigate = (page: number) => {
+        dispatch(searchStructureByAuthor({
+            name: searchString,
+            page
+        }));
+    }
+
+    return (
+        <div>
+            <div className="search-layout__results-list">
+                <div ref={containerRef}>
+                    { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
+                    { hasNoResults ? <NoSearchResults /> : null }
+                    <Loader isVisible={isLoading} scrollElement={containerRef}>
+                        <Pagination
+                            currentPage={currentPage}
+                            maxPages={10}
+                            totalPages={totalPages}
+                            url='/search'
+                            onPageNavigate={onPageNavigate}
+                        />
+                        <StructuresList list={structures} />
+                    </Loader>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export const SearchByAuthorsPage = () => {
 
     const dispatch = useDispatch();
@@ -138,7 +212,7 @@ export const SearchByAuthorsPage = () => {
                         <SearchByAuthorForm onSubmit={handleSubmit} initialValue={searchString}/>
                     </div>
                     <div>
-                        Search Results
+                        <SearchResults />
                     </div>
                 </div>
             </div>
