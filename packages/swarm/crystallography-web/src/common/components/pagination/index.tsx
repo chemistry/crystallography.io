@@ -6,9 +6,21 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-export const Pagination: React.SFC<{ currentPage: number, maxPages: number, totalPages: number, url: string }> = ({
-    currentPage, maxPages, totalPages, url
-}) => {
+const PageLinkTemplate = ({page, url, onPageNavigate} : {url: string, onPageNavigate: (page: number) => void, page: number} ) => {
+    if (onPageNavigate) {
+        return (
+            <a className="c-page-link" onClick={()=> onPageNavigate(page)}>{page}</a>
+        );
+    } else {
+        return (
+            <NavLink to={ url + "/" + page} className="c-page-link">{page}</NavLink>
+        );
+    }
+}
+
+export const Pagination = ({
+    currentPage, maxPages, totalPages, onPageNavigate, url
+}: { currentPage: number, maxPages: number, totalPages: number, url: string, onPageNavigate?: (page: number) => void }) => {
     if (totalPages < 1) {
         return null;
     }
@@ -32,16 +44,10 @@ export const Pagination: React.SFC<{ currentPage: number, maxPages: number, tota
         return null;
     }
 
-    const pageLinkTemplate = (pageNum: number) => {
-        return (
-            <NavLink to={ url + "/" + pageNum} className="c-page-link">{pageNum}</NavLink>
-        );
-    };
-
     const pageItems = pagesNum.map((pageNum) => {
         const isActive = (pageNum === currentPage);
         const className = isActive ? "c-page-item active" : "c-page-item";
-        return (<li className={className} key={pageNum}>{pageLinkTemplate(pageNum)}</li>);
+        return (<li className={className} key={pageNum}><PageLinkTemplate url={url} page={pageNum} onPageNavigate={onPageNavigate} /></li>);
     });
 
     return (

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useClickOutside } from '../../hooks';
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -37,21 +38,30 @@ export const Input = ({
     name,
     onChange,
     placeholder,
-    autoCompleteOptions
+    autoCompleteOptions,
+    suggestionsVisible,
+    setSuggestionsVisible
 }: {
     initialValue: string,
     name: string,
     onChange:(event: React.ChangeEvent<HTMLInputElement>) => void,
     placeholder: string,
-    autoCompleteOptions: any
+    autoCompleteOptions: any,
+    suggestionsVisible: boolean,
+    setSuggestionsVisible:(isVisible: boolean)=> void
 }) => {
     let cache: any = {};
     let timer: any = null;
 
+    const clickRef = useRef();
     const [value, setValue] = useState(initialValue);
     const [suggestions, setSuggestions] = useState([]);
-    const [suggestionsVisible, setSuggestionsVisible] = useState(false);
     const lastVal = initialValue;
+
+
+    useClickOutside(clickRef, ()=> {
+        setSuggestionsVisible(false);
+    });
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>)=> {
         setValue(event.target.value);
@@ -183,7 +193,7 @@ export const Input = ({
     const inputFormClassnames = suggestionsVisible ? 'c-form-input c-form-input--has-recommendation': 'c-form-input';
 
     return (
-        <div className={inputFormClassnames}>
+        <div className={inputFormClassnames} ref={clickRef}>
             <input type="text"
                 className="form-input"
                 name={name}

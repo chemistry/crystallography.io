@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { stringify } from "querystring";
 import { AppThunk} from "./common";
 
 const catalogPageSlice = createSlice({
@@ -19,10 +18,8 @@ const catalogPageSlice = createSlice({
   },
   reducers: {
     loadCatalogPageStarted(state, action) {
-        state.meta = { pages: 0 };
         state.isLoading = true;
         state.error = null;
-        state.data.structureIdsLoaded = [];
     },
     loadStructureIdsSuccess(state, action) {
         const { data, meta } = action.payload;

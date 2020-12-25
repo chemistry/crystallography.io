@@ -29,13 +29,15 @@ const searchByNameSlice = createSlice({
     isLoading: false,
   },
   reducers: {
-    searchStructureByNameStart(state, action: {payload : { name: string }}) {
+    searchStructureByNameStart(state, action: {payload : { name: string, page: number }}) {
         const { payload } = action;
-        const { name } = payload;
+        const { name, page } = payload;
         state.data = {
             structureById: {},
             structureIds: [],
         };
+        state.name = name;
+        state.currentPage = page;
         state.isLoading = true;
         state.error = null;
         state.status = SearchState.started;
@@ -100,12 +102,12 @@ interface SearchNameResponse {
 }
 
 export const searchStructureByName = (
-    { name }: { name : string },
+    { name, page }: { name : string, page: number },
 ): AppThunk => async (dispatch) => {
     try {
-        dispatch(searchStructureByNameStart({ name }));
+        dispatch(searchStructureByNameStart({ name, page }));
 
-        const res = await axios.post(`https://crystallography.io/api/v1/search/name`, `name=${name}`, {
+        const res = await axios.post(`https://crystallography.io/api/v1/search/name`, `page=${page}&name=${encodeURIComponent(name)}`, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },

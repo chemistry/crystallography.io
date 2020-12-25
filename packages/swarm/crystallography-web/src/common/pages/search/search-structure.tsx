@@ -71,6 +71,7 @@ const autoCompleteSource = (value: any, response: any) => {
 const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
 
     const [name, setName ] = useState(initialValue);
+    const [suggestionsVisible, setSuggestionsVisible] = useState(false);
 
     const autoCompleteOptions = {
         minChars: 1,
@@ -85,7 +86,9 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        setSuggestionsVisible(false);
         event.preventDefault();
+
         if (name !== '') {
             onSubmit({ name });
         }
@@ -101,6 +104,8 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
                         name="name"
                         onChange={handleNameChange}
                         placeholder="Enter keyword"
+                        suggestionsVisible={suggestionsVisible}
+                        setSuggestionsVisible={setSuggestionsVisible}
                         autoCompleteOptions={autoCompleteOptions}
                     />
                     <button className="form-button btn">Search</button>
@@ -147,6 +152,7 @@ const NoSearchResults = ()=> {
 }
 
 const SearchResults = ()=> {
+    const dispatch = useDispatch();
     const containerRef = useRef(null);
     const isLoading = useSelector((state: RootState) => state.searchByNameSlice.isLoading);
     const structures = useSelector((state: RootState) => {
@@ -169,7 +175,9 @@ const SearchResults = ()=> {
             Object.keys(state.searchByNameSlice.data.structureById).length,
             state.searchByNameSlice.meta.totalResults
         );
-    })
+    });
+    const searchString = useSelector((state: RootState) => state.searchByNameSlice.meta.searchString);
+
     const showSummary = useSelector((state: RootState) => {
         const status = state.searchByNameSlice.status;
         const resultCount = Math.max(
@@ -180,6 +188,13 @@ const SearchResults = ()=> {
         return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
     });
 
+    const onPageNavigate = (page: number) => {
+        dispatch(searchStructureByName({
+            name: searchString,
+            page
+        }));
+    }
+
     return (
         <div>
             <div className="search-layout__results-list">
@@ -187,7 +202,13 @@ const SearchResults = ()=> {
                     { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
                     { hasNoResults ? <NoSearchResults /> : null }
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
-                        <Pagination currentPage={currentPage} maxPages={10} totalPages={totalPages} url={'/catalog'} />
+                        <Pagination
+                            currentPage={currentPage}
+                            maxPages={10}
+                            totalPages={totalPages}
+                            url='/search'
+                            onPageNavigate={onPageNavigate}
+                        />
                         <StructuresList list={structures} />
                     </Loader>
                 </div>
@@ -199,9 +220,12 @@ const SearchResults = ()=> {
 export const SearchByStructurePage = () => {
 
     const dispatch = useDispatch();
+    const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
 
     const handleSubmit = (data: SearchFormData) => {
-        dispatch(searchStructureByName(data));
+        dispatch(searchStructureByName({
+            ...data, page: currentPage
+        }));
     }
     const searchString = useSelector((state: RootState) => state.searchByNameSlice.meta.searchString);
 
