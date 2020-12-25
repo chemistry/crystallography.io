@@ -50,8 +50,8 @@ const getContext = async (): Promise<AppContext> => {
         exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
             return shell.exec(command);
         },
-        sendNoticeToQueue: (data: object): void => {
-            await chanel.sendToQueue(NOTICE_WRITE_QUEUE, Buffer.from(JSON.stringify(data)));
+        sendNoticeToQueue: (data: object): Promise<void> => {
+            return chanel.sendToQueue(NOTICE_WRITE_QUEUE, Buffer.from(JSON.stringify(data)));
         },
         db,
         QUEUE_NAME: READ_QUEUE_NAME

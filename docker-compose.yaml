@@ -47,7 +47,7 @@ services:
           - ./.env
         deploy:
             mode: replicated
-            replicas: 2
+            replicas: 4
 
     disk-to-db:
         image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
@@ -62,7 +62,7 @@ services:
             dockerfile: ./packages/swarm/disk-to-db/Dockerfile
         deploy:
             mode: replicated
-            replicas: 2
+            replicas: 4
 
     maintenance:
         image: 'gcr.io/crystallography-api/containers-maintenance:latest'
