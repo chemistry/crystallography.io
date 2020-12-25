@@ -60,7 +60,7 @@ export const getNameSearchRouter = ({ db }: { db: Db}) => {
             ]);
             const totalPages = Math.ceil(structuresCount / RESULTS_PER_PAGE);
 
-            res.json({
+            return res.json({
                 meta: {
                     total: structuresCount,
                     pages: totalPages,
