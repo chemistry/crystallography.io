@@ -9,6 +9,14 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
 
     router.post("/", async (req: Request, res: Response) => {
 
+        if (!req.body) {
+            return res.status(400).json({
+                status: 400,
+                title: "Invalid Body Params",
+                detail: "Invalid Body Params",
+            });
+        }
+
         let name = String(req.body.name || "");
         const nameChars = "\\w\\u00C0-\\u021B\\-\\`'’ιλḰṕḾŃḱóOů̅ουḿα\u2019";
         name = name.replace(new RegExp("[^" + nameChars + "\\.\\-\\s]"), "").replace(/\s+/g, " ").trim();
@@ -25,11 +33,11 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
                 name, page
             });
 
-        if (!req.body) {
-            return res.status(500).json({
-                status: 500,
-                title: "Invalid Body Params",
-                detail: "Invalid Body Params",
+        if (validationRes.error) {
+            return res.status(400).json({
+                status: 400,
+                title: "Incorrect author or page",
+                detail: "Incorrect author or page",
             });
         }
 
