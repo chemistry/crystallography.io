@@ -6,6 +6,7 @@ import detailsPageReducer from "./details-page.slice";
 import authorsListPageReducer from "./author-list-page.slice";
 import searchByNameSliceReducer from "./search-by-name-page.slice";
 import searchByAuthorSliceReducer from "./search-by-author-page.slice";
+import searchByFormulaSliceReducer from "./search-by-formula-page.slice";
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
@@ -14,6 +15,7 @@ const reducer = combineReducers({
     authorsListPage: authorsListPageReducer,
     searchByNameSlice: searchByNameSliceReducer,
     searchByAuthorSlice: searchByAuthorSliceReducer,
+    searchByFormulaSlice: searchByFormulaSliceReducer,
     user: userSlice,
 });
 

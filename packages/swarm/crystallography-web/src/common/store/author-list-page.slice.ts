@@ -17,10 +17,10 @@ const authorsListPageSlice = createSlice({
   },
   reducers: {
     loadAuthorsListPageStarted(state, action) {
-        state.meta = { pages: 0, total: 0 };
+        // state.meta = { pages: 0, total: 0 };
+        // state.data.authorsList = [];
         state.isLoading = true;
         state.error = null;
-        state.data.authorsList = [];
     },
     loadAuthorsListSuccess(state, action) {
         state.isLoading = false;
