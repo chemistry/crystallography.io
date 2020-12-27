@@ -58,7 +58,7 @@ textarea.form-input {
     display: block;
     font-size: var(--font-size-text);
     line-height: $line-height;
-    padding: $control-padding-y 0;
+    padding: 0.25rem 0;
 
     &.label-sm {
       font-size: var(--font-size-sm);

@@ -38,4 +38,17 @@
             text-align: center;
         }
     }
+
+    &__search_form {
+        .form-label {
+            margin-left: 0.25rem;
+        }
+    }
+    &__search_row {
+        margin-top: 1.5rem;
+    }
+    &__search_btn {
+        display: block;
+        width: 100%;
+    }
 }
