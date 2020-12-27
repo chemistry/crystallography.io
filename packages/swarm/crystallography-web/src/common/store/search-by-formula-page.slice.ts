@@ -44,7 +44,7 @@ const searchByFormulaSlice = createSlice({
     },
 
     searchStructureByFormulaIdsSuccess(state, action: {
-        payload: { ids: string[], meta: { searchString: string; pages: number, total: number } }
+        payload: { ids: number[], meta: { searchString: string; pages: number, total: number } }
     }) {
         const { payload } = action;
         const { ids, meta } = payload;
@@ -70,7 +70,7 @@ const searchByFormulaSlice = createSlice({
         state.data.structureById = structures;
         state.data.structureIds = state.data.structureIds;
     },
-    searchStructureByNameSuccessFailed(state, action) {
+    searchStructureByFormulaSuccessFailed(state, action) {
         state.isLoading = false;
         state.status = SearchState.failed,
         state.error = action.payload;
@@ -80,7 +80,7 @@ const searchByFormulaSlice = createSlice({
 
 export const {
     searchStructureByFormulaStart, loadStructureListSuccess,
-    searchStructureByFormulaIdsSuccess, searchStructureByNameSuccessFailed,
+    searchStructureByFormulaIdsSuccess, searchStructureByFormulaSuccessFailed,
 } = searchByFormulaSlice.actions;
 export default searchByFormulaSlice.reducer;
 
@@ -91,14 +91,9 @@ interface SearchNameResponse {
         took: number
         searchString: string
     },
-    data: [{
-        id: string
-        type: string
-        attributes: {
-            id: string
-            score: number
-        }
-    }]
+    data: {
+        structures: number[]
+    }
 }
 
 export const searchStructureByFormula = (
@@ -115,12 +110,15 @@ export const searchStructureByFormula = (
 
         const data: SearchNameResponse = res.data as SearchNameResponse;
 
-        let structuresToLoad: string[] = [];
+        let structuresToLoad: number[] = [];
 
         if (Array.isArray(data.data)) {
             structuresToLoad = data.data.map(({ id }) => {
                 return id;
             });
+        }
+        if (data.data && data.data.structures && Array.isArray(data.data.structures)) {
+            structuresToLoad = data.data.structures;
         }
 
         dispatch(searchStructureByFormulaIdsSuccess({ ids: structuresToLoad, meta: data.meta }));
@@ -137,6 +135,6 @@ export const searchStructureByFormula = (
 
         dispatch(loadStructureListSuccess(data2));
     } catch (err) {
-        dispatch(searchStructureByNameSuccessFailed(err.toString()));
+        dispatch(searchStructureByFormulaSuccessFailed(err.toString()));
     }
 }

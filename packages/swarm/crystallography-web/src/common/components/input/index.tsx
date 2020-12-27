@@ -44,7 +44,7 @@ export const Input = ({
 }: {
     initialValue: string,
     name: string,
-    onChange:(event: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange:(name: string) => void,
     placeholder: string,
     autoCompleteOptions: any,
     suggestionsVisible: boolean,
@@ -65,7 +65,7 @@ export const Input = ({
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>)=> {
         setValue(event.target.value);
-        onChange(event);
+        onChange(event.target.value);
     }
 
     const autoCompleteKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -121,6 +121,7 @@ export const Input = ({
             const idx2 = getSelectedIdx();
             if (idx2 > -1) {
                 setValue(suggestions[idx2].value);
+                onChange(suggestions[idx2].value);
                 setSuggestionsVisible(false);
             }
         }
@@ -186,6 +187,7 @@ export const Input = ({
             setSuggestions(newSuggestions);
             setSuggestionsVisible(false);
             setValue(suggestions[idx].value);
+            onChange(suggestions[idx].value);
         }
     }
 

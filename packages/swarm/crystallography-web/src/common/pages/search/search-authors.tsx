@@ -79,9 +79,8 @@ const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, 
         renderItemValue,
     };
 
-    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        setName(event.target.value);
+    const handleNameChange = (nameValue: string) => {
+        setName(nameValue);
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

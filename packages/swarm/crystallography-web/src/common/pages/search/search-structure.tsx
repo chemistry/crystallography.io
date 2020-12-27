@@ -80,9 +80,8 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
         renderItemValue,
     };
 
-    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        setName(event.target.value);
+    const handleNameChange = (nameValue: string) => {
+        setName(nameValue);
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
