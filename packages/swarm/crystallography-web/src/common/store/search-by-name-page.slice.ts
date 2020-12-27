@@ -70,7 +70,7 @@ const searchByNameSlice = createSlice({
         state.data.structureById = structures;
         state.data.structureIds = state.data.structureIds;
     },
-    searchStructureByNameSuccessFailed(state, action) {
+    searchStructureByNameFailed(state, action) {
         state.isLoading = false;
         state.status = SearchState.failed,
         state.error = action.payload;
@@ -80,7 +80,7 @@ const searchByNameSlice = createSlice({
 
 export const {
     searchStructureByNameStart, loadStructureListSuccess,
-    searchStructureByNameIdsSuccess, searchStructureByNameSuccessFailed,
+    searchStructureByNameIdsSuccess, searchStructureByNameFailed,
 } = searchByNameSlice.actions;
 export default searchByNameSlice.reducer;
 
@@ -137,6 +137,6 @@ export const searchStructureByName = (
 
         dispatch(loadStructureListSuccess(data2));
     } catch (err) {
-        dispatch(searchStructureByNameSuccessFailed(err.toString()));
+        dispatch(searchStructureByNameFailed(err.toString()));
     }
 }

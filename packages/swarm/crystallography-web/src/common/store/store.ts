@@ -7,10 +7,13 @@ import authorsListPageReducer from "./author-list-page.slice";
 import searchByNameSliceReducer from "./search-by-name-page.slice";
 import searchByAuthorSliceReducer from "./search-by-author-page.slice";
 import searchByFormulaSliceReducer from "./search-by-formula-page.slice";
+import searchByUnitCellReducer from "./search-by-unit-cell-page.slice";
+
 import userSlice from "./user.slice";
 
 const reducer = combineReducers({
     catalogPage: catalogPageReducer,
+    searchByUnitCellSlice: searchByUnitCellReducer,
     detailsPage: detailsPageReducer,
     authorsListPage: authorsListPageReducer,
     searchByNameSlice: searchByNameSliceReducer,

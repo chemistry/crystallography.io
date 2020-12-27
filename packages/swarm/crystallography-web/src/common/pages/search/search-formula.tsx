@@ -21,7 +21,7 @@ const SearchByFormulaForm = ({ onSubmit, initialValue }: { initialValue: string,
     const [value, setValue] = useState(initialValue);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
         event.preventDefault();
-        if (value !== '') {
+        if (!!value) {
             onSubmit({ formula: value });
         }
     }

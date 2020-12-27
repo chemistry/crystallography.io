@@ -70,7 +70,7 @@ const searchByFormulaSlice = createSlice({
         state.data.structureById = structures;
         state.data.structureIds = state.data.structureIds;
     },
-    searchStructureByFormulaSuccessFailed(state, action) {
+    searchStructureByFormulaFailed(state, action) {
         state.isLoading = false;
         state.status = SearchState.failed,
         state.error = action.payload;
@@ -80,7 +80,7 @@ const searchByFormulaSlice = createSlice({
 
 export const {
     searchStructureByFormulaStart, loadStructureListSuccess,
-    searchStructureByFormulaIdsSuccess, searchStructureByFormulaSuccessFailed,
+    searchStructureByFormulaIdsSuccess, searchStructureByFormulaFailed,
 } = searchByFormulaSlice.actions;
 export default searchByFormulaSlice.reducer;
 
@@ -112,11 +112,6 @@ export const searchStructureByFormula = (
 
         let structuresToLoad: number[] = [];
 
-        if (Array.isArray(data.data)) {
-            structuresToLoad = data.data.map(({ id }) => {
-                return id;
-            });
-        }
         if (data.data && data.data.structures && Array.isArray(data.data.structures)) {
             structuresToLoad = data.data.structures;
         }
@@ -135,6 +130,6 @@ export const searchStructureByFormula = (
 
         dispatch(loadStructureListSuccess(data2));
     } catch (err) {
-        dispatch(searchStructureByFormulaSuccessFailed(err.toString()));
+        dispatch(searchStructureByFormulaFailed(err.toString()));
     }
 }
