@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../dist/common/store";
 import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { StructuresList } from "../../components/structure-list/structure-list";
+import { RootState } from "../../store";
 import { searchByUnitCell, SearchState } from "../../store/search-by-unit-cell-page.slice";
 
 if (process.env.BROWSER) {

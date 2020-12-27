@@ -31,7 +31,10 @@ const searchByUnitCellSlice = createSlice({
     isLoading: false,
   },
   reducers: {
-    searchByUnitCellStart(state, action: {payload : { a: string, b: string, c: string, alpha: string, beta: string, gamma: string, tolerance: string, page: number }}) {
+    searchByUnitCellStart(state, action: {payload : {
+        a: string, b: string, c: string, alpha: string, beta: string,
+        gamma: string, tolerance: string, page: number
+    }}) {
         const { payload } = action;
         const { a, b, c, alpha, beta, gamma, tolerance, page } = payload;
         state.data = {
