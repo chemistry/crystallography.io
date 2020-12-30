@@ -51,4 +51,16 @@
         display: block;
         width: 100%;
     }
+
+    &__molpad-editor {
+        height: 600px;
+        min-height: 600px;
+        background: white;
+
+        .c-popup .modal.show .modal-dialog {
+            left: 100px;
+            top: 100px;
+        }
+    }
+
 }

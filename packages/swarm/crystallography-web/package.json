@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "@chemistry/crystalview": "1.0.9",
+        "@chemistry/molpad": "2.3.2",
         "@google-cloud/firestore": "4.4.0",
         "@google-cloud/storage": "5.3.0",
         "@reduxjs/toolkit": "1.4.0",

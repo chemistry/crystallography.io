@@ -25,11 +25,11 @@ module.exports = {
 
     plugins: [
         new webpack.DefinePlugin({
-            BROWSER: JSON.stringify(true),
-            NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-            PUBLIC_URL: ''
+            'process.env': {
+                BROWSER: JSON.stringify(true),
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
+            },
         }),
-
         ... (process.env.WEBPACK_DEV_SERVER ? [
           new ManifestPlugin({
               fileName: 'manifest.json',
