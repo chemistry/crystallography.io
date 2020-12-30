@@ -2,8 +2,6 @@ FROM node:15.3.0-alpine3.10
 RUN mkdir /app
 WORKDIR /app
 
-# Install rsync & gsutil
-RUN apk add --update subversion rsync openssh && rm -rf /var/cache/apk/*
 
 RUN npm install -g typescript@4.0.3
 RUN npm install -g rimraf@3.0.2
