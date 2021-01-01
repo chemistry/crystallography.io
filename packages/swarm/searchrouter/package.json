@@ -1,0 +1,59 @@
+{
+    "name": "@chemistry/searchrouter",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Search Router for Substructure Search",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "email": "<vreshch@gmail.com>",
+        "url": "http://vreshch.com"
+    },
+    "keywords": [
+        "molecule",
+        "crystallography",
+        "substructure",
+        "VF2"
+    ],
+    "license": "MIT",
+    "scripts": {
+        "start": "node ./build/server.js",
+        "build": "tsc",
+        "test": "ts-node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "verify": "npm run test && npm run lint",
+        "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "tdd": "nodemon -e ts -w ./src -x ts-node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "tslint": "npm run lint",
+        "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
+        "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
+        "nodemon": "nodemon -e ts -w ./src -x ts-node src/server.ts"
+    },
+    "dependencies": {
+        "@chemistry/molecule": "1.6.3",
+        "bee-queue": "1.2.2",
+        "body-parser": "1.18.3",
+        "connect-timeout": "1.9.0",
+        "dotenv": "6.0.0",
+        "express": "4.16.3",
+        "mongodb": "3.1.4",
+        "socket.io": "2.1.1"
+    },
+    "devDependencies": {
+        "@types/body-parser": "1.17.0",
+        "@types/connect-timeout": "0.0.33",
+        "@types/dotenv": "4.0.3",
+        "@types/express": "4.16.0",
+        "@types/jasmine": "2.8.8",
+        "@types/mongodb": "3.1.4",
+        "@types/node": "10.9.4",
+        "@types/socket.io": "1.4.38",
+        "istanbul": "1.1.0-alpha.1",
+        "jasmine": "3.2.0",
+        "jasmine-core": "3.2.1",
+        "nodemon": "1.18.4",
+        "rimraf": "2.6.2",
+        "supertest": "3.3.0",
+        "ts-node": "7.0.1",
+        "tslint": "5.11.0",
+        "typescript": "3.0.3"
+    }
+}

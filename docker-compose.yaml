@@ -84,6 +84,27 @@ services:
             context: ./
             dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
 
+    searchrouter:
+        image: 'gcr.io/crystallography-api/search-router:latest'
+        build:
+            context: ./packages/swarm/searchrouter
+            dockerfile: Dockerfile
+        networks:
+          - net
+          - traefik-public
+        env_file:
+          - ./.env
+
+    searchworker:
+        image: 'gcr.io/crystallography-api/searchworker:latest'
+        build:
+            context: ./packages/swarm/searchworker
+            dockerfile: Dockerfile
+        networks:
+          - net
+        env_file:
+          - ./.env
+
     web:
         image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'
         build:
