@@ -138,6 +138,28 @@ services:
                 - traefik.http.routers.api-https.tls.certresolver=le
                 - traefik.http.services.api.loadbalancer.server.port=8070
 
+    searchrouter:
+        image: 'gcr.io/crystallography-api/search-router:latest'
+        build:
+            context: ./packages/swarm/searchrouter
+            dockerfile: Dockerfile
+        networks:
+          - net
+          - traefik-public
+        env_file:
+          - ./.env
+
+    searchworker:
+        image: 'gcr.io/crystallography-api/searchworker:latest'
+        build:
+            context: ./packages/swarm/searchworker
+            dockerfile: Dockerfile
+        networks:
+          - net
+        env_file:
+          - ./.env
+
+
 networks:
   net:
   traefik-public:
