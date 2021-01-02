@@ -25,7 +25,7 @@ export class ChunksHelper  {
         return Math.ceil(res / RESULTS_PER_PAGE);
     }
 
-    public static getPageRusults(
+    public static getPageResults(
         resultsLength: number[],
         results: number[][],
         page: number,

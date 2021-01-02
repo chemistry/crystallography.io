@@ -3,7 +3,7 @@ import {
 } from "./chunks.helper";
 
 describe("ChunksHelper", () => {
-    it("should export verible definition", () => {
+    it("should export definition", () => {
         expect(ChunksHelper).toBeDefined();
     });
 
@@ -15,36 +15,36 @@ describe("ChunksHelper", () => {
         });
     });
 
-    describe("getPageRusults", () => {
+    describe("getPageResults", () => {
 
         it("should return page array", () => {
             const rowLength = [3, 3, 3];
             const results = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-            const pageRes = ChunksHelper.getPageRusults(rowLength, results, 1, 2);
+            const pageRes = ChunksHelper.getPageResults(rowLength, results, 1, 2);
             expect(pageRes).toEqual([1, 2]);
         });
         it("should return empty array for unassign page", () => {
             const rowLength = [3, 3, 3];
             const results = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-            const pageRes = ChunksHelper.getPageRusults(rowLength, results, 10, 2);
+            const pageRes = ChunksHelper.getPageResults(rowLength, results, 10, 2);
             expect(pageRes).toEqual([]);
         });
         it("should take into account null", () => {
             const rowLength = [3, null,  3];
             const results = [[1, 2, 3], null, [7, 8, 9]];
-            const pageRes = ChunksHelper.getPageRusults(rowLength, results, 2, 2);
+            const pageRes = ChunksHelper.getPageResults(rowLength, results, 2, 2);
             expect(pageRes).toEqual([3]);
         });
         it("should partially return data", () => {
             const rowLength = [3, 3,  3, 3];
             const results = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]];
-            const pageRes = ChunksHelper.getPageRusults(rowLength, results, 5, 2);
+            const pageRes = ChunksHelper.getPageResults(rowLength, results, 5, 2);
             expect(pageRes).toEqual([9, 10]);
         });
         it("should take into account first empty page", () => {
             const rowLength = [null,  3];
             const results = [[1, 2, 3], [4, 5, 6]];
-            const pageRes = ChunksHelper.getPageRusults(rowLength, results, 1 , 2);
+            const pageRes = ChunksHelper.getPageResults(rowLength, results, 1 , 2);
             expect(pageRes).toEqual([]);
         });
 
@@ -56,7 +56,7 @@ describe("ChunksHelper", () => {
                 [ 7035237, 7035238 ],
                 [ 7102456 ], [],
             ];
-            const pages = ChunksHelper.getPageRusults(rowLength, results, 1, 100);
+            const pages = ChunksHelper.getPageResults(rowLength, results, 1, 100);
             expect(pages.length).toEqual(9);
         });
 
@@ -102,7 +102,7 @@ describe("ChunksHelper", () => {
             expect(pageLen).toEqual([2, 3]);
         });
 
-        it("should respect inprocessed chunks", () => {
+        it("should respect unprocessed chunks", () => {
             const resLength = [98, null, 100, 100];
             const pageLen = ChunksHelper.getProjectionsBasedOnLength(resLength, 2, 100);
             expect(pageLen).toEqual([-1, -1]);

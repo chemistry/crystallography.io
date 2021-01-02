@@ -5,8 +5,8 @@ import {
 } from "express";
 import { Db } from "mongodb";
 import {
-    getSubscructureSearchCreator,
-    postSubscructureSearchCreator,
+    getSubstructureSearchCreator,
+    postSubstructureSearchCreator,
 } from "./api";
 import { errorHandler, healthCheck, statusCheck } from "./helpers";
 
@@ -34,8 +34,8 @@ export async function initExpress(app: Express, queue: any, db: Db) {
     app.get("/api/v1/search/structure/status", statusCheck({ db, queue }));
 
     // Include API router
-    const substructrurePostController = await postSubscructureSearchCreator(queue, db);
-    const substructrureGetController = getSubscructureSearchCreator(queue, db);
+    const substructrurePostController = await postSubstructureSearchCreator(queue, db);
+    const substructrureGetController = getSubstructureSearchCreator(queue, db);
 
     app.post("/api/v1/search/structure", substructrurePostController);
     app.get("/api/v1/search/structure/:searchId", substructrureGetController);

@@ -17,7 +17,7 @@ interface AppConfig {
 }
 const RESULTS_PER_PAGE  = 100;
 
-export function getSubscructureSearchCreator(queue: any, db: Db) {
+export function getSubstructureSearchCreator(queue: any, db: Db) {
     const config: AppConfig = {
         queue,
         db,
@@ -51,7 +51,7 @@ async function processGetFn({
             detail: "Wrong page Params",
         });
     }
-    const searchRecord: SubstructureSearchModel = await db.collection("substucture-searches").findOne({
+    const searchRecord: SubstructureSearchModel = await db.collection("substructure-searches").findOne({
         _id: ObjectID.createFromHexString(searchId),
     }, {
         projection: {
@@ -79,7 +79,7 @@ async function processGetFn({
     const [min, max] = calcProjection;
     let allResults: number[][] = [];
     if (min !== -1 && max !== -1) {
-        const resSearchRecord: SubstructureSearchModel = await db.collection("substucture-searches").findOne({
+        const resSearchRecord: SubstructureSearchModel = await db.collection("substructure-searches").findOne({
             _id: ObjectID.createFromHexString(searchId),
         }, {
             projection: { results: { $slice: [ min, (max - min + 1) ] } },
@@ -100,7 +100,7 @@ async function processGetFn({
     const { failed, succeeded, total } = searchRecord.queue;
     const progress = (total === 0) ? 100 : Math.round(( (failed + succeeded)  / total) * 100);
     const pagesAvailable = ChunksHelper.getAvailablePagesCount(resultsLength, RESULTS_PER_PAGE);
-    const results = ChunksHelper.getPageRusults(resultsLength, allResults, page, RESULTS_PER_PAGE);
+    const results = ChunksHelper.getPageResults(resultsLength, allResults, page, RESULTS_PER_PAGE);
 
     const response: JobResponseModel = {
         meta: {

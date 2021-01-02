@@ -21,7 +21,7 @@ import {
 let fingerPrints: IFingerprintModel[] = [];
 import { prepareChunksForSearch } from "./fingerprint.helper";
 
-export async function postSubscructureSearchCreator(queue: any, db: Db) {
+export async function postSubstructureSearchCreator(queue: any, db: Db) {
 
     fingerPrints = await db.collection("fingerprints").find({}).toArray();
 
@@ -157,9 +157,9 @@ async function saveSearchRecord(db: Db, searchQuery: object, chunkLength: number
         processedIndexes: [],
     };
 
-    const insertResponce = await db.collection("substucture-searches")
+    const insertResponse = await db.collection("substructure-searches")
           .insertOne(searchStatus);
-    const insertId = insertResponce.insertedId;
+    const insertId = insertResponse.insertedId;
     return insertId;
 }
 

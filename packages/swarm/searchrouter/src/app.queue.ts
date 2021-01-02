@@ -12,15 +12,15 @@ import {
 export function initQueue(io: any, db: Db, queue: any) {
     /*-- Queue  ---------------------------------------------------------------------------*/
     queue.on("job succeeded", (jobId: number, result: JobOutputModel) => {
-        processWorkerResponce(io, db, jobId, result, ChunkStatusModel.finished);
+        processWorkerResponse(io, db, jobId, result, ChunkStatusModel.finished);
     });
 
     queue.on("job failed", (jobId: number, result: JobOutputModel) => {
-        processWorkerResponce(io, db, jobId, result, ChunkStatusModel.failed);
+        processWorkerResponse(io, db, jobId, result, ChunkStatusModel.failed);
     });
 }
 
-async function processWorkerResponce(
+async function processWorkerResponse(
     io: any,
     db: Db,
     jobId: number,
@@ -31,7 +31,7 @@ async function processWorkerResponce(
 
     let version = 0;
     try {
-        version = await QueueHelperController.saveWorkerResponce({ db, result, status });
+        version = await QueueHelperController.saveWorkerResponse({ db, result, status });
     } catch (error) {
         // tslint:disable-next-line
         console.error(error);

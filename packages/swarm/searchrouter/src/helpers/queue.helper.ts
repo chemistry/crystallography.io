@@ -18,7 +18,7 @@ const RESULTS_PER_PAGE  = 100;
 
 export class QueueHelperController {
 
-    public static async saveWorkerResponce({
+    public static async saveWorkerResponse({
         db, result, status,
     }: {
         db: Db,
@@ -29,7 +29,7 @@ export class QueueHelperController {
         const now = new Date();
         const rowId = ObjectID.createFromHexString(result.searchId);
 
-        const collection = db.collection("substucture-searches");
+        const collection = db.collection("substructure-searches");
         let incObj: any = {
             "queue.succeeded": 1,
         };
@@ -90,7 +90,7 @@ export class QueueHelperController {
         fromVersion: number,
         page: number,
     }): Promise<JobResponseModel> {
-      const collection = db.collection("substucture-searches");
+      const collection = db.collection("substructure-searches");
       const rowId = ObjectID.createFromHexString(searchId);
       const record: SubstructureSearchModel = await collection.findOne({
           _id: rowId,
@@ -120,7 +120,7 @@ export class QueueHelperController {
           [min, max] = calcProjection;
           let allResults: number[][] = [];
           if (min !== -1 && max !== -1) {
-              const resSearchRecord: SubstructureSearchModel = await db.collection("substucture-searches").findOne({
+              const resSearchRecord: SubstructureSearchModel = await db.collection("substructure-searches").findOne({
                   _id: ObjectID.createFromHexString(searchId),
               }, {
                   projection: { results: { $slice: [ min, (max - min + 1) ] } },
@@ -133,7 +133,7 @@ export class QueueHelperController {
                       ...resSearchRecord.results,
                   ];
               }
-              results = ChunksHelper.getPageRusults(resultsLength, allResults, page, RESULTS_PER_PAGE);
+              results = ChunksHelper.getPageResults(resultsLength, allResults, page, RESULTS_PER_PAGE);
           }
       }
 
@@ -159,7 +159,7 @@ export class QueueHelperController {
         db,
         queue,
     }: { searchId: string, db: Db, queue: any }): Promise<void> {
-        const collection = db.collection("substucture-searches");
+        const collection = db.collection("substructure-searches");
         const rowId = ObjectID.createFromHexString(searchId);
         const record: SubstructureSearchModel = await collection.findOne({
             _id: rowId,

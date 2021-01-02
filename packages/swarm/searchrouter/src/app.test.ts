@@ -3,7 +3,7 @@ import {
 } from "./app";
 
 describe("startServer", () => {
-    it("should export verible definition", () => {
+    it("should export variable definition", () => {
         expect(startServer).toBeDefined();
     });
 });
