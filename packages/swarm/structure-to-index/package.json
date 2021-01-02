@@ -2,7 +2,7 @@
     "name": "@chemistry/containers-structure-to-index",
     "private": true,
     "version": "0.0.18",
-    "description": "Crystal Structure Indexed updates ",
+    "description": "Crystal Structure Indexed updates",
     "author": {
         "name": "Volodymyr Vreshch",
         "url": "http://vreshch.com/"
