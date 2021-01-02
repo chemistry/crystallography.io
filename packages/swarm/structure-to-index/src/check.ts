@@ -40,8 +40,9 @@ import { processMessage } from './process';
     // tslint:disable-next-line
     console.time('process-files');
 
+    // wrong sg - 4518380
     await processMessage({
-        structureId: 4518380, context
+        structureId: 4323099, context
     });
 
     context.close();

@@ -4,8 +4,22 @@ import { AppContext } from "../app";
 // tslint:disable-next-line
 const Molecule3D: any = require('@chemistry/molecule3d').Molecule3D;
 
+
+const BLACK_LIST = [
+    2003119,
+    2000129,
+    2105953,
+    4323098,
+    4323099,
+];
+
 export const processFragments = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
     const { log, db } = context;
+
+    if (BLACK_LIST.includes(Number(structureId))) {
+        log(`Ignoring file ${structureId} as it listed in black list`);
+        return ;
+    }
 
     const fragmentsDB = db.collection("fragments");
     const structuresDB  = db.collection("structures")
@@ -18,19 +32,13 @@ export const processFragments = async ({ structureId, context }: { structureId: 
     await fragmentsUpdate(fragmentsDB, doc);
 }
 
-const BLACK_LIST = [
-    2003119,
-    2000129,
-    2105953,
-    4323098,
-    4323099,
-];
 
 
 async function fragmentsUpdate(fragmentsDB: Collection, doc: any) {
 
     try {
         let molecule = new Molecule3D();
+
         molecule.load(doc);
 
         const atomCount = molecule.getAtomsCount();

@@ -8,6 +8,7 @@ import { processFragments } from './fragments';
 export const processMessage = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
     const { log } = context;
 
+    const start = Date.now();
     log(`processing - start - index for: ${structureId}`);
 
     await processAuthorsIndex({ structureId, context });
@@ -16,5 +17,6 @@ export const processMessage = async ({ structureId, context }: { structureId: nu
     await processUnitCellIndex({ structureId, context });
     await processFragments({ structureId, context });
 
-    log(`processing - end - index for: ${structureId}`);
+    const end = Date.now() - start;
+    log(`processing of ${structureId} took  ${end} ms`);
 }
