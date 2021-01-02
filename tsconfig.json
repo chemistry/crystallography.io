@@ -16,7 +16,6 @@
 
     "rules": {
     },
-
     "exclude": [
         "node_modules",
         "dist",

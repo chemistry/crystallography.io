@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.4"
 services:
     rabbitmq:
         image: rabbitmq:3.6-management-alpine
@@ -36,6 +36,25 @@ services:
                 - traefik.tcp.routers.mongo.service=mongo
                 - traefik.tcp.services.mongo.loadbalancer.server.port=27017
 
+    redis:
+        image: redis:6.0.9-alpine
+        restart: always
+        ports:
+          - "6379:6379"
+        ports:
+          - "6379:6379"
+        volumes:
+           - redisdata:/home/docker/data
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
+        command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PWD}"]
+        networks:
+          - net
+        env_file:
+          - ./.env
+
     structure-to-index:
         image: 'gcr.io/crystallography-api/structure-to-index:latest'
         build:
@@ -48,6 +67,9 @@ services:
         deploy:
             mode: replicated
             replicas: 4
+        depends_on:
+          - rabbitmq
+          - mongo
 
     disk-to-db:
         image: 'gcr.io/crystallography-api/containers-disk-to-db:latest'
@@ -63,6 +85,9 @@ services:
         deploy:
             mode: replicated
             replicas: 4
+        depends_on:
+          - rabbitmq
+          - mongo
 
     maintenance:
         image: 'gcr.io/crystallography-api/containers-maintenance:latest'
@@ -73,6 +98,8 @@ services:
           - net
         env_file:
           - ./.env
+        depends_on:
+          - mongo
 
     cod-to-disk:
         image: 'gcr.io/crystallography-api/containers-cod-to-disk:latest'
@@ -83,6 +110,8 @@ services:
         build:
             context: ./
             dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
+        depends_on:
+          - rabbitmq
 
     web:
         image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'
@@ -137,6 +166,8 @@ services:
                 - traefik.http.routers.api-https.tls=true
                 - traefik.http.routers.api-https.tls.certresolver=le
                 - traefik.http.services.api.loadbalancer.server.port=8070
+        depends_on:
+          - mongo
 
     searchrouter:
         image: 'gcr.io/crystallography-api/search-router:latest'
@@ -148,6 +179,9 @@ services:
           - traefik-public
         env_file:
           - ./.env
+        depends_on:
+          - mongo
+          - redis
 
     searchworker:
         image: 'gcr.io/crystallography-api/searchworker:latest'
@@ -158,7 +192,9 @@ services:
           - net
         env_file:
           - ./.env
-
+        depends_on:
+          - mongo
+          - redis
 
 networks:
   net:
@@ -168,3 +204,4 @@ networks:
 volumes:
     cod-data:
     dbdata:
+    redisdata:

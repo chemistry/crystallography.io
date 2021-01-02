@@ -21,9 +21,8 @@ export async function startWorker() {
     try {
         const queue = new Queue("substructure-search", {
             redis: {
-                host: process.env.REDIS_HOST,
-                port: process.env.REDIS_PORT,
-                password: process.env.REDIS_PWD,
+                host: 'redis',
+                port: 6379,
             },
             isWorker: true,
             removeOnSuccess: true,
