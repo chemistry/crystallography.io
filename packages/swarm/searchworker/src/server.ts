@@ -74,62 +74,62 @@ export async function startWorker() {
 }
 
 async function processQ(db: Db, job: { data: JobInputModel }): Promise<JobOutputModel> {
-      const timeStart = process.hrtime();
+    const timeStart = process.hrtime();
 
-      const searchId = job.data.searchId;
-      const chunkId = job.data.index;
-      const searchQuery =  job.data.searchQuery;
-      const toCheck = job.data.toCheck;
+    const searchId = job.data.searchId;
+    const chunkId = job.data.index;
+    const searchQuery =  job.data.searchQuery;
+    const toCheck = job.data.toCheck;
 
-      const molecule = new Molecule();
-      molecule.load(searchQuery as any);
-      const qStat = molecule.getAtomsStatistic();
-      molecule.sortAtomsByCODStatistics();
-      const moleculeMatcher = new Matcher(molecule);
+    const molecule = new Molecule();
+    molecule.load(searchQuery as any);
+    const qStat = molecule.getAtomsStatistic();
+    molecule.sortAtomsByCODStatistics();
+    const moleculeMatcher = new Matcher(molecule);
 
-      const fragments = db.collection("fragments");
-      const cursor = fragments.find({
-          _id: { $in: toCheck },
-      });
-      const foundIds: number[] = [];
+    const fragments = db.collection("fragments");
+    const cursor = fragments.find({
+        _id: { $in: toCheck },
+    });
+    const foundIds: number[] = [];
 
-      nextfrag: while (await cursor.hasNext()) {
-          const doc: any = await cursor.next();
+    nextfrag: while (await cursor.hasNext()) {
+        const doc: any = await cursor.next();
 
-          for (const fragment of doc.fragments) {
+        for (const fragment of doc.fragments) {
 
-              if (!moleculeMatcher.canMatchByElements(fragment)) {
-                  continue;
-              }
+            if (!moleculeMatcher.canMatchByElements(fragment)) {
+                continue;
+            }
 
-              const newFragment = Molecule.filterTargetBasedOnQuery(
-                  fragment, qStat,
-              );
+            const newFragment = Molecule.filterTargetBasedOnQuery(
+                fragment, qStat,
+            );
 
-              if (!moleculeMatcher.canMatchByElements(newFragment)) {
-                  continue;
-              }
+            if (!moleculeMatcher.canMatchByElements(newFragment)) {
+                continue;
+            }
 
-              const mol = new Molecule();
-              mol.load(newFragment);
+            const mol = new Molecule();
+            mol.load(newFragment);
 
-              const matches = moleculeMatcher.getFirstMatch(mol);
+            const matches = moleculeMatcher.getFirstMatch(mol);
 
-              if (matches) {
-                  foundIds.push(doc._id);
-                  mol.destroy();
-                  continue nextfrag;
-              }
-              mol.destroy();
-          }
-      }
+            if (matches) {
+                foundIds.push(doc._id);
+                mol.destroy();
+                continue nextfrag;
+            }
+            mol.destroy();
+        }
+    }
 
-      const timeTotal = process.hrtime(timeStart)[1] / 1000000;
+    const timeTotal = process.hrtime(timeStart)[1] / 1000000;
 
-      return {
-          index: chunkId,
-          searchId,
-          time: timeTotal,
-          results: foundIds.sort((a, b) => a - b),
-      };
+    return {
+        index: chunkId,
+        searchId,
+        time: timeTotal,
+        results: foundIds.sort((a, b) => a - b),
+    };
 }

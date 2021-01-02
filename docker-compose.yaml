@@ -162,6 +162,7 @@ services:
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
                 - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && PathPrefix(`/api`))
+                - traefik.http.routers.web-https.priority=9
                 - traefik.http.routers.api-https.entrypoints=https
                 - traefik.http.routers.api-https.tls=true
                 - traefik.http.routers.api-https.tls.certresolver=le
@@ -179,9 +180,24 @@ services:
           - traefik-public
         env_file:
           - ./.env
+        environment:
+          - PORT=8060
         depends_on:
           - mongo
           - redis
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
+            labels:
+                - traefik.enable=true
+                - traefik.docker.network=traefik-public
+                - traefik.constraint-label=traefik-public
+                - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && PathPrefix(`/api/v1/search/structure`))
+                - traefik.http.routers.api-https.entrypoints=https
+                - traefik.http.routers.api-https.tls=true
+                - traefik.http.routers.api-https.tls.certresolver=le
+                - traefik.http.services.api.loadbalancer.server.port=8060
 
     searchworker:
         image: 'gcr.io/crystallography-api/searchworker:latest'

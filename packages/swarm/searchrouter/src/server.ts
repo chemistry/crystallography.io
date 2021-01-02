@@ -28,12 +28,14 @@ dotenv.config({
             useNewUrlParser: true
         });
 
+        const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
+
         const db = client.db("crystallography");
         const server = await startServer(db);
 
-        server.listen(3000, () => {
+        server.listen(PORT, () => {
             // tslint:disable-next-line
-            console.log((new Date().toLocaleString()), " searchrouter ", "started on port 3000");
+            console.log((new Date().toLocaleString()), `searchrouter - started on port ${PORT}`);
         });
         server.on("error", (err: any) => {
           // tslint:disable-next-line
