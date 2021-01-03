@@ -67,6 +67,13 @@ export async function startWorker() {
               });
         });
 
+        process.on('SIGTERM', () => {
+            // tslint:disable-next-line
+            console.log('closing connection');
+            client.close();
+            queue.close();
+        });
+
     } catch (err) {
          // tslint:disable-next-line
         console.error(err.toString());

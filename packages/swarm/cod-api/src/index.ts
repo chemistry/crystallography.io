@@ -31,6 +31,11 @@ console.time("App Start");
         app.listen(PORT, "0.0.0.0", resolve);
       });
 
+      app.on("error", (err: any) => {
+        // tslint:disable-next-line
+        console.error(err);
+      });
+
       log(`Application Started on port: ${PORT}`);
       // tslint:disable-next-line
       console.timeEnd("App Start");

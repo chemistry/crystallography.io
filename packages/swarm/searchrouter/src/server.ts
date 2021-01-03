@@ -42,6 +42,14 @@ dotenv.config({
           console.error(err);
         });
 
+        process.on('SIGTERM', () => {
+            // tslint:disable-next-line
+            console.log('closing connection');
+            server.close(()=> {
+                client.close();
+            });
+        });
+
     } catch (e) {
         // tslint:disable-next-line
         console.error(e);

@@ -22,8 +22,11 @@ let fingerPrints: IFingerprintModel[] = [];
 import { prepareChunksForSearch } from "./fingerprint.helper";
 
 export async function postSubstructureSearchCreator(queue: any, db: Db) {
-
+    // tslint:disable-next-line
+    console.time('fingerprints loaded');
     fingerPrints = await db.collection("fingerprints").find({}).toArray();
+    // tslint:disable-next-line
+    console.timeEnd('fingerprints loaded');
 
     return (req: Request, res: Response, next: NextFunction) => {
         processSubstructureSearch({ req, res, next, queue, db });
