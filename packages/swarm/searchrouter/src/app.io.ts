@@ -9,6 +9,13 @@ import {
 export function initIO(server: any, db: Db, queue: any): any {
     const io = socketIO(server, {
         path: "/api/v1/live",
+        handlePreflightRequest: (req: any, res: any) => {
+            res.writeHead(200, {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET,POST"
+            });
+            res.end();
+        }
     });
 
     io.on("connect", (socket: any) => {
