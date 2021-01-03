@@ -24,22 +24,23 @@ console.timeEnd("Context Prepare");
 console.time("App Start");
 (async () => {
     try {
-      const { app } = await startApplication(context);
-      const { PORT, log } = context;
+        await new Promise(res => setTimeout(res, 20000));
 
-      await new Promise((resolve) => {
-        app.listen(PORT, "0.0.0.0", resolve);
-      });
+        const { app } = await startApplication(context);
+        const { PORT, log } = context;
 
-      app.on("error", (err: any) => {
+        await new Promise((resolve) => {
+            app.listen(PORT, "0.0.0.0", resolve);
+        });
+
+        app.on("error", (err: any) => {
+            // tslint:disable-next-line
+            console.error(err);
+        });
+
+        log(`Application Started on port: ${PORT}`);
         // tslint:disable-next-line
-        console.error(err);
-      });
-
-      log(`Application Started on port: ${PORT}`);
-      // tslint:disable-next-line
-      console.timeEnd("App Start");
-
+        console.timeEnd("App Start");
     } catch (e) {
       // tslint:disable-next-line
       console.error(e);

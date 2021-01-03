@@ -19,6 +19,8 @@ import {
 
 export async function startWorker() {
     try {
+        await new Promise(res => setTimeout(res, 20000));
+
         const queue = new Queue("substructure-search", {
             redis: {
                 host: process.env.REDIS_HOST || 'redis',

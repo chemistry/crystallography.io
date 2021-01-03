@@ -8,7 +8,7 @@ const QUEUE_NAME = 'COD_FILE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
 
-    await new Promise(res => setTimeout(res, 15000));
+    await new Promise(res => setTimeout(res, 20000));
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
     await chanel.assertQueue(QUEUE_NAME);

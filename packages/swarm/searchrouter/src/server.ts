@@ -13,6 +13,7 @@ dotenv.config({
 
 (async () => {
     try {
+        await new Promise(res => setTimeout(res, 20000));
         const {
             MONGO_INITDB_ROOT_USERNAME,
             MONGO_INITDB_ROOT_PASSWORD,
