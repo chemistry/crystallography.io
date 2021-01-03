@@ -189,8 +189,8 @@ services:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
-                - traefik.http.routers.search-https.rule=(Host(`crystallography.io`) && PathPrefix(`/api/v1/search/structure`))
-                - traefik.http.routers.search-https.entrypoints=https
+                - traefik.http.routers.search-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api/v1/search/structure`)|| PathPrefix(`/api/v1/live`)))
+                - traefik.http.routers.search-https.entrypoints=https,ws,wss
                 - traefik.http.routers.search-https.tls=true
                 - traefik.http.routers.search-https.priority=30
                 - traefik.http.routers.search-https.tls.certresolver=le

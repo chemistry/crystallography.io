@@ -2,7 +2,7 @@
     "name": "@chemistry/searchrouter",
     "version": "1.0.0",
     "private": true,
-    "description": "Search Router for Substructure Search",
+    "description": "Search Router for Substructure Search ",
     "author": {
         "name": "Volodymyr Vreshch",
         "email": "<vreshch@gmail.com>",
