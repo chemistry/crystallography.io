@@ -48,7 +48,7 @@ jobs: # Jobs List
             remote_docker_host: root@host.crystallography.io
             ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
             ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
-            pre_deployment_step_command: /root/google-cloud-sdk/bin/gcloud auth print-access-token |  docker login -u oauth2accesstoken --password-stdin https://gcr.io
+            pre_deployment_step_command: source /root/.env && /root/google-cloud-sdk/bin/gcloud auth print-access-token |  docker login -u oauth2accesstoken --password-stdin https://gcr.io
             deployment_mode: docker-swarm
             copy_stack_file: true
             pull_images_first: true

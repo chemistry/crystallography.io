@@ -14,12 +14,17 @@ export async function startServer(db: Db) {
     const server = http.createServer(app);
     const queue = new Queue("substructure-search", {
         redis: {
-            host: 'redis',
-            port: 6379,
+            host: process.env.REDIS_HOST || 'redis.crystallography.io',
+            port: process.env.REDIS_PORT || 6379,
+            password: process.env.REDIS_PASSWORD || ''
         },
         isWorker: false,
         removeOnSuccess: true,
         removeOnFailure: true,
+    });
+
+    process.on("SIGINT", () => {
+        queue.close();
     });
 
     /*-- Socket IO --*/

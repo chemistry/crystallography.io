@@ -21,8 +21,10 @@ export async function startWorker() {
     try {
         const queue = new Queue("substructure-search", {
             redis: {
-                host: 'redis',
-                port: 6379,
+                host: process.env.REDIS_HOST || 'redis.crystallography.io',
+                port: process.env.REDIS_PORT || 6379,
+                password: process.env.REDIS_PASSWORD || ''
+
             },
             isWorker: true,
             removeOnSuccess: true,
