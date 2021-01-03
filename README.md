@@ -15,6 +15,10 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
  * [Swarm Cluster](https://github.com/chemistry/crystallography-api/tree/master/setup)
 
 ## Local development
+ * Setup env file
+```bash
+source ./.env
+```
  * Start application
 ```bash
 docker-compose down -v && docker-compose up --build -d

@@ -5,7 +5,6 @@ build
 temp
 # Generated docs with JSDoc
 docs
-.env
 TODO
 credentials.json
 credentials.base64.json

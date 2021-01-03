@@ -40,9 +40,7 @@ services:
         image: redis:6.0.9-alpine
         restart: always
         ports:
-          - "6379:6379"
-        ports:
-          - "6379:6379"
+          - 6379:6379
         volumes:
            - redisdata:/home/docker/data
         deploy:
@@ -55,9 +53,10 @@ services:
                 - traefik.tcp.routers.redis.tls.passthrough=true
                 - traefik.tcp.routers.redis.service=redis
                 - traefik.tcp.services.redis.loadbalancer.server.port=6379
-        command: ["redis-server", "--appendonly", "yes", "--requirepass", "$$(echo $$REDIS_PWD)"]
+        command: 'redis-server --requirepass "${REDIS_PASSWORD}"'
         networks:
           - net
+          - traefik-public
         env_file:
           - ./.env
 
@@ -130,9 +129,6 @@ services:
         environment:
           - PORT=8060
         deploy:
-            placement:
-                constraints:
-                    - node.role == manager
             labels:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
@@ -160,9 +156,6 @@ services:
         environment:
           - PORT=8070
         deploy:
-            placement:
-                constraints:
-                    - node.role == manager
             labels:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
@@ -192,9 +185,6 @@ services:
           - mongo
           - redis
         deploy:
-            placement:
-                constraints:
-                    - node.role == manager
             labels:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
