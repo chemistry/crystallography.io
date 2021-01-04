@@ -1,5 +1,6 @@
 import { combineReducers, configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
 import logger from "redux-logger";
+import { wsMiddleware } from './store.wsMiddleware';
 
 import catalogPageReducer from "./catalog-page.slice";
 import detailsPageReducer from "./details-page.slice";
@@ -29,6 +30,7 @@ const isNode = (typeof module !== 'undefined' && module.exports);
 const middleware = [
     ...getDefaultMiddleware(),
     ...((isDevelopment  && !isNode)? [logger] : []),
+    ...(isNode ? []: [wsMiddleware])
 ];
 export type RootState = ReturnType<typeof reducer>;
 

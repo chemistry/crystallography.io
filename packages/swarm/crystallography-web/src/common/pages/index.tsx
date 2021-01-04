@@ -11,3 +11,4 @@ export * from "./profile";
 export * from "./search-history";
 export * from "./details";
 export * from "./search";
+export * from "./results";

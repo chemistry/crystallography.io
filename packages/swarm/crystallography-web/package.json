@@ -70,6 +70,7 @@
         "react-router-dom": "5.2.0",
         "redux-logger": "3.0.6",
         "redux-thunk": "2.3.0",
+        "socket.io-client": "2.1.1",
         "spectre.css": "0.5.9",
         "workbox-precaching": "5.1.4",
         "workbox-routing": "5.1.4",
