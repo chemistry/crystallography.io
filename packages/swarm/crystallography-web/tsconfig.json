@@ -1,8 +1,36 @@
 {
-    "extends": "../../../tsconfig.json",
     "compilerOptions": {
+        "jsx": "react",
+        "module": "commonjs",
         "target": "ES2017",
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "declaration": true,
         "outDir": "dist",
-        "types": ["node"]
+        "lib": ["es2015", "es2016", "dom"],
+        "typeRoots": ["node_modules/@types"]
+    },
+
+    "rules": {
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "**/*.test.ts",
+        "**/*.check.ts",
+        "**/mocks",
+        "**/fixtures"
+    ],
+
+    "awesomeTypescriptLoaderOptions": {
+        "forkChecker": true,
+        "useWebpackText": true
+    },
+
+    "atom": {
+        "rewriteTsconfig": false
     }
 }

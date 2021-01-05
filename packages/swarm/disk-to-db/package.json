@@ -35,6 +35,7 @@
     "devDependencies": {
         "@types/mongodb": "3.6.3",
         "@types/shelljs": "0.8.8",
+        "rimraf": "3.0.2",
         "ts-node": "9.0.0",
         "typescript": "4.0.5"
     }
