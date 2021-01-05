@@ -5,12 +5,12 @@ Triggered on structure change - update all required indexes
 ## Commands
 Build Container
 ```bash
-cd ../../../ && docker build -t gcr.io/crystallography-api/containers-structure-to-index -f packages/swarm/structure-to-index/Dockerfile .
+docker build -t gcr.io/crystallography-api/containers-structure-to-index .
 ```
 
 Execute container
 ```bash
-docker run --rm --name cod-to-disk gcr.io/crystallography-api/containers-structure-to-index
+docker run --rm --name structure-to-index gcr.io/crystallography-api/containers-structure-to-index
 ```
 
 Push container to GCP

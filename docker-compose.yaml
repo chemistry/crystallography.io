@@ -63,8 +63,8 @@ services:
     structure-to-index:
         image: 'gcr.io/crystallography-api/structure-to-index:latest'
         build:
-            context: ./
-            dockerfile: ./packages/swarm/structure-to-index/Dockerfile
+            context: ./packages/swarm/structure-to-index
+            dockerfile: Dockerfile
         networks:
           - net
         env_file:
@@ -85,8 +85,8 @@ services:
         networks:
           - net
         build:
-            context: ./
-            dockerfile: ./packages/swarm/disk-to-db/Dockerfile
+            context: ./packages/swarm/disk-to-db
+            dockerfile: Dockerfile
         deploy:
             mode: replicated
             replicas: 4
@@ -97,8 +97,8 @@ services:
     maintenance:
         image: 'gcr.io/crystallography-api/containers-maintenance:latest'
         build:
-            context: ./
-            dockerfile: ./packages/swarm/maintenance/Dockerfile
+            context: ./packages/swarm/maintenance
+            dockerfile: Dockerfile
         networks:
           - net
         env_file:
@@ -113,16 +113,16 @@ services:
         networks:
           - net
         build:
-            context: ./
-            dockerfile: ./packages/swarm/cod-to-disk/Dockerfile
+            context: ./packages/swarm/cod-to-disk
+            dockerfile: Dockerfile
         depends_on:
           - rabbitmq
 
     web:
         image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'
         build:
-            context: ./
-            dockerfile: ./packages/swarm/crystallography-web/Dockerfile
+            context: ./packages/swarm/crystallography-web
+            dockerfile: Dockerfile
         networks:
           - net
           - traefik-public
@@ -146,8 +146,8 @@ services:
     api:
         image: 'gcr.io/crystallography-api/containers-crystallography-io-api:latest'
         build:
-            context: ./
-            dockerfile: ./packages/swarm/cod-api/Dockerfile
+            context: ./packages/swarm/cod-api
+            dockerfile: Dockerfile
         networks:
           - net
           - traefik-public
