@@ -16,9 +16,11 @@ const parsePage = (page?: string): number => {
     currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
     return currentPage;
 }
+const numberWithSpaces = (x: number): string => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
 const MAX_PAGES = 10;
-
 export const SearchResultsPage  = (props: { route: RouteConfig })=> {
     // Page Navigation
     useLoadedData(props.route);
@@ -28,6 +30,7 @@ export const SearchResultsPage  = (props: { route: RouteConfig })=> {
     const isLoading = useSelector((state: RootState) => state.searchResults.isLoading);
     const pages = useSelector((state: RootState)=> state.searchResults.meta.pagesAvailable);
     const progress = useSelector((state: RootState) => state.searchResults.meta.progress);
+    const found = useSelector((state: RootState) => state.searchResults.meta.found);
     const currentPage = parsePage(page);
     const containerRef = useRef(null);
 
@@ -58,6 +61,11 @@ export const SearchResultsPage  = (props: { route: RouteConfig })=> {
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <div className="bar bar-sm">
                             <div className="bar-item" role="progressbar" style={{'width': `${progress}%`}} >{`${progress}%`}</div>
+                        </div>
+                        <div className="columns">
+                            <div className="column col-10">
+                                <h4 className="text-primary">{`Total Results: ${numberWithSpaces(found)}`}</h4>
+                            </div>
                         </div>
                         <Pagination currentPage={currentPage} maxPages={MAX_PAGES} totalPages={pages} url={`/results/${id}`} />
                         <StructuresList list={structures} />

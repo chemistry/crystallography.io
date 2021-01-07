@@ -1,12 +1,12 @@
 import { Middleware } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
+import { updateSearchResults } from "./search-results.slice";
 
 let io: any;
 if (process.env.BROWSER) {
     // tslint:disable-next-line
     io = require('socket.io-client');
 }
-const WS_PATH = process.env.WS_PATH || '';
 let socket: any = null;
 
 
@@ -30,16 +30,6 @@ export const subscribeToWSUpdates = () => {
     };
 }
 
-/*
-    export const updateSubscription = () => {
-        return (dispatch: Dispatch<any>) => {
-            dispatch({
-                type: CLOSE_WS_SUBSCRIPTION
-            });
-        };
-    }
-*/
-
 export const wsMiddleware: Middleware = (store) => (next) => (action) => {
     const result = next(action);
     if (!process.env.BROWSER) {
@@ -62,8 +52,8 @@ export const wsMiddleware: Middleware = (store) => (next) => (action) => {
 
                 socket.on('results-update', (res: any) => {
 
-                    // tslint:disable-next-line
-                    console.log('Update received via socket .....');
+                    dispatch(updateSearchResults(res) as any);
+
                     if (
                         res.meta.status === 'finished' &&
                         res.meta.id === id
@@ -72,8 +62,6 @@ export const wsMiddleware: Middleware = (store) => (next) => (action) => {
                     }
                 });
             }
-            // tslint:disable-next-line
-            console.log('emitting:', { id, page, version });
             socket.emit('get:results-update', { id, page, version });
         } else {
             closeSocket();
@@ -108,8 +96,8 @@ const closeSocket = ()=> {
 
 const openSocket = ()=> {
     if (!socket) {
-        socket = io(WS_PATH, {
-            transports: ['polling'], // ,'websocket'
+        socket = io('https://crystallography.io', {
+            // transports: [], // 'polling','websocket'
             // upgrade: false,
             path: '/api/v1/live',
         });

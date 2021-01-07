@@ -58,13 +58,22 @@ const searchResultsSlice = createSlice({
         ) {
             state.meta = action.payload.meta;
             state.data.structureIds = action.payload.ids.slice(0);
+            state.isLoading = false;
             state.error = null;
-            state.isLoading = true;
+        },
+        searchResultsUpdate(state,
+            action: {
+                payload: { meta: SearchByStructureResponseMeta; ids: number[] };
+            }
+        ) {
+            state.meta = action.payload.meta;
+            state.data.structureIds = action.payload.ids.slice(0);
+            state.isLoading = false;
+            state.error = null;
         },
         loadStructureListSuccess(state, { payload }) {
             state.isLoading = false;
             state.error = null;
-            state.status = SearchState.success;
             const structures: any = { };
             payload.forEach((element: any) => {
                 structures[element.id] = element.attributes;
@@ -100,11 +109,45 @@ interface SearchByStructureResponse {
 export const {
     searchResultsStart,
     searchResultsSuccess,
+    searchResultsUpdate,
     loadStructureListSuccess,
     searchResultsFailed,
 } = searchResultsSlice.actions;
 export default searchResultsSlice.reducer;
 
+
+const arrayDifference = (array1: number[], array2: number[]): number[] => {
+    return array1.filter(x => !array2.includes(x));
+}
+
+export const updateSearchResults = (data: SearchByStructureResponse): AppThunk => async (dispatch, getState) => {
+
+    let structuresToLoad: number[] = [];
+
+    if (data.data && data.data.results && Array.isArray(data.data.results)) {
+        structuresToLoad = data.data.results;
+    }
+
+    const state =  getState();
+    const existingStructures = state.searchResults.data.structureIds;
+
+    dispatch(
+        searchResultsUpdate({ ids: structuresToLoad, meta: data.meta })
+    );
+
+    const newStructures = arrayDifference(structuresToLoad, existingStructures)
+
+    if (newStructures.length > 0) {
+        const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${newStructures.join(",")}]`, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+        const data2 = res2.data?.data;
+
+        dispatch(loadStructureListSuccess(data2));
+    }
+}
 
 export const fetchSearchResultsData = ({
     id, page
