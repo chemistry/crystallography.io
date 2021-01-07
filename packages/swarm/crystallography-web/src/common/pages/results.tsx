@@ -1,12 +1,14 @@
 import * as React from "react";
 import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RouteConfig } from "react-router-config";
+import { RootState } from "../store";
 import { Loader, Pagination } from "../components";
 import { StructuresList } from "../components/structure-list/structure-list";
+import { useBrowserEffect } from "../hooks";
 import { useLoadedData } from "../services";
-import { RootState } from "../store";
+import { closeWSSubscription, subscribeToWSUpdates } from "../store/store.wsMiddleware";
 
 
 const parsePage = (page?: string): number => {
@@ -21,9 +23,11 @@ export const SearchResultsPage  = (props: { route: RouteConfig })=> {
     // Page Navigation
     useLoadedData(props.route);
 
+    const dispatch = useDispatch();
     const { id, page } = useParams() as any;
     const isLoading = useSelector((state: RootState) => state.searchResults.isLoading);
     const pages = useSelector((state: RootState)=> state.searchResults.meta.pagesAvailable);
+    const progress = useSelector((state: RootState) => state.searchResults.meta.progress);
     const currentPage = parsePage(page);
     const containerRef = useRef(null);
 
@@ -36,6 +40,14 @@ export const SearchResultsPage  = (props: { route: RouteConfig })=> {
         }).filter((item) => !!item);
     });
 
+    useBrowserEffect(()=> {
+        dispatch(subscribeToWSUpdates());
+
+        return ()=> {
+            dispatch(closeWSSubscription());
+        }
+    }, [id, page]);
+
     return (
         <div>
             <header className="app-layout-header">
@@ -44,6 +56,9 @@ export const SearchResultsPage  = (props: { route: RouteConfig })=> {
             <div className="app-layout-content" ref={containerRef}>
                 <div className="app-layout-page-transparent">
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
+                        <div className="bar bar-sm">
+                            <div className="bar-item" role="progressbar" style={{'width': `${progress}%`}} >{`${progress}%`}</div>
+                        </div>
                         <Pagination currentPage={currentPage} maxPages={MAX_PAGES} totalPages={pages} url={`/results/${id}`} />
                         <StructuresList list={structures} />
                     </Loader>

@@ -5,6 +5,7 @@ import { AppThunk } from "./common";
 export enum SearchState {
     empty = "empty",
     created = "created",
+    processing = "processing",
     canceled = "canceled",
     finished  = "finished",
     success = "success",
@@ -21,7 +22,7 @@ const searchResultsSlice = createSlice({
     name: "searchResults",
     initialState: {
         meta: {
-            id: "",
+            id: '',
             status: SearchState.empty,
             progress: 0,
             version: 0,
@@ -33,6 +34,7 @@ const searchResultsSlice = createSlice({
             structureById: {},
             structureIds: [],
         },
+        isSubscribedToUpdates: false,
         status: SearchState.empty,
         error: null,
         isLoading: false,
@@ -44,6 +46,8 @@ const searchResultsSlice = createSlice({
             }
         ) {
             const { id, page }  = action.payload;
+            state.meta.id = id;
+            state.meta.page =  parsePage(page);
             state.error = null;
             state.isLoading = true;
         },
@@ -72,7 +76,7 @@ const searchResultsSlice = createSlice({
             state.isLoading = false;
             state.status = SearchState.failed,
             state.error = action.payload;
-        },
+        }
     },
 });
 
@@ -97,9 +101,10 @@ export const {
     searchResultsStart,
     searchResultsSuccess,
     loadStructureListSuccess,
-    searchResultsFailed
+    searchResultsFailed,
 } = searchResultsSlice.actions;
 export default searchResultsSlice.reducer;
+
 
 export const fetchSearchResultsData = ({
     id, page
@@ -125,6 +130,8 @@ export const fetchSearchResultsData = ({
         dispatch(
             searchResultsSuccess({ ids: structuresToLoad, meta: data.meta })
         );
+
+        // subscribe to updates here ...
 
         let data2: any[] = [];
         if (structuresToLoad.length > 0) {

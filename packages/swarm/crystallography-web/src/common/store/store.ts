@@ -28,7 +28,7 @@ const reducer = combineReducers({
 });
 
 const isDevelopment = (process.env.NODE_ENV !== "production");
-const isNode = (typeof module !== 'undefined' && module.exports);
+const isNode = (!process.env.BROWSER);
 const middleware = [
     ...getDefaultMiddleware(),
     ...((isDevelopment  && !isNode)? [logger] : []),
