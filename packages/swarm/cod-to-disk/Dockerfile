@@ -4,9 +4,9 @@ WORKDIR /app
 
 # Install rsync & gsutil
 RUN apk add --update subversion rsync openssh && rm -rf /var/cache/apk/*
-
 COPY package*.json ./
 RUN npm install
+ENV NODE_ENV=production
 COPY . /app
 RUN npm run build
 CMD ["npm", "start"]

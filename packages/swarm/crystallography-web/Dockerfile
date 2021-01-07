@@ -3,6 +3,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+ENV NODE_ENV=production
 COPY . /app
 RUN npm run build
 CMD ["npm", "start"]
