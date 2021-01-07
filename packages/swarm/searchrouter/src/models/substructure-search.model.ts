@@ -37,6 +37,7 @@ export enum ChunkStatusModel {
 
 export enum SearchStatusModel {
     created = "created",
+    canceled = "canceled",
     processing = "processing",
     finished = "finished",
 }

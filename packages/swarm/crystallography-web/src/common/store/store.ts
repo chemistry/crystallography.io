@@ -10,6 +10,7 @@ import searchByAuthorSliceReducer from "./search-by-author-page.slice";
 import searchByFormulaSliceReducer from "./search-by-formula-page.slice";
 import searchByUnitCellReducer from "./search-by-unit-cell-page.slice";
 import searchByStructureReducer from "./search-by-structure.slice";
+import searchResultsReducer from "./search-results.slice";
 
 import userSlice from "./user.slice";
 
@@ -22,6 +23,7 @@ const reducer = combineReducers({
     searchByAuthorSlice: searchByAuthorSliceReducer,
     searchByFormulaSlice: searchByFormulaSliceReducer,
     searchByStructure: searchByStructureReducer,
+    searchResults: searchResultsReducer,
     user: userSlice,
 });
 

@@ -1,5 +1,5 @@
-import { EnhancedStore } from "@reduxjs/toolkit";
 import * as React from "react";
+import { EnhancedStore } from "@reduxjs/toolkit";
 import { Dispatch } from "redux";
 import { App } from "./app";
 import {
@@ -27,6 +27,7 @@ import { getStore } from "./store";
 import { fetchAuthorsListData } from "./store/author-list-page.slice";
 import { fetchCatalogData } from "./store/catalog-page.slice";
 import { fetchStructureDetailsData } from "./store/details-page.slice";
+import { fetchSearchResultsData } from "./store/search-results.slice";
 
 export enum AppContextType {
     frontend = "frontend",
@@ -85,6 +86,7 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
                 component: SearchResultsPage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Search Results",
+                loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchSearchResultsData(params)),
             },
             {
                 path: "/about",
