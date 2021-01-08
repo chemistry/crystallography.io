@@ -79,7 +79,7 @@ async function saveAuthorRecord(authorsDB: any, recordData: any) {
     const now = (new Date());
 
     await authorsDB.findOneAndUpdate({
-        _id: Number(authorDoc._id),
+        _id: authorDoc._id,
     }, {
         $set: {
             structures: authorStructures,

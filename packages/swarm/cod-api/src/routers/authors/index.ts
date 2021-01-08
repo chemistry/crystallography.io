@@ -14,7 +14,7 @@ const authorMapper = (showDetails: boolean) => {
             attributes: {
                 full: item.full,
                 count: item.count,
-                timestamp: item.timestamp
+                updated: item.updated
             },
         } as any;
         if (showDetails  && Array.isArray(item.structures)) {
