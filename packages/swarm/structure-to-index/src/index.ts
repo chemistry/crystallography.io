@@ -5,8 +5,6 @@ import { app, AppContext } from "./app";
 const QUEUE_NAME = 'STRUCTURE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
-
-    await new Promise(res => setTimeout(res, 20000));
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
     await chanel.assertQueue(QUEUE_NAME);

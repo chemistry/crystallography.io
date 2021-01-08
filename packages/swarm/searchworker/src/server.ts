@@ -19,8 +19,6 @@ import {
 
 export async function startWorker() {
     try {
-        await new Promise(res => setTimeout(res, 20000));
-
         const queue = new Queue("substructure-search", {
             redis: {
                 host: process.env.REDIS_HOST || 'redis',
@@ -76,10 +74,10 @@ export async function startWorker() {
             queue.close();
         });
 
-    } catch (err) {
-         // tslint:disable-next-line
-        console.error(err.toString());
-         return;
+    } catch (e) {
+        // tslint:disable-next-line
+        console.error(e);
+        process.exit(-1);
     }
 }
 

@@ -54,6 +54,7 @@ dotenv.config({
     } catch (e) {
         // tslint:disable-next-line
         console.error(e);
+        process.exit(-1);
     }
 })();
 

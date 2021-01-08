@@ -9,7 +9,6 @@ const NOTICE_WRITE_QUEUE = 'STRUCTURE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
 
-    await new Promise(res => setTimeout(res, 20000));
     const connection = await require('amqplib').connect('amqp://rabbitmq');
     const chanel = await connection.createChannel();
     await chanel.assertQueue(READ_QUEUE_NAME);

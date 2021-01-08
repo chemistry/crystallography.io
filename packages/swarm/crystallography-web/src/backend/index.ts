@@ -38,8 +38,6 @@ console.timeEnd("Context Prepare");
 console.time("App Start");
 (async () => {
     try {
-        await new Promise(res => setTimeout(res, 20000));
-
         const { app } = await startApplication(context);
         const { PORT, log } = context;
 
@@ -51,7 +49,8 @@ console.time("App Start");
         // tslint:disable-next-line
         console.timeEnd("App Start");
     } catch (e) {
-      // tslint:disable-next-line
-      console.error(e);
+        // tslint:disable-next-line
+        console.error(e);
+        process.exit(-1);
     }
 })();

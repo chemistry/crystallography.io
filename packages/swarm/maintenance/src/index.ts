@@ -8,8 +8,6 @@ const getContext = async (): Promise<AppContext> => {
     const packagePath = path.resolve(__dirname, "../package.json");
     const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
-    await new Promise(res => setTimeout(res, 20000));
-
     const {
         MONGO_INITDB_ROOT_USERNAME,
         MONGO_INITDB_ROOT_PASSWORD,
