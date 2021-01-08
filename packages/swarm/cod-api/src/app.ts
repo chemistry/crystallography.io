@@ -67,7 +67,7 @@ export async function startApplication(context: ExpressContext) {
     });
     const db = await getMongoConnection();
 
-    app.use("/api/v1", getRouters({ db }));
+    app.use("/", getRouters({ db }));
 
     app.use((err: any, req: any, res: any, next: any) => {
         // tslint:disable-next-line
