@@ -18,7 +18,7 @@ interface AuthorsRecord {
     index: number;
     full: string;
     count: number;
-    modified: number;
+    updated: string;
     created: number;
 }
 
@@ -39,7 +39,7 @@ const AuthorsTable = ({ authors }: {authors: AuthorsRecord[] }) => {
             <tbody>
                 {
                     authors.map((item)=> {
-                        const date = item.modified ? formatDate(new Date(item.modified)): null;
+                        const date = item.updated ? formatDate(new Date(item.updated)): null;
                         return (
                             <tr key={item.index}>
                                 <td>{item.index}</td>
