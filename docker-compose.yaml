@@ -160,7 +160,7 @@ services:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
-                - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api`) || PathPrefix(`/sitemap`))
+                - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api`) || PathPrefix(`/sitemap`)))
                 - traefik.http.routers.api-https.priority=20
                 - traefik.http.routers.api-https.entrypoints=https
                 - traefik.http.routers.api-https.tls=true

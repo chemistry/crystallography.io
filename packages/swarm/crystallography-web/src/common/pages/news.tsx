@@ -9,6 +9,39 @@ export const NewsPage = () => {
           <div className="app-layout-content">
             <div className="app-layout-page">
                   <div className="timeline">
+
+                  <div className="timeline-item" id="timeline-example-7">
+                        <div className="timeline-left">
+                            <a className="timeline-icon" href="#timeline-example-7"></a>
+                        </div>
+                        <div className="timeline-content">
+                            <div className="timeline-subtitle">
+                                09.01.2021
+                            </div>
+                            <div className="timeline-text">
+                                Migration to new domain https://crystallography.io, connection secured
+                            </div>
+                        </div>
+                    </div>
+                    <div className="timeline-item" id="timeline-example-7">
+                        <div className="timeline-left">
+                            <a className="timeline-icon" href="#timeline-example-7"></a>
+                        </div>
+                        <div className="timeline-content">
+                            <div className="timeline-subtitle">
+                                24.12.2020
+                            </div>
+                            <div className="timeline-text">
+                                Version 4.0 was released
+                                <ul>
+                                    <li>Application Redesign</li>
+                                    <li>Performance Improvements</li>
+                                    <li>Open Source Code</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="timeline-item" id="timeline-example-7">
                       <div className="timeline-left">
                         <a className="timeline-icon" href="#timeline-example-7"></a>
