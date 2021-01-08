@@ -42,7 +42,8 @@ export async function startWorker() {
         }
 
         const client = await MongoClient.connect(connectionString, {
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         });
 
         const db = client.db("crystallography");
@@ -67,12 +68,14 @@ export async function startWorker() {
               });
         });
 
-        process.on('SIGTERM', () => {
+        const closeConnections = ()=> {
             // tslint:disable-next-line
             console.log('closing connection');
             client.close();
             queue.close();
-        });
+        };
+        process.on('SIGINT', closeConnections);
+        process.on('SIGTERM', closeConnections);
 
     } catch (e) {
         // tslint:disable-next-line
