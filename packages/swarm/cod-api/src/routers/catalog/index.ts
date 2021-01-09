@@ -31,13 +31,13 @@ export const getCatalogRouter = ({ db }: { db: Db}) => {
                 errors: [{
                   code: 400,
                   message: "Incorrect page",
-                  details: "Incorrect page",
+                  details: validationRes.error,
                 }],
             });
         }
 
         try {
-            const pages = await db.collection("catalog").count({})
+            const pages = await db.collection("catalog").count({});
             const catalog = await db.collection("catalog")
                 .find({})
                 .sort({ 'id': 1 })

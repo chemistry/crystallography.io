@@ -50,7 +50,7 @@ export async function startApplication(context: ExpressContext) {
 
     app.use(timeout("10s"));
 
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({ extended: true, limit: '1000kb' }));
 
     // Remove header
     app.disable("x-powered-by");

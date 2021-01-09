@@ -40,7 +40,7 @@ export const getNameSearchRouter = ({ db }: { db: Db}) => {
             return res.status(400).json({
                 status: 400,
                 title: "Incorrect author or page",
-                detail: "Incorrect author or page",
+                detail: validationRes.error,
             });
         }
 

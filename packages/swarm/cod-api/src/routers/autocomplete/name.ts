@@ -27,7 +27,7 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
             return res.status(400).json({
                 status: 400,
                 title: "Incorrect name for autocomplete",
-                detail: "Incorrect name for autocomplete",
+                detail: validationRes.error,
             });
         }
 

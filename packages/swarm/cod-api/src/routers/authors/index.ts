@@ -38,7 +38,7 @@ export const getAuthorRouter = ({ db }: { db: Db}) => {
                 errors: [{
                   code: 400,
                   message: "Incorrect page",
-                  details: "Incorrect page",
+                  details: validationRes.error,
                 }],
             });
         }

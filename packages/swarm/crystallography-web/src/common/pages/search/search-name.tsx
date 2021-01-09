@@ -16,7 +16,6 @@ interface SearchFormData {
     name: string;
 }
 
-
 const renderItemValue = (item: any, search: any) => {
     // escape special characters
     search = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');

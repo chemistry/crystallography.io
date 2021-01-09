@@ -41,7 +41,7 @@ export const getUnitCellSearchRouter = ({ db }: { db: Db}) => {
             return res.status(400).json({
                 status: 400,
                 title: "Invalid search params",
-                detail: "Invalid search params",
+                detail: validationRes.error,
             });
         }
 

@@ -166,5 +166,15 @@ module.exports = {
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.svg']
+    },
+
+    devServer: {
+        historyApiFallback: true,
+        proxy: {
+            '/api/v1/autocomplete': {
+                target: 'https://crystallography.io',
+                changeOrigin: true
+            }
+        }
     }
 };

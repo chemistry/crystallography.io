@@ -37,7 +37,7 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
             return res.status(400).json({
                 status: 400,
                 title: "Incorrect author or page",
-                detail: "Incorrect author or page",
+                detail: validationRes.error,
             });
         }
 
@@ -58,7 +58,9 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
             const authorsCollection = authors.map(({full, count}: any) => ({full, count}));
             const structuresIds = authors.reduce((acc, { structures }) => acc.concat(structures), []);
             const uniqStructureIds = [...new Set([...structuresIds])];
+
             const totalPages = Math.ceil(uniqStructureIds.length / RESULTS_PER_PAGE);
+            const resultingPages = uniqStructureIds.slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE);
 
             return res.json({
                 meta: {
@@ -68,7 +70,7 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
                     pages: totalPages,
                 },
                 data: {
-                    structures: uniqStructureIds,
+                    structures: resultingPages,
                 }
             });
 

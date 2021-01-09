@@ -3,10 +3,8 @@ import Joi from "joi";
 import { Router, Request, Response } from "express";
 import { mapStructure } from '../../helpers';
 
-const structurePageValidation = Joi.number().integer().min(1).max(99999);
 const structureIdValidation = Joi.number().integer().min(1000000).max(9999999);
-const structureListValidation = Joi.array().items(structureIdValidation).min(1).max(100);
-
+const structureListValidation = Joi.array().items(structureIdValidation).min(1).max(200);
 
 export const getStructureRouter = ({ db }: { db: Db}) => {
     const router = Router();
@@ -17,7 +15,7 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
 
         try {
             const structure =  await db.collection("structures").findOne({
-                _id: String(id),
+                _id: Number(id),
             });
 
             res.json({
@@ -46,22 +44,22 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
         try {
             structuresIds = JSON.parse(ids);
         } catch (e) {
+            // tslint:disable-next-line
+            console.error(`error in parsing : ${ids},  ERROR: ${e}`)
             structuresIds = [];
         }
 
         try {
-
             const validationRes = structureListValidation.validate(structuresIds);
             if (validationRes.error) {
                 return res.status(400).json({
                     errors: [{
                         status: 400,
                         title: "Incorrect structure ids",
-                        detail: "Incorrect structure ids",
+                        details: validationRes.error,
                     }],
                 });
             }
-
 
             const data = await db.collection("structures").find({
                 _id: { $in : structuresIds },
