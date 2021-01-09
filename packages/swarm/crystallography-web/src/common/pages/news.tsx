@@ -19,7 +19,7 @@ export const NewsPage = () => {
                                 09.01.2021
                             </div>
                             <div className="timeline-text">
-                                Migration to new domain https://crystallography.io, connection secured
+                                Migrated to new domain https://crystallography.io/
                             </div>
                         </div>
                     </div>
@@ -32,11 +32,11 @@ export const NewsPage = () => {
                                 24.12.2020
                             </div>
                             <div className="timeline-text">
-                                Version 4.0 was released
+                                Website version 4.0 were released
                                 <ul>
-                                    <li>Application Redesign</li>
-                                    <li>Performance Improvements</li>
-                                    <li>Open Source Code</li>
+                                    <li>Application redesigned</li>
+                                    <li>Performance was improved</li>
+                                    <li>Code released with MIT license to [github](https://github.com/chemistry/crystallography.io)</li>
                                 </ul>
                             </div>
                         </div>
@@ -65,7 +65,7 @@ export const NewsPage = () => {
                               15.05.2017
                           </div>
                           <div className="timeline-text">
-                              Search by name improvements and bug fixes
+                              Search by name improved and some bug fixed
                           </div>
                       </div>
                     </div>
@@ -93,7 +93,7 @@ export const NewsPage = () => {
                               31.01.2017
                           </div>
                           <div className="timeline-text">
-                            Website version 2.1 was released
+                            Website version 2.1 were released
                             <ul>
                                 <li>Name & Author autocomplete</li>
                                 <li>List of Authors & Author structures page</li>

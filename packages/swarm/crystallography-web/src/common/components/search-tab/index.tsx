@@ -10,7 +10,7 @@ export const SearchTab = ()=> {
                 </li>
                 <li className="tab-item">
                     <NavLink to="/search/author" activeClassName="active">
-                        Authors
+                        Author
                     </NavLink>
                 </li>
                 <li className="tab-item">

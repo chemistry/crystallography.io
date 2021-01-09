@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv";
 import {
     Db,
     MongoClient,
@@ -6,10 +5,6 @@ import {
 import {
     startServer,
 } from "./app";
-
-dotenv.config({
-    path: ".env.default",
-});
 
 (async () => {
     try {
@@ -26,7 +21,8 @@ dotenv.config({
         }
 
         const client = await MongoClient.connect(connectionString, {
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         });
 
         const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;

@@ -15,7 +15,7 @@ export const AboutPage = () => {
                 information was collected during decades and it is
                 crucial for chemist, biologists, physicists, materials
                 scientists as well as for engineers.
-                The data is scatted in multiple databases,
+                The data is scattered in multiple databases,
                 while the best ones are not free.
                 Straightforward access and efficient search in
                 large arrays of data is a necessary part of the scientific
