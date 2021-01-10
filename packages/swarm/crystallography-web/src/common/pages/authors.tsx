@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { RouteConfig } from "react-router-config";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -39,12 +39,14 @@ const AuthorsTable = ({ authors }: {authors: AuthorsRecord[] }) => {
                 {
                     authors.map((item)=> {
                         const date = item.updated ? formatDate(new Date(item.updated)): null;
+                        const { index, full, count } = item;
+
                         return (
-                            <tr key={item.index}>
-                                <td>{item.index}</td>
-                                <td>{item.full}</td>
+                            <tr key={index}>
+                                <td>{index}</td>
+                                <td><NavLink to={`/author/${full}`}>{full}</NavLink></td>
                                 <td>{date}</td>
-                                <td>{item.count}</td>
+                                <td>{count}</td>
                             </tr>
                         )
                     })

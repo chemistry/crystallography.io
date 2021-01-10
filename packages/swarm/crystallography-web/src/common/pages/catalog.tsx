@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { useSelector } from "react-redux";
-import { RouteConfig } from "react-router-config";
 import { useParams } from "react-router-dom";
 
 import { Loader } from "../components/loader";

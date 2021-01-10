@@ -19,7 +19,6 @@ import {
   SearchByStructurePage,
   SearchByUnitCellPage,
   SearchHistoryPage,
-  SearchPage,
   SearchResultsPage
 } from "./pages";
 import { setup } from "./setup";
@@ -30,6 +29,8 @@ import { fetchStructureDetailsData } from "./store/details-page.slice";
 import { fetchSearchResultsData } from "./store/search-results.slice";
 import { RouteConfig } from "react-router-config";
 import { useLoadedData } from "./services";
+import { AuthorDetailsPage } from "./pages/author-details";
+import { fetchAuthorDetailsData } from "./store/author-details-page.slice";
 
 export enum AppContextType {
     frontend = "frontend",
@@ -62,112 +63,129 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
             {
                 path: "/",
                 exact: true,
-                component: withLoadedData(SearchByStructurePage),
+                component: SearchByStructurePage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
             },
             {
                 path: "/search/author",
-                component: withLoadedData(SearchByAuthorsPage),
+                component: SearchByAuthorsPage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
             },
             {
                 path: "/search/name",
-                component: withLoadedData(SearchByNamePage),
+                component: SearchByNamePage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
             },
             {
                 path: "/search/formula",
-                component: withLoadedData(SearchByFormulaPage),
+                component: SearchByFormulaPage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
             },
             {
                 path: "/search/unitcell",
-                component: withLoadedData(SearchByUnitCellPage),
+                component: SearchByUnitCellPage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
             },
             {
                 path: '/results/:id/:page?',
-                component: withLoadedData(SearchResultsPage),
+                component: SearchResultsPage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Search Results",
                 loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchSearchResultsData(params)),
             },
             {
                 path: "/about",
-                component: withLoadedData(AboutPage),
+                component: AboutPage,
                 title: "About Us",
                 description: "About Crystal Structure Search",
             },
             {
                 path: "/authors/:page?",
-                component: withLoadedData(AuthorsPage),
+                component: AuthorsPage,
                 title: "Crystallographers List",
                 description: "Top Crystallographers by published Structures count (based on cod database)",
                 loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchAuthorsListData(params)),
             },
             {
+                path: '/author/:name/:page?',
+                component: AuthorDetailsPage,
+                title: "Structures published",
+                description: "Crystal Structures published",
+                loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchAuthorDetailsData(params)),
+            },
+            {
                 path: "/catalog/:page?",
-                component: withLoadedData(CatalogPage),
+                component: CatalogPage,
                 title: "Crystal Structures List",
                 description: "Crystal Structures List",
                 loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchCatalogData(params)),
             },
             {
                 path: "/structure/:id",
-                component: withLoadedData(DetailsPage),
+                component: DetailsPage,
                 title: "Crystal Structure",
                 description: "Crystal Structure",
                 loadData: (dispatch: Dispatch<any>, params: any) => dispatch(fetchStructureDetailsData(params)),
             },
             {
                 path: "/contact",
-                component: withLoadedData(ContactsPage),
+                component: ContactsPage,
                 title: "Contact Us",
                 description: "Crystal Structure Search: Contacts",
             },
             {
                 path: "/news",
-                component: withLoadedData(NewsPage),
+                component: NewsPage,
                 title: "News",
                 description: "News of Crystal Structure Search",
             },
             {
                 path: "/profile",
-                component: withLoadedData(ProfilePage),
+                component: ProfilePage,
                 title: "Profile",
                 description: "User Profile Page",
             },
             {
                 path: "/login",
-                component: withLoadedData(LoginPage),
+                component: LoginPage,
                 title: "Login",
                 description: "User Login - Crystal Structure Search",
             },
             {
                 path: "/register",
-                component: withLoadedData(RegisterPage),
+                component: RegisterPage,
                 title: "Register",
                 description: "Register User - Crystal Structure Search",
             },
             {
                 path: "/search-history",
-                component: withLoadedData(SearchHistoryPage),
+                component: SearchHistoryPage,
                 title: "Search History",
                 description: "Search History - Crystal Structure Search",
             },
             {
                 path: "*",
-                component: withLoadedData(NotFoundPage),
+                component: NotFoundPage,
                 title: "Crystal Structure Search",
                 description: "Search over Crystal Structures",
             },
         ],
-    }];
+    }].map((layout)=> {
+        return {
+            ...layout,
+            routes: layout.routes.map((route)=> {
+                return {
+                    ...route,
+                    component: withLoadedData(route.component)
+                }
+            })
+        }
+    });
 
   return Promise.resolve({ Routes, getStore });
 };

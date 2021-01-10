@@ -1,5 +1,6 @@
 export * from "./about";
 export * from "./authors";
+export * from "./author-details";
 export * from "./catalog";
 export * from "./contact";
 export * from "./login";
