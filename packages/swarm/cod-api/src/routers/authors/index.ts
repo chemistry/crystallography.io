@@ -3,6 +3,11 @@ import { Request, Response, Router } from "express";
 import { Db } from "mongodb";
 
 const authorsPageValidation = Joi.number().integer().min(1).max(99999);
+const authorItemValidation = Joi.object().keys({
+    authorName: Joi.string().min(2).required(),
+    page: Joi.number().integer().min(1).max(999),
+});
+
 const AUTHORS_PER_PAGE = 300;
 
 const authorMapper = (showDetails: boolean) => {
@@ -23,6 +28,8 @@ const authorMapper = (showDetails: boolean) => {
         return o;
     }
 }
+
+const STRUCTURES_PAGE_SIZE = 100;
 
 export const getAuthorRouter = ({ db }: { db: Db}) => {
     const router = Router();
@@ -71,6 +78,64 @@ export const getAuthorRouter = ({ db }: { db: Db}) => {
             });
         }
     });
+
+    router.get("/:name", async (req: Request, res: Response) => {
+        const authorName = req.params.name;
+        const page = req.query.page ? Number(req.query.page) : 1;
+
+        const validationRes = authorItemValidation.validate({
+            authorName,
+            page,
+        });
+        if (validationRes.error) {
+            return res.status(400).json({
+                errors: [{
+                  code: 400,
+                  message: "Incorrect page",
+                  details: validationRes.error,
+                }],
+            });
+        }
+
+        try {
+            const author = await db.collection("authors").findOne({
+                abc: (authorName.split(" ")[0]).substring(0, 3).toUpperCase(),
+                full: authorName,
+            });
+
+            if (!author) {
+                return res.status(400).json({
+                    status: 400,
+                    title: "Author not found",
+                    detail: "Incorrect author or page",
+                });
+            }
+
+            const authorStructuresCount = author.structures.length;
+            const pageCount = Math.ceil(authorStructuresCount / STRUCTURES_PAGE_SIZE);
+            const pageContent = author.structures.slice((page - 1) * STRUCTURES_PAGE_SIZE, page * STRUCTURES_PAGE_SIZE);
+
+            return res.json({
+                meta: {
+                    total: authorStructuresCount,
+                    pages: pageCount,
+                    name: authorName,
+                },
+                data: {
+                    results: pageContent
+                }
+            });
+
+        } catch(e) {
+            // tslint:disable-next-line
+            console.error(e.stack);
+            return res.status(500).json({
+                errors: [String(e)],
+                meta: {},
+            });
+        }
+    });
+
 
     return router;
 };
