@@ -1,4 +1,5 @@
 import { createBrowserHistory } from "history";
+import * as ReactGA from 'react-ga';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -13,7 +14,19 @@ const appContext: ApplicationContext =  {
 };
 
 (async () => {
-  const history = createBrowserHistory();
+    const history = createBrowserHistory();
+
+    if (process.env.NODE_ENV !== 'development') {
+        ReactGA.initialize('G-4TY3VCDPWF');
+        ReactGA.set({ page: location.pathname });
+        ReactGA.pageview(location.pathname);
+
+        history.listen((location, action) => {
+            ReactGA.set({ page: location.pathname });
+            ReactGA.pageview(location.pathname);
+        });
+    }
+
   const { Routes, getStore } = await getApplication(appContext);
 
   const initialState = (window as any).__INITIAL_STATE__ || {};

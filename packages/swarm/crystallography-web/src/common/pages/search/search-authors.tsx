@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { Input } from "../../components/input";
 import { StructuresList } from "../../components/structure-list/structure-list";
+import { useAnalyticsEvent } from "../../hooks/useAnalitics";
 import { RootState } from "../../store";
 import { SearchState, searchStructureByAuthor } from "../../store/search-by-author-page.slice";
 
@@ -191,8 +192,13 @@ export const SearchByAuthorsPage = () => {
 
     const dispatch = useDispatch();
     const currentPage = useSelector((state: RootState) => state.searchByAuthorSlice.currentPage);
+    const sendEvent = useAnalyticsEvent();
 
     const handleSubmit = (data: SearchFormData) => {
+        sendEvent({
+            category: 'Search',
+            action: 'Search:Author',
+        });
         dispatch(searchStructureByAuthor({
             ...data, page: currentPage
         }));

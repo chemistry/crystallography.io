@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { SearchTab } from "../../components";
+import { useAnalyticsEvent } from "../../hooks/useAnalitics";
 import { searchStructureByStructure } from "../../store/search-by-structure.slice";
 
 if (process.env.BROWSER) {
@@ -20,6 +21,7 @@ export const SearchByStructurePage = () => {
     const molpadRef = useRef(null);
     const dispatch = useDispatch();
     const history = useHistory();
+    const sendEvent =  useAnalyticsEvent();
 
     const handleSubmit = async () => {
         if (MolPad && molpadRef && molpadRef.current) {
@@ -29,6 +31,10 @@ export const SearchByStructurePage = () => {
                 return alert(validationMessage);
             }
             const jmol = molpad.getJmol();
+            sendEvent({
+                category: 'Search',
+                action: 'Search:Structure',
+            });
             const searchId = await dispatch(searchStructureByStructure({
                 molecule: jmol,
             }));

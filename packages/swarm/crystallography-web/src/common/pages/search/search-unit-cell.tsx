@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { StructuresList } from "../../components/structure-list/structure-list";
+import { useAnalyticsEvent } from "../../hooks/useAnalitics";
 import { RootState } from "../../store";
 import { searchByUnitCell, SearchState } from "../../store/search-by-unit-cell-page.slice";
 
@@ -19,9 +20,14 @@ const SearchByUnitCellForm = ({ onSubmit }: any) => {
     const [beta, setBeta] = useState('90.0');
     const [gamma, setGamma] = useState('90.0');
     const [tolerance, setTolerance] = useState('1.5');
+    const sendEvent =  useAnalyticsEvent();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
         event.preventDefault();
+        sendEvent({
+            category: 'Search',
+            action: 'Search:Structure',
+        });
         onSubmit({ a, b, c, alpha, beta, gamma, tolerance });
     }
 
