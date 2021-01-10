@@ -17,7 +17,7 @@ const appContext: ApplicationContext =  {
     const history = createBrowserHistory();
 
     if (process.env.NODE_ENV !== 'development') {
-        ReactGA.initialize('G-4TY3VCDPWF');
+        ReactGA.initialize('UA-125802766-1');
         ReactGA.set({ page: location.pathname });
         ReactGA.pageview(location.pathname);
 

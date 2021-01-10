@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { Input } from "../../components/input";
 import { StructuresList } from "../../components/structure-list/structure-list";
-import { useAnalyticsEvent } from "../../hooks/useAnalitics";
+import { useGaAnalytics } from "../../hooks/useAnalytics";
 import { RootState } from "../../store";
 import { SearchState, searchStructureByName } from "../../store/search-by-name-page.slice";
 
@@ -192,7 +192,7 @@ export const SearchByNamePage = () => {
 
     const dispatch = useDispatch();
     const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
-    const sendEvent = useAnalyticsEvent();
+    const sendEvent = useGaAnalytics();
 
     const handleSubmit = (data: SearchFormData) => {
         sendEvent({
