@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { RouteConfig } from "react-router-config";
-import { useLoadedData } from "../services";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Loader } from "../components/loader";
@@ -59,10 +58,7 @@ const numberWithSpaces = (x: number): string => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-export const AuthorsPage = (props: { route: RouteConfig }) => {
-
-    // Page Navigation
-    useLoadedData(props.route);
+export const AuthorsPage = () => {
 
     const { page } = useParams() as any;
     let currentPage = parseInt(page, 10);

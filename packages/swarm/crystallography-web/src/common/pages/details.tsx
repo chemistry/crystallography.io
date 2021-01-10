@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { RouteConfig } from "react-router-config";
 import { useParams } from "react-router-dom";
 import { PageContainer } from "../layout";
-import { useInBrowser, useLoadedData } from "../services";
+import { useInBrowser } from "../services";
 import { RootState } from "../store";
 import { CompoundName } from "../utils";
 import { useEffect } from "react";
@@ -13,10 +12,7 @@ if (process.env.BROWSER) {
     require("./details.scss");
 }
 
-export const DetailsPage = (props: { route: RouteConfig }) => {
-
-    // Page Navigation
-    useLoadedData(props.route);
+export const DetailsPage = () => {
 
     // Is page Loading
     const isLoading = useSelector((state: RootState) => state.detailsPage.isLoading);

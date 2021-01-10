@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 
 import { Loader } from "../components/loader";
 import { Pagination } from "../components/pagination";
-import { useLoadedData } from "../services";
 import { RootState } from "../store";
 import { StructuresList } from "../components/structure-list/structure-list";
 
@@ -14,9 +13,7 @@ if (process.env.BROWSER) {
     require("./catalog.scss");
 }
 
-export const CatalogPage = (props: { route: RouteConfig }) => {
-    // Page Navigation
-    useLoadedData(props.route);
+export const CatalogPage = () => {
 
     const { page } = useParams() as any;
     let currentPage = parseInt(page, 10);

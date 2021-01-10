@@ -7,7 +7,6 @@ import { RootState } from "../store";
 import { Loader, Pagination } from "../components";
 import { StructuresList } from "../components/structure-list/structure-list";
 import { useBrowserEffect } from "../hooks";
-import { useLoadedData } from "../services";
 import { closeWSSubscription, subscribeToWSUpdates } from "../store/store.wsMiddleware";
 
 
@@ -21,10 +20,8 @@ const numberWithSpaces = (x: number): string => {
 }
 
 const MAX_PAGES = 10;
-export const SearchResultsPage  = (props: { route: RouteConfig })=> {
-    // Page Navigation
-    useLoadedData(props.route);
 
+export const SearchResultsPage  = ()=> {
     const dispatch = useDispatch();
     const { id, page } = useParams() as any;
     const isLoading = useSelector((state: RootState) => state.searchResults.isLoading);
