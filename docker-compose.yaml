@@ -131,6 +131,8 @@ services:
         networks:
           - net
           - traefik-public
+        env_file:
+          - ./.env
         environment:
           - PORT=8060
         deploy:
