@@ -1,33 +1,45 @@
 import { startApplication } from "./app";
+import { getLogger, getMongoConnection } from "./common";
+import { Express } from "express";
 
-// tslint:disable-next-line
-console.time("Context Prepare");
+const getPort = ()=> {
+    const port = process.env.PORT;
+    if (port && isFinite(parseInt(port, 10))  && parseInt(port, 10) > 0) {
+        return parseInt(port, 10);
+    }
+    return 8080;
+}
 
-const context = {
-    log: (message: string) => {
-        // tslint:disable-next-line
-        console.log(message);
-    },
-    PORT: (() => {
-        const port = process.env.PORT;
-        if (port && isFinite(parseInt(port, 10))  && parseInt(port, 10) > 0) {
-            return parseInt(port, 10);
-        }
-        return 8080;
-    })(),
-};
+const getApplicationContext = async () => {
+    const db = await getMongoConnection();
+    const { logger, mw } = await getLogger();
+    const PORT = getPort();
 
-// tslint:disable-next-line
-console.timeEnd("Context Prepare");
+    return {
+        logger,
+        log: (message: string) => {
+            // tslint:disable-next-line
+            console.log(message);
+        },
+        onAppInit: (app: Express) => {
+            app.use(mw);
+        },
+        PORT,
+        db
+    }
+}
 
-// tslint:disable-next-line
-console.time("App Start");
 (async () => {
     try {
-        const { app } = await startApplication(context);
+        // tslint:disable-next-line
+        console.time("App Start");
+
+        const context = await getApplicationContext();
         const { PORT, log } = context;
 
-        await new Promise((resolve) => {
+        const { app } = await startApplication(context);
+
+        await new Promise<void>((resolve) => {
             app.listen(PORT, "0.0.0.0", resolve);
         });
 

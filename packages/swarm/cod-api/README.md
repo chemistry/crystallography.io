@@ -4,8 +4,32 @@
 
 API for accessing COD database [crystallography.io](https://crystallography.io/)
 
-# Endpoints path:
- - GET: api/v1/structures?page=x
+## Commands
+Build Container
+```bash
+docker build -t gcr.io/crystallography-api/containers-crystallography-io-api .
+```
+
+Setting up cred environment variable
+```bash
+GCP_SA_KEY=`cat cred.json | base64 -w 0`
+```
+
+Execute container
+```bash
+docker run --rm -e MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD -e GCP_SA_KEY=$GCP_SA_KEY -e MONGO_INITDB_HOST=$MONGO_INITDB_HOST --name api gcr.io/crystallography-api/containers-crystallography-io-api
+```
+# -e GCP_SA_KEY=$GCP_SA_KEY
+
+docker run --rm -e MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD -e MONGO_INITDB_HOST=$MONGO_INITDB_HOST -e GCP_SA_KEY=$GCP_SA_KEY --name api gcr.io/crystallography-api/containers-crystallography-io-api
+
+
+Push container to GCP
+```bash
+# gcloud auth configure-docker
+docker push gcr.io/crystallography-api/containers-crystallography-io-api
+```
+
 
 ## Configuring enviroment
  - Set enviroment valibles to connect locally to MongoDB

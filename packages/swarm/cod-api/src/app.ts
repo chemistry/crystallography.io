@@ -1,47 +1,24 @@
-import { MongoClient } from 'mongodb';
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
 import cors from "cors";
-import express from "express";
-import morgan from 'morgan';
+import express, { Express } from "express";
 import { getRouters } from "./routers";
+import { Db } from "mongodb";
 
-export interface ExpressContext {
+export interface ApplicationContext {
     log: (message: string) => void;
+    logger: any;
+    onAppInit: (express: Express)=> void;
     PORT: number;
+    db: Db;
 }
 
-const  getMongoConnection = async () => {
-    const {
-        MONGO_INITDB_ROOT_USERNAME,
-        MONGO_INITDB_ROOT_PASSWORD,
-        MONGO_INITDB_HOST
-    }  = process.env;
-
-    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
-    if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
-    }
-
-    const mongoClient = await MongoClient.connect(connectionString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-
-    const db = mongoClient.db("crystallography");
-
-    process.on('SIGTERM', () => {
-        mongoClient.close();
-    });
-
-    return db;
-}
-
-export async function startApplication(context: ExpressContext) {
-    const { log } = context;
+export async function startApplication(context: ApplicationContext) {
+    const { log, db, onAppInit } = context;
     log("application started");
 
     const app = express();
+    onAppInit(app);
 
     // Add UTF-8 symbols parser
     app.set("query parser", "simple");
@@ -55,7 +32,7 @@ export async function startApplication(context: ExpressContext) {
     // Remove header
     app.disable("x-powered-by");
 
-    app.use(morgan('combined'));
+
 
     // Serve static files
     app.get("/", (req, res) => {
@@ -65,7 +42,6 @@ export async function startApplication(context: ExpressContext) {
     app.get("/api", (req, res) => {
         res.send("api: OK");
     });
-    const db = await getMongoConnection();
 
     app.use("/", getRouters({ db }));
 
