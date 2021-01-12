@@ -33,7 +33,6 @@ export async function startApplication(context: ApplicationContext) {
     app.disable("x-powered-by");
 
 
-
     // Serve static files
     app.get("/", (req, res) => {
       res.send("api/: OK");

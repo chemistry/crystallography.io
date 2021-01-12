@@ -1,6 +1,6 @@
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
-import express, { NextFunction, Request, Response } from "express";
+import express, { NextFunction, Request, Response, Express } from "express";
 import escapeHTML from "lodash.escape";
 import * as path from "path";
 import * as React from "react";
@@ -10,11 +10,13 @@ import { StaticRouter } from "react-router";
 import { matchRoutes, renderRoutes } from "react-router-config";
 import { ApplicationContext, ApplicationFactory } from "../common";
 import { getAuthRouter } from "./auth.router";
-import morgan from 'morgan';
-export interface ExpresContext {
+
+import { getLogger } from "./common/logger";
+export interface ExpressContext {
     log: (message: string) => void;
     PORT: number;
     htmlContent: string;
+    onAppStart: (app: Express) => void;
     appContext: ApplicationContext;
     appFactory: ApplicationFactory;
 }
@@ -72,8 +74,8 @@ const getMetadata = (routes: any, url: string) => {
   };
 };
 
-export async function startApplication(context: ExpresContext) {
-    const { htmlContent, log, appFactory, appContext } = context;
+export async function startApplication(context: ExpressContext) {
+    const { htmlContent, log, appFactory, appContext, onAppStart } = context;
     log("application started");
 
     const app = express();
@@ -89,7 +91,7 @@ export async function startApplication(context: ExpresContext) {
     app.disable("x-powered-by");
 
     // Add Logs to application
-    app.use(morgan('combined'));
+    onAppStart(app);
 
     // Serve static files
     app.use(express.static(path.join(__dirname, "/../static"), {index: false}));

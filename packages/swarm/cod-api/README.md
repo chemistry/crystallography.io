@@ -2,8 +2,7 @@
 [![GitHub Build Status](https://github.com/chemistry/cod-api/workflows/CI/badge.svg)](https://github.com/chemistry/cod-api/actions?query=workflow%3ACI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 
-API for accessing COD database [crystallography.io](https://crystallography.io/)
-
+Open API for accessing COD+ database [crystallography.io](https://crystallography.io/)
 ## Commands
 Build Container
 ```bash
@@ -19,10 +18,6 @@ Execute container
 ```bash
 docker run --rm -e MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD -e GCP_SA_KEY=$GCP_SA_KEY -e MONGO_INITDB_HOST=$MONGO_INITDB_HOST --name api gcr.io/crystallography-api/containers-crystallography-io-api
 ```
-# -e GCP_SA_KEY=$GCP_SA_KEY
-
-docker run --rm -e MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD -e MONGO_INITDB_HOST=$MONGO_INITDB_HOST -e GCP_SA_KEY=$GCP_SA_KEY --name api gcr.io/crystallography-api/containers-crystallography-io-api
-
 
 Push container to GCP
 ```bash
@@ -30,9 +25,7 @@ Push container to GCP
 docker push gcr.io/crystallography-api/containers-crystallography-io-api
 ```
 
-
-## Configuring enviroment
- - Set enviroment valibles to connect locally to MongoDB
+## Required environment variables
     MONGO_INITDB_ROOT_USERNAME
     MONGO_INITDB_ROOT_PASSWORD
     MONGO_INITDB_HOST

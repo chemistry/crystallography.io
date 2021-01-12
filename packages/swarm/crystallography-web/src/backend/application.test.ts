@@ -7,6 +7,7 @@ describe("Express Application", () => {
 
     let mockContext: any = {
         log: () => {},
+        onAppStart: ()=> {},
         PORT: '8080',
         htmlContent: '<html><div id="root"></div></html>',
         appContext: null,
