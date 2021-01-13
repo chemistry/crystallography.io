@@ -8,7 +8,7 @@ export const getPackageName = ()=> {
     return (packageJSON.name || 'unknown').replace('@chemistry/','');
 }
 
-export const getLogger = async ()=> {
+export const getLogger = async () => {
     const logging = new Logging();
     const log = logging.log({
         logName: getPackageName()
