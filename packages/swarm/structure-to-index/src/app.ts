@@ -2,16 +2,14 @@ import { Db } from 'mongodb';
 import { processMessage } from './process';
 
 export interface AppContext {
-    log: (message: string) => void;
-    getChanel: () => any;
+    log: (text: string) => void;
     QUEUE_NAME: string;
-    close: () => void;
+    chanel: any;
     db: Db;
 }
 
 export const app = async(context: AppContext) => {
-    const { log, getChanel, QUEUE_NAME } = context;
-    const chanel = getChanel();
+    const { log, chanel, QUEUE_NAME } = context;
 
     chanel.consume(QUEUE_NAME, async (originalMessage: any) => {
         const message = JSON.parse(originalMessage.content.toString());
