@@ -10,9 +10,7 @@ export const getPackageName = ()=> {
 
 export const getLogger = async () => {
     const logging = new Logging();
-    const log = logging.log({
-        logName: getPackageName()
-    });
+    const log = logging.log(getPackageName());
 
     const metadata = {
         resource: { type: 'global' },
