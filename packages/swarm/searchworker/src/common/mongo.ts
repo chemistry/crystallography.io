@@ -19,7 +19,6 @@ export const  getMongoConnection = async () => {
     const close = ()=> {
         return mongoClient.close();
     }
-
     const db = mongoClient.db("crystallography");
 
     process.on('SIGTERM', () => {

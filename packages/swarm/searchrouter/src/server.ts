@@ -1,50 +1,33 @@
 import {
-    Db,
-    MongoClient,
-} from "mongodb";
-import {
     startServer,
 } from "./app";
+import { getLogger } from "./common/express-logger";
+import { getMongoConnection } from "./common/mongo";
 
 (async () => {
     try {
         await new Promise(res => setTimeout(res, 20000));
-        const {
-            MONGO_INITDB_ROOT_USERNAME,
-            MONGO_INITDB_ROOT_PASSWORD,
-            MONGO_INITDB_HOST
-        }  = process.env;
-
-        let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
-        if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-            connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
-        }
-
-        const client = await MongoClient.connect(connectionString, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-
         const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 
-        const db = client.db("crystallography");
-        const server = await startServer(db);
+        const { db, close } = await getMongoConnection();
+        const { logger, mw } = await getLogger();
+
+        const server = await startServer({ db, mw });
 
         server.listen(PORT, () => {
             // tslint:disable-next-line
-            console.log((new Date().toLocaleString()), `searchrouter - started on port ${PORT}`);
+            console.log(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
+            logger.log(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
         });
         server.on("error", (err: any) => {
-          // tslint:disable-next-line
-          console.error(err);
+            // tslint:disable-next-line
+            console.error(err);
+            logger.log(String(err));
         });
 
         process.on('SIGTERM', () => {
             // tslint:disable-next-line
             console.log('closing connection');
-            server.close(()=> {
-                client.close();
-            });
         });
 
     } catch (e) {

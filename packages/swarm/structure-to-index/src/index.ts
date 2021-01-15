@@ -9,7 +9,7 @@ const QUEUE_NAME = 'STRUCTURE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
 
-    const [ db, chanel, logger ] = await Promise.all([
+    const [ mongo, chanel, logger ] = await Promise.all([
         getMongoConnection(),
         getChanel(QUEUE_NAME),
         getLogger()
@@ -23,7 +23,7 @@ const getContext = async (): Promise<AppContext> => {
     return {
         log: (text) => logger.log(text),
         chanel,
-        db,
+        db: mongo.db,
         QUEUE_NAME,
     }
 }

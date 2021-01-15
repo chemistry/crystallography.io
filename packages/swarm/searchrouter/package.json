@@ -22,6 +22,8 @@
     },
     "dependencies": {
         "@chemistry/molecule": "1.6.3",
+        "@google-cloud/logging-bunyan": "3.0.1",
+        "bunyan": "1.8.15",
         "bee-queue": "1.3.1",
         "body-parser": "1.18.3",
         "connect-timeout": "1.9.0",

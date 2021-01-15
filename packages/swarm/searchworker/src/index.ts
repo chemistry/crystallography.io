@@ -6,8 +6,7 @@ import {
    SearchStatisticsModel,
 } from "./models";
 import { startWorker } from "./server";
-import { checkConnection } from "./utils";
-
+import { checkConnection } from "./common/utils";
 
 if (cluster.isMaster) {
 
@@ -50,9 +49,6 @@ if (cluster.isMaster) {
 
     // Start Worker
     startWorker();
-
-    // tslint:disable-next-line
-    console.log(`${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`);
 }
 
 process.on("uncaughtException", (err) => {

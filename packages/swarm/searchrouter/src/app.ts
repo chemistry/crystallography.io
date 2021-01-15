@@ -9,7 +9,7 @@ import { initExpress } from "./app.express";
 import { initIO } from "./app.io";
 import { initQueue } from "./app.queue";
 
-export async function startServer(db: Db) {
+export async function startServer({ db, mw } : { db: Db, mw: any }) {
     const app = express();
     const server = http.createServer(app);
     const queue = new Queue("substructure-search", {
@@ -22,6 +22,8 @@ export async function startServer(db: Db) {
         removeOnSuccess: true,
         removeOnFailure: true,
     });
+
+    app.use(mw);
 
     process.on("SIGINT", () => {
         queue.close();

@@ -1,7 +1,6 @@
-import { MongoClient } from 'mongodb';
-import { createClient } from "redis";
+import { MongoClient } from "mongodb";
 
-export const checkConnection = async () => {
+export const getMongoConnection = async () => {
     const {
         MONGO_INITDB_ROOT_USERNAME,
         MONGO_INITDB_ROOT_PASSWORD,
@@ -13,18 +12,18 @@ export const checkConnection = async () => {
         connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
     }
 
-    const client = await MongoClient.connect(connectionString, {
+    const mongoClient = await MongoClient.connect(connectionString, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
+    const close = ()=> {
+        return mongoClient.close();
+    }
+    const db = mongoClient.db("crystallography");
 
-    client.close();
-
-    const redisClient = createClient({
-        host: process.env.REDIS_HOST || 'redis',
-        port: process.env.REDIS_PORT  ? Number(process.env.REDIS_PORT) : 6379,
-        password: process.env.REDIS_PASSWORD || ''
+    process.on('SIGTERM', () => {
+        mongoClient.close();
     });
 
-    redisClient.quit();
+    return { db, close };
 }

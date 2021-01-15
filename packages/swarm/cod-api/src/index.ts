@@ -1,5 +1,6 @@
 import { startApplication } from "./app";
-import { getLogger, getMongoConnection } from "./common";
+import { getLogger } from "./common/express-logger";
+import { getMongoConnection } from "./common/mongo";
 import { Express } from "express";
 
 const getPort = ()=> {
@@ -11,7 +12,7 @@ const getPort = ()=> {
 }
 
 const getApplicationContext = async () => {
-    const db = await getMongoConnection();
+    const { db } = await getMongoConnection();
     const { logger, mw } = await getLogger();
     const PORT = getPort();
 

@@ -17,11 +17,14 @@ export const  getMongoConnection = async () => {
         useUnifiedTopology: true
     });
 
+    const close = ()=> {
+        return mongoClient.close();
+    }
     const db = mongoClient.db("crystallography");
 
     process.on('SIGTERM', () => {
         mongoClient.close();
     });
 
-    return db;
+    return { db, close };
 }

@@ -5,16 +5,12 @@ import {
 } from "@chemistry/molecule";
 import {
     Db,
-    MongoClient,
-    ObjectID,
 } from "mongodb";
-import {
-    blackIds,
-} from "./blacklist";
+import { getLogger } from "./common/logger";
+import { getMongoConnection } from "./common/mongo";
 import {
     JobInputModel,
     JobOutputModel,
-    SearchStatisticsModel,
 } from "./models";
 
 export async function startWorker() {
@@ -30,52 +26,43 @@ export async function startWorker() {
             removeOnFailure: true,
         });
 
-        const {
-            MONGO_INITDB_ROOT_USERNAME,
-            MONGO_INITDB_ROOT_PASSWORD,
-            MONGO_INITDB_HOST
-        }  = process.env;
+        const { db } = await getMongoConnection();
+        const { log } = await getLogger();
 
-        let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
-        if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-            connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
-        }
-
-        const client = await MongoClient.connect(connectionString, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-
-        const db = client.db("crystallography");
         queue.process((job: { data: JobInputModel }, done: (err: any, outData: JobOutputModel) => void) => {
             const searchId = job.data.searchId;
             const chunkId = job.data.index;
 
             processQ(db, job)
-              .then((out: any) => {
-                  done(null, out);
-              })
-              .catch((err: any) => {
+                .then((out: any) => {
+                    done(null, out);
+                })
+                .catch((err: any) => {
+                    log(`"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err })}`);
                    // tslint:disable-next-line
-                  console.error("searchworker: job failed", { searchId, chunkId }, err);
+                    console.error("searchworker: job failed", { searchId, chunkId }, err);
 
-                  done(err, {
-                      index: chunkId,
-                      searchId,
-                      time: 0,
-                      results: [],
-                  });
-              });
+                    done(err, {
+                        index: chunkId,
+                        searchId,
+                        time: 0,
+                        results: [],
+                    });
+                });
         });
 
-        const closeConnections = ()=> {
+        const closeConnections = () => {
             // tslint:disable-next-line
             console.log('closing connection');
-            client.close();
             queue.close();
         };
         process.on('SIGINT', closeConnections);
         process.on('SIGTERM', closeConnections);
+
+        const msg = `${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`;
+        // tslint:disable-next-line
+        console.log(msg);
+        log(msg);
 
     } catch (e) {
         // tslint:disable-next-line
