@@ -3,7 +3,7 @@ const fs = require('fs');
 const lb = require('@google-cloud/logging-bunyan');
 
 export const getPackageName = ()=> {
-    const packagePath = path.resolve(__dirname, "../../../package.json");
+    const packagePath = path.resolve(__dirname, "../../package.json");
     const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
     return (packageJSON.name || 'unknown').replace('@chemistry/','');
 }
