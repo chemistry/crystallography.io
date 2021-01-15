@@ -17,12 +17,12 @@ import { getMongoConnection } from "./common/mongo";
         server.listen(PORT, () => {
             // tslint:disable-next-line
             console.log(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
-            logger.log(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
+            logger.info(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
         });
         server.on("error", (err: any) => {
             // tslint:disable-next-line
             console.error(err);
-            logger.log(String(err));
+            logger.error(String(err));
         });
 
         process.on('SIGTERM', () => {
