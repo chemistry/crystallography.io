@@ -5,7 +5,12 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 Website: [Crystal Structure Search](http://crystallography.io/)
-Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/chemistry/crystallography.io/releases)
+## Supported Platforms
+Application for Desktop [Download](https://github.com/chemistry/crystallography.io/releases)
+Supported platforms:
+  * Windows
+  * Lunux 
+  * MaxOS
 
 ## Include Packages:
 ### Application:
