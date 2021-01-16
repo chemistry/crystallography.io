@@ -11,13 +11,14 @@ export interface ApplicationContext {
         info: (message: string) => void;
         error: (message: string) => void;
     },
-    onAppInit: (express: Express)=> void;
+    onAppInit: (express: Express) => void;
+    onAppInitEnd: (express: Express) => void;
     PORT: number;
     db: Db;
 }
 
 export async function startApplication(context: ApplicationContext) {
-    const { logger, db, onAppInit } = context;
+    const { logger, db, onAppInit, onAppInitEnd } = context;
     logger.trace("application started");
 
     const app = express();
@@ -46,6 +47,8 @@ export async function startApplication(context: ApplicationContext) {
     });
 
     app.use("/", getRouters({ db }));
+
+    onAppInitEnd(app);
 
     app.use((err: any, req: any, res: any, next: any) => {
         if(err) {

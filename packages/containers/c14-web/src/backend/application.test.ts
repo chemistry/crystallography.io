@@ -13,7 +13,8 @@ describe("Express Application", () => {
             info: noop,
             error: noop
         },
-        onAppStart: ()=> {},
+        onAppInit: ()=> {},
+        onAppInitEnd: () => {},
         PORT: '8080',
         htmlContent: '<html><div id="root"></div></html>',
         appContext: null,

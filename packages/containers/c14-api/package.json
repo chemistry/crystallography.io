@@ -26,12 +26,14 @@
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts"
     },
     "dependencies": {
-        "@types/connect-timeout": "0.0.34",
         "@google-cloud/logging-bunyan": "3.0.1",
+        "@sentry/node": "5.30.0",
+        "@sentry/tracing": "5.30.0",
+        "@types/connect-timeout": "0.0.34",
         "body-parser": "1.19.0",
+        "bunyan": "1.8.15",
         "connect-timeout": "1.9.0",
         "cors": "2.8.5",
-        "bunyan": "1.8.15",
         "express": "4.17.1",
         "joi": "17.3.0",
         "mongodb": "3.6.3",

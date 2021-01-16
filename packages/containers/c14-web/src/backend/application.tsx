@@ -1,5 +1,6 @@
 import * as bodyParser from "body-parser";
 import timeout from "connect-timeout";
+import * as Sentry from "@sentry/node";
 import express, { NextFunction, Request, Response, Express } from "express";
 import escapeHTML from "lodash.escape";
 import * as path from "path";
@@ -11,7 +12,6 @@ import { matchRoutes, renderRoutes } from "react-router-config";
 import { ApplicationContext, ApplicationFactory } from "../common";
 import { getAuthRouter } from "./auth.router";
 
-import { getLogger } from "./common/logger";
 export interface ExpressContext {
     logger: {
         trace:(message: string) => void;
@@ -20,7 +20,8 @@ export interface ExpressContext {
     },
     PORT: number;
     htmlContent: string;
-    onAppStart: (app: Express) => void;
+    onAppInit: (app: Express) => void;
+    onAppInitEnd: (express: Express) => void;
     appContext: ApplicationContext;
     appFactory: ApplicationFactory;
 }
@@ -79,7 +80,7 @@ const getMetadata = (routes: any, url: string) => {
 };
 
 export async function startApplication(context: ExpressContext) {
-    const { htmlContent, logger, appFactory, appContext, onAppStart } = context;
+    const { htmlContent, logger, appFactory, appContext, onAppInit, onAppInitEnd } = context;
     logger.trace('application started');
 
     const app = express();
@@ -95,7 +96,7 @@ export async function startApplication(context: ExpressContext) {
     app.disable("x-powered-by");
 
     // Add Logs to application
-    onAppStart(app);
+    onAppInit(app);
 
     // Serve static files
     app.use(express.static(path.join(__dirname, "/../static"), {index: false}));
@@ -105,41 +106,44 @@ export async function startApplication(context: ExpressContext) {
     // Rendering to StaticRouter
     app.use(async (req: Request, res: Response, next: NextFunction) => {
 
-      try {
-          const ctx: any = {
-              status: 200,
-          };
-          const { Routes, getStore } = await appFactory(appContext);
-          const store = getStore(null);
+        try {
+            const ctx: any = {
+                status: 200,
+            };
+            const { Routes, getStore } = await appFactory(appContext);
+            const store = getStore(null);
 
-          await loadSiteData(Routes, req.url, store.dispatch);
-          const metaData = getMetadata(Routes, req.url);
+            await loadSiteData(Routes, req.url, store.dispatch);
+            const metaData = getMetadata(Routes, req.url);
 
-          const App = () => {
-              return renderRoutes(Routes);
-          };
+            const App = () => {
+                return renderRoutes(Routes);
+            };
 
-          const content = (
-              <Provider store={store}>
-                  <StaticRouter location={req.url} context={ctx}>
-                      <App />
-                  </StaticRouter>
-              </Provider>
-          );
+            const content = (
+                <Provider store={store}>
+                    <StaticRouter location={req.url} context={ctx}>
+                        <App />
+                    </StaticRouter>
+                </Provider>
+            );
 
-          const componentHTML = renderToString(content);
-          const initialState = store.getState();
-          const HTML = renderHTML(htmlContent, componentHTML, initialState, metaData);
-          res
-            .header("Content-Type", "text/html; charset=utf-8")
-            .status(ctx.status)
-            .end(HTML);
+            const componentHTML = renderToString(content);
+            const initialState = store.getState();
+            const HTML = renderHTML(htmlContent, componentHTML, initialState, metaData);
+            res
+                .header("Content-Type", "text/html; charset=utf-8")
+                .status(ctx.status)
+                .end(HTML);
 
-      } catch (error) {
-        logger.error(String(error));
-        next(error);
-      }
+        } catch (error) {
+            Sentry.captureException(error);
+            logger.error(String(error));
+            next(error);
+        }
     });
+
+    onAppInitEnd(app);
 
     return { app };
 }

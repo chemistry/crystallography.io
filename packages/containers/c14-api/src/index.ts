@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 import { startApplication } from "./app";
 import { getLogger } from "./common/express-logger";
 import { getMongoConnection } from "./common/mongo";
@@ -9,6 +11,17 @@ const getPort = ()=> {
         return parseInt(port, 10);
     }
     return 8080;
+}
+
+const initSentry = ({ app }: { app: Express })=> {
+    Sentry.init({
+        dsn: "https://017ac8f85b4047af8fd3c3854025dda5@o187202.ingest.sentry.io/5595472",
+        integrations: [
+          new Sentry.Integrations.Http({ tracing: true }),
+          new Tracing.Integrations.Express({ app }),
+        ],
+        tracesSampleRate: 1.0,
+    });
 }
 
 const getApplicationContext = async () => {
@@ -35,7 +48,13 @@ const getApplicationContext = async () => {
             }
         },
         onAppInit: (app: Express) => {
+            initSentry({ app });
+            app.use(Sentry.Handlers.requestHandler());
+            app.use(Sentry.Handlers.tracingHandler());
             app.use(mw);
+        },
+        onAppInitEnd: (app: Express) => {
+            app.use(Sentry.Handlers.errorHandler());
         },
         PORT,
         db
@@ -65,6 +84,7 @@ const getApplicationContext = async () => {
         // tslint:disable-next-line
         console.timeEnd("App Start");
     } catch (e) {
+        Sentry.captureException(e);
         // tslint:disable-next-line
         console.error(e);
         process.exit(-1);
