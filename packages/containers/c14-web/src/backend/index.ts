@@ -28,7 +28,7 @@ const getPort = () => {
 
 const initSentry = ({ app }: { app: Express })=> {
     Sentry.init({
-        dsn: "https://017ac8f85b4047af8fd3c3854025dda5@o187202.ingest.sentry.io/5595472",
+        dsn: "https://359319ed89e449248751777db5d0921d@o187202.ingest.sentry.io/5595485",
         integrations: [
           new Sentry.Integrations.Http({ tracing: true }),
           new Tracing.Integrations.Express({ app }),
