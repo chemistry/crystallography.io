@@ -123,10 +123,10 @@ services:
           - rabbitmq
 
     web:
-        image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'
+        image: 'gcr.io/crystallography-api/containers-c14-web:latest'
         restart: always
         build:
-            context: ./packages/containers/crystallography-web
+            context: ./packages/containers/c14-web
             dockerfile: Dockerfile
         networks:
           - net
@@ -154,7 +154,7 @@ services:
         image: 'gcr.io/crystallography-api/containers-crystallography-io-api:latest'
         restart: always
         build:
-            context: ./packages/containers/cod-api
+            context: ./packages/containers/c14-api
             dockerfile: Dockerfile
         networks:
           - net

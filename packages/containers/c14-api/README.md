@@ -1,5 +1,5 @@
-# @chemistry/cod-api
-[![GitHub Build Status](https://github.com/chemistry/cod-api/workflows/CI/badge.svg)](https://github.com/chemistry/cod-api/actions?query=workflow%3ACI)
+# @chemistry/c14-api
+[![GitHub Build Status](https://github.com/chemistry/c14-api/workflows/CI/badge.svg)](https://github.com/chemistry/c14-api/actions?query=workflow%3ACI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 
 Open API for accessing COD+ database [crystallography.io](https://crystallography.io/)

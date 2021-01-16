@@ -1,5 +1,5 @@
 {
-    "name": "@chemistry/cod-api",
+    "name": "@chemistry/c14-api",
     "private": true,
     "version": "0.0.18",
     "description": "Crystallography API ",
@@ -19,7 +19,7 @@
     "devEngines": {
         "node": ">=8.0.0"
     },
-    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/cod-api",
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-api",
     "scripts": {
         "build": "rimraf dist/* && tsc",
         "start": "node dist/index.js",

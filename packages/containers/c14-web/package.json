@@ -1,5 +1,5 @@
 {
-    "name": "@chemistry/crystallography-web",
+    "name": "@chemistry/c14-web",
     "private": true,
     "version": "0.0.18",
     "description": "Crystallography Web ",
@@ -19,7 +19,7 @@
     "devEngines": {
         "node": ">=8.0.0"
     },
-    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-web",
+    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-web",
     "scripts": {
         "deploy": "./deploy.sh",
         "build:backend": "tsc",

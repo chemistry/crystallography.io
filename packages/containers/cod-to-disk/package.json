@@ -1,5 +1,5 @@
 {
-    "name": "@chemistry/containers-cod-to-disk",
+    "name": "@chemistry/cod-to-disk",
     "private": true,
     "version": "0.0.18",
     "description": "Synchronization COD to Disk ",
