@@ -5,7 +5,7 @@ Container to store COD content to disk
 ## Commands
 Build Container
 ```bash
-cd ../../../ && docker build -t gcr.io/crystallography-api/containers-cod-to-disk -f packages/swarm/cod-to-disk/Dockerfile .
+cd ../../../ && docker build -t gcr.io/crystallography-api/containers-cod-to-disk -f packages/containers/cod-to-disk/Dockerfile .
 ```
 
 Execute container

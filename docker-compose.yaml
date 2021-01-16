@@ -64,7 +64,7 @@ services:
         image: 'gcr.io/crystallography-api/structure-to-index:latest'
         restart: always
         build:
-            context: ./packages/swarm/structure-to-index
+            context: ./packages/containers/structure-to-index
             dockerfile: Dockerfile
         networks:
           - net
@@ -87,7 +87,7 @@ services:
         networks:
           - net
         build:
-            context: ./packages/swarm/disk-to-db
+            context: ./packages/containers/disk-to-db
             dockerfile: Dockerfile
         deploy:
             mode: replicated
@@ -100,7 +100,7 @@ services:
         image: 'gcr.io/crystallography-api/containers-maintenance:latest'
         restart: always
         build:
-            context: ./packages/swarm/maintenance
+            context: ./packages/containers/maintenance
             dockerfile: Dockerfile
         networks:
           - net
@@ -117,7 +117,7 @@ services:
         networks:
           - net
         build:
-            context: ./packages/swarm/cod-to-disk
+            context: ./packages/containers/cod-to-disk
             dockerfile: Dockerfile
         depends_on:
           - rabbitmq
@@ -126,7 +126,7 @@ services:
         image: 'gcr.io/crystallography-api/containers-crystallography-web:latest'
         restart: always
         build:
-            context: ./packages/swarm/crystallography-web
+            context: ./packages/containers/crystallography-web
             dockerfile: Dockerfile
         networks:
           - net
@@ -154,7 +154,7 @@ services:
         image: 'gcr.io/crystallography-api/containers-crystallography-io-api:latest'
         restart: always
         build:
-            context: ./packages/swarm/cod-api
+            context: ./packages/containers/cod-api
             dockerfile: Dockerfile
         networks:
           - net
@@ -181,7 +181,7 @@ services:
         image: 'gcr.io/crystallography-api/search-router:latest'
         restart: always
         build:
-            context: ./packages/swarm/searchrouter
+            context: ./packages/containers/searchrouter
             dockerfile: Dockerfile
         networks:
           - net
@@ -209,7 +209,7 @@ services:
         image: 'gcr.io/crystallography-api/searchworker:latest'
         restart: always
         build:
-            context: ./packages/swarm/searchworker
+            context: ./packages/containers/searchworker
             dockerfile: Dockerfile
         networks:
           - net

@@ -5,7 +5,7 @@ Get information from database and store to MongoDB
 ## Commands
 Build Container
 ```bash
-cd ../../../ && docker build -t gcr.io/crystallography-api/containers-cod-to-disk -f packages/swarm/disk-to-db/Dockerfile .
+cd ../../../ && docker build -t gcr.io/crystallography-api/containers-cod-to-disk -f packages/containers/disk-to-db/Dockerfile .
 ```
 
 Execute container
