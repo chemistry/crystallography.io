@@ -7,6 +7,25 @@
 Website: [Crystal Structure Search](http://crystallography.io/)
 Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/chemistry/crystallography.io/releases)
 
+## Include Packages:
+### Application:
+  * [@chemistry/structure-search](https://github.com/chemistry/crystallography.io/tree/master/packages/application/structure-search) - Main Electron Application
+
+### Containers
+  * [@chemistry/c14-api](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/c14-api)
+    Open API for accessing COD+ database
+  * [@chemistry/c14-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-web) - Alternative Web UI container
+  * [@chemistry/cod-to-disk](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/cod-to-disk) - Synchronize information from COD database and store to disk
+  * [@chemistry/disk-to-db](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/disk-to-db) - Get updated structures from disk and store to MongoDB database
+  * [@chemistry/maintenance](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/maintenance) - Set of maintenance tasks scheduled regularly (e.g. index recalculation)
+  * [@chemistry/searchrouter](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/searchrouter) - Substructure Search router, communicate with client and delegate work to searchworker
+  * [@chemistry/searchworker](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/searchworker) - Perform substructure search and return results to router
+  * [@chemistry/structure-to-index](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/structure-to-index) - monitor structures updates table indexes
+
+### Libraries:
+  * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
+
+
 ## Development Quick Start
   * `npm install && npm run bootstrap` Install dependencies
   * `npm start` Start Development in Local mode
@@ -31,27 +50,13 @@ docker-compose logs
 ```bash
 docker stack deploy -c docker-stack.yml --with-registry-auth "crystallography-io"
 ```
-## Deploy changes to swarm cluster
-
-
-## Include Packages:
-### Application:
-  * [@chemistry/structure-search](https://github.com/chemistry/crystallography-api/tree/master/packages/application/structure-search) - Main Electron Application
-
-
-  * [@chemistry/c14-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-web) - Application Web Container
-  * [@chemistry/crystallography-api](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/crystallography-api) - Application Endpoints
-
-### Libraries:
-  * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
-
 ## Technical description:
-* MonoRepo build with lerna
+* Microservice/event driven architecture
+* RabbitMQ, Redis, MongoDB
+* Deploy with Dockers Swart
 * Auto Release Script
-* Typescript 3.7
-* Isomorphic (for Node & browsers)
-* Auto tests with JEST
-* ~100% code coverage
+* Typescript 3.7+
+* Isomorphic Application (for Node & browsers)
 
 ## Release
 - Application and libraries release on tag push

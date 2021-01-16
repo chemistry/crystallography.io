@@ -1,22 +1,22 @@
-# @chemistry/containers-disk-to-db
+# @chemistry/disk-to-db
 
-Get information from database and store to MongoDB
+Get updated structures from disk and store to MongoDB database
 
 ## Commands
 Build Container
 ```bash
-cd ../../../ && docker build -t gcr.io/crystallography-api/containers-cod-to-disk -f packages/containers/disk-to-db/Dockerfile .
+cd ../../../ && docker build -t gcr.io/crystallography-api/cod-to-disk -f packages/containers/disk-to-db/Dockerfile .
 ```
 
 Execute container
 ```bash
-docker run --rm --name cod-to-disk gcr.io/crystallography-api/containers-disk-to-db
+docker run --rm --name cod-to-disk gcr.io/crystallography-api/disk-to-db
 ```
 
 Push container to GCP
 ```bash
 # gcloud auth configure-docker
-docker push gcr.io/crystallography-api/containers-disk-to-db
+docker push gcr.io/crystallography-api/disk-to-db
 ```
 
 ## Commands:

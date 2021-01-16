@@ -1,6 +1,6 @@
 # @chemistry/searchworker
 
-Search Worker for Sub Structure Search; Will preform scheduled jobs;
+Search Worker - Perform substructure search and return results to router
 
 ## Local development
   * Start application: `npm start`
