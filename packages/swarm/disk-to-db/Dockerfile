@@ -12,4 +12,5 @@ RUN npm install
 ENV NODE_ENV=production
 COPY . /app
 RUN npm run build
-CMD ["npm", "start"]
+
+CMD [ "/bin/sh", "/app/start-script.sh"]

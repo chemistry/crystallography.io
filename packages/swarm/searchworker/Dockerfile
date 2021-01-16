@@ -13,5 +13,6 @@ ENV NODE_ENV=production
 COPY . /app
 RUN npm run build
 EXPOSE 3000
+
 CMD [ "/bin/sh", "/app/start-script.sh"]
 

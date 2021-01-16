@@ -1,36 +1,25 @@
-import { MongoClient } from "mongodb";
 import { AppContext } from "./app";
+import { getLogger } from "./common/logger";
+import { getMongoConnection } from "./common/mongo";
 import { processMessage } from "./process";
 
 const getMockContext = async (): Promise<AppContext> => {
 
-    const {
-        MONGO_INITDB_ROOT_USERNAME,
-        MONGO_INITDB_ROOT_PASSWORD,
-        MONGO_INITDB_HOST
-    }  = process.env;
-
-    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
-    if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
-    }
-    const mongoClient = await MongoClient.connect(connectionString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-
-    const db = mongoClient.db("crystallography");
+    const { db, close } = await getMongoConnection();
+    const { log } = await getLogger();
 
     return {
         logger: {
             info: (message: object) => {
                 // tslint:disable-next-line
                 console.log(message);
+                log(JSON.stringify(message));
                 return Promise.resolve();
             },
             error: (message: object) => {
                 // tslint:disable-next-line
                 console.log(message);
+                log(JSON.stringify(message));
                 return Promise.resolve();
             },
             setTraceId: (id: string)=> {
@@ -39,7 +28,7 @@ const getMockContext = async (): Promise<AppContext> => {
             }
         },
         close: ()=> {
-            return mongoClient.close();
+            return close();
         },
         db,
     }

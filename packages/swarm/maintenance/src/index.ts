@@ -1,34 +1,20 @@
 import * as fs from "fs";
 import * as path from "path";
-import { MongoClient } from "mongodb";
 import { app, AppContext } from "./app";
+import { getMongoConnection } from "./common/mongo";
+import { getLogger } from "./common/logger";
 
 
 const getContext = async (): Promise<AppContext> => {
     const packagePath = path.resolve(__dirname, "../package.json");
     const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
-    const {
-        MONGO_INITDB_ROOT_USERNAME,
-        MONGO_INITDB_ROOT_PASSWORD,
-        MONGO_INITDB_HOST
-    }  = process.env;
-
-    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
-    if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
-    }
-    const mongoClient = await MongoClient.connect(connectionString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-
-    const db = mongoClient.db("crystallography");
+    const { db, close } = await getMongoConnection();
+    const { log } = await getLogger();
 
     process.on('exit', (code) => {
          // tslint:disable-next-line
         console.log(`About to exit with code: ${code}`);
-        mongoClient.close();
     });
 
     const meta = {
@@ -49,6 +35,7 @@ const getContext = async (): Promise<AppContext> => {
                 });
                 // tslint:disable-next-line
                 console.log(message);
+                log(JSON.stringify(message));
             },
             error: async (message: object) => {
                 await db.collection('logs').insertOne({
@@ -60,13 +47,14 @@ const getContext = async (): Promise<AppContext> => {
                 });
                 // tslint:disable-next-line
                 console.error(message);
+                log(JSON.stringify(message));
             },
             setTraceId: (id: string)=> {
                 traceId = id;
             }
         },
         close: ()=> {
-            return mongoClient.close();
+            return close();
         },
         db,
     }

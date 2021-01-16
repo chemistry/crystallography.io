@@ -1,4 +1,3 @@
-import { Db, MongoClient } from "mongodb";
 import { AppContext } from "./app";
 
 const CATALOG_PAGE_SIZE = 100;
