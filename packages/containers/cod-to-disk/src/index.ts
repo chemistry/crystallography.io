@@ -10,7 +10,7 @@ const QUEUE_NAME = 'COD_FILE_CHANGED';
 
 const getContext = async (): Promise<AppContext> => {
 
-    const { log } = await getLogger();
+    const logger = await getLogger();
     const chanel = await getChanel(QUEUE_NAME);
 
     process.on('exit', (code) => {
@@ -19,11 +19,7 @@ const getContext = async (): Promise<AppContext> => {
     });
 
     return {
-        log: (message: string) => {
-            // tslint:disable-next-line
-            console.log(message);
-            log(message);
-        },
+        logger,
         exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
             return shell.exec(command);
         },

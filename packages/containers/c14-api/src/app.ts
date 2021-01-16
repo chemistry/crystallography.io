@@ -6,16 +6,19 @@ import { getRouters } from "./routers";
 import { Db } from "mongodb";
 
 export interface ApplicationContext {
-    log: (message: string) => void;
-    logger: any;
+    logger: {
+        trace:(message: string) => void;
+        info: (message: string) => void;
+        error: (message: string) => void;
+    },
     onAppInit: (express: Express)=> void;
     PORT: number;
     db: Db;
 }
 
 export async function startApplication(context: ApplicationContext) {
-    const { log, db, onAppInit } = context;
-    log("application started");
+    const { logger, db, onAppInit } = context;
+    logger.trace("application started");
 
     const app = express();
     onAppInit(app);
@@ -45,8 +48,9 @@ export async function startApplication(context: ApplicationContext) {
     app.use("/", getRouters({ db }));
 
     app.use((err: any, req: any, res: any, next: any) => {
-        // tslint:disable-next-line
-        console.error(err.stack);
+        if(err) {
+            logger.error(err.stack);
+        }
         res.status(500).send('Something broke!');
     });
 

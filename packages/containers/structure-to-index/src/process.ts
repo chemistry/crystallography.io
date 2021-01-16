@@ -6,10 +6,10 @@ import { processUnitCellIndex } from "./unitcell";
 import { processFragments } from './fragments';
 
 export const processMessage = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
-    const { log } = context;
+    const { logger } = context;
 
     const start = Date.now();
-    log(`processing - start - index for: ${structureId}`);
+    logger.trace(`processing - start - index for: ${structureId}`);
 
     await processAuthorsIndex({ structureId, context });
     await processNamesIndex({ structureId, context });
@@ -18,5 +18,5 @@ export const processMessage = async ({ structureId, context }: { structureId: nu
     await processFragments({ structureId, context });
 
     const end = Date.now() - start;
-    log(`processing of ${structureId} took  ${end} ms`);
+    logger.trace(`processing of ${structureId} took  ${end} ms`);
 }

@@ -25,13 +25,26 @@ const getPort = () => {
 }
 
 const getContext = async () => {
-    const { mw }  = await getLogger();
+    const { mw, logger }  = await getLogger();
     const PORT = getPort();
 
     return {
-        log: (message: string) => {
-            // tslint:disable-next-line
-            console.log(message);
+        logger: {
+            trace:(message: string) => {
+                // tslint:disable-next-line
+                console.log(message);
+                logger.trace(message);
+            },
+            info: (message: string) => {
+                // tslint:disable-next-line
+                console.log(message);
+                logger.info(message);
+            },
+            error: (message: string) => {
+                // tslint:disable-next-line
+                console.error(message);
+                logger.error(message);
+            }
         },
         PORT,
         onAppStart: (app: Express)=> {
@@ -51,14 +64,14 @@ console.time("App Start");
 (async () => {
     try {
         const context = await getContext();
-        const { PORT, log } = context;
+        const { PORT, logger } = context;
         const { app } = await startApplication(context);
 
         await new Promise<void>((resolve) => {
             app.listen(PORT, "0.0.0.0", resolve);
         });
 
-        log(`Application Started on port: ${PORT}`);
+        logger.trace(`Application Started on port: ${PORT}`);
         // tslint:disable-next-line
         console.timeEnd("App Start");
     } catch (e) {

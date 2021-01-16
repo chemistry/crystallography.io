@@ -4,10 +4,14 @@ import { ExecOptions, ShellString } from "shelljs";
 import { Readable, Transform, TransformCallback, Writable } from "stream";
 
 export interface AppContext {
-  log: (message: string) => void;
-  exec: (command: string, options?: ExecOptions & { async?: false }) => ShellString;
-  execAsync: (command: string) => Readable;
-  sendToQueue: (data: object) => void;
+    logger: {
+        trace:(message: string) => void;
+        info: (message: string) => void;
+        error: (message: string) => void;
+    },
+    exec: (command: string, options?: ExecOptions & { async?: false }) => ShellString;
+    execAsync: (command: string) => Readable;
+    sendToQueue: (data: object) => void;
 }
 
 export interface CodFileRecord {
@@ -103,29 +107,29 @@ const waitTillFileExists = new Transform({
 });
 
 
-const fetchDataFromCod = ({ log, execAsync }: AppContext): Readable => {
+const fetchDataFromCod = ({ logger, execAsync }: AppContext): Readable => {
     const isFirstStart = !fs.existsSync(DATA_PATH);
 
     if (isFirstStart) {
-        log('First start: initial fetching data...');
+        logger.trace('First start: initial fetching data...');
         return execAsync("svn co svn://www.crystallography.net/cod/cif " + DATA_PATH);
     }
 
-    log('Update SVN data...');
+    logger.trace('Update SVN data...');
     return execAsync("svn update " + DATA_PATH);
 }
 
 export const app = async(context: AppContext) => {
-    const { log } = context;
+    const { logger } = context;
 
-    log('---------------------------------------------------');
+    logger.trace('---------------------------------------------------');
 
     fetchDataFromCod(context)
        .pipe(extractDataFromLogs)
        .pipe(waitTillFileExists)
        .pipe(getSendMessageToQueueStream(context))
        .on('end', ()=> {
-            log(`Fetch data finished ${count} items were updated`);
-            log('---------------------------------------------------');
+            logger.trace(`Fetch data finished ${count} items were updated`);
+            logger.trace('---------------------------------------------------');
         });
 }

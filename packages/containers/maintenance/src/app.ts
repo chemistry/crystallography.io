@@ -4,8 +4,9 @@ import { processMessage } from './process';
 
 export interface AppContext {
     logger: {
-        info: (message: object) => Promise<void>;
-        error: (message: object) => Promise<void>;
+        trace:(message: string) => Promise<void>;
+        info: (message: string) => Promise<void>;
+        error: (message: string) => Promise<void>;
         setTraceId: (id: string) => void;
     },
     db: Db;
@@ -25,22 +26,15 @@ export const app = async(context: AppContext) => {
 
     cron.schedule('00 36 */1 * * *', async () => {
         logger.setTraceId(uuidv4());
-        logger.info({
-            'text': 'job executed',
-        });
+        logger.info('job executed');
 
         const start = +new Date();
         await processMessage({ context });
 
         const end = +new Date();
 
-        logger.info({
-            'text': `processed in ${end-start}`,
-            'time': (end-start)
-        });
+        logger.info(`processed in ${end-start} 'time': ${(end-start)}`);
     });
 
-    logger.info({
-        'text': 'subscribed cron events',
-    });
+    logger.info(`subscribed cron events`);
 }

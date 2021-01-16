@@ -3,7 +3,7 @@ import { extractAuthorDetails } from "./helper";
 
 
 export const processAuthorsIndex = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
-    const { log, db } = context;
+    const { logger, db } = context;
 
     const structureDB = db.collection("structures");
     const doc = await structureDB.findOne({ _id: structureId })
@@ -21,7 +21,7 @@ export const processAuthorsIndex = async ({ structureId, context }: { structureI
     const authorsToSave = authorsList.map((item) => {
         const recognizedRecord = extractAuthorDetails(item);
         if (!recognizedRecord) {
-            log(`Unprocessed author found: ${item} docId: ${doc._id} `);
+            logger.info(`Unprocessed author found: ${item} docId: ${doc._id} `);
             return null;
         }
         return {

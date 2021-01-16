@@ -14,10 +14,10 @@ const BLACK_LIST = [
 ];
 
 export const processFragments = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
-    const { log, db } = context;
+    const { logger, db } = context;
 
     if (BLACK_LIST.includes(Number(structureId))) {
-        log(`Ignoring file ${structureId} as it listed in black list`);
+        logger.info(`Ignoring file ${structureId} as it listed in black list`);
         return ;
     }
 

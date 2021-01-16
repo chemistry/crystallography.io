@@ -1,4 +1,3 @@
-import { MongoClient } from "mongodb";
 import { app, AppContext } from "./app";
 import { getLogger } from "./common/logger";
 import { getMongoConnection } from "./common/mongo";
@@ -21,7 +20,7 @@ const getContext = async (): Promise<AppContext> => {
     });
 
     return {
-        log: (text) => logger.log(text),
+        logger,
         chanel,
         db: mongo.db,
         QUEUE_NAME,

@@ -10,7 +10,7 @@ const getContext = async (): Promise<AppContext> => {
     const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
     const { db, close } = await getMongoConnection();
-    const { log } = await getLogger();
+    const logger = await getLogger();
 
     process.on('exit', (code) => {
          // tslint:disable-next-line
@@ -22,37 +22,8 @@ const getContext = async (): Promise<AppContext> => {
         service: packageJSON.name,
     };
 
-    let traceId = '';
     return {
-        logger: {
-            info: async (message: object) => {
-                await db.collection('logs').insertOne({
-                    severity: 'INFO',
-                    traceId,
-                    date: new Date(),
-                    ...meta,
-                    message,
-                });
-                // tslint:disable-next-line
-                console.log(message);
-                log(JSON.stringify(message));
-            },
-            error: async (message: object) => {
-                await db.collection('logs').insertOne({
-                    severity: 'ERROR',
-                    traceId,
-                    date: new Date(),
-                    ...meta,
-                    message,
-                });
-                // tslint:disable-next-line
-                console.error(message);
-                log(JSON.stringify(message));
-            },
-            setTraceId: (id: string)=> {
-                traceId = id;
-            }
-        },
+        logger,
         close: ()=> {
             return close();
         },

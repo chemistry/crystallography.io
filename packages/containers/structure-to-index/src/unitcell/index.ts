@@ -2,7 +2,7 @@ import { Collection } from "mongodb";
 import { AppContext } from "../app";
 
 export const processUnitCellIndex = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
-    const { log, db } = context;
+    const { logger, db } = context;
 
     const structureDB = db.collection("structures");
     const doc = await structureDB.findOne({ _id: structureId })

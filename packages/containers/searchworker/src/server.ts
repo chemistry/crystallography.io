@@ -27,7 +27,7 @@ export async function startWorker() {
         });
 
         const { db } = await getMongoConnection();
-        const { log } = await getLogger();
+        const logger = await getLogger();
 
         queue.process((job: { data: JobInputModel }, done: (err: any, outData: JobOutputModel) => void) => {
             const searchId = job.data.searchId;
@@ -38,9 +38,7 @@ export async function startWorker() {
                     done(null, out);
                 })
                 .catch((err: any) => {
-                    log(`"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err })}`);
-                   // tslint:disable-next-line
-                    console.error("searchworker: job failed", { searchId, chunkId }, err);
+                    logger.error(`"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err })}`);
 
                     done(err, {
                         index: chunkId,
@@ -59,10 +57,7 @@ export async function startWorker() {
         process.on('SIGINT', closeConnections);
         process.on('SIGTERM', closeConnections);
 
-        const msg = `${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`;
-        // tslint:disable-next-line
-        console.log(msg);
-        log(msg);
+        logger.trace(`${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`);
 
     } catch (e) {
         // tslint:disable-next-line

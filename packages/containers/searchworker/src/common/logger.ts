@@ -18,9 +18,29 @@ export const getLogger = async () => {
     };
 
     return {
-        log: async (text: string) => {
+        info: async (text: string)=> {
             const entry = log.entry(metadata, text);
             await log.write(entry);
+
+            // tslint:disable-next-line
+            console.log(text);
+        },
+        error: async (text: string) => {
+            const entry = log.entry(metadata, text);
+            await log.write({
+                ...entry,
+                severity: 'ERROR'
+            });
+            // tslint:disable-next-line
+            console.log(text);
+        },
+        trace: async (text: string) => {
+            const entry = log.entry(metadata, text);
+            await log.write({
+                ...entry,
+                severity: 'NOTICE'
+            });
+
             // tslint:disable-next-line
             console.log(text);
         }

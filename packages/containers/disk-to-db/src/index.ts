@@ -14,20 +14,16 @@ const getContext = async (): Promise<AppContext> => {
 
     const chanel = await getChanel(READ_QUEUE_NAME);
     const { db } = await getMongoConnection();
-    const { log } = await getLogger();
+    const logger = await getLogger();
 
     process.on('exit', (code) => {
          // tslint:disable-next-line
         console.log(`About to exit with code: ${code}`);
-        log(`About to exit with code: ${code}`);
+        logger.trace(`About to exit with code: ${code}`);
     });
 
     return {
-        log: (message: string) => {
-            // tslint:disable-next-line
-            console.log(message);
-            log(message);
-        },
+        logger,
         getChanel: () => {
             return chanel;
         },

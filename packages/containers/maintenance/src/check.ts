@@ -6,27 +6,10 @@ import { processMessage } from "./process";
 const getMockContext = async (): Promise<AppContext> => {
 
     const { db, close } = await getMongoConnection();
-    const { log } = await getLogger();
+    const logger = await getLogger();
 
     return {
-        logger: {
-            info: (message: object) => {
-                // tslint:disable-next-line
-                console.log(message);
-                log(JSON.stringify(message));
-                return Promise.resolve();
-            },
-            error: (message: object) => {
-                // tslint:disable-next-line
-                console.log(message);
-                log(JSON.stringify(message));
-                return Promise.resolve();
-            },
-            setTraceId: (id: string)=> {
-                // tslint:disable-next-line
-                console.log(id);
-            }
-        },
+        logger,
         close: ()=> {
             return close();
         },

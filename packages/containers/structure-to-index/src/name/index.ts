@@ -4,7 +4,7 @@ import { prepareWords, WordsRecord } from "./helper";
 
 
 export const processNamesIndex = async ({ structureId, context }: { structureId: number, context: AppContext}) => {
-    const { log, db } = context;
+    const { logger, db } = context;
 
     const namesDB = db.collection("names");
     const structuresDB  = db.collection("structures")

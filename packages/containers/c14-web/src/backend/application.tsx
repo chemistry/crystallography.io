@@ -13,7 +13,11 @@ import { getAuthRouter } from "./auth.router";
 
 import { getLogger } from "./common/logger";
 export interface ExpressContext {
-    log: (message: string) => void;
+    logger: {
+        trace:(message: string) => void;
+        info: (message: string) => void;
+        error: (message: string) => void;
+    },
     PORT: number;
     htmlContent: string;
     onAppStart: (app: Express) => void;
@@ -75,8 +79,8 @@ const getMetadata = (routes: any, url: string) => {
 };
 
 export async function startApplication(context: ExpressContext) {
-    const { htmlContent, log, appFactory, appContext, onAppStart } = context;
-    log("application started");
+    const { htmlContent, logger, appFactory, appContext, onAppStart } = context;
+    logger.trace('application started');
 
     const app = express();
 
@@ -132,7 +136,8 @@ export async function startApplication(context: ExpressContext) {
             .end(HTML);
 
       } catch (error) {
-          next(error);
+        logger.error(String(error));
+        next(error);
       }
     });
 

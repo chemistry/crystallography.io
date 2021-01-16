@@ -5,8 +5,14 @@ import { startApplication } from './application';
 
 describe("Express Application", () => {
 
+    const noop = (name: any)=> {
+    }
     let mockContext: any = {
-        log: () => {},
+        logger: {
+            trace: noop,
+            info: noop,
+            error: noop
+        },
         onAppStart: ()=> {},
         PORT: '8080',
         htmlContent: '<html><div id="root"></div></html>',
