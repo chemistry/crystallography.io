@@ -18,7 +18,7 @@ Application for Desktop (Windows, Linux, MacOS): [Download](https://github.com/c
   * [@chemistry/cod-to-disk](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/cod-to-disk) - Synchronize information from COD database and store to disk
   * [@chemistry/disk-to-db](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/disk-to-db) - Get updated structures from disk and store to MongoDB database
   * [@chemistry/maintenance](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/maintenance) - Set of maintenance tasks scheduled regularly (e.g. index recalculation)
-  * [@chemistry/searchrouter](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/searchrouter) - Substructure Search router, communicate with client and delegate work to searchworker
+  * [@chemistry/searchrouter](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/searchrouter) - Substructure Search - api delegate results to searchworker
   * [@chemistry/searchworker](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/searchworker) - Perform substructure search and return results to router
   * [@chemistry/structure-to-index](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/structure-to-index) - monitor structures updates table indexes
 
