@@ -2,6 +2,7 @@ import * as React from "react";
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { Dispatch } from "redux";
 import { App } from "./app";
+import * as Sentry from "@sentry/react";
 import {
   AboutPage,
   AuthorsPage,
@@ -31,7 +32,6 @@ import { RouteConfig } from "react-router-config";
 import { useLoadedData } from "./services";
 import { AuthorDetailsPage } from "./pages/author-details";
 import { fetchAuthorDetailsData } from "./store/author-details-page.slice";
-
 export enum AppContextType {
     frontend = "frontend",
     backend = "backend",
@@ -50,6 +50,13 @@ const withLoadedData = (Component: (props: { route: RouteConfig }) => JSX.Elemen
         useLoadedData(props.route);
         return <Component {...props} />
     }
+}
+
+const withSentryProfiler = (Component: (props: { route: RouteConfig }) => JSX.Element ) => {
+    if (process.env.BROWSER) {
+        return Sentry.withProfiler(Component);
+    }
+    return Component;
 }
 
 export const getApplication: ApplicationFactory = async (context: ApplicationContext) => {
@@ -181,7 +188,7 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
             routes: layout.routes.map((route)=> {
                 return {
                     ...route,
-                    component: withLoadedData(route.component)
+                    component: withSentryProfiler(withLoadedData(route.component))
                 }
             })
         }
