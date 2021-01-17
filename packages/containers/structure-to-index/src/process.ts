@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { AppContext } from "./app";
 import { processAuthorsIndex } from "./author";
 import { processNamesIndex } from "./name";
@@ -10,12 +11,16 @@ export const processMessage = async ({ structureId, context }: { structureId: nu
 
     const start = Date.now();
     logger.trace(`processing - start - index for: ${structureId}`);
-
-    await processAuthorsIndex({ structureId, context });
-    await processNamesIndex({ structureId, context });
-    await processFormulaIndex({ structureId, context });
-    await processUnitCellIndex({ structureId, context });
-    await processFragments({ structureId, context });
+    try {
+        await processAuthorsIndex({ structureId, context });
+        await processNamesIndex({ structureId, context });
+        await processFormulaIndex({ structureId, context });
+        await processUnitCellIndex({ structureId, context });
+        await processFragments({ structureId, context });
+    } catch (e) {
+        logger.error(String(e));
+        Sentry.captureException(e);
+    }
 
     const end = Date.now() - start;
     logger.trace(`processing of ${structureId} took  ${end} ms`);

@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { AppContext } from "./app";
 
 const CATALOG_PAGE_SIZE = 100;
@@ -38,6 +39,7 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
         await db.collection("sitemap").insertMany(sitemapDocs);
 
     } catch(e) {
+        Sentry.captureException(e);
         // tslint:disable-next-line
         console.error(e);
     }

@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
 const http = require("http");
@@ -40,6 +42,7 @@ if (cluster.isMaster) {
             });
 
         } catch (e) {
+            Sentry.captureException(e);
             // tslint:disable-next-line
             console.error(String(e))
             process.exit(-1);

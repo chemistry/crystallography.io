@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 const Queue = require("bee-queue");
 import {
     Matcher,
@@ -38,6 +39,7 @@ export async function startWorker() {
                     done(null, out);
                 })
                 .catch((err: any) => {
+                    Sentry.captureException(err);
                     logger.error(`"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err })}`);
 
                     done(err, {
@@ -60,6 +62,7 @@ export async function startWorker() {
         logger.trace(`${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`);
 
     } catch (e) {
+        Sentry.captureException(e);
         // tslint:disable-next-line
         console.error(e);
         process.exit(-1);

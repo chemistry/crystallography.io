@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { Db } from 'mongodb';
 import { processMessage } from './process';
 
@@ -19,7 +20,12 @@ export const app = async(context: AppContext) => {
         const message = JSON.parse(originalMessage.content.toString());
         const { structureId } = message;
 
+        const transaction = Sentry.startTransaction({
+            op: "structure-to-index",
+            name: "process message",
+        });
         await processMessage({ structureId, context });
+        transaction.finish();
 
         chanel.ack(originalMessage);
     }, { noAck: false });

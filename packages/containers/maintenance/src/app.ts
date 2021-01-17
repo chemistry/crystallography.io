@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { Db } from 'mongodb';
 import * as cron from 'node-cron'
 import { processMessage } from './process';
@@ -29,7 +30,12 @@ export const app = async(context: AppContext) => {
         logger.info('job executed');
 
         const start = +new Date();
+        const transaction = Sentry.startTransaction({
+            op: "maintenance",
+            name: "Process Messages",
+          });
         await processMessage({ context });
+        transaction.finish();
 
         const end = +new Date();
 
