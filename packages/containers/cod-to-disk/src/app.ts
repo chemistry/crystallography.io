@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 import * as path from 'path';
 import * as fs  from 'fs';
 import { ExecOptions, ShellString } from "shelljs";
@@ -93,6 +95,7 @@ const waitTillFileExists = new Transform({
                         return { fileName, codId };
                     })
                     .catch(e => {
+                        Sentry.captureException(e);
                         // tslint:disable-next-line
                         console.error(e);
                     })
@@ -121,14 +124,16 @@ const fetchDataFromCod = ({ logger, execAsync }: AppContext): Readable => {
 
 export const app = async(context: AppContext) => {
     const { logger } = context;
-
-    logger.trace('---------------------------------------------------');
+    const transaction = Sentry.startTransaction({
+        op: "cod-sync", name: "Syncronization",
+    });
 
     fetchDataFromCod(context)
        .pipe(extractDataFromLogs)
        .pipe(waitTillFileExists)
        .pipe(getSendMessageToQueueStream(context))
        .on('end', ()=> {
+            transaction.finish();
             logger.trace(`Fetch data finished ${count} items were updated`);
             logger.trace('---------------------------------------------------');
         });

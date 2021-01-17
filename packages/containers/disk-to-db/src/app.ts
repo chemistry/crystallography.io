@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { Db } from 'mongodb';
 import { ExecOptions, ShellString } from 'shelljs';
 import { CodFileRecord, processMessage } from './process';
@@ -22,6 +23,12 @@ export const app = async(context: AppContext) => {
     chanel.consume(QUEUE_NAME, async (originalMessage: any) => {
         const messages: CodFileRecord[] = JSON.parse(originalMessage.content.toString());
         for (const message of messages) {
+
+            const transaction = Sentry.startTransaction({
+                op: "disk-to-db",
+                name: "process Message",
+            });
+
             await processMessage({ ...message, context });
 
             if (message && message.codId && isFinite(Number(message.codId))) {
@@ -31,6 +38,7 @@ export const app = async(context: AppContext) => {
                 // tslint:disable-next-line
                 logger.info(JSON.stringify(message));
             }
+            transaction.finish();
         }
         chanel.ack(originalMessage);
     }, { noAck: false });

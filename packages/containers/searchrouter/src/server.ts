@@ -1,6 +1,7 @@
 import {
     startServer,
 } from "./app";
+import * as Sentry from "@sentry/node";
 import { getLogger } from "./common/express-logger";
 import { getMongoConnection } from "./common/mongo";
 
@@ -31,6 +32,7 @@ import { getMongoConnection } from "./common/mongo";
         });
 
     } catch (e) {
+        Sentry.captureException(e);
         // tslint:disable-next-line
         console.error(e);
         process.exit(-1);

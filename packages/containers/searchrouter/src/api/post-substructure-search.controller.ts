@@ -1,4 +1,5 @@
 import { Molecule } from "@chemistry/molecule";
+import * as Sentry from "@sentry/node";
 import { NextFunction, Request, Response } from "express";
 import {
     Db,
@@ -51,6 +52,7 @@ function processSubstructureSearch({
         searchQueryJSON = jmol;
         jmol = clearBondOrder(jmol);
     } catch (e) {
+        Sentry.captureException(e);
         return next({
             status: "message#2",
             title: "Wrong Search Query",
@@ -69,6 +71,7 @@ function processSubstructureSearch({
             });
         }
     } catch (e) {
+        Sentry.captureException(e);
         return next({
             status: "message#4",
             title: "Wrong Search Query Molecule",
@@ -104,11 +107,12 @@ function processSubstructureSearch({
             res.json(response);
       })
       .catch((err) => {
-          return next({
-              status: "message#2",
-              title: "DB error",
-              detail: "Not able to save to database" + String(err),
-          });
+            Sentry.captureException(err);
+            return next({
+                status: "message#2",
+                title: "DB error",
+                detail: "Not able to save to database" + String(err),
+            });
       });
 }
 

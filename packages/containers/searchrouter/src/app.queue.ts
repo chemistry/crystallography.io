@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import {
     Db,
 } from "mongodb";
@@ -33,6 +34,7 @@ async function processWorkerResponse(
     try {
         version = await QueueHelperController.saveWorkerResponse({ db, result, status });
     } catch (error) {
+        Sentry.captureException(error);
         // tslint:disable-next-line
         console.error(error);
     }

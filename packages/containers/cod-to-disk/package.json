@@ -26,8 +26,10 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
-        "@types/shelljs": "0.8.8",
         "@google-cloud/logging": "9.0.1",
+        "@sentry/node": "^5.30.0",
+        "@sentry/tracing": "^5.30.0",
+        "@types/shelljs": "0.8.8",
         "amqplib": "0.6.0",
         "shelljs": "0.8.4"
     },

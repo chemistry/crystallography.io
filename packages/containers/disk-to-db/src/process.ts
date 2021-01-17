@@ -1,4 +1,5 @@
 import { parse } from "@chemistry/cif-2-json";
+import * as Sentry from "@sentry/node";
 import { Db, MongoClient } from "mongodb";
 import * as fs from "fs";
 import * as path from "path";
@@ -52,6 +53,7 @@ export const processMessage = async ({ fileName, codId, context }: { fileName: s
         dataToSave = null;
 
     } catch(e) {
+        Sentry.captureException(e);
         // tslint:disable-next-line
         console.error(e);
     }
