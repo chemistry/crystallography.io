@@ -24,7 +24,7 @@ const initSentry = ({ app }: { app: Express })=> {
     });
 }
 
-export async function startServer({ db, mw } : { db: Db, mw: any }) {
+export async function startServer({ db, mw, hc } : { db: Db, mw: any, hc: any }) {
     const app = express();
     const server = http.createServer(app);
     const queue = new Queue("substructure-search", {
@@ -42,6 +42,7 @@ export async function startServer({ db, mw } : { db: Db, mw: any }) {
 
 
     app.use(mw);
+    app.use("/", hc);
 
     process.on("SIGINT", () => {
         queue.close();

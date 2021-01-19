@@ -4,6 +4,7 @@ import {
 import * as Sentry from "@sentry/node";
 import { getLogger } from "./common/express-logger";
 import { getMongoConnection } from "./common/mongo";
+import { healthCheck, mongoCheck } from "./common/health-check";
 
 (async () => {
     try {
@@ -12,8 +13,11 @@ import { getMongoConnection } from "./common/mongo";
 
         const { db, close } = await getMongoConnection();
         const { logger, mw } = await getLogger();
+        const hc = healthCheck([
+            mongoCheck({ db })
+        ]);
 
-        const server = await startServer({ db, mw });
+        const server = await startServer({ db, mw, hc });
 
         server.listen(PORT, () => {
             // tslint:disable-next-line

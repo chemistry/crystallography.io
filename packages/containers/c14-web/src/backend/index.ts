@@ -65,6 +65,7 @@ const getContext = async () => {
             app.use(Sentry.Handlers.requestHandler());
             app.use(Sentry.Handlers.tracingHandler());
             app.use(mw);
+            app.get('/hc', (req, res)=> res.json({ status: "OK" }));
         },
         onAppInitEnd: (app: Express) => {
             app.use(Sentry.Handlers.errorHandler());

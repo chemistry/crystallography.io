@@ -2,7 +2,7 @@ FROM node:14.15.4-alpine3.10
 RUN mkdir /app
 WORKDIR /app
 
-# install python
+# install python & curl
 RUN apk update && apk --no-cache add curl && apk add --no-cache python2 make g++ pkgconfig libsecret-dev && \
     rm -rf /var/cache/apk/*
 ENV PKG_CONFIG_PATH=/usr/lib/pkgcon
