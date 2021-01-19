@@ -22,6 +22,7 @@ export async function startApplication(context: ApplicationContext) {
     logger.trace("application started");
 
     const app = express();
+
     onAppInit(app);
 
     // Add UTF-8 symbols parser

@@ -4,6 +4,7 @@ import { startApplication } from "./app";
 import { getLogger } from "./common/express-logger";
 import { getMongoConnection } from "./common/mongo";
 import { Express } from "express";
+import { mongoCheck, healthCheck } from "./common/health-check";
 
 const getPort = ()=> {
     const port = process.env.PORT;
@@ -52,6 +53,7 @@ const getApplicationContext = async () => {
             app.use(Sentry.Handlers.requestHandler());
             app.use(Sentry.Handlers.tracingHandler());
             app.use(mw);
+            app.use("/", healthCheck([mongoCheck({ db })]));
         },
         onAppInitEnd: (app: Express) => {
             app.use(Sentry.Handlers.errorHandler());
