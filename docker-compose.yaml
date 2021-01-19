@@ -136,6 +136,10 @@ services:
         environment:
           - PORT=8060
         deploy:
+            update_config:
+                order: start-first
+                failure_action: rollback
+                delay: 10s
             labels:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
@@ -164,6 +168,10 @@ services:
         environment:
           - PORT=8070
         deploy:
+            update_config:
+                order: start-first
+                failure_action: rollback
+                delay: 10s
             labels:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
@@ -194,6 +202,10 @@ services:
           - mongo
           - redis
         deploy:
+            update_config:
+                order: start-first
+                failure_action: rollback
+                delay: 10s
             labels:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
