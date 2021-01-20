@@ -40,9 +40,8 @@ export async function startServer({ db, mw, hc } : { db: Db, mw: any, hc: any })
     app.use(Sentry.Handlers.requestHandler());
     app.use(Sentry.Handlers.tracingHandler());
 
-
-    app.use(mw);
     app.use("/", hc);
+    app.use(mw);
 
     process.on("SIGINT", () => {
         queue.close();

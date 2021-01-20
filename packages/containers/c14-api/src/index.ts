@@ -52,8 +52,8 @@ const getApplicationContext = async () => {
             initSentry({ app });
             app.use(Sentry.Handlers.requestHandler());
             app.use(Sentry.Handlers.tracingHandler());
-            app.use(mw);
             app.use("/", healthCheck([mongoCheck({ db })]));
+            app.use(mw);
         },
         onAppInitEnd: (app: Express) => {
             app.use(Sentry.Handlers.errorHandler());
