@@ -6,11 +6,80 @@ import { StructuresList } from "../../components/structure-list/structure-list";
 import { useGaAnalytics } from "../../hooks/useAnalytics";
 import { RootState } from "../../store";
 import { searchByUnitCell, SearchState } from "../../store/search-by-unit-cell-page.slice";
+import { useValidationError } from "./common";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
     require("./search-main.scss");
 }
+// param Validation
+const getPramsValidators = (param: string)=> {
+    return [{
+        type: 'required',
+        isValid(value: string) {
+            return (value !== '');
+        },
+        message: `Param ${param} can not be empty`,
+    }, {
+        type: 'number',
+        isValid(value: string) {
+            return !isNaN(parseFloat(value));
+        },
+        message: `Param ${param} should be a valid number`,
+    }, {
+        type: 'range',
+        isValid(value: string) {
+            const v = parseFloat(value);
+            return (v > 0 && v < 1000);
+        },
+        message: `Param ${param} should be in range 0...1000`,
+    }];
+}
+
+// angle Validation
+const getAngleValidators = (param: string)=> {
+    return [{
+        type: 'required',
+        isValid(value: string) {
+            return (value !== '');
+        },
+        message: `Param ${param} can not be empty`,
+    }, {
+        type: 'number',
+        isValid(value: string) {
+            return !isNaN(parseFloat(value));
+        },
+        message: `Param ${param} should be a valid number`,
+    }, {
+        type: 'range',
+        isValid(value: string) {
+            const v = parseFloat(value);
+            return (v > 2 && v < 180);
+        },
+        message: `Param ${param} should be in range 2...180`,
+    }];
+}
+
+const toleranceValidators = [{
+    type: 'required',
+    isValid(value: string) {
+        return (value !== '');
+    },
+    message: 'Param tolerance can not be empty',
+}, {
+    type: 'number',
+    isValid(value: string) {
+        return !isNaN(parseFloat(value));
+    },
+    message: 'Param tolerance should be a valid number',
+}, {
+    type: 'range',
+    isValid(value: string) {
+        const v = parseFloat(value);
+        return (v > 0 && v < 100);
+    },
+    message: 'Param tolerance should be in range 0...100',
+}];
 
 const SearchByUnitCellForm = ({ onSubmit }: any) => {
     const [a, setA] = useState('');
@@ -21,6 +90,17 @@ const SearchByUnitCellForm = ({ onSubmit }: any) => {
     const [gamma, setGamma] = useState('90.0');
     const [tolerance, setTolerance] = useState('1.5');
     const gaEvent =  useGaAnalytics();
+
+    const aError = useValidationError(getPramsValidators('a'), a);
+    const bError = useValidationError(getPramsValidators('b'), b);
+    const cError = useValidationError(getPramsValidators('c'), c);
+
+    const alphaError = useValidationError(getPramsValidators('alpha'), alpha);
+    const betaError = useValidationError(getPramsValidators('beta'), beta);
+    const gammaError = useValidationError(getPramsValidators('gamma'), gamma);
+    const toleranceError = useValidationError(toleranceValidators, tolerance);
+
+    const error = aError || bError || cError || alphaError || betaError || gammaError || toleranceError;
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
         event.preventDefault();
@@ -119,7 +199,9 @@ const SearchByUnitCellForm = ({ onSubmit }: any) => {
 
                 <div className="columns search-layout__search_row">
                     <div className="column col-6">
-                        <button className="btn btn-active input-inline search-layout__search_btn">Search</button>
+                        <button
+                            className="btn btn-active input-inline search-layout__search_btn"
+                            disabled={!!error} title={error}>Search</button>
                     </div>
                 </div>
             </div>
