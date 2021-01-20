@@ -22,7 +22,7 @@ export const CompoundName: React.SFC<{ model: StructureModel, highlight?: Highli
 };
 
 export const CompoundFormula: React.SFC<{ model: StructureModel }> = ({ model }) => {
-    let formula = model.formula || model.calcformula;
+    let formula = model.formula || model.calcformula || '';
     formula = formula.replace(/[-\s+]/g, "");
     formula = formula.replace(/([\])a-zA-Z])([.,0-9]+)/g, (match, p1, p2) => {
         return p1 + "<sub>" + p2 + "</sub>";
