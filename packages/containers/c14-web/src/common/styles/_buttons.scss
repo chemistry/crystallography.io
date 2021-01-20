@@ -41,9 +41,7 @@
     &:focus {
         box-shadow: none;
     }
-    border: var(--border-width) solid transparent;
-    background-color: var(--grey-background-color);
-    color: var(--grey-color);
+    opacity: 0.85;
   }
 
   &.btn-primary {

@@ -7,6 +7,9 @@ import { StructuresList } from "../../components/structure-list/structure-list";
 import { useGaAnalytics } from "../../hooks/useAnalytics";
 import { RootState } from "../../store";
 import { SearchState, searchStructureByAuthor } from "../../store/search-by-author-page.slice";
+import {
+    Validator, useValidationError
+} from './common';
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -68,10 +71,19 @@ const autoCompleteSource = (value: any, response: any) => {
     });
 }
 
+const rangeValidator: Validator = {
+    type: 'length-range',
+    isValid(value: string) {
+        return (value.length > 2 && value.length < 255);
+    },
+    message: 'Author should be between 3 and 255 symbols',
+}
+
 const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
 
     const [name, setName ] = useState(initialValue);
     const [suggestionsVisible, setSuggestionsVisible] = useState(false);
+    const error = useValidationError([rangeValidator], name);
 
     const autoCompleteOptions = {
         minChars: 1,
@@ -107,7 +119,7 @@ const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, 
                         setSuggestionsVisible={setSuggestionsVisible}
                         autoCompleteOptions={autoCompleteOptions}
                     />
-                    <button className="form-button btn">Search</button>
+                    <button className="form-button btn" disabled={!!error} title={error}>Search</button>
                 </div>
             </div>
         </form>

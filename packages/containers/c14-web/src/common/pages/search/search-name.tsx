@@ -7,6 +7,7 @@ import { StructuresList } from "../../components/structure-list/structure-list";
 import { useGaAnalytics } from "../../hooks/useAnalytics";
 import { RootState } from "../../store";
 import { SearchState, searchStructureByName } from "../../store/search-by-name-page.slice";
+import { useValidationError, Validator } from "./common";
 
 if (process.env.BROWSER) {
     // tslint:disable-next-line
@@ -68,10 +69,47 @@ const autoCompleteSource = (value: any, response: any) => {
     });
 }
 
+function countWords(searchText: string) {
+    let searchWords = [];
+    const SMALL_WORDS_SIZE = 3;
+
+    if (searchText) {
+        const text = searchText.replace(/[^a-z0-9]/gmi, ' ').replace(/\s+/g, ' ');
+
+        searchWords = text.split(' ').filter((word) => {
+            return word.length > SMALL_WORDS_SIZE;
+        });
+
+        return searchWords.length;
+    }
+    return 0;
+}
+
+const rangeValidator: Validator = {
+    type: 'range',
+    isValid(value: string) {
+        return (value.length > 3 && value.length < 255);
+    },
+    message: 'Name should contain at least 4 symbols',
+};
+
+const countWordsValidator: Validator = {
+    type: 'countWords',
+    isValid(value: string) {
+        if (value !== '') {
+            const words = countWords(value);
+            return (words > 0);
+        }
+        return true;
+    },
+    message: 'Search name should contain words with at least three letters',
+};
+
 const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
 
     const [name, setName ] = useState(initialValue);
     const [suggestionsVisible, setSuggestionsVisible] = useState(false);
+    const error = useValidationError([rangeValidator, countWordsValidator], name);
 
     const autoCompleteOptions = {
         minChars: 1,
@@ -107,7 +145,7 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
                         setSuggestionsVisible={setSuggestionsVisible}
                         autoCompleteOptions={autoCompleteOptions}
                     />
-                    <button className="form-button btn">Search</button>
+                    <button className="form-button btn" disabled={!!error} title={error}>Search</button>
                 </div>
             </div>
         </form>

@@ -15,14 +15,16 @@ const appContext: ApplicationContext =  {
    type: AppContextType.frontend,
 };
 
-Sentry.init({
-    dsn: "https://c8451c59d8bf44b8b7734de1a5b380d7@o187202.ingest.sentry.io/5595579",
-    autoSessionTracking: true,
-    integrations: [
-      new Integrations.BrowserTracing(),
-    ],
-    tracesSampleRate: 1.0,
-});
+if (process.env.NODE_ENV !== 'development') {
+    Sentry.init({
+        dsn: "https://c8451c59d8bf44b8b7734de1a5b380d7@o187202.ingest.sentry.io/5595579",
+        autoSessionTracking: true,
+        integrations: [
+        new Integrations.BrowserTracing(),
+        ],
+        tracesSampleRate: 1.0,
+    });
+}
 
 (async () => {
     const history = createBrowserHistory();
