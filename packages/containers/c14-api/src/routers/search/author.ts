@@ -26,7 +26,7 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
 
         const validationRes = Joi.object()
             .keys({
-                name: Joi.string().min(1).max(255).required(),
+                name: Joi.string().min(3).max(255).required(),
                 page: Joi.number().integer().min(1).max(99999).required(),
             })
             .validate({
