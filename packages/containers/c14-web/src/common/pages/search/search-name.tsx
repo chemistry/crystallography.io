@@ -146,7 +146,7 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
                         setSuggestionsVisible={setSuggestionsVisible}
                         autoCompleteOptions={autoCompleteOptions}
                     />
-                    <button className="form-button btn" disabled={!!error} title={error}>Search</button>
+                    <button className="form-button btn" title={error}>Search</button>
                 </div>
             </div>
         </form>

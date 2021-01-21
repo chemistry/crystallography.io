@@ -111,9 +111,11 @@ export const getAuthorRouter = ({ db }: { db: Db}) => {
 
             if (!author) {
                 return res.status(400).json({
-                    status: 400,
-                    title: "Author not found",
-                    detail: "Incorrect author or page",
+                    errors: [{
+                        status: 400,
+                        title: "Author not found",
+                        detail: "Incorrect author or page",
+                    }],
                 });
             }
 
