@@ -56,6 +56,8 @@ export const fetchStructureDetailsData = (
         const data = res.data?.data;
         dispatch(loadStructureSuccess(data));
   } catch (err) {
-    dispatch(loadStructureFailed(err.toString()));
+    const errors = err?.response?.data?.errors;
+    const message = (Array.isArray(errors) && errors.length > 0) ? errors[0].title: err.toString();
+    dispatch(loadStructureFailed(message));
   }
 };

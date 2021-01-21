@@ -88,6 +88,8 @@ export const fetchAuthorDetailsData = (
     dispatch(loadStructureListSuccess(data2));
 
 } catch (err) {
-    dispatch(loadAuthorsListFailed(err.toString()));
+    const errors = err?.response?.data?.errors;
+    const message = (Array.isArray(errors) && errors.length > 0) ? errors[0].title: err.toString();
+    dispatch(loadAuthorsListFailed(message));
   }
 };

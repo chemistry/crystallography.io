@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppThunk } from "./common";
@@ -132,6 +133,9 @@ export const searchStructureByAuthor = (
         dispatch(loadStructureListSuccess(data2));
 
     } catch (err) {
-        dispatch(searchStructureByAuthorFailed(err.toString()));
+        const errors = err?.response?.data?.errors;
+        const message = (Array.isArray(errors) && errors.length > 0) ? errors[0].title: err.toString();
+
+        dispatch(searchStructureByAuthorFailed(message));
     }
 }

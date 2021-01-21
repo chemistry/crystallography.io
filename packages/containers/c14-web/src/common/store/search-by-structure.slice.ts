@@ -51,12 +51,18 @@ const searchByStructureSlice = createSlice({
             state.error = null;
             state.isLoading = true;
         },
+        searchByStructureFailed(state, action) {
+            state.isLoading = false;
+            state.status = SearchState.failed,
+            state.error = action.payload;
+        },
     },
 });
 
 export const {
     searchByStructure,
     searchByStructureSuccess,
+    searchByStructureFailed
 } = searchByStructureSlice.actions;
 export default searchByStructureSlice.reducer;
 
@@ -82,32 +88,41 @@ export const searchStructureByStructure = ({
 }: {
     molecule: any;
 }): AppThunk => async (dispatch) => {
-    dispatch(searchByStructure({ molecule }));
 
-    const res = await axios.post(
-        `https://crystallography.io/api/v1/search/structure`,
-        `searchQuery=${encodeURIComponent(JSON.stringify(molecule))}`,
-        {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
+    try {
+        dispatch(searchByStructure({ molecule }));
+
+        const res = await axios.post(
+            `https://crystallography.io/api/v1/search/structure`,
+            `searchQuery=${encodeURIComponent(JSON.stringify(molecule))}`,
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            }
+        );
+
+        const data: SearchByStructureResponse = res.data as SearchByStructureResponse;
+        let structuresToLoad: number[] = [];
+
+        if (data.data && data.data.results && Array.isArray(data.data.results)) {
+            structuresToLoad = data.data.results;
         }
-    );
 
-    const data: SearchByStructureResponse = res.data as SearchByStructureResponse;
-    let structuresToLoad: number[] = [];
+        dispatch(
+            searchByStructureSuccess({ ids: structuresToLoad, meta: data.meta })
+        );
 
-    if (data.data && data.data.results && Array.isArray(data.data.results)) {
-        structuresToLoad = data.data.results;
+        if (data && data.meta && data.meta.id) {
+            return data.meta.id;
+        }
+
+        return null;
+
+    } catch (err) {
+        const errors = err?.response?.data?.errors;
+        const message = (Array.isArray(errors) && errors.length > 0) ? errors[0].title: err.toString();
+
+        dispatch(searchByStructureFailed(message));
     }
-
-    dispatch(
-        searchByStructureSuccess({ ids: structuresToLoad, meta: data.meta })
-    );
-
-    if (data && data.meta && data.meta.id) {
-        return data.meta.id;
-    }
-
-    return null;
 };
