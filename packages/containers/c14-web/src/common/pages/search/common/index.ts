@@ -9,7 +9,7 @@ export interface Validator {
 export const useValidationError = (validators: Validator[], name: string)=> {
     const [error, setError] = useState('');
     const res = validators.find((validator)=> {
-        return !validator.isValid(name);
+        return !validator.isValid(name || '');
     });
     const newError = res?.message || '';
     if (error !== newError) {

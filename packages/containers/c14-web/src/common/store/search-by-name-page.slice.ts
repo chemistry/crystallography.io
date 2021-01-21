@@ -22,9 +22,11 @@ const searchByNameSlice = createSlice({
         totalResults: 0,
         searchString: ''
     },
+    search: {
+        page: 1,
+        name: '',
+    },
     status: SearchState.empty,
-    currentPage: 1,
-    name: '',
     error: null,
     isLoading: false,
   },
@@ -36,8 +38,7 @@ const searchByNameSlice = createSlice({
             structureById: {},
             structureIds: [],
         };
-        state.name = name;
-        state.currentPage = page;
+        state.search = { name, page };
         state.isLoading = true;
         state.error = null;
         state.status = SearchState.started;

@@ -173,7 +173,9 @@ const SearchResults = ()=> {
             return structuresById[id];
         }).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
+    const currentPage = useSelector((state: RootState) => state.searchByNameSlice.search.page);
+    const searchString = useSelector((state: RootState) => state.searchByNameSlice.search.name);
+
     const error = useSelector((state: RootState) => state.searchByNameSlice.error);
     const totalPages = useSelector((state: RootState) => state.searchByNameSlice.meta.totalPages);
     const hasNoResults = useSelector((state: RootState) => {
@@ -187,7 +189,6 @@ const SearchResults = ()=> {
             state.searchByNameSlice.meta.totalResults
         );
     });
-    const searchString = useSelector((state: RootState) => state.searchByNameSlice.meta.searchString);
 
     const showSummary = useSelector((state: RootState) => {
         const status = state.searchByNameSlice.status;
@@ -232,7 +233,7 @@ const SearchResults = ()=> {
 export const SearchByNamePage = () => {
 
     const dispatch = useDispatch();
-    const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
+    const page = useSelector((state: RootState) => state.searchByNameSlice.search.page);
     const sendEvent = useGaAnalytics();
 
     const handleSubmit = (data: SearchFormData) => {
@@ -241,7 +242,7 @@ export const SearchByNamePage = () => {
             action: 'Search:Name',
         });
         dispatch(searchStructureByName({
-            ...data, page: currentPage
+            ...data, page
         }));
     }
     const searchString = useSelector((state: RootState) => state.searchByNameSlice.meta.searchString);

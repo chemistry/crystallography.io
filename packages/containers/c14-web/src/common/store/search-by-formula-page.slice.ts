@@ -22,9 +22,11 @@ const searchByFormulaSlice = createSlice({
         totalResults: 0,
         searchString: ''
     },
+    search: {
+        page: 1,
+        formula: '',
+    },
     status: SearchState.empty,
-    currentPage: 1,
-    formula: '',
     error: null,
     isLoading: false,
   },
@@ -36,8 +38,7 @@ const searchByFormulaSlice = createSlice({
             structureById: {},
             structureIds: [],
         };
-        state.formula = formula;
-        state.currentPage = page;
+        state.search = { formula, page };
         state.isLoading = true;
         state.error = null;
         state.status = SearchState.started;

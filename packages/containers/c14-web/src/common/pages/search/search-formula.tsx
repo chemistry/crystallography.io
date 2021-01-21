@@ -98,7 +98,9 @@ const SearchResults = ()=> {
             return structuresById[id];
         }).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.currentPage);
+    const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.search.page);
+    const searchString = useSelector((state: RootState) => state.searchByFormulaSlice.search.formula);
+
     const totalPages = useSelector((state: RootState) => state.searchByFormulaSlice.meta.totalPages);
     const hasNoResults = useSelector((state: RootState) => {
         const status = state.searchByFormulaSlice.status;
@@ -111,8 +113,6 @@ const SearchResults = ()=> {
             state.searchByFormulaSlice.meta.totalResults
         );
     });
-    const searchString = useSelector((state: RootState) => state.searchByFormulaSlice.meta.searchString);
-
     const showSummary = useSelector((state: RootState) => {
         const status = state.searchByFormulaSlice.status;
         const resultCount = Math.max(
@@ -155,7 +155,7 @@ const SearchResults = ()=> {
 export const SearchByFormulaPage = () => {
 
     const dispatch = useDispatch();
-    const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.currentPage);
+    const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.search.page);
     const gaEvent  = useGaAnalytics();
 
     const handleSubmit = (data: SearchFormData) => {
@@ -167,7 +167,7 @@ export const SearchByFormulaPage = () => {
             ...data, page: currentPage
         }));
     }
-    const searchString = useSelector((state: RootState) => state.searchByFormulaSlice.meta.searchString);
+    const searchString = useSelector((state: RootState) => state.searchByFormulaSlice.search.formula);
 
     return (
         <div className="search-layout-tabs">

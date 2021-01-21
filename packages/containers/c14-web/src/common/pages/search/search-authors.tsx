@@ -146,7 +146,8 @@ const SearchResults = ()=> {
             return structuresById[id];
         }).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByAuthorSlice.currentPage);
+    const currentPage = useSelector((state: RootState) => state.searchByAuthorSlice.search.page);
+    const searchString = useSelector((state: RootState) => state.searchByAuthorSlice.search.name);
     const totalPages = useSelector((state: RootState) => state.searchByAuthorSlice.meta.totalPages);
     const hasNoResults = useSelector((state: RootState) => {
         const status = state.searchByAuthorSlice.status;
@@ -159,7 +160,6 @@ const SearchResults = ()=> {
             state.searchByAuthorSlice.meta.totalResults
         );
     });
-    const searchString = useSelector((state: RootState) => state.searchByAuthorSlice.meta.searchString);
 
     const showSummary = useSelector((state: RootState) => {
         const status = state.searchByAuthorSlice.status;
@@ -203,7 +203,7 @@ const SearchResults = ()=> {
 export const SearchByAuthorsPage = () => {
 
     const dispatch = useDispatch();
-    const currentPage = useSelector((state: RootState) => state.searchByAuthorSlice.currentPage);
+    const page = useSelector((state: RootState) => state.searchByAuthorSlice.search.page);
     const gaEvent = useGaAnalytics();
 
     const handleSubmit = (data: SearchFormData) => {
@@ -212,7 +212,7 @@ export const SearchByAuthorsPage = () => {
             action: 'Search:Author',
         });
         dispatch(searchStructureByAuthor({
-            ...data, page: currentPage
+            ...data, page
         }));
     }
     const searchString = useSelector((state: RootState) => state.searchByAuthorSlice.meta.searchString);

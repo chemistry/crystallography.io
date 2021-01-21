@@ -81,14 +81,24 @@ const toleranceValidators = [{
     message: 'Param tolerance should be in range 0...100',
 }];
 
-const SearchByUnitCellForm = ({ onSubmit }: any) => {
-    const [a, setA] = useState('');
-    const [b, setB] = useState('');
-    const [c, setC] = useState('');
-    const [alpha, setAlpha] = useState('90.0');
-    const [beta, setBeta] = useState('90.0');
-    const [gamma, setGamma] = useState('90.0');
-    const [tolerance, setTolerance] = useState('1.5');
+interface FormInitialValue {
+    a: string;
+    b: string;
+    c: string;
+    alpha: string;
+    beta: string;
+    gamma: string;
+    tolerance: string;
+}
+
+const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormInitialValue, onSubmit: (data: SearchFormData) => void}) => {
+    const [a, setA] = useState(initialValue.a);
+    const [b, setB] = useState(initialValue.b);
+    const [c, setC] = useState(initialValue.c);
+    const [alpha, setAlpha] = useState(initialValue.alpha);
+    const [beta, setBeta] = useState(initialValue.beta);
+    const [gamma, setGamma] = useState(initialValue.gamma);
+    const [tolerance, setTolerance] = useState(initialValue.tolerance);
     const gaEvent =  useGaAnalytics();
 
     const aError = useValidationError(getPramsValidators('a'), a);
@@ -296,6 +306,7 @@ export const SearchByUnitCellPage = (): JSX.Element => {
 
     const dispatch = useDispatch();
     const currentPage = useSelector((state: RootState) => state.searchByUnitCellSlice.search.page);
+    const { a, b, c, alpha, beta, gamma, tolerance } = useSelector((state: RootState) =>  state.searchByUnitCellSlice.search);
 
     const handleSubmit = (data: SearchFormData) => {
         // tslint:disable-next-line
@@ -313,7 +324,7 @@ export const SearchByUnitCellPage = (): JSX.Element => {
             <div className="app-layout-content">
                 <div className="search-layout__page">
                     <div>
-                        <SearchByUnitCellForm onSubmit={handleSubmit} />
+                        <SearchByUnitCellForm onSubmit={handleSubmit} initialValue={{ a, b, c, alpha, beta, gamma, tolerance }}/>
                     </div>
                     <div>
                         <SearchResults />
