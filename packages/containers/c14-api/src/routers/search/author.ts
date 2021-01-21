@@ -1,4 +1,5 @@
 import { Router, Request, Response} from "express";
+import * as Sentry from "@sentry/node";
 import Joi from "joi";
 import { Db } from "mongodb";
 
@@ -11,9 +12,11 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
 
         if (!req.body) {
             return res.status(400).json({
-                status: 400,
-                title: "Invalid Body Params",
-                detail: "Invalid Body Params",
+                errors: [{
+                  code: 400,
+                  title: "Invalid Body Params",
+                  detail: "Invalid Body Params",
+                }],
             });
         }
 
@@ -35,9 +38,11 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
 
         if (validationRes.error) {
             return res.status(400).json({
-                status: 400,
-                title: "Incorrect author or page",
-                detail: validationRes.error,
+                errors: [{
+                    code: 400,
+                    title: "Incorrect author or page",
+                    detail: validationRes.error,
+                }],
             });
         }
 
@@ -77,8 +82,13 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
         } catch(e) {
             // tslint:disable-next-line
             console.error(e.stack);
+            Sentry.captureException(e);
             return res.status(500).json({
-                errors: [String(e)],
+                errors: [{
+                    status: 500,
+                    title: "Unknown Error",
+                    detail: String(e)
+                }],
                 meta: {},
             });
         }

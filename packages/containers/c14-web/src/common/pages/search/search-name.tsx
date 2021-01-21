@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { Input } from "../../components/input";
 import { StructuresList } from "../../components/structure-list/structure-list";
+import { ErrorToast } from "../../components/toast";
 import { useGaAnalytics } from "../../hooks/useAnalytics";
 import { RootState } from "../../store";
 import { SearchState, searchStructureByName } from "../../store/search-by-name-page.slice";
@@ -173,6 +174,7 @@ const SearchResults = ()=> {
         }).filter((item) => !!item);
     });
     const currentPage = useSelector((state: RootState) => state.searchByNameSlice.currentPage);
+    const error = useSelector((state: RootState) => state.searchByNameSlice.error);
     const totalPages = useSelector((state: RootState) => state.searchByNameSlice.meta.totalPages);
     const hasNoResults = useSelector((state: RootState) => {
         const status = state.searchByNameSlice.status;
@@ -210,6 +212,7 @@ const SearchResults = ()=> {
                 <div ref={containerRef}>
                     { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
                     { hasNoResults ? <NoSearchResults /> : null }
+                    { error ? <ErrorToast error={error} /> : null }
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <Pagination
                             currentPage={currentPage}

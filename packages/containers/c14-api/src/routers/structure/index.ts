@@ -2,6 +2,7 @@ import { Db } from "mongodb";
 import Joi from "joi";
 import { Router, Request, Response } from "express";
 import { mapStructure } from '../../helpers';
+import * as Sentry from "@sentry/node";
 
 const structureIdValidation = Joi.number().integer().min(1000000).max(9999999);
 const structureListValidation = Joi.array().items(structureIdValidation).min(1).max(200);
@@ -27,8 +28,13 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
         } catch(e) {
             // tslint:disable-next-line
             console.error(e.stack);
+            Sentry.captureException(e);
             return res.status(500).json({
-                errors: [String(e)],
+                errors: [{
+                    status: 500,
+                    title: "Unknown Error",
+                    detail: String(e)
+                }],
                 meta: {},
             });
         }
@@ -74,13 +80,18 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
             });
 
         } catch (e) {
+            // tslint:disable-next-line
+            console.error(String(e));
+            Sentry.captureException(e);
             return res.status(500).json({
                 errors: [{
                     status: 500,
-                    title: "Unknown error",
-                    detail: String(e),
+                    title: "Unknown Error",
+                    detail: String(e)
                 }],
+                meta: {},
             });
+
         }
 
 

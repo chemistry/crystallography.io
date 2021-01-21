@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { Request, Response, Router } from "express";
 import { Db } from "mongodb";
+import * as Sentry from "@sentry/node";
 
 const catalogPageValidation = Joi.number().integer().min(1).max(99999);
 const PER_PAGE = 100;
@@ -57,8 +58,13 @@ export const getCatalogRouter = ({ db }: { db: Db}) => {
         } catch(e) {
             // tslint:disable-next-line
             console.error(e.stack);
+            Sentry.captureException(e);
             return res.status(500).json({
-                errors: [String(e)],
+                errors: [{
+                    status: 500,
+                    title: "Unknown Error",
+                    detail: String(e)
+                }],
                 meta: {},
             });
         }

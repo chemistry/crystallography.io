@@ -1,5 +1,6 @@
 import { Db } from "mongodb";
 import { Router, Request, Response } from "express";
+import * as Sentry from "@sentry/node";
 
 
 const HOST = 'https://crystallography.io';
@@ -26,6 +27,7 @@ const getSitemapsList  = ({ db }: { db: Db }) => {
         } catch (e) {
             // tslint:disable-next-line
             console.error(String(e));
+            Sentry.captureException(e);
             res.end();
         }
     }
@@ -80,6 +82,7 @@ const getStructuresList  = ({ db }: { db: Db }) => {
         } catch (e) {
             // tslint:disable-next-line
             console.error(String(e));
+            Sentry.captureException(e);
             res.status(500).end();
         }
     }

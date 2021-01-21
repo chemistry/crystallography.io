@@ -1,0 +1,28 @@
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-top: 1rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+.alert-active {
+    color: var(--active-color);
+    background-color: var(--active-background-color);
+    border-color: var(--active-color);
+}
+.alert-success {
+    color: var(--success-color);
+    background-color: var(--success-background-color);
+    border-color: var(--success-color);
+}
+.alert-warning {
+    color: var(--warning-color);
+    background-color: var(--warning-background-color);
+    border-color: var(--warning-color);
+
+}
+.alert-danger {
+    color: var(--error-color);
+    background-color: var(--error-background-color);
+    border-color: var(--error-color);
+}

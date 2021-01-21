@@ -2,6 +2,7 @@ import Joi from "joi";
 import { Request, Response, Router } from "express";
 import { Db } from "mongodb";
 import { buildNameWhere, buildNameWhereAnd, buildNameWhereOr } from "./helper";
+import * as Sentry from "@sentry/node";
 
 const RESULTS_PER_SUGGESTION = 100;
 
@@ -25,9 +26,11 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
 
         if (validationRes.error) {
             return res.status(400).json({
-                status: 400,
-                title: "Incorrect name for autocomplete",
-                detail: validationRes.error,
+                errors: [{
+                    code: 400,
+                    title: "Incorrect name for autocomplete",
+                    detail: validationRes.error,
+                }],
             });
         }
 
@@ -98,8 +101,13 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
         } catch (e) {
             // tslint:disable-next-line
             console.error(e.stack);
+            Sentry.captureException(e);
             return res.status(500).json({
-                errors: [String(e)],
+                errors: [{
+                    status: 500,
+                    title: "Unknown Error",
+                    detail: String(e)
+                }],
                 meta: {},
             });
         }

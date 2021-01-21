@@ -42,7 +42,7 @@ export const getStore = (preloadedState: RootState | null) => {
     return configureStore({
       reducer,
       middleware,
-      devTools: !isDevelopment,
+      devTools: isDevelopment,
       preloadedState: (preloadedState ? preloadedState : {}) as any,
     });
 };

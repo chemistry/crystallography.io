@@ -1,6 +1,7 @@
 import { Router, Request, Response} from "express";
 import Joi from "joi";
 import { Db } from "mongodb";
+import * as Sentry from "@sentry/node";
 import { formulaToString, parseFormula } from "./formula.helper";
 
 const RESULTS_PER_PAGE = 100;
@@ -12,9 +13,11 @@ export const getFormulaSearchRouter = ({ db }: { db: Db}) => {
 
         if (!req.body) {
             return res.status(500).json({
-                status: 500,
-                title: "Invalid Body Params",
-                detail: "Invalid Body Params",
+                errors: [{
+                    code: 500,
+                    title: "Invalid Body Params",
+                    detail: "Invalid Body Params",
+                }],
             });
         }
 
@@ -49,8 +52,13 @@ export const getFormulaSearchRouter = ({ db }: { db: Db}) => {
         } catch(e) {
             // tslint:disable-next-line
             console.error(e.stack);
+            Sentry.captureException(e);
             return res.status(500).json({
-                errors: [String(e)],
+                errors: [{
+                    status: 500,
+                    title: "Unknown Error",
+                    detail: String(e)
+                }],
                 meta: {},
             });
         }
