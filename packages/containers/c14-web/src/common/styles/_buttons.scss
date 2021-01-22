@@ -21,6 +21,9 @@
 
   padding: 0 1rem;
 
+  &:visited, &:focus, &:hover, &:active {
+    color: var(--white-color);
+  }
   &:focus {
     @include control-shadow();
   }
