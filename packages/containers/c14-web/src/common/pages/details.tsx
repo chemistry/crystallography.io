@@ -136,16 +136,23 @@ export const DetailsPage = () => {
                 <div className="c-details-page__publication">
                     {
                         structure.__authors ?
-                        <div className="c-details-page__authors">
+                        <div className="c-details-page__authors c-details-page__pub_item">
                             <span className="text-bold">Authors:</span>&nbsp;
                             <span><AuthorsList model={structure} /></span>
                         </div>: null
                     }
                     {
                         structure.articleHtml ?
-                        <div>
+                        <div className="c-details-page__pub_item">
                             <span className="text-bold">Publication:</span>&nbsp;
                             <span dangerouslySetInnerHTML={{__html: structure.articleHtml}}></span>
+                        </div> : null
+                    }
+                    {
+                        structure.doi ?
+                        <div className="c-details-page__pub_item">
+                            <span className="text-bold">Link:</span>&nbsp;
+                            <a rel="nofollow" target="_blank" href={`//dx.doi.org/${structure.doi}`}>Article</a>
                         </div> : null
                     }
                 </div>
