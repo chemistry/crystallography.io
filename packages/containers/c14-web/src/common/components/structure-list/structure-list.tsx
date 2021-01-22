@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { StructureModel } from "../../models";
-import { CompoundFormula, CompoundName } from "../../utils";
+import { CompoundFormula, CompoundName, AuthorsList } from "../../utils";
 
 export const StructuresList = ({ list }: { list: StructureModel[]}) => {
     return (
@@ -16,6 +16,9 @@ export const StructuresList = ({ list }: { list: StructureModel[]}) => {
                         </h2>
                         <p className="c-structure-list-item__formula">
                             <CompoundFormula model={item} />
+                        </p>
+                        <p className="c-structure-list-item__authors">
+                            <AuthorsList model={item} />
                         </p>
                         <p className="c-structure-list-item__journal">{
                             item.articleHtml ? (<span dangerouslySetInnerHTML={{__html: item.articleHtml}} />) : ""

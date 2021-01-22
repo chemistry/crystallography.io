@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { PageContainer } from "../layout";
 import { useInBrowser } from "../services";
 import { RootState } from "../store";
-import { CompoundName } from "../utils";
+import { AuthorsList, CompoundName } from "../utils";
 import { useEffect } from "react";
 
 if (process.env.BROWSER) {
@@ -134,6 +134,13 @@ export const DetailsPage = () => {
                     </div>
                 </div>
                 <div className="c-details-page__publication">
+                    {
+                        structure.__authors ?
+                        <div className="c-details-page__authors">
+                            <span className="text-bold">Authors:</span>&nbsp;
+                            <span><AuthorsList model={structure} /></span>
+                        </div>: null
+                    }
                     {
                         structure.articleHtml ?
                         <div>

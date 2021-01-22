@@ -24,4 +24,6 @@ export interface StructureModel {
     "doi": string;
     "articleHtml": string;
     "loops": any[];
+
+    "__authors": { name: string; link: string }[];
 }

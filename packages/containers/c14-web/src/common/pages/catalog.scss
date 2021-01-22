@@ -8,6 +8,12 @@
         min-height: 180px;
         padding: 1rem;
 
+        &__authors {
+            margin-bottom: 0;
+            a {
+                margin-right: 0.5rem;
+            }
+        }
         &__name {
             font-size: 1.125rem;
             font-weight: bold;
