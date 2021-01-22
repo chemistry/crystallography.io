@@ -6,6 +6,7 @@ import { getAuthorRouter } from "./authors";
 import { getSearchRouters } from "./search";
 import { getAutocompleteRouters } from "./autocomplete";
 import { getSitemapRouters } from "./sitemap";
+import { getCifDataRouter } from "./cif";
 
 export const getRouters = ({ db }: { db: Db}) => {
     const router = Router();
@@ -15,6 +16,7 @@ export const getRouters = ({ db }: { db: Db}) => {
     router.use("/api/v1/authors", getAuthorRouter({ db }));
     router.use("/api/v1/search", getSearchRouters({ db }));
     router.use("/api/v1/autocomplete", getAutocompleteRouters({ db }));
+    router.use("/cif/",getCifDataRouter());
     router.use("/", getSitemapRouters({ db }));
 
     return router;
