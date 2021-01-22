@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 import * as path from 'path';
 import * as fs  from 'fs';
+import * as cron from 'node-cron';
 import { ExecOptions, ShellString } from "shelljs";
 import { Readable, Transform, TransformCallback, Writable } from "stream";
 
@@ -122,19 +123,45 @@ const fetchDataFromCod = ({ logger, execAsync }: AppContext): Readable => {
     return execAsync("svn update " + DATA_PATH);
 }
 
-export const app = async(context: AppContext) => {
+const synchronizeData = (context: AppContext) => {
     const { logger } = context;
-    const transaction = Sentry.startTransaction({
-        op: "cod-sync", name: "Syncronization",
+
+    return new Promise<void>((resolve)=> {
+        fetchDataFromCod(context)
+            .pipe(extractDataFromLogs)
+            .pipe(waitTillFileExists)
+            .pipe(getSendMessageToQueueStream(context))
+            .on('error', (e)=> {
+                Sentry.captureException(e);
+                logger.error(String(e));
+            })
+            .on('end', ()=> {
+                resolve();
+            });
+    });
+}
+
+export const app = async(context: AppContext) => {
+
+    const { logger } = context;
+
+    cron.schedule('00 45 */1 * * *', async () => {
+        logger.info('syncronization executed');
+
+        const start = +new Date();
+        const transaction = Sentry.startTransaction({
+            op: "synchronize",
+            name: "Synchronize with COD",
+        });
+
+        await synchronizeData(context);
+        transaction.finish();
+
+        const end = +new Date();
+        logger.info(`synchronized in ${end-start} 'time': ${(end-start)}`);
     });
 
-    fetchDataFromCod(context)
-       .pipe(extractDataFromLogs)
-       .pipe(waitTillFileExists)
-       .pipe(getSendMessageToQueueStream(context))
-       .on('end', ()=> {
-            transaction.finish();
-            logger.trace(`Fetch data finished ${count} items were updated`);
-            logger.trace('---------------------------------------------------');
-        });
+    logger.info(`subscribed cron events`);
+
+    synchronizeData(context);
 }
