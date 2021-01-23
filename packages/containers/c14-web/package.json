@@ -2,7 +2,7 @@
     "name": "@chemistry/c14-web",
     "private": true,
     "version": "0.0.18",
-    "description": "Crystallography Web ",
+    "description": "Crystallography Web",
     "author": {
         "name": "Volodymyr Vreshch",
         "url": "http://vreshch.com/"
