@@ -35,6 +35,7 @@
         "app:build": "lerna run app:build",
         "check": "export GOOGLE_APPLICATION_CREDENTIALS='/home/vreshch/projects/crystallography-api/credentials.json' && lerna run check",
         "deploy": "GIT_PREVIOUS_COMMIT=$(git rev-parse --short 'HEAD^') && lerna run --since $GIT_PREVIOUS_COMMIT deploy",
+        "build_push": "GIT_PREVIOUS_COMMIT=$(git rev-parse --short 'HEAD^') && lerna run --since $GIT_PREVIOUS_COMMIT build_push",
         "updated": "lerna updated",
         "test": "jest",
         "tdd": "jest --watch",

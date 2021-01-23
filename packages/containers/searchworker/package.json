@@ -16,6 +16,7 @@
     ],
     "license": "MIT",
     "scripts": {
+        "build_push": "./build_push.sh",
         "start": "node ./build/index.js",
         "build": "tsc",
         "nodemon": "cross-env SHOW_DEBUG_INFO=true nodemon -e ts -w ./src -x ts-node src/index.ts"

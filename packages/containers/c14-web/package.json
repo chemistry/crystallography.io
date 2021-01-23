@@ -22,6 +22,7 @@
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-web",
     "scripts": {
         "deploy": "./deploy.sh",
+        "build_push": "./build_push.sh",
         "build:backend": "tsc",
         "build:frontend": "webpack-cli --config webpack.config.js --mode production",
         "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",

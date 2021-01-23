@@ -16,6 +16,7 @@
     ],
     "license": "MIT",
     "scripts": {
+        "build_push": "./build_push.sh",
         "start": "node ./build/server.js",
         "build": "tsc",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/server.ts"

@@ -36,11 +36,13 @@ jobs: # Jobs List
       - name: Reset to master
         run: git checkout master && git reset --hard
 
-      - name: Build Images
-        run: docker-compose -f docker-compose.yaml build
+#      - name: Build Images
+#        run: docker-compose -f docker-compose.yaml build
+#      - name: Push Images
+#        run: docker-compose -f docker-compose.yaml  push
 
-      - name: Push Images
-        run: docker-compose -f docker-compose.yaml  push
+      - name: Build & Push Changed Images
+        run: npm run build_push
 
       - name: Deploy to Docker swarm
         uses: vreshch/docker-deployment-action@master

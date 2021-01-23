@@ -21,6 +21,7 @@
     },
     "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/disk-to-db",
     "scripts": {
+        "build_push": "./build_push.sh",
         "build": "rimraf dist/* && tsc",
         "deploy": "./deploy.sh",
         "check": "ts-node ./src/check.ts",

@@ -21,6 +21,7 @@
     },
     "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/cod-to-disk",
     "scripts": {
+        "build_push": "./build_push.sh",
         "build": "rimraf dist/* && tsc",
         "deploy": "./deploy.sh",
         "start": "node dist/index.js"
