@@ -20,7 +20,8 @@ import {
   SearchByStructurePage,
   SearchByUnitCellPage,
   SearchHistoryPage,
-  SearchResultsPage
+  SearchResultsPage,
+  OfflinePage
 } from "./pages";
 import { setup } from "./setup";
 import { getStore } from "./store";
@@ -71,6 +72,13 @@ export const getApplication: ApplicationFactory = async (context: ApplicationCon
                 path: "/",
                 exact: true,
                 component: SearchByStructurePage,
+                title: "Crystal Structure Search",
+                description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
+            },
+            {
+                path: "/offline",
+                exact: true,
+                component: OfflinePage,
                 title: "Crystal Structure Search",
                 description: "Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod",
             },
