@@ -51,6 +51,9 @@ export const getCatalogRouter = ({ db }: { db: Db}) => {
                 meta: {
                     pages
                 },
+                cache: {
+                    type: "catalog"
+                },
                 errors: [],
                 data: catalog,
             });

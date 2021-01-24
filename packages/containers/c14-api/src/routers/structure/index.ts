@@ -21,6 +21,9 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
 
             res.json({
                 meta: { },
+                cache: {
+                    type: "structure"
+                },
                 errors: [],
                 data: structure,
             });
@@ -76,6 +79,9 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
             return res.status(200).json({
                 errors: [],
                 meta: {},
+                cache: {
+                    type: "structure-details"
+                },
                 data,
             });
 
