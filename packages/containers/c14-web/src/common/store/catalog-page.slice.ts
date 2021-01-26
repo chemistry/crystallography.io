@@ -60,9 +60,10 @@ export const fetchCatalogData = (
 
     dispatch(loadCatalogPageStarted({}));
 
-    // Load corresponding catalog page
-    const res = await axios.get(`https://crystallography.io/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`);
-    const { data, meta } = res.data;
+    const response = await fetch(`https://crystallography.io/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`, {
+        method: 'GET'
+    });
+    const { data, meta } = await response.json();
 
     let structuresToLoad = [];
     // Extract Structures To Load
@@ -77,12 +78,15 @@ export const fetchCatalogData = (
 
     let data2: any[] = [];
     if (structuresToLoad.length > 0) {
-        const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
+        const response2 = await fetch(`https://crystallography.io/api/v1/structure`, {
+            method: 'POST',
+            body: `ids=[${structuresToLoad.join(",")}]`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-            },
+            }
         });
-        data2 = res2.data?.data;
+        const res2 = await response2.json();
+        data2 = res2.data;
     }
     dispatch(loadStructureListSuccess(data2));
 

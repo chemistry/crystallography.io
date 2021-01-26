@@ -138,12 +138,17 @@ export const updateSearchResults = (data: SearchByStructureResponse): AppThunk =
     const newStructures = arrayDifference(structuresToLoad, existingStructures)
 
     if (newStructures.length > 0) {
-        const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${newStructures.join(",")}]`, {
+
+        const response2 = await fetch(`https://crystallography.io/api/v1/structure`, {
+            method: 'POST',
+            body: `ids=[${structuresToLoad.join(",")}]`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-            },
+            }
+
         });
-        const data2 = res2.data?.data;
+        const res2 = await response2.json();
+        const data2 = res2.data;
 
         dispatch(loadStructureListSuccess(data2));
     }
@@ -159,11 +164,12 @@ export const fetchSearchResultsData = ({
             searchResultsStart({ id, page })
         );
 
-        const res = await axios.get(
-            `https://crystallography.io/api/v1/search/structure/${id}?page=${page}`
-        );
+        const response = await fetch(`https://crystallography.io/api/v1/search/structure/${id}?page=${page}`, {
+            method: 'GET'
+        });
+        const data: SearchByStructureResponse  = await response.json();
 
-        const data: SearchByStructureResponse = res.data as SearchByStructureResponse;
+
         let structuresToLoad: number[] = [];
 
         if (data.data && data.data.results && Array.isArray(data.data.results)) {
@@ -174,16 +180,19 @@ export const fetchSearchResultsData = ({
             searchResultsSuccess({ ids: structuresToLoad, meta: data.meta })
         );
 
-        // subscribe to updates here ...
+        // Subscribe to updates here ...
 
         let data2: any[] = [];
         if (structuresToLoad.length > 0) {
-            const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
+            const response2 = await fetch(`https://crystallography.io/api/v1/structure`, {
+                method: 'POST',
+                body: `ids=[${structuresToLoad.join(",")}]`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
-                },
+                }
             });
-            data2 = res2.data?.data;
+            const res2 = await response2.json();
+            data2 = res2.data;
         }
 
         dispatch(loadStructureListSuccess(data2));

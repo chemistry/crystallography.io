@@ -48,12 +48,16 @@ export const fetchStructureDetailsData = (
     try {
         dispatch(loadStructureStarted({}));
 
-        const res = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${id}]&expand=true`, {
+        const response = await fetch(`https://crystallography.io/api/v1/structure`, {
+            method: 'POST',
+            body: `ids=[${id}]&expand=true`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-            },
+            }
         });
-        const data = res.data?.data;
+        const res = await response.json();
+        const data = res.data;
+
         dispatch(loadStructureSuccess(data));
   } catch (err) {
     const errors = err?.response?.data?.errors;

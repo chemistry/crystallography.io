@@ -103,13 +103,14 @@ export const searchStructureByFormula = (
     try {
         dispatch(searchStructureByFormulaStart({ formula, page }));
 
-        const res = await axios.post(`https://crystallography.io/api/v1/search/formula`, `page=${page}&formula=${encodeURIComponent(formula)}`, {
+        const response = await fetch(`https://crystallography.io/api/v1/search/formula`, {
+            method: 'POST',
+            body: `page=${page}&formula=${encodeURIComponent(formula)}`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-            },
+            }
         });
-
-        const data: SearchNameResponse = res.data as SearchNameResponse;
+        const data: SearchNameResponse = await response.json();
 
         let structuresToLoad: number[] = [];
 
@@ -121,12 +122,15 @@ export const searchStructureByFormula = (
 
         let data2: any[] = [];
         if (structuresToLoad.length > 0) {
-            const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
+            const response2 = await fetch(`https://crystallography.io/api/v1/structure`, {
+                method: 'POST',
+                body: `ids=[${structuresToLoad.join(",")}]`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
-                },
+                }
             });
-            data2 = res2.data?.data;
+            const res2 = await response2.json();
+            data2 = res2.data;
         }
 
         dispatch(loadStructureListSuccess(data2));

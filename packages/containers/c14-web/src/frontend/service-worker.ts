@@ -2,12 +2,9 @@ import { clientsClaim, skipWaiting } from "workbox-core";
 import { precacheAndRoute } from "workbox-precaching";
 import {ExpirationPlugin} from "workbox-expiration";
 import { registerRoute } from 'workbox-routing';
-import Dexie from 'dexie';
 import { CacheFirst, StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 
 declare var __webpack_hash__: string;
-
-self.__WB_DISABLE_DEV_LOGS = true;
 
 skipWaiting();
 clientsClaim();
@@ -68,28 +65,6 @@ registerRoute(
                 cacheName: CACHE_NAME,
             });
         }
-    }
-);
-
-let db: Dexie = null;
-// IndexedDB - offline support
-self.addEventListener('install', async (event: any) => {
-    event.waitUntil((()=> {
-        db = new Dexie("data");
-        db.version(1).stores({
-            collections: "++name,updated,meta",
-            catalog: "++id,structures"
-        });
-        return db.open();
-    })());
-});
-
-registerRoute(
-    new RegExp('.+/api/v1/.+'),
-    ({ url, event }) => {
-        return fetch(event.request).then((data)=> {
-            return data;
-        });
     }
 );
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+import 'isomorphic-fetch';
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { Dispatch } from "redux";
 import { App } from "./app";

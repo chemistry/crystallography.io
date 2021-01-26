@@ -92,17 +92,14 @@ export const searchStructureByStructure = ({
     try {
         dispatch(searchByStructure({ molecule }));
 
-        const res = await axios.post(
-            `https://crystallography.io/api/v1/search/structure`,
-            `searchQuery=${encodeURIComponent(JSON.stringify(molecule))}`,
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
+        const response = await fetch(`https://crystallography.io/api/v1/search/structure`, {
+            method: 'POST',
+            body: `searchQuery=${encodeURIComponent(JSON.stringify(molecule))}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
             }
-        );
-
-        const data: SearchByStructureResponse = res.data as SearchByStructureResponse;
+        });
+        const data: SearchByStructureResponse = await response.json();
         let structuresToLoad: number[] = [];
 
         if (data.data && data.data.results && Array.isArray(data.data.results)) {

@@ -62,13 +62,14 @@ export const fetchAuthorDetailsData = (
 
     dispatch(loadAuthorsDetailsPageStart({}));
 
-    // Load corresponding catalog page
-    const res = await axios.get(`https://crystallography.io/api/v1/authors/${encodeURIComponent(name)}?page=${pageQ}`, {
+    const response = await fetch(`https://crystallography.io/api/v1/authors/${encodeURIComponent(name)}?page=${pageQ}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     });
-    const data = res.data || {};
+    const data = await response.json();
+
     let structuresToLoad = [];
     if (data && data.meta && data.data && Array.isArray(data.data.results)) {
         dispatch(loadAuthorsDetailsPageSuccess(data));
@@ -77,12 +78,15 @@ export const fetchAuthorDetailsData = (
 
     let data2: any[] = [];
     if (structuresToLoad.length > 0) {
-        const res2 = await axios.post(`https://crystallography.io/api/v1/structure`, `ids=[${structuresToLoad.join(",")}]`, {
+        const response2 = await fetch(`https://crystallography.io/api/v1/structure`, {
+            method: 'POST',
+            body: `ids=[${structuresToLoad.join(",")}]`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-            },
+            }
         });
-        data2 = res2.data?.data;
+        const res2 = await response2.json();
+        data2 = res2.data;
     }
 
     dispatch(loadStructureListSuccess(data2));

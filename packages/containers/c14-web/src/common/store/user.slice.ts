@@ -56,8 +56,12 @@ export const loginUser = (
     );
     const idToken = await user.user.getIdToken();
 
-    // Send request to backend, so cookies will be set
-    await axios.post(`/sessionLogin`, { idToken });
+
+    await fetch('/sessionLogin', {
+        method: 'POST',
+        body: JSON.stringify({ idToken  })
+    });
+
     await firebase.auth().signOut();
 
     // Reload Application Page
