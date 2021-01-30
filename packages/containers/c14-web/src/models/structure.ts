@@ -1,7 +1,5 @@
 import { getDB, isNode } from "./utils";
 
-const MAX_ITEMS_TO_STORE = 1000;
-const SCALE_FACTOR = 2;
 
 const getStructuresData = async (ids: number[]) => {
     const response = await fetch(
@@ -18,41 +16,29 @@ const getStructuresData = async (ids: number[]) => {
     return res.data;
 };
 
-const cleanUpCache = async ()=> {
+const EXPIRE_DAYS = 7;
+const cleanUpCache = async () => {
     const db = await getDB();
     const count = await db.structures.count();
-    if (count > MAX_ITEMS_TO_STORE * SCALE_FACTOR) {
-        const itemsCountToDelete = count - MAX_ITEMS_TO_STORE;
+}
 
-        // DB structures -----
-        const itemsToDelete = await db.structures
-            .orderBy('accessed')
-            .reverse()
-            .offset(0)
-            .limit(itemsCountToDelete)
-            .toArray();
-    }
+const getExpireDate = () => {
+    return Date.now() + (1000 * 60 * 60 * 24 * EXPIRE_DAYS );
 }
 
 const getStructuresCached = async (ids: number[]) => {
     const db = await getDB();
-    const data = (await db.structures.bulkGet(ids)).filter((id) => !!id);
-    // store accessed time
-    const newData = data.map(
-        (item) => ({ accessed: Date.now(), ...item })
-    );
-    // do not await to complete
-    db.structures.bulkPut(newData);
-    return data;
+    const data = (await db.structures.bulkGet(ids));
+    return data.filter((id) => !!id);
 };
 
 const storeDataToCache = async (data: any[]) => {
     const db = await getDB();
     const newData = data.map(
-        (item) => ({ accessed: Date.now(), ...item })
+        (item) => ({ expire:  getExpireDate(), ...item })
     );
     await db.structures.bulkAdd(newData);
-    // await cleanUpCache();
+    await cleanUpCache();
     return;
 };
 
