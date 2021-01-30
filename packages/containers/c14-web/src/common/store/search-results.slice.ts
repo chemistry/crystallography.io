@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getStructures } from "../../models";
 import { AppThunk } from "./common";
 
 export enum SearchState {
@@ -75,7 +76,7 @@ const searchResultsSlice = createSlice({
             state.isLoading = false;
             state.error = null;
             const structures: any = { };
-            payload.forEach((element: any) => {
+            payload.data.forEach((element: any) => {
                 structures[element.id] = element.attributes;
             });
             state.data.structureById = structures;
@@ -180,22 +181,8 @@ export const fetchSearchResultsData = ({
             searchResultsSuccess({ ids: structuresToLoad, meta: data.meta })
         );
 
-        // Subscribe to updates here ...
-
-        let data2: any[] = [];
-        if (structuresToLoad.length > 0) {
-            const response2 = await fetch(`https://crystallography.io/api/v1/structure`, {
-                method: 'POST',
-                body: `ids=[${structuresToLoad.join(",")}]`,
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                }
-            });
-            const res2 = await response2.json();
-            data2 = res2.data;
-        }
-
-        dispatch(loadStructureListSuccess(data2));
+        const structures = await getStructures(structuresToLoad);
+        dispatch(loadStructureListSuccess(structures));
 
     } catch (err) {
         const errors = err?.response?.data?.errors;
