@@ -8,7 +8,7 @@ export class AppDatabaseStorage extends Dexie {
     constructor() {
       super("data");
 
-      this.version(1).stores({
+      this.version(2).stores({
         collections: "++name,updated,meta",
         structures: "++id,expire"
       });

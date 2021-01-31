@@ -16,24 +16,41 @@ const getStructuresData = async (ids: number[]) => {
     return res.data;
 };
 
-const EXPIRE_DAYS = 7;
+const EXPIRE_DAYS = 3;
 
+let isInCleanState = false;
 const cleanUpCache = async () => {
-    const db = await getDB();
-    const count = await db.structures.count();
-    const now = Date.now();
-    const toDelete = db.structures
-            .where('expire')
-            .below(now);
+    if (isInCleanState) {
+        return;
+    }
+    isInCleanState = true;
+    try {
+        const db = await getDB();
+        const count = await db.structures.count();
+        const now = Date.now();
+        const toDelete = await db.structures
+                .where('expire')
+                .below(now)
+                .primaryKeys();
+        if (toDelete && Array.isArray(toDelete) && toDelete.length > 0) {
+            await db.structures.bulkDelete(toDelete);
+        }
+    } catch (e) {
+        // tslint:disable-next-line
+        console.error(e);
+    }
+    isInCleanState = false;
 }
 
 const getExpireDate = () => {
-    return Date.now() + (1000 * 60 * 60 * 24 * EXPIRE_DAYS );
+    return Date.now() + (1000 * 20 /*60 * 60 * 24 *  EXPIRE_DAYS */);
 }
 
 const getStructuresCached = async (ids: number[]) => {
     const db = await getDB();
     const data = (await db.structures.bulkGet(ids));
+    // asynchronously clean up
+    cleanUpCache();
     return data.filter((id) => !!id);
 };
 
