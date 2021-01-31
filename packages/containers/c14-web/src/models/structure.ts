@@ -17,9 +17,14 @@ const getStructuresData = async (ids: number[]) => {
 };
 
 const EXPIRE_DAYS = 7;
+
 const cleanUpCache = async () => {
     const db = await getDB();
     const count = await db.structures.count();
+    const now = Date.now();
+    const toDelete = db.structures
+            .where('expire')
+            .below(now);
 }
 
 const getExpireDate = () => {
@@ -37,9 +42,7 @@ const storeDataToCache = async (data: any[]) => {
     const newData = data.map(
         (item) => ({ expire:  getExpireDate(), ...item })
     );
-    await db.structures.bulkAdd(newData);
-    await cleanUpCache();
-    return;
+    return await db.structures.bulkAdd(newData);
 };
 
 const difference = (arr1: any[], arr2: any[]) => {

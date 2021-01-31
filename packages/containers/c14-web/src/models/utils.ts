@@ -10,7 +10,7 @@ export class AppDatabaseStorage extends Dexie {
 
       this.version(1).stores({
         collections: "++name,updated,meta",
-        structures: "++id,accessed"
+        structures: "++id,expire"
       });
 
       this.structures = this.table("structures");
