@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getAuthorsList } from "../../models";
 import { AppThunk } from "./common";
 
 const authorsListPageSlice = createSlice({
@@ -28,7 +29,7 @@ const authorsListPageSlice = createSlice({
         const { data, meta } = action.payload;
         let authors: any[] = [];
         if (Array.isArray(data)) {
-            authors = data.map((element : any)=> {
+            authors = data.map((element: any) => {
                 return {
                     id: element.id,
                     ...element.attributes
@@ -59,10 +60,7 @@ export const fetchAuthorsListData = (
 
     dispatch(loadAuthorsListPageStarted({}));
 
-    const response = await fetch(`https://crystallography.io/api/v1/authors?page=${pageQ}`, {
-        method: 'GET',
-    });
-    const data = await response.json();
+    const data = await getAuthorsList(pageQ);
 
     dispatch(loadAuthorsListSuccess(data));
 

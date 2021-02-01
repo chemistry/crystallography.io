@@ -26,7 +26,6 @@ const cleanUpCache = async () => {
     isInCleaningState = true;
     try {
         const db = await getDB();
-        const count = await db.structures.count();
         const now = Date.now();
         const toDelete = await db.structures
                 .where('expire')
@@ -59,7 +58,7 @@ const storeDataToCache = async (data: any[]) => {
     const newData = data.map(
         (item) => ({ expire:  getExpireDate(), ...item })
     );
-    return await db.structures.bulkAdd(newData);
+    return await db.structures.bulkPut(newData);
 };
 
 const difference = (arr1: any[], arr2: any[]) => {
