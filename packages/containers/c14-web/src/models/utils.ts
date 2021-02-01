@@ -4,16 +4,34 @@ let dbStatus: Promise<any> = null;
 let db: AppDatabaseStorage = null;
 export class AppDatabaseStorage extends Dexie {
     structures: Dexie.Table<Structure, number>;
+    catalogId: Dexie.Table<Catalog, number>;
+    collectionData: Dexie.Table<CollectionData, string>;
 
     constructor() {
       super("data");
 
-      this.version(2).stores({
-        collections: "++name,updated,meta",
+      this.version(3).stores({
+        collectionData: "++id",
+        catalogId: "++id,expire",
         structures: "++id,expire"
       });
 
       this.structures = this.table("structures");
+      this.collectionData = this.table("collectionData");
+      this.catalogId = this.table("catalogId");
+    }
+}
+
+interface CollectionData {
+    id: string;
+    meta: any;
+}
+interface Catalog {
+    id: number;
+    type: string;
+    attributes: {
+        id: number;
+        structures: number[];
     }
 }
 interface Structure {

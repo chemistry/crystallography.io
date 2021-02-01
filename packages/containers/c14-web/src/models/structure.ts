@@ -18,12 +18,12 @@ const getStructuresData = async (ids: number[]) => {
 
 const EXPIRE_DAYS = 3;
 
-let isInCleanState = false;
+let isInCleaningState = false;
 const cleanUpCache = async () => {
-    if (isInCleanState) {
+    if (isInCleaningState) {
         return;
     }
-    isInCleanState = true;
+    isInCleaningState = true;
     try {
         const db = await getDB();
         const count = await db.structures.count();
@@ -39,11 +39,11 @@ const cleanUpCache = async () => {
         // tslint:disable-next-line
         console.error(e);
     }
-    isInCleanState = false;
+    isInCleaningState = false;
 }
 
 const getExpireDate = () => {
-    return Date.now() + (1000 * 20 /*60 * 60 * 24 *  EXPIRE_DAYS */);
+    return Date.now() + (1000 * 60 * 60 * 24 *  EXPIRE_DAYS);
 }
 
 const getStructuresCached = async (ids: number[]) => {
