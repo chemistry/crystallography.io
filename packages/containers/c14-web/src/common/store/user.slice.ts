@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import firebase from "firebase/app";
 import { AppThunk } from "./common";
 

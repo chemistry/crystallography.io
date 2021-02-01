@@ -1,6 +1,4 @@
-import { error } from 'console';
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { AppThunk } from "./common";
 import { getStructures } from '../../models';
 

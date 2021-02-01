@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { stringify } from "querystring";
 import { AppThunk} from "./common";
 
 const detailsPageSlice = createSlice({

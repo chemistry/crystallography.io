@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { getStructures } from "../../models";
 import { AppThunk } from "./common";
 
