@@ -1,6 +1,5 @@
 import classNames = require("classnames");
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { MatchedRoute, matchRoutes, renderRoutes, RouteConfig } from "react-router-config";
 import { CollapseIcon, LogoMobileIcon, NavBtnIcon } from "./icons";
 import { AppMobileNavigation, AppNavigation  } from "./layout";
@@ -27,6 +26,7 @@ export const App = (props: { route: { routes: RouteConfig[] }, location: { pathn
         document.title = title;
     }, [title]);
 
+    // <DownloadApplication />
     return (
         <main className={classNames({ "app": true, "is-open-navigation": isOpen })}>
             <aside className="app-mobile-navigation">
@@ -44,7 +44,8 @@ export const App = (props: { route: { routes: RouteConfig[] }, location: { pathn
                 <CollapseIcon />
             </div>
             <section className="app-layout">
-                  {renderRoutes(props.route.routes)}
+                {renderRoutes(props.route.routes)}
+
             </section>
         </main>
     );
