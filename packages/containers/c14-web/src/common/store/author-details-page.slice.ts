@@ -12,6 +12,7 @@ const authorsDetailsPage = createSlice({
     },
     data: {
         structureById: {},
+        structureIdsLoaded: [],
         structureIds: [],
     },
     currentPage: 0,
@@ -28,17 +29,19 @@ const authorsDetailsPage = createSlice({
         state.error = null;
 
         const { data, meta } = action.payload;
-        state.data.structureIds = data.results;
+        state.data.structureIdsLoaded = data.results;
         state.meta = meta || {};
     },
     loadStructureListSuccess(state, { payload }) {
-        state.isLoading = false;
         state.error = null;
         const structures: any = { };
         payload.data.forEach((element: any) => {
             structures[element.id] = element.attributes;
         });
-        state.data.structureById = structures;
+        state.data.structureById =  structures;
+        state.data.structureIds = state.data.structureIdsLoaded.slice(0);
+        state.data.structureIdsLoaded = [];
+        state.isLoading = false;
     },
     loadAuthorsListFailed(state, action) {
         state.isLoading = false;
