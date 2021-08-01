@@ -31,8 +31,8 @@
         "@sentry/node": "5.30.0",
         "@sentry/tracing": "5.30.0",
         "@types/shelljs": "0.8.8",
+        "amqplib": "0.8.0",
         "node-cron": "2.0.3",
-        "amqplib": "0.6.0",
         "shelljs": "0.8.4"
     },
     "devDependencies": {

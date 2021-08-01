@@ -32,7 +32,7 @@
         "@google-cloud/logging": "9.0.1",
         "@sentry/node": "^5.30.0",
         "@sentry/tracing": "^5.30.0",
-        "amqplib": "0.6.0",
+        "amqplib": "0.8.0",
         "mongodb": "3.6.3",
         "shelljs": "0.8.4"
     },
