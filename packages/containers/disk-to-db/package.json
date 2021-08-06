@@ -14,10 +14,10 @@
         "Git"
     ],
     "engines": {
-        "node": ">=10.0.0"
+      "node": ">=16.0.0"
     },
     "devEngines": {
-        "node": ">=10.0.0"
+      "node": ">=16.0.0"
     },
     "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/disk-to-db",
     "scripts": {
@@ -42,6 +42,6 @@
         "@types/node": "14.14.2",
         "rimraf": "3.0.2",
         "ts-node": "9.0.0",
-        "typescript": "4.0.5"
+        "typescript": "4.3.5"
     }
 }
