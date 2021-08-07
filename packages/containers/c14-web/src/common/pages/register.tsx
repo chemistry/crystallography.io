@@ -17,13 +17,13 @@ export const RegisterPage = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div style={{ padding: "20px" }}>
               <div >Name:
-                <input type="text"  name="name" ref={register} />
+                <input type="text"  name="name" ref={register as any} />
               </div>
               <div >Email:
-                <input type="text"  name="email" ref={register} />
+                <input type="text"  name="email" ref={register as any} />
               </div>
               <div>Pwd:
-                <input type="text" name="password" ref={register}  />
+                <input type="text" name="password" ref={register as any} />
               </div>
               <div>
                 <input type="submit" name="Submit" />

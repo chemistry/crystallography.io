@@ -27,10 +27,10 @@ export const LoginPage = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
           <div style={{ padding: "20px" }}>
             <div >Email:
-              <input type="text"  name="email" ref={register}  />
+              <input type="text"  name="email" ref={register as any}  />
             </div>
             <div>Password:
-              <input type="text" name="password" ref={register}  />
+              <input type="text" name="password" ref={register as any}  />
             </div>
             <div>
               <input type="submit" name="Submit" />
