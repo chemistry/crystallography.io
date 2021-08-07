@@ -19,7 +19,7 @@ jobs: # Jobs List
             ref: master
             fetch-depth: 2
 
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - uses: google-github-actions/setup-gcloud@master
         with:
             version: '275.0.0'
             service_account_email: ${{ secrets.GCP_SA_EMAIL }}
@@ -38,6 +38,7 @@ jobs: # Jobs List
 
       - name: Build Images
         run: docker-compose -f docker-compose.yaml build
+
       - name: Push Images
         run: docker-compose -f docker-compose.yaml  push
 
