@@ -3,9 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 
@@ -20,7 +19,7 @@ module.exports = {
     output: {
         path: __dirname + '/dist/static/',
         publicPath: '/',
-        filename: '[name].[hash].js'
+        filename: '[name].[contenthash].js'
     },
 
     plugins: [
@@ -31,11 +30,11 @@ module.exports = {
             },
         }),
         ... (process.env.WEBPACK_DEV_SERVER ? [
-          new ManifestPlugin({
+          new WebpackManifestPlugin({
               fileName: 'manifest.json',
           })
         ]: ([
-          new webpack.ExtendedAPIPlugin(),
+          // new webpack.ExtendedAPIPlugin(),
           new InjectManifest({
               swSrc:  path.resolve(__dirname, 'src/frontend/service-worker.ts'),
               swDest: path.resolve(__dirname, 'dist/static/service-worker.js'),
@@ -49,7 +48,7 @@ module.exports = {
                   /\.svg$/
               ]
           }),
-          new ManifestPlugin({
+          new WebpackManifestPlugin({
               fileName: 'manifest.json',
               generate: (seed, files, entrypoints) => {
                 const manifestFiles = files.reduce((manifest, file) => {
@@ -105,33 +104,33 @@ module.exports = {
             jQuery: 'jquery'
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
+            filename: '[name].[fullhash].css',
         }),
         new HtmlWebpackPlugin({
             template: __dirname + '/src/static/index.html',
             favicon: __dirname + '/src/static/favicon.ico',
         }),
-        new CopyWebpackPlugin([{
-            from: __dirname + '/src/static/favicon.ico'
-        }, {
-            from: __dirname + '/src/static/icon-48.png'
-        }, {
-            from: __dirname + '/src/static/icon-96.png'
-        }, {
-            from: __dirname + '/src/static/icon-192.png'
-        }, {
-            from: __dirname + '/src/static/icon-512.png'
-        }, {
-            from: __dirname + '/src/static/robots.txt'
-        }, {
-            from: __dirname + '/src/static/index.html'
-        }]),
+        new CopyWebpackPlugin({
+          patterns: [{
+                from: __dirname + '/src/static/favicon.ico'
+            }, {
+                from: __dirname + '/src/static/icon-48.png'
+            }, {
+                from: __dirname + '/src/static/icon-96.png'
+            }, {
+                from: __dirname + '/src/static/icon-192.png'
+            }, {
+                from: __dirname + '/src/static/icon-512.png'
+            }, {
+                from: __dirname + '/src/static/robots.txt'
+            }]
+      }),
     ],
 
     module: {
           rules: [
-            { test: /\.(woff|woff2|ttf|eot)/, loader: ['url-loader?limit=1'] },
-            { test: /\.png$/, loader: 'url-loader?limit=10000&mimetype=image/png' },
+            { test: /\.(woff|woff2|ttf|eot)/, loader: 'url-loader' },
+            { test: /\.png$/, loader: 'url-loader' },
             {
                 test: /\.s[ac]ss$/i,
                 use: [
