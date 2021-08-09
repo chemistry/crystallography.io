@@ -11,7 +11,7 @@ Website: [Crystal Structure Search](http://crystallography.io/)
 Application for Desktop [Download](https://github.com/chemistry/crystallography.io/releases)
 Supported platforms:
   * Windows
-  * Lunux
+  * Linux
   * MaxOS
 
 ## Include Packages:
@@ -21,6 +21,7 @@ Supported platforms:
 ### Containers
   * [@chemistry/c14-api](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/c14-api)
     Open API for accessing COD+ database
+  * [@chemistry/c14-graphql-api](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/c14-graphql-api) - GraphQL open API
   * [@chemistry/c14-web](https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-web) - Alternative Web UI container
   * [@chemistry/cod-to-disk](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/cod-to-disk) - Synchronize information from COD database and store to disk
   * [@chemistry/disk-to-db](https://github.com/chemistry/crystallography.io/tree/master/packages/containers/disk-to-db) - Get updated structures from disk and store to MongoDB database
@@ -58,7 +59,7 @@ docker-compose logs
 docker stack deploy -c docker-stack.yml --with-registry-auth "crystallography-io"
 ```
 ## Technical description:
-* Microservice/event driven architecture
+* Microservice /event driven architecture
 * RabbitMQ, Redis, MongoDB
 * Deploy with Dockers Swart
 * Auto Release Script

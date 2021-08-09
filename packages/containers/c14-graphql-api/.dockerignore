@@ -1,0 +1,9 @@
+.git
+.github
+.editorconfig
+lerna-debug.log
+README.md
+/node_modules/*
+/packages/**/node_modules/*
+/packages/**/dist/*
+/coverage/*
