@@ -26,20 +26,22 @@ module.exports = {
             NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
+            filename: '[name].[fullhash].css',
         }),
         new HtmlWebpackPlugin({
             template: __dirname + '/src/static/index.html'
         }),
-        new CopyWebpackPlugin([{
-            from: __dirname + '/assets/icon.png',
-            to: __dirname + '/build/icon.png',
-        }])
+        new CopyWebpackPlugin({
+            patterns: [{
+                from: __dirname + '/assets/icon.png',
+                to: __dirname + '/build/icon.png',
+            }]
+        })
     ],
 
     module: {
           rules: [
-            { test: /\.png$/, loader: 'url-loader?limit=10000&mimetype=image/png' },
+            { test: /\.png$/, loader: 'url-loader' },
             {
                 test: /\.s[ac]ss$/i,
                 use: [
