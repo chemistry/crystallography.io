@@ -43,6 +43,7 @@ const resolvers = {
 
         const { url } = await server.listen();
 
+        // tslint:disable-next-line
         console.log(`🚀  Server ready at ${url}`);
 
       } catch (e) {
