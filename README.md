@@ -33,7 +33,6 @@ Supported platforms:
 ### Libraries:
   * [@chemistry/cif-2-json](https://github.com/chemistry/crystallography-api/tree/master/packages/libraries/cif-2-json) - Library for conversion of CIF to JSON
 
-
 ## Development Quick Start
   * `npm install && npm run bootstrap` Install dependencies
   * `npm start` Start Development in Local mode
