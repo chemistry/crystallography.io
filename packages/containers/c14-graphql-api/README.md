@@ -31,7 +31,6 @@ docker push gcr.io/crystallography-api/crystallography-io-graphql-api
     MONGO_INITDB_HOST
     GCP_SA_KEY
     PORT
-
 ## Commands:
   * Build project: `npm run build`
   * Local Development `npm run nodemon`
