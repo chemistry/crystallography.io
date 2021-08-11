@@ -209,12 +209,12 @@ services:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
-                - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && PathPrefix(`/graphql`))
-                - traefik.http.routers.api-https.priority=20
-                - traefik.http.routers.api-https.entrypoints=https
-                - traefik.http.routers.api-https.tls=true
-                - traefik.http.routers.api-https.tls.certresolver=le
-                - traefik.http.services.api.loadbalancer.server.port=4000
+                - traefik.http.routers.graphql-https.rule=(Host(`crystallography.io`) && PathPrefix(`/graphql`))
+                - traefik.http.routers.graphql-https.priority=30
+                - traefik.http.routers.graphql-https.entrypoints=https
+                - traefik.http.routers.graphql-https.tls=true
+                - traefik.http.routers.graphql-https.tls.certresolver=le
+                - traefik.http.services.graphql.loadbalancer.server.port=4000
         depends_on:
           - mongo
 
@@ -246,7 +246,7 @@ services:
                 - traefik.http.routers.search-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api/v1/search/structure`)|| PathPrefix(`/api/v1/live`)))
                 - traefik.http.routers.search-https.entrypoints=https,ws,wss
                 - traefik.http.routers.search-https.tls=true
-                - traefik.http.routers.search-https.priority=30
+                - traefik.http.routers.search-https.priority=40
                 - traefik.http.routers.search-https.tls.certresolver=le
                 - traefik.http.services.search.loadbalancer.server.port=8050
 
