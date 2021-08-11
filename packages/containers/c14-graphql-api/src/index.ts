@@ -16,6 +16,7 @@ const typeDefs = gql`
     books: [Book]
   }
 `;
+
 const books = [
   {
     title: 'The Awakening',
