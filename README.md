@@ -40,6 +40,20 @@ Supported platforms:
 ## Setup Infrastructure
  * [Swarm Cluster](https://github.com/chemistry/crystallography-api/tree/master/setup)
 
+## Setup Cloud infrastructure
+ * Initialize cloud
+```bash
+terraform init
+```
+ * Plan terraform changes
+```bash
+terraform plan
+```
+ * Apply terraform changes
+```bash
+terraform apply -auto-approve -lock=false
+```
+
 ## Local development
  * Setup env file
 ```bash

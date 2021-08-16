@@ -33,15 +33,25 @@ const useContext = async ()=> {
   }
 }
 
+const usePort = ()=> {
+  const port = process.env.PORT;
+  if (port && isFinite(parseInt(port, 10)) && parseInt(port, 10) > 0) {
+      return parseInt(port, 10);
+  }
+  return 8080;
+}
+
 (async () => {
     try {
         // tslint:disable-next-line
         console.time("App Start");
 
-        const context = await useContext();
+        const context = {}; // await useContext();
         const server = new ApolloServer({ typeDefs, context, resolvers });
 
-        const { url } = await server.listen();
+        const { url } = await server.listen({
+            port: usePort(),
+        });
 
         // tslint:disable-next-line
         console.log(`🚀  Server ready at ${url}`);

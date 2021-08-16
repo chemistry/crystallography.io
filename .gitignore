@@ -10,6 +10,7 @@ credentials.json
 credentials.base64.json
 dist/
 lib/
+.terraform/
 # Sublime text project space
 *.sublime-workspace
 *.sublime-project
