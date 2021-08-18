@@ -21,3 +21,5 @@ npm-debug.log
 .DS_Store
 lerna-debug.log
 .npmrc
+terraform.tfstate
+terraform.tfstate.backup

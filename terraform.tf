@@ -1,20 +1,26 @@
-variable "project_id" {}
-variable "domain" {}
-variable "graphql_service_name" {
-  default = "graphql-api"
+variable "project_id" {
+    description = "Google Cloud Projec ID"
+    type        = string
+}
+variable "domain" {
+    description = "Deployment Domain"
+    type        = string
 }
 variable "region" {
-  default = "europe-west1"
+    description = "Infrastructure Region"
+    default     = "europe-west1"
+    type        = string
 }
-variable "image" {
-    default = "gcr.io/crystallography-io/graphql-api:latest"
+variable "service_name_graphql" {
+  default = "graphql-api"
 }
 
 // Secret variables
-
 variable "mongo_connection" {
+  description = "Connection string to MongoDB"
+  type        = string
+  sensitive   = true
 }
-
 
 terraform {
     required_version = ">= 0.14"
@@ -37,7 +43,7 @@ resource "google_project_service" "run_api" {
 
 # Create the Cloud Run service
 resource "google_cloud_run_service" "run_service" {
-    name = var.graphql_service_name
+    name = var.service_name_graphql
     location = var.region
     autogenerate_revision_name = true
 
@@ -89,7 +95,7 @@ resource "google_cloud_run_domain_mapping" "run_service" {
 
 # WORKAROUND
 data "external" "image_digest" {
-  program = ["bash", "get_latest_tag.sh", var.project_id, var.graphql_service_name]
+  program = ["bash", "get_latest_tag.sh", var.project_id, var.service_name_graphql]
 }
 # END WORKAROUND
 
