@@ -45,6 +45,10 @@ Supported platforms:
 ```bash
 terraform init
 ```
+```bash
+export TF_VAR_mongo_connection=mongodb://localhost:27017
+```
+
  * Plan terraform changes
 ```bash
 terraform plan

@@ -1,13 +1,20 @@
 variable "project_id" {}
 variable "domain" {}
-variable "graphql_service_name" {}
-variable "region" {
-    default = "europe-west1"
+variable "graphql_service_name" {
+  default = "graphql-api"
 }
-
+variable "region" {
+  default = "europe-west1"
+}
 variable "image" {
     default = "gcr.io/crystallography-io/graphql-api:latest"
 }
+
+// Secret variables
+
+variable "mongo_connection" {
+}
+
 
 terraform {
     required_version = ">= 0.14"
@@ -42,6 +49,10 @@ resource "google_cloud_run_service" "run_service" {
         spec {
             containers {
                 image = data.external.image_digest.result.image
+                env {
+                    name = "MONGO_CONNECTION"
+                    value = var.mongo_connection
+                }
             }
         }
     }
