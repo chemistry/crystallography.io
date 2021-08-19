@@ -1,0 +1,36 @@
+name: Deploy To Cloud
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/cloud-containers/**'
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            ref: master
+            fetch-depth: 2
+
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+            version: '275.0.0'
+            service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
+            ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+            ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+
+      - name: Check Google Cloud
+        run: gcloud info && gcloud auth configure-docker -q
+
+      - name: Reset to master
+        run: git checkout master && git reset --hard
+
+      - name: Build & Push Changed Cloud Images
+        run: npm run build_push_cloud

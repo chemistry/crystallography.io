@@ -22,9 +22,9 @@
     },
     "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/cloud-containers/graphql-api",
     "scripts": {
-        "build_push": "./build_push.sh",
         "build": "rimraf dist/* && tsc",
         "start": "node dist/index.js",
+        "build_push_cloud": "./build_push.sh",
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts"
     },
     "dependencies": {
