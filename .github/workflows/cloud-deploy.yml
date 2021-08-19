@@ -20,11 +20,9 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@master
         with:
-            version: '275.0.0'
-            service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-            service_account_key: ${{ secrets.GCP_SA_KEY }}
-            ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-            ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+            project_id: ${{ secrets.GCP_PROJECT_ID_CLOUD }}
+            service_account_key: ${{ secrets.GCP_SA_KEY_CLOUD }}
+            export_default_credentials: true
 
       - name: Check Google Cloud
         run: gcloud info && gcloud auth configure-docker -q
@@ -34,3 +32,27 @@ jobs:
 
       - name: Build & Push Changed Cloud Images
         run: npm run build_push_cloud
+
+      - name: Get latest Terraform start
+        run: gsutil cp gs://artifacts.crystallography.io/terraform.tfstate terraform.tfstate
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Plan
+        run: terraform plan
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Store new cluster state
+        run: gsutil cp ./terraform.tfstate gs://artifacts.crystallography.io/terraform.tfstate

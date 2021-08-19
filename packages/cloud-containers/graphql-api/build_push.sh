@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build -t docker push gcr.io/crystallography-io/graphql-api . && docker push gcr.io/crystallography-io/graphql-api
+docker build -t gcr.io/crystallography-io/graphql-api . && docker push gcr.io/crystallography-io/graphql-api

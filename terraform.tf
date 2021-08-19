@@ -12,14 +12,15 @@ variable "region" {
     type        = string
 }
 variable "service_name_graphql" {
-  default = "graphql-api"
+  default       = "graphql-api"
 }
 
 // Secret variables
 variable "mongo_connection" {
-  description = "Connection string to MongoDB"
-  type        = string
-  sensitive   = true
+  description   = "Connection string to MongoDB"
+  default       = ""
+  type          = string
+  sensitive     = true
 }
 
 terraform {
