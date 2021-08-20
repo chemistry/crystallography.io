@@ -187,37 +187,6 @@ services:
         depends_on:
           - mongo
 
-    graphql:
-        image: 'gcr.io/crystallography-api/crystallography-io-graphql-api:latest'
-        restart: always
-        build:
-            context: ./packages/containers/c14-graphql-api
-            dockerfile: Dockerfile
-        networks:
-          - net
-          - traefik-public
-        env_file:
-          - ./.env
-        environment:
-          - PORT=8070
-        deploy:
-            update_config:
-                order: start-first
-                failure_action: rollback
-                delay: 10s
-            labels:
-                - traefik.enable=true
-                - traefik.docker.network=traefik-public
-                - traefik.constraint-label=traefik-public
-                - traefik.http.routers.graphql-https.rule=(Host(`crystallography.io`) && PathPrefix(`/graphql`))
-                - traefik.http.routers.graphql-https.priority=30
-                - traefik.http.routers.graphql-https.entrypoints=https
-                - traefik.http.routers.graphql-https.tls=true
-                - traefik.http.routers.graphql-https.tls.certresolver=le
-                - traefik.http.services.graphql.loadbalancer.server.port=4000
-        depends_on:
-          - mongo
-
     searchrouter:
         image: 'gcr.io/crystallography-api/search-router:latest'
         restart: always
