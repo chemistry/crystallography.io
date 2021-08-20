@@ -16,9 +16,8 @@ variable "service_name_graphql" {
 }
 
 // Secret variables
-variable "mongo_connection" {
+variable "MONGO_CONNECTION" {
   description   = "Connection string to MongoDB"
-  default       = ""
   type          = string
   sensitive     = true
 }
@@ -58,7 +57,7 @@ resource "google_cloud_run_service" "run_service" {
                 image = data.external.image_digest.result.image
                 env {
                     name = "MONGO_CONNECTION"
-                    value = var.mongo_connection
+                    value = var.MONGO_CONNECTION
                 }
             }
         }

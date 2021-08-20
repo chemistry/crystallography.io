@@ -48,11 +48,13 @@ jobs:
         run: terraform plan
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          TF_VAR_MONGO_CONNECTION: ${{ secrets.MONGO_CONNECTION }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          TF_VAR_MONGO_CONNECTION: ${{ secrets.MONGO_CONNECTION }}
 
       - name: Store new cluster state
         run: gsutil cp ./terraform.tfstate gs://artifacts.crystallography.io/terraform.tfstate

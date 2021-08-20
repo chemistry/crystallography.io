@@ -46,7 +46,7 @@ const usePort = ()=> {
         // tslint:disable-next-line
         console.time("App Start");
 
-        const context = {}; // await useContext();
+        const context = await useContext();
         const server = new ApolloServer({ typeDefs, context, resolvers });
 
         const { url } = await server.listen({

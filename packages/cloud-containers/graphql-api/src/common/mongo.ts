@@ -2,29 +2,28 @@ import { MongoClient } from "mongodb";
 
 export const useMongo = async () => {
     const {
-      MONGO_INITDB_ROOT_USERNAME,
-      MONGO_INITDB_ROOT_PASSWORD,
-      MONGO_INITDB_HOST
+      MONGO_CONNECTION
     }  = process.env;
 
+    const start = new Date().getTime();
 
-    let connectionString = `mongodb://${MONGO_INITDB_HOST}`;
-    if (MONGO_INITDB_ROOT_USERNAME && MONGO_INITDB_ROOT_PASSWORD) {
-        connectionString  = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_INITDB_HOST}:27017`;
-    }
-
-    const mongoClient = await MongoClient.connect(connectionString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
+    const mongoClient = await MongoClient.connect(MONGO_CONNECTION, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     });
 
+    const end = new Date().getTime();
+
+   // tslint:disable-next-line
+   console.log(`Connected to MongoDB in ${end - start} ms`);
+
     const close = ()=> {
-        return mongoClient.close();
+      return mongoClient.close();
     }
     const db = mongoClient.db("crystallography");
 
     process.on('SIGTERM', () => {
-        mongoClient.close();
+      mongoClient.close();
     });
 
     return { db, close };
