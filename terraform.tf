@@ -3,7 +3,11 @@ variable "project_id" {
     type        = string
 }
 variable "domain" {
-    description = "Deployment Domain"
+    description = "Deployment GraphQL Domain"
+    type        = string
+}
+variable "webdomain" {
+    description = "Deployment Web Domain"
     type        = string
 }
 variable "region" {
@@ -12,7 +16,10 @@ variable "region" {
     type        = string
 }
 variable "service_name_graphql" {
-  default       = "graphql-api"
+    default     = "graphql-api"
+}
+variable "service_name_web" {
+    default     = "web"
 }
 
 // Secret variables
@@ -21,6 +28,15 @@ variable "MONGO_CONNECTION" {
   type          = string
   sensitive     = true
 }
+
+# WORKAROUND - get latest image
+data "external" "graphql_api_service_image_digest" {
+  program = ["bash", "get_latest_tag.sh", var.project_id, var.service_name_graphql]
+}
+data "external" "web_service_image_digest" {
+  program = ["bash", "get_latest_tag.sh", var.project_id, var.service_name_web]
+}
+# END WORKAROUND
 
 terraform {
     required_version = ">= 0.14"
@@ -40,9 +56,8 @@ resource "google_project_service" "run_api" {
     service = "run.googleapis.com"
     disable_on_destroy = true
 }
-
-# Create the Cloud Run service
-resource "google_cloud_run_service" "run_service" {
+# -----------------------------BEGIN: GraphQL Service --------------------------------#
+resource "google_cloud_run_service" "graphql_api_service" {
     name = var.service_name_graphql
     location = var.region
     autogenerate_revision_name = true
@@ -54,7 +69,7 @@ resource "google_cloud_run_service" "run_service" {
     template {
         spec {
             containers {
-                image = data.external.image_digest.result.image
+                image = data.external.graphql_api_service_image_digest.result.image
                 env {
                     name = "MONGO_CONNECTION"
                     value = var.MONGO_CONNECTION
@@ -74,13 +89,14 @@ resource "google_cloud_run_service" "run_service" {
 
 # Allow unauthenticated users to invoke the service
 resource "google_cloud_run_service_iam_member" "run_all_users" {
-    service  = google_cloud_run_service.run_service.name
-    location = google_cloud_run_service.run_service.location
+    service  = google_cloud_run_service.graphql_api_service.name
+    location = google_cloud_run_service.graphql_api_service.location
     role     = "roles/run.invoker"
     member   = "allUsers"
 }
 
-resource "google_cloud_run_domain_mapping" "run_service" {
+# Add host mapping
+resource "google_cloud_run_domain_mapping" "graphql_api_service" {
     location = var.region
     name     = var.domain
 
@@ -89,17 +105,59 @@ resource "google_cloud_run_domain_mapping" "run_service" {
     }
 
     spec {
-        route_name = google_cloud_run_service.run_service.name
+        route_name = google_cloud_run_service.graphql_api_service.name
+    }
+}
+# -----------------------------END: GraphQL Service --------------------------------#
+# -----------------------------BEGIN: WEB Service --------------------------------#
+
+resource "google_cloud_run_service" "web_service" {
+    name = var.service_name_web
+    location = var.region
+    autogenerate_revision_name = true
+
+    metadata {
+        namespace = var.project_id
+    }
+
+    template {
+        spec {
+            containers {
+              image = data.external.web_service_image_digest.result.image
+            }
+        }
+    }
+
+    traffic {
+        percent         = 100
+        latest_revision = true
     }
 }
 
-# WORKAROUND
-data "external" "image_digest" {
-  program = ["bash", "get_latest_tag.sh", var.project_id, var.service_name_graphql]
+# Allow unauthenticated users to invoke the service
+resource "google_cloud_run_service_iam_member" "run_web_service_for_all_users" {
+    service  = google_cloud_run_service.web_service.name
+    location = google_cloud_run_service.web_service.location
+    role     = "roles/run.invoker"
+    member   = "allUsers"
 }
-# END WORKAROUND
+
+# Add host mapping
+resource "google_cloud_run_domain_mapping" "web_service" {
+    location = var.region
+    name     = var.webdomain
+
+    metadata {
+        namespace = var.project_id
+    }
+
+    spec {
+        route_name = google_cloud_run_service.web_service.name
+    }
+}
+# -----------------------------END: WEB Service --------------------------------#
 
 # Display the service URL
 output "service_url" {
-    value = google_cloud_run_service.run_service.status[0].url
+    value = google_cloud_run_service.graphql_api_service.status[0].url
 }

@@ -28,6 +28,6 @@ COPY package*.json ./
 ENV NODE_ENV=production
 RUN npm install
 
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/.next ./.next
 
 CMD [ "/bin/sh", "/app/start-script.sh"]
