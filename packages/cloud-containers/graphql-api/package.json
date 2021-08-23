@@ -28,9 +28,9 @@
         "nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts"
     },
     "dependencies": {
-        "apollo-server": "3.1.2",
-        "graphql": "15.5.1",
-        "mongodb": "3.6.3"
+      "apollo-server": "3.1.2",
+      "graphql": "15.5.1",
+      "mongodb": "3.6.3"
     },
     "devDependencies": {
       "@types/node": "14.14.6",
