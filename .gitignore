@@ -8,6 +8,7 @@ docs
 TODO
 credentials.json
 credentials.base64.json
+.next
 dist/
 lib/
 .terraform/
