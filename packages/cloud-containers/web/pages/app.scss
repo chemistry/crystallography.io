@@ -1,0 +1,366 @@
+// Import Customized Spectre Styles
+$side-bar-open-width: 272px;
+$side-bar-closed-width: 80px;
+$header-nav-height: 96px;
+$mobile-navigation-height: 56px;
+
+@import '../styles/main.scss';
+@import '../styles/spectre-icons.scss';
+
+
+body, html, #root, .app {
+  min-height: 100%;
+  max-height: 100% !important;
+  height: 100%;
+}
+
+// Main Layout
+#root {
+  position: relative;
+}
+
+//#------------------------------------------------------------------------------#
+// Main Application Layout
+//#------------------------------------------------------------------------------#
+
+.app {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  &-navigation {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    transition: width 0.5s ease;
+    width: $side-bar-closed-width;
+    overflow: hidden;
+  }
+
+  &.is-open-navigation &-navigation {
+    width: $side-bar-open-width;
+  }
+
+  &-collapse-button {
+    position: absolute;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    transition: left 0.5s ease, transform 0.5s ease;
+    left: $side-bar-closed-width - 12px;
+    top: 64px;
+    z-index: 2;
+  }
+
+  &.is-open-navigation &-collapse-button {
+    left: $side-bar-open-width - 12px;
+    transform:  rotate(-180deg);
+  }
+
+  &-layout {
+    position: absolute;
+    left: 0;
+    transform: translateX($side-bar-closed-width);
+    top: 0;
+    right: $side-bar-closed-width;
+    bottom: 0;
+    background: var(--background-color);
+    transition: left 0.5s ease;
+
+    &-header {
+      width: 100%;
+      height: $header-nav-height;
+      min-height: $header-nav-height;
+      background: var(--white-color);
+      padding: 2rem;
+      border-bottom: 1px solid var(--light-grey-color);
+      overflow: hidden;
+    }
+
+    &-content {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        top: $header-nav-height;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: 1rem;
+    }
+
+    &-page {
+      display: block;
+      max-width: 950px;
+      background: var(--white-color);
+      border: 1px solid var(--clear-grey-color);
+      border-radius: 8px;
+      min-height: 100%;
+      padding: 1.5rem;
+    }
+    &-page-transparent {
+        display: block;
+        max-width: 950px;
+        min-height: 100%;
+        padding: 1.5rem;
+    }
+  }
+
+  &.is-open-navigation &-layout {
+    left: $side-bar-open-width - $side-bar-closed-width;
+  }
+
+  &-mobile-navigation {
+    display: none;
+  }
+
+  .app-navigation-menu-layout {
+    display: block;
+  }
+}
+
+// Mobile Layout
+@media screen and (max-width: 480px) {
+    .app {
+        &-mobile-navigation {
+          display: block;
+          z-index: 1;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          width: 100%;
+          height: $mobile-navigation-height;
+          min-height: $mobile-navigation-height;
+          background: var(--primary-color);
+
+          &-icon {
+            display: block;
+            float: left;
+            padding: 1rem;
+            cursor: pointer;
+          }
+          &-logo {
+            display: block;
+            float: left;
+            padding: 0.75rem 0;
+          }
+          &:after {
+            @include clearfix();
+          }
+        }
+         &-navigation {
+           display: none;
+         }
+         &-collapse-button {
+           display: none;
+         }
+         &-layout {
+           top: $mobile-navigation-height;
+           left: 0;
+           right: 0;
+           transform: translateX(0);
+           transition: none;
+           h2 {
+             margin-bottom: 0;
+           }
+         }
+         &.is-open-navigation &-layout {
+           left: 0;
+         }
+
+         &-layout-header {
+           padding: 0 1rem;
+         }
+    }
+
+    // Menu for mobile
+    .app {
+
+      &-navigation-menu {
+          display: none;
+          z-index: 5;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: $side-bar-open-width;
+          background: var(--primary-color);
+      }
+
+      &.is-open-navigation &-navigation-menu {
+        display: block;
+      }
+
+      &.is-open-navigation .app-navigation-menu-layout {
+        cursor: pointer;
+        display: block;
+        z-index: 4;
+        background: rgba(55, 56, 56, 0.7);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+      }
+    }
+}
+
+//#------------------------------------------------------------------------------#
+// Application navigation
+//#------------------------------------------------------------------------------#
+
+.app-navigation {
+  background: var(--primary-color);
+
+  &-header {
+    height: $header-nav-height;
+    min-height: $header-nav-height;
+
+    &-logo {
+      display: block;
+      width: 100%;
+      margin-top: 2rem;
+      overflow: hidden;
+      height: 40px;
+      padding: 0 20px;
+    }
+
+    &__logo-icon {
+      display: block;
+      float: left;
+    }
+    &__logo-title {
+      display: block;
+      float: left;
+      line-height: 40px;
+      padding-left: 0.75rem;
+      vertical-align: middle;
+      svg {
+        position: relative;
+        top: 5px;
+      }
+    }
+    &-menu-top {
+      margin-top: 1.5rem;
+    }
+    &-menu-bottom {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+}
+
+//#------------------------------------------------------------------------------#
+// Application Mobile Menu
+//#------------------------------------------------------------------------------#
+
+.app-mobile-menu {
+  display: block;
+  width: 100%;
+  height: $mobile-navigation-height;
+  min-height: $mobile-navigation-height;
+
+  &-header {
+    display: block;
+    width: 100%;
+    &::after {
+      clear: both;
+      content: "";
+      display: table;
+    }
+  }
+  &-icon {
+    display: block;
+    float: left;
+    cursor: pointer;
+    padding: 1rem;
+    margin: 4px;
+  }
+  &-logo {
+    display: block;
+    color: var(--white-color);
+    float: left;
+    line-height: 56px;
+  }
+
+
+  &-content-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+.nav-menu {
+
+  &-list {
+    list-style: none;
+    &, li {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      min-height: 3rem;
+      margin: 0.25rem 1rem;
+      overflow: hidden;
+    }
+  }
+
+  &-item {
+    display: block;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.7;
+
+    &, &:visited, &:focus, &:hover, &:active {
+      color: var(--white-color);
+    }
+
+    border-radius: 4px;
+    &:focus, &:hover, &:active, &.active {
+      opacity: 1;
+      background: rgba(66, 133, 244, 0.08);
+    }
+
+    &__icon, &__title {
+      display: inline-block;
+    }
+    &__icon {
+      width: 3rem;
+      text-align: center;
+      svg {
+        position: relative;
+        top: 0.5rem;
+      }
+    }
+    &__title {
+      padding-left: 0.25rem;
+      vertical-align: middle;
+    }
+  }
+
+
+/*
+      & { opacity: 0.65; }
+      &, &:hover, &:active, &:focus, &.active, &:visited {
+        color: var(--white-color);
+        text-decoration: none;
+        outline: none;
+        box-shadow: none;
+      }
+      &:hover, &:active,  &.active {
+        opacity: 1;
+        background-color: var(--additional-color);
+      }
+      &.active {
+        opacity: 1;
+      }
+  }
+*/
+}

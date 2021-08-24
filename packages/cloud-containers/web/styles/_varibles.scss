@@ -1,0 +1,148 @@
+// Core variables
+$version: "0.5.8";
+
+// Core features
+$rtl: false !default;
+
+// Main Colors
+$primary-color: #0C3C65;
+$secondary-color: #FB9B2B;
+$additional-color: #658DC6;
+
+// Main Opacity
+$primary-opacity-color: rgba($primary-color, .86);
+$secondary-opacity-color: rgba($secondary-color, 0.86);
+$additional-opacity-color: rgba($additional-color, 0.86);
+
+// Basic Colors
+$black-color: #373838;
+$white-color: #ffffff;
+
+// Grey
+$dark-grey-color: #7F8FA4;
+$grey-color: #B8C0CC;
+$light-grey-color: #DCE6F5;
+$clear-grey-color: #EFF3F9;
+$grey-background-color: #F5F6F7;
+
+// $border-color: $light-grey-color;
+
+// Information Colors
+$default-color: #DCE6F5;
+$active-color: #4285F4;
+$success-color: #32B85F;
+$warning-color: #EDAD3E;
+$error-color: #DB433D;
+
+// Information background
+$default-background-color: rgba($default-color, 0.26);
+$active-background-color: rgba($active-color, 0.26);
+$success-background-color: rgba($success-color, 0.26);
+$warning-background-color: rgba($warning-color, 0.26);
+$error-background-color: rgba($error-color, 0.26);
+$additional-background-color: rgba($additional-color, 0.26);
+
+// Overlay Colors
+$overlay-30-color: rgba(9, 18, 43, 0.3);
+$overlay-50-color: rgba(55, 56, 56, 0.5);
+$overlay-70-color: rgba(55, 56, 56, 0.7);
+
+// Additional Colors
+$orange-color: #f68136;
+$purple-color: #aa3af3;
+
+// Other colors
+$link-color: $active-color;
+
+// Unit sizes
+$unit-o: .05rem !default;
+$unit-h: .1rem !default;
+$unit-1: .2rem !default;
+$unit-2: .4rem !default;
+$unit-3: .6rem !default;
+$unit-4: .8rem !default;
+$unit-5: 1rem !default;
+$unit-6: 1.2rem !default;
+$unit-7: 1.4rem !default;
+$unit-8: 1.6rem !default;
+$unit-9: 1.8rem !default;
+$unit-10: 2rem !default;
+$unit-12: 2.4rem !default;
+$unit-16: 3.2rem !default;
+
+// Responsive breakpoints
+$size-xs: 480px !default;
+$size-sm: 600px !default;
+$size-md: 840px !default;
+$size-lg: 960px !default;
+$size-xl: 1280px !default;
+$size-2x: 1440px !default;
+
+$layout-spacing: $unit-2 !default;
+$layout-spacing-sm: $unit-1 !default;
+$layout-spacing-lg: $unit-4 !default;
+
+// Fonts
+// Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
+$main-font-family: "Roboto", "Ubuntu" !default;
+$mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", "Menlo", "Courier", monospace !default;
+$fallback-font-family: "Arial", "Helvetica Neue", "sans-serif" !default;
+
+// Font sizes
+$base-font-family: $main-font-family, $fallback-font-family !default;
+$base-font-size: 16px !default;
+$base-line-heigh: 1.4;
+
+$border-radius: 8px;
+$border-width: 1px;
+
+
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --additional-color: #{$additional-color};
+
+  --primary-opacity-color: #{$primary-opacity-color};
+  --secondary-opacity-color: #{$secondary-opacity-color};
+  --additional-opacity-color: #{$additional-opacity-color};
+
+  --black-color: #{$black-color};
+  --white-color: #{$white-color};
+
+  --dark-grey-color: #{$dark-grey-color};
+  --grey-color: #{$grey-color};
+  --light-grey-color: #{$light-grey-color};
+  --clear-grey-color: #{$clear-grey-color};
+  --grey-background-color: #{$grey-background-color};
+  --background-color: #{$grey-background-color};
+
+  --default-color: #{$default-color};
+  --active-color: #{$active-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --error-color: #{$error-color};
+
+  --default-background-color: #{$default-background-color};
+  --active-background-color: #{$active-background-color};
+  --success-background-color: #{$success-background-color};
+  --warning-background-color: #{$warning-background-color};
+  --error-background-color: #{$error-background-color};
+  --additional-background-color: #{$additional-background-color};
+
+
+  --overlay-30-color: #{$overlay-30-color};
+  --overlay-70-color: #{$overlay-70-color};
+
+  --orange-color: #{$orange-color};
+  --purple-color: #{$purple-color};
+
+  --link-color: #{$link-color};
+
+  --base-font-size: #{$base-font-size};
+  --base-font-color: #{$black-color};
+  --base-font-family: #{$base-font-family};
+  --base-line-heigh: #{$base-line-heigh};
+
+  --border-radius: #{$border-radius};
+  --border-width: #{$border-width};
+}

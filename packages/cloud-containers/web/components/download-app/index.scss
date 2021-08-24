@@ -1,0 +1,26 @@
+.c-download-application  {
+    position: absolute;
+    cursor: pointer;
+    user-select: none;
+    background: var(--primary-color);
+    opacity: 1;
+    color: white;
+    bottom: 25px;
+    left: 650px;
+    padding: 1rem;
+
+    &-icon, &-message {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    &-message {
+        line-height: 40px;
+        vertical-align: middle;
+        padding: 0 0.5rem;
+    }
+    &-close {
+        position: absolute;
+        top: 5px;
+        right: 9px;
+    }
+}

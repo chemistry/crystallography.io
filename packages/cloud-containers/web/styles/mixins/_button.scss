@@ -1,0 +1,54 @@
+// Button variant mixin
+@mixin button-variant($color: $primary-color) {
+  background: $color;
+  border-color: darken($color, 3%);
+  color: var(--white-color);
+  &:focus {
+    @include control-shadow($color);
+  }
+  &:focus,
+  &:hover {
+    background: darken($color, 2%);
+    border-color: darken($color, 5%);
+    color: var(--white-color);
+  }
+  &:active,
+  &.active {
+    background: darken($color, 7%);
+    border-color: darken($color, 10%);
+    color: var(--white-color);
+  }
+  &.loading {
+    &::after {
+      border-bottom-color: var(--white-color);
+      border-left-color: var(--white-color);
+    }
+  }
+}
+
+@mixin button-outline-variant($color: $primary-color) {
+  background: var(--white-color);
+  border-color: $color;
+  color: $color;
+  &:focus {
+    @include control-shadow($color);
+  }
+  &:focus,
+  &:hover {
+    background: lighten($color, 50%);
+    border-color: darken($color, 2%);
+    color: $color;
+  }
+  &:active,
+  &.active {
+    background: $color;
+    border-color: darken($color, 5%);
+    color: var(--white-color);
+  }
+  &.loading {
+    &::after {
+      border-bottom-color: $color;
+      border-left-color: $color;
+    }
+  }
+}
