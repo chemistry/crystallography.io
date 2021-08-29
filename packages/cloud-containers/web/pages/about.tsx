@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from 'next/link';
 
 export default function AboutPage() {
   return (
@@ -28,7 +29,7 @@ export default function AboutPage() {
                 emerging community.</p>
               <p>If you are interested in cooperation or just would express
                 your vision regarding the development of the project, please,
-                do not hesitate to contact us.
+                do not hesitate to <Link href="/contact"><a>contact us</a></Link>;.
               </p>
           </div>
         </div>
