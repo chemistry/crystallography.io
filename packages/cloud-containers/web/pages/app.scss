@@ -344,23 +344,4 @@ body, html, #root, .app {
       vertical-align: middle;
     }
   }
-
-
-/*
-      & { opacity: 0.65; }
-      &, &:hover, &:active, &:focus, &.active, &:visited {
-        color: var(--white-color);
-        text-decoration: none;
-        outline: none;
-        box-shadow: none;
-      }
-      &:hover, &:active,  &.active {
-        opacity: 1;
-        background-color: var(--additional-color);
-      }
-      &.active {
-        opacity: 1;
-      }
-  }
-*/
 }
