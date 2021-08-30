@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server';
 import { Context } from './context';
+import { getStructures } from './services/structures';
 
 export const typeDefs = gql`
   type CatalogItem {
@@ -49,6 +50,7 @@ export const typeDefs = gql`
   type Query {
     catalogById(id:ID!): CatalogItem
     structureById(id:ID): Structure
+    structures(page: Int!): [Structure]
   }
 `;
 
@@ -59,6 +61,9 @@ export const resolvers = {
     },
     structureById: async (_parent: any, {id}: {id: string }, {db}: Context) => {
       return await db.collection('structures').findOne({_id: parseInt(id, 10)});
+    },
+    structures: async (_parent: any, {page}: { page: string }, {db}: Context) => {
+      return await getStructures({page}, {db});
     },
   }
 };
