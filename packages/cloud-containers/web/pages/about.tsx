@@ -1,7 +1,6 @@
-import * as React from "react";
 import Link from 'next/link';
 
-export default function AboutPage() {
+const AboutPage = () => {
   return (
     <div>
         <header className="app-layout-header">
@@ -36,3 +35,5 @@ export default function AboutPage() {
     </div>
   );
 };
+
+export default AboutPage;

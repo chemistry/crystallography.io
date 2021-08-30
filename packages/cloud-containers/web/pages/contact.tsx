@@ -1,4 +1,4 @@
-export default function ContactsPage() {
+const ContactsPage = () => {
   return (
       <div>
           <header className="app-layout-header">
@@ -19,3 +19,5 @@ export default function ContactsPage() {
       </div>
   );
 };
+
+export default ContactsPage;

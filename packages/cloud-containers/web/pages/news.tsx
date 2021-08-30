@@ -1,5 +1,4 @@
-
-export default function NewsPage() {
+const NewsPage = () => {
   return (
       <div>
           <header className="app-layout-header">
@@ -156,3 +155,5 @@ export default function NewsPage() {
       </div>
   );
 };
+
+export default NewsPage;
