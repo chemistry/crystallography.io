@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "version": "",
+  "name": "@chemistry/c14-web-app-api-fn",
+  "version": "0.0.18",
   "scripts": {
     "build": "tsc",
     "build:production": "npm run prestart && npm prune --production",
