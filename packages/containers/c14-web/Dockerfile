@@ -7,6 +7,7 @@ RUN apk update && apk --no-cache add curl && apk add --no-cache python2 make g++
     rm -rf /var/cache/apk/*
 ENV PKG_CONFIG_PATH=/usr/lib/pkgcon
 
+
 # setup packages
 COPY package*.json ./
 RUN npm install
