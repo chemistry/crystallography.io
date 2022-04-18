@@ -21,7 +21,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/chemistry/crystallography-api"
+        "url": "https://github.com/chemistry/crystallography.io.git"
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"

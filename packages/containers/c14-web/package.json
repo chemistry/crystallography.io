@@ -19,7 +19,7 @@
     "devEngines": {
       "node": ">=16.0.0"
     },
-    "repository": "https://github.com/chemistry/crystallography-api/tree/master/packages/containers/c14-web",
+    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/c14-web",
     "scripts": {
         "deploy": "./deploy.sh",
         "build_push": "./build_push.sh",
