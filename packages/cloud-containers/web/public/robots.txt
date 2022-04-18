@@ -1,6 +1,0 @@
-User-agent: *
-
-Disallow: /cif/
-
-Sitemap: https://crystallography.io/sitemap.xml
-
