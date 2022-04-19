@@ -29,7 +29,7 @@ jobs: # Jobs List
         with:
           version: '298.0.0'
         env:
-          CLOUDSDK_PYTHON: python3
+          CLOUDSDK_PYTHON: python2
 
       - name: Check Google Cloud
         run: gcloud info && gcloud auth configure-docker -q
