@@ -19,13 +19,13 @@ jobs: # Jobs List
             ref: master
             fetch-depth: 2
 
-      - uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Setup auth'
+        uses: 'google-github-actions/auth@v0'
         with:
-            version: '275.0.0'
-            service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-            service_account_key: ${{ secrets.GCP_SA_KEY }}
-            ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-            ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
 
       - name: Check Google Cloud
         run: gcloud info && gcloud auth configure-docker -q
