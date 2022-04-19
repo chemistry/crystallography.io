@@ -27,7 +27,7 @@ jobs: # Jobs List
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
         with:
-          version: 'latest'
+          version: '298.0.0'
         env:
           CLOUDSDK_PYTHON: python3
 
