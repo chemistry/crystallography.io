@@ -26,6 +26,10 @@ jobs: # Jobs List
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
+        with:
+          version: 'latest'
+        env:
+          CLOUDSDK_PYTHON: python3
 
       - name: Check Google Cloud
         run: gcloud info && gcloud auth configure-docker -q
