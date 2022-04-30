@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 
 Open API for accessing COD+ database [crystallography.io](https://crystallography.io/)
+
 ## Commands
 
 Build Container
@@ -11,7 +12,6 @@ Build Container
 ```bash
 docker build -t gcr.io/crystallography-api/crystallography-io-api .
 ```
-
 
 Setting up cred environment variable
 

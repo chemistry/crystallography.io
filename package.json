@@ -33,6 +33,7 @@
         "build": "lerna run build",
         "start": "lerna run start:dev --parallel --stream",
         "app:build": "lerna run app:build",
+        "cypress:open": "cypress open",
         "check": "export GOOGLE_APPLICATION_CREDENTIALS='/home/vreshch/projects/crystallography-api/credentials.json' && lerna run check",
         "deploy": "GIT_PREVIOUS_COMMIT=$(git rev-parse --short 'HEAD^') && lerna run --since $GIT_PREVIOUS_COMMIT deploy",
         "build_push": "GIT_PREVIOUS_COMMIT=$(git rev-parse --short 'HEAD^') && lerna run --since $GIT_PREVIOUS_COMMIT build_push",
@@ -49,6 +50,7 @@
     "devDependencies": {
         "@types/jest": "26.0.15",
         "@types/node": "14.14.2",
+        "cypress": "9.6.0",
         "codecov": "3.8.0",
         "jest": "26.6.0",
         "lerna": "3.22.1",
