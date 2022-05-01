@@ -78,7 +78,7 @@ const searchResultsSlice = createSlice({
             payload.data.forEach((element: any) => {
                 structures[element.id] = element.attributes;
             });
-            state.data.structureById = structures;
+            state.data.structureById = { ...structures, ...state.data.structureById };
             state.data.structureIds = state.data.structureIds;
         },
         searchResultsFailed(state, action) {
@@ -150,7 +150,7 @@ export const updateSearchResults = (data: SearchByStructureResponse): AppThunk =
         const res2 = await response2.json();
         const data2 = res2.data;
 
-        dispatch(loadStructureListSuccess(data2));
+        dispatch(loadStructureListSuccess({ data: data2 }));
     }
 }
 
