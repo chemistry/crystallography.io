@@ -61,7 +61,7 @@ services:
           - ./.env
 
     structure-to-index:
-        image: 'gcr.io/crystallography-api/structure-to-index:latest'
+        image: 'gcr.io/crystallography-io/structure-to-index:latest'
         restart: always
         build:
             context: ./packages/containers/structure-to-index
@@ -78,7 +78,7 @@ services:
           - mongo
 
     disk-to-db:
-        image: 'gcr.io/crystallography-api/disk-to-db:latest'
+        image: 'gcr.io/crystallography-io/disk-to-db:latest'
         restart: always
         volumes:
           - cod-data:/home/data
@@ -97,7 +97,7 @@ services:
           - mongo
 
     maintenance:
-        image: 'gcr.io/crystallography-api/maintenance:latest'
+        image: 'gcr.io/crystallography-io/maintenance:latest'
         restart: always
         build:
             context: ./packages/containers/maintenance
@@ -110,7 +110,7 @@ services:
           - mongo
 
     cod-to-disk:
-        image: 'gcr.io/crystallography-api/cod-to-disk:latest'
+        image: 'gcr.io/crystallography-io/cod-to-disk:latest'
         restart: always
         volumes:
           - cod-data:/home/data
@@ -123,7 +123,7 @@ services:
           - rabbitmq
 
     web:
-        image: 'gcr.io/crystallography-api/c14-web:latest'
+        image: 'gcr.io/crystallography-io/c14-web:latest'
         restart: always
         build:
             context: ./packages/containers/c14-web
@@ -155,7 +155,7 @@ services:
                 - traefik.http.services.web.loadbalancer.server.port=8060
 
     api:
-        image: 'gcr.io/crystallography-api/crystallography-io-api:latest'
+        image: 'gcr.io/crystallography-io/crystallography-io-api:latest'
         restart: always
         volumes:
           - cod-data:/home/data
@@ -188,7 +188,7 @@ services:
           - mongo
 
     searchrouter:
-        image: 'gcr.io/crystallography-api/search-router:latest'
+        image: 'gcr.io/crystallography-io/search-router:latest'
         restart: always
         build:
             context: ./packages/containers/searchrouter
@@ -220,7 +220,7 @@ services:
                 - traefik.http.services.search.loadbalancer.server.port=8050
 
     searchworker:
-        image: 'gcr.io/crystallography-api/searchworker:latest'
+        image: 'gcr.io/crystallography-io/searchworker:latest'
         restart: always
         build:
             context: ./packages/containers/searchworker

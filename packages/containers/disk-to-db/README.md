@@ -10,20 +10,20 @@ Get updated structures from disk and store to MongoDB database
 Build Container
 
 ```bash
-cd ../../../ && docker build -t gcr.io/crystallography-api/cod-to-disk -f packages/containers/disk-to-db/Dockerfile .
+cd ../../../ && docker build -t gcr.io/crystallography-io/cod-to-disk -f packages/containers/disk-to-db/Dockerfile .
 ```
 
 Execute container
 
 ```bash
-docker run --rm --name cod-to-disk gcr.io/crystallography-api/disk-to-db
+docker run --rm --name cod-to-disk gcr.io/crystallography-io/disk-to-db
 ```
 
 Push container to GCP
 
 ```bash
 # gcloud auth configure-docker
-docker push gcr.io/crystallography-api/disk-to-db
+docker push gcr.io/crystallography-io/disk-to-db
 ```
 
 ## Local Commands

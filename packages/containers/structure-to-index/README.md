@@ -10,20 +10,20 @@ Triggered on structure change - update all required indexes
 Build Container
 
 ```bash
-docker build -t gcr.io/crystallography-api/structure-to-index .
+docker build -t gcr.io/crystallography-io/structure-to-index .
 ```
 
 Execute container
 
 ```bash
-docker run --rm --name structure-to-index gcr.io/crystallography-api/structure-to-index
+docker run --rm --name structure-to-index gcr.io/crystallography-io/structure-to-index
 ```
 
 Push container to GCP
 
 ```bash
 # gcloud auth configure-docker
-docker push gcr.io/crystallography-api/structure-to-index
+docker push gcr.io/crystallography-io/structure-to-index
 ```
 
 ## Local Commands
