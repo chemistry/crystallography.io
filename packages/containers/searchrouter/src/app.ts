@@ -37,8 +37,8 @@ export async function startServer({ db, mw, hc } : { db: Db, mw: any, hc: any })
         removeOnSuccess: true,
         removeOnFailure: true,
     });
-    app.use(Sentry.Handlers.requestHandler());
-    app.use(Sentry.Handlers.tracingHandler());
+    app.use(Sentry.Handlers.requestHandler() as any);
+    app.use(Sentry.Handlers.tracingHandler() as any);
 
     app.use("/", hc);
     app.use(mw);
@@ -56,7 +56,7 @@ export async function startServer({ db, mw, hc } : { db: Db, mw: any, hc: any })
     /*-- Express --*/
     await initExpress(app, queue, db);
 
-    app.use(Sentry.Handlers.errorHandler());
+    app.use(Sentry.Handlers.errorHandler() as any);
 
     return server;
 }
