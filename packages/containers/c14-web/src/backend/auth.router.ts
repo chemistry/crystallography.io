@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-// import * as admin from "firebase-admin";
 
-// admin.initializeApp();
 const admin: any  = {
 
 };
