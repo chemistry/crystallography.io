@@ -1,46 +1,38 @@
 {
     "name": "@chemistry/c14-web",
-    "private": true,
     "version": "0.0.18",
+    "private": true,
     "description": "Crystallography Web",
-    "author": {
-      "name": "Volodymyr Vreshch",
-      "url": "http://vreshch.com/"
-    },
-    "license": "MIT",
     "keywords": [
         "Application",
         "crystallography",
         "Git"
     ],
-    "engines": {
-      "node": ">=16.0.0"
-    },
-    "devEngines": {
-      "node": ">=16.0.0"
-    },
     "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/c14-web",
+    "license": "MIT",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
     "scripts": {
-        "deploy": "./deploy.sh",
-        "build_push": "./build_push.sh",
+        "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
         "build:backend": "tsc",
         "build:frontend": "webpack-cli --config webpack.config.js --mode production",
-        "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
-        "start": "node dist/backend/index.js",
+        "build_push": "./build_push.sh",
+        "deploy": "./deploy.sh",
         "serve": "webpack serve --config ./webpack.config.js",
+        "start": "node dist/backend/index.js",
         "start:dev": "npm run serve",
-        "web:serve": "npm run serve",
         "web:build": "npm run build",
-        "web:start": "npm run start",
+        "web:build:frontend": "npm run build:frontend",
         "web:nodemon": "nodemon -e ts -w ./src -x ts-node src/index.ts",
-        "web:build:frontend": "npm run build:frontend"
+        "web:serve": "npm run serve",
+        "web:start": "npm run start"
     },
     "dependencies": {
         "@chemistry/crystalview": "1.0.9",
         "@chemistry/molpad": "2.3.2",
-        "@google-cloud/firestore": "4.4.0",
         "@google-cloud/logging-bunyan": "3.0.1",
-        "@google-cloud/storage": "5.3.0",
         "@reduxjs/toolkit": "1.4.0",
         "@sentry/node": "5.30.0",
         "@sentry/react": "5.30.0",
@@ -60,14 +52,12 @@
         "classnames": "2.2.6",
         "connect-timeout": "1.9.0",
         "cross-env": "7.0.2",
-        "dexie": "3.0.3",
         "express": "4.17.1",
         "firebase": "7.24.0",
-        "firebase-admin": "9.2.0",
         "isomorphic-fetch": "^3.0.0",
         "lodash.escape": "4.0.1",
-        "react": "17.0.0",
-        "react-dom": "17.0.0",
+        "react": "18.1.0",
+        "react-dom": "18.1.0",
         "react-ga": "3.3.0",
         "react-hook-form": "7.12.2",
         "react-redux": "7.2.4",
@@ -89,7 +79,6 @@
         "@types/morgan": "1.9.2",
         "@types/node": "14.14.2",
         "assets-webpack-plugin": "7.1.1",
-        "ts-loader": "8.1.0",
         "copy-webpack-plugin": "9.0.1",
         "css-loader": "6.2.0",
         "file-loader": "6.2.0",
@@ -101,13 +90,20 @@
         "sass-loader": "12.1.0",
         "style-loader": "3.2.1",
         "supertest": "4.0.2",
+        "terser-webpack-plugin": "5.1.4",
+        "ts-loader": "8.1.0",
         "ts-node": "10.1.0",
         "typescript": "4.3.5",
         "url-loader": "4.1.1",
         "webpack": "5.49.0",
         "webpack-cli": "4.7.2",
-        "terser-webpack-plugin": "5.1.4",
         "webpack-dev-server": "3.11.2",
         "webpack-manifest-plugin": "4.0.2"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "devEngines": {
+        "node": ">=16.0.0"
     }
 }
