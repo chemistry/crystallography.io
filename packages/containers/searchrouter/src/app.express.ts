@@ -24,8 +24,8 @@ export async function initExpress(app: Express, queue: any, db: Db) {
     // Connection time out
     app.use(timeout("30s"));
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json() as any);
+    app.use(bodyParser.urlencoded({ extended: true }) as any);
 
     app.get("/ping", (req, res) => {
         res.send("pong");
