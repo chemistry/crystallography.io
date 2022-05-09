@@ -79,7 +79,7 @@ const getMetadata = (routes: any, url: string) => {
   };
 };
 
-export async function startApplication(context: ExpressContext) {
+export const startApplication = async (context: ExpressContext) => {
     const { htmlContent, logger, appFactory, appContext, onAppInit, onAppInitEnd } = context;
     logger.trace('application started');
 

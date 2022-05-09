@@ -1,4 +1,4 @@
-import React, { useState, Children } from 'react';
+import React, { Children } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -23,11 +23,10 @@ const ActiveLink = withRouter( (({ router, children, ...props }: any) => {
 
 
 const Sidebar = ()=> {
-    const [closed, setClosed] = useState(true);
 
     const sidebarClass = classNames({
         "jcw-sidebar": true,
-        "closed": closed,
+        "closed": true,
     });
 
     return (

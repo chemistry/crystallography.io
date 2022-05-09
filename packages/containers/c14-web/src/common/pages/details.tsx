@@ -26,7 +26,7 @@ export const DetailsPage = () => {
     const { id } = useParams() as any;
     const currentId = parseInt(id, 10);
 
-    const HeadComponent: React.SFC = () => {
+    const HeadComponent = () => {
         return (<span>Crystal Structure of <CompoundName model={structure} /></span>);
     };
 
