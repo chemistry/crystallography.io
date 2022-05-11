@@ -176,15 +176,15 @@ services:
                 - traefik.enable=true
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
-                - traefik.http.routers.web-http.rule=Host(`qa.crystallography.io`)
-                - traefik.http.routers.web-http.entrypoints=http
-                - traefik.http.routers.web-http.middlewares=https-redirect
-                - traefik.http.routers.web-https.priority=10
-                - traefik.http.routers.web-https.rule=Host(`qa.crystallography.io`)
-                - traefik.http.routers.web-https.entrypoints=https
-                - traefik.http.routers.web-https.tls=true
-                - traefik.http.routers.web-https.tls.certresolver=le
-                - traefik.http.services.web.loadbalancer.server.port=8040
+                - traefik.http.routers.nextweb-http.rule=Host(`qa.crystallography.io`)
+                - traefik.http.routers.nextweb-http.entrypoints=http
+                - traefik.http.routers.nextweb-http.middlewares=https-redirect
+                - traefik.http.routers.nextweb-https.priority=15
+                - traefik.http.routers.nextweb-https.rule=Host(`qa.crystallography.io`)
+                - traefik.http.routers.nextweb-https.entrypoints=https
+                - traefik.http.routers.nextweb-https.tls=true
+                - traefik.http.routers.nextweb-https.tls.certresolver=le
+                - traefik.http.services.nextweb.loadbalancer.server.port=8040
 
     api:
         image: 'gcr.io/crystallography-io/crystallography-io-api:latest'
