@@ -1,0 +1,93 @@
+.btn {
+  appearance: none;
+  background: var(--primary-color);
+  border: var(--border-width) solid var(--primary-color);
+  border-radius: var(--border-radius);
+
+  color: var(--white-color);
+  cursor: pointer;
+  display: inline-block;
+  font-size: var(--base-font-size);
+  line-height: 2.25rem;
+  letter-spacing: 0.5px;
+  outline: none;
+  text-align: center;
+  text-decoration: none;
+  transition: background .2s, border .2s, box-shadow .2s, color .2s;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  mix-blend-mode: normal;
+
+  padding: 0 1rem;
+
+  &:visited, &:focus, &:hover, &:active {
+    color: var(--white-color);
+  }
+  &:focus {
+    @include control-shadow();
+  }
+  &:focus,
+  &:hover {
+    background-color: var(--primary-opacity-color);
+    border-color: var(--primary-opacity-color);
+    text-decoration: none;
+  }
+  &:active, &.active {
+    background: var(--primary-color);
+  }
+
+  &[disabled],
+  &:disabled,
+  &.disabled {
+    cursor: default;
+    &:focus {
+        box-shadow: none;
+    }
+    opacity: 0.85;
+  }
+
+  &.btn-primary {
+      background: var(--white-color);
+      border-color: var(--light-grey-color);
+      color: var(--base-font-color);
+
+      &:active,
+      &:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+      &[disabled],
+      &:disabled,
+      &.disabled {
+        border: var(--border-width) solid var(--light-grey-color);
+        background-color: var(--white-color);
+        color: var(--grey-color);
+      }
+  }
+
+  &.btn-link {
+      background: var(--white-color);
+      border-color: transparent;
+      color: var(--primary-color);
+
+      &:active,
+      &:hover {
+
+        background-color: var(--additional-background-color);
+      }
+      &[disabled],
+      &:disabled,
+      &.disabled {
+        border: var(--border-width) solid transparent;
+        background-color: var(--white-color);
+        color: var(--grey-color);
+      }
+  }
+}
+
+.btn.btn-icon {
+  line-height: 2.25rem;
+  width: 2.375rem;
+  padding: 0 0;
+}

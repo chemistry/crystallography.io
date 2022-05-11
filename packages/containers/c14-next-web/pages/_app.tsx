@@ -5,7 +5,8 @@ import { withRouter } from 'next/router';
 import type { AppProps } from 'next/app';
 import classNames from 'classnames';
 import '../styles/globals.css';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/main.scss';
 
 
 const ActiveLink = withRouter( (({ router, children, ...props }: any) => {

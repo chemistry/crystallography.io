@@ -1,0 +1,70 @@
+@import '../../common.scss';
+
+.nav-menu {
+
+  &-list {
+    list-style: none;
+    &, li {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      min-height: 3rem;
+      margin: 0.25rem 1rem;
+      overflow: hidden;
+    }
+  }
+
+  &-item {
+    display: block;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.7;
+
+    &, &:visited, &:focus, &:hover, &:active {
+      color: var(--white-color);
+    }
+
+    border-radius: 4px;
+    &:focus, &:hover, &:active, &.active {
+      opacity: 1;
+      background: rgba(66, 133, 244, 0.08);
+    }
+
+    &__icon, &__title {
+      display: inline-block;
+    }
+    &__icon {
+      width: 3rem;
+      text-align: center;
+      svg {
+        position: relative;
+        top: 0.5rem;
+      }
+    }
+    &__title {
+      padding-left: 0.25rem;
+      vertical-align: middle;
+    }
+  }
+
+
+/*
+      & { opacity: 0.65; }
+      &, &:hover, &:active, &:focus, &.active, &:visited {
+        color: var(--white-color);
+        text-decoration: none;
+        outline: none;
+        box-shadow: none;
+      }
+      &:hover, &:active,  &.active {
+        opacity: 1;
+        background-color: var(--additional-color);
+      }
+      &.active {
+        opacity: 1;
+      }
+  }
+*/
+}

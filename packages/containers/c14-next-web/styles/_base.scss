@@ -1,0 +1,23 @@
+// Base
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: var(--base-font-size);
+  line-height: var(--base-line-heigh);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--background-color);
+    color: var(--base-font-color);
+    font-family: var(--base-font-family);
+    font-size: var(--base-font-size);
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    caret-color: var(--active-color);
+}

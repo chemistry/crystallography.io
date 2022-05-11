@@ -1,0 +1,11 @@
+// Component focus shadow
+@mixin control-shadow() {
+  box-shadow: 0 0 0 .075rem rgba($additional-color, 0.1);
+}
+// Shadow mixin
+/*
+  @mixin shadow-variant($offset) {
+    box-shadow: 0 0 0 .1rem var(--dark-color, .3);
+    box-shadow: 0 $offset ($offset + .05rem) * 2 rgba($dark-color, .3);
+  }
+*/

@@ -1,0 +1,34 @@
+// Labels
+.label {
+    @include label-base();
+    @include label-variant("black-color", "default-color");
+    display: inline-block;
+
+    // Label rounded
+    &.label-rounded {
+      border-radius: 5rem;
+      padding-left: .4rem;
+      padding-right: .4rem;
+    }
+
+    // Label colors
+    &.label-primary {
+      @include label-variant("white-color", "primary-color");
+    }
+
+    &.label-secondary {
+      @include label-variant("primary-color", "secondary-color");
+    }
+
+    &.label-success {
+      @include label-variant("white-color", "success-color");
+    }
+
+    &.label-warning {
+      @include label-variant("white-color", "warning-color");
+    }
+
+    &.label-error {
+      @include label-variant("white-color", "error-color");
+    }
+  }

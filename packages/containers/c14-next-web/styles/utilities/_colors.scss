@@ -1,0 +1,39 @@
+// Text colors
+@include text-color-variant(".text-primary", "primary-color");
+
+@include text-color-variant(".text-secondary", "secondary-color");
+
+@include text-color-variant(".text-additional", "additional-color");
+
+@include text-color-variant(".text-gray", "grey-color");
+
+@include text-color-variant(".text-light", "light-grey-color");
+
+@include text-color-variant(".text-dark", "black-color");
+
+@include text-color-variant(".text-active", "active-color");
+
+@include text-color-variant(".text-success", "success-color");
+
+@include text-color-variant(".text-warning", "warning-color");
+
+@include text-color-variant(".text-error", "error-color");
+
+// Background colors
+@include bg-color-variant(".bg-primary", "primary-color");
+
+@include bg-color-variant(".bg-secondary", "secondary-color", "black-color");
+
+@include bg-color-variant(".bg-additional", "additional-color");
+
+@include bg-color-variant(".bg-dark", "dark-grey-color");
+
+@include bg-color-variant(".bg-default", "background-color", "black-color");
+
+@include bg-color-variant(".bg-active", "active-color");
+
+@include bg-color-variant(".bg-success", "success-color");
+
+@include bg-color-variant(".bg-warning", "warning-color");
+
+@include bg-color-variant(".bg-error", "error-color");
