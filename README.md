@@ -41,7 +41,7 @@ Supported platforms:
 
 ## Development Quick Start
 
-* `npm install && npm run bootstrap` Install dependencies
+* `npm install && npm run bootstrap --legacy-peer-deps` Install dependencies
 * `npm start` Start Development in Local mode
 
 ## Setup Infrastructure
