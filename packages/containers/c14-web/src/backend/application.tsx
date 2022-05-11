@@ -79,7 +79,7 @@ const getMetadata = (routes: any, url: string) => {
   };
 };
 
-export async function startApplication(context: ExpressContext) {
+export const startApplication: any = async (context: ExpressContext) => {
     const { htmlContent, logger, appFactory, appContext, onAppInit, onAppInitEnd } = context;
     logger.trace('application started');
 
@@ -119,13 +119,14 @@ export async function startApplication(context: ExpressContext) {
             const App = () => {
                 return renderRoutes(Routes);
             };
+            const ProviderAny: any = Provider;
 
             const content = (
-                <Provider store={store}>
+                <ProviderAny store={store}>
                     <StaticRouter location={req.url} context={ctx}>
                         <App />
                     </StaticRouter>
-                </Provider>
+                </ProviderAny>
             );
 
             const componentHTML = renderToString(content);
