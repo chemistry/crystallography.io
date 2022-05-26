@@ -1,8 +1,6 @@
 import * as React from "react";
 
-export const PageContainer: React.SFC<{ title?: string, HeadComponent?: React.SFC }> = ({
-    title, children, HeadComponent,
-}) => {
+export const PageContainer = ({title, children, HeadComponent}: { title: string, children: React.ReactNode, HeadComponent: React.FunctionComponent}) => {
     return (
         <div>
             <header className="app-layout-header">
@@ -15,4 +13,4 @@ export const PageContainer: React.SFC<{ title?: string, HeadComponent?: React.SF
             </div>
         </div>
     );
-};
+}
