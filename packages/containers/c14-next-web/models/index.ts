@@ -28,7 +28,7 @@ export interface StructureModel {
   wRref: string;
   journal: {
     title: string;
-    authors: Array<{name: string, link: string}>;
+    authors: {name: string, link: string}[];
     journal: string;
     year: string;
     volume: string;
