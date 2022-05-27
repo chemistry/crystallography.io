@@ -11,7 +11,7 @@ import {
 } from "./models";
 
 export function initQueue(io: any, db: Db, queue: any) {
-    /*-- Queue  ---------------------------------------------------------------------------*/
+    /* -- Queue  ---------------------------------------------------------------------------*/
     queue.on("job succeeded", (jobId: number, result: JobOutputModel) => {
         processWorkerResponse(io, db, jobId, result, ChunkStatusModel.finished);
     });

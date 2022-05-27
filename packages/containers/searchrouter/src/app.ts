@@ -47,13 +47,13 @@ export async function startServer({ db, mw, hc } : { db: Db, mw: any, hc: any })
         queue.close();
     });
 
-    /*-- Socket IO --*/
+    /* -- Socket IO --*/
     const io = initIO(server, db, queue);
 
-    /*-- Queue --*/
+    /* -- Queue --*/
     initQueue(io, db, queue);
 
-    /*-- Express --*/
+    /* -- Express --*/
     await initExpress(app, queue, db);
 
     app.use(Sentry.Handlers.errorHandler() as any);

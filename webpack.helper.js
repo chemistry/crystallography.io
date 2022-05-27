@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = function(libraryName, dirname) {
 
-    var config = {
+    const config = {
         mode: 'production',
 
         devtool:  'source-map',
@@ -33,7 +33,7 @@ module.exports = function(libraryName, dirname) {
     };
 
     // Set Entry Point
-    config['entry'][libraryName] = path.resolve(dirname, './src/index.ts');
+    config.entry[libraryName] = path.resolve(dirname, './src/index.ts');
 
     return config;
 }

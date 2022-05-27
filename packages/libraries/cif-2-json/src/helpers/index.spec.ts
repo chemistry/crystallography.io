@@ -177,7 +177,7 @@ describe("cif2json#parse", () => {
             const cifData = loadMock("2222708.cif");
             /* tslint:disable */
             console.time("performance:");
-            for (var i = 0; i < 30; i++) {
+            for (let i = 0; i < 30; i++) {
                 const parseResult = sut(cifData);
             }
             console.timeEnd("performance:");

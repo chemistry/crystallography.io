@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import React, { Children } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -7,7 +12,6 @@ import classNames from 'classnames';
 import '../styles/globals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/main.scss';
-
 
 const ActiveLink = withRouter( (({ router, children, ...props }: any) => {
     const child = Children.only(children);

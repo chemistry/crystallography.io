@@ -43,6 +43,6 @@ export const getStore = (preloadedState: RootState | null) => {
       reducer,
       middleware,
       devTools: isDevelopment,
-      preloadedState: (preloadedState ? preloadedState : {}) as any,
+      preloadedState: (preloadedState ? preloadedState : {}),
     });
 };
