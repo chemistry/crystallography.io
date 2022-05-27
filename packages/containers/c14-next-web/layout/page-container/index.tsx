@@ -1,6 +1,8 @@
 import * as React from "react";
 
-export const PageContainer = ({title, children, HeadComponent}: { title: string, children: React.ReactNode, HeadComponent: React.FunctionComponent}) => {
+export const PageContainer = ({title, children, HeadComponent}: {
+    title: string, children: React.ReactNode, HeadComponent: React.FunctionComponent
+}) => {
     return (
         <div>
             <header className="app-layout-header">
