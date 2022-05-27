@@ -45,8 +45,11 @@ jobs:
     - name: Reset to master
       run: git checkout master && git reset --hard
 
-    - name: Verify build
-      run: npm run lint & npm run test
+#    - name: Verify lint
+#      run: npm run lint
+
+    - name: Verify test
+      run: npm run test
 
     - name: Build
       run: npm run build

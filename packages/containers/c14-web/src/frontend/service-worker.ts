@@ -4,7 +4,7 @@ import {ExpirationPlugin} from "workbox-expiration";
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst, StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 
-declare var __webpack_hash__: string;
+declare let __webpack_hash__: string;
 
 skipWaiting();
 clientsClaim();

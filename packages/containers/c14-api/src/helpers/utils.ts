@@ -16,7 +16,7 @@ const structureCommonCalcAttributes = [
     "title", "journal", "year", "volume", "issue", "firstpage", "lastpage", "doi",
 ];
 
-export function getStructureAttributes(expand: boolean = false): string[] {
+export function getStructureAttributes(expand = false): string[] {
     let res = [
         ...structureCommonAttributes,
         ...structureCommonCalcAttributes,
@@ -31,7 +31,7 @@ export function getStructureAttributes(expand: boolean = false): string[] {
     return res;
 }
 
-export function mapStructure(expand: boolean = false) {
+export function mapStructure(expand = false) {
     const attributes = getStructureAttributes(expand);
 
     return (item: any) => {
