@@ -33,7 +33,7 @@
         "@sentry/tracing": "^5.30.0",
         "mongodb": "3.6.3",
         "node-cron": "2.0.3",
-        "shelljs": "0.8.4"
+        "shelljs": "0.8.5"
     },
     "devDependencies": {
         "@types/mongodb": "3.6.3",
