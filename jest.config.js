@@ -14,6 +14,7 @@ module.exports = {
       "/dist/",
       "/application-web-manager/"
   ],
+  testPathIgnorePatterns: ["/node_modules/", "/backend/"],
   "moduleFileExtensions": [
       "ts",
       "tsx",

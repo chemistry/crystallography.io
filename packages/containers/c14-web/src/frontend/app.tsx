@@ -27,14 +27,14 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 (async () => {
-    const history: any = createBrowserHistory();
+    const history = createBrowserHistory();
 
     if (process.env.NODE_ENV !== 'development') {
         ReactGA.initialize('UA-125802766-1');
         ReactGA.set({ page: location.pathname });
         ReactGA.pageview(location.pathname);
 
-        history.listen((location: any) => {
+        history.listen((location, action) => {
             ReactGA.set({ page: location.pathname });
             ReactGA.pageview(location.pathname);
         });
@@ -45,13 +45,12 @@ if (process.env.NODE_ENV !== 'development') {
   const initialState = (window as any).__INITIAL_STATE__ || {};
   const store = getStore(initialState);
 
-  const ProviderAny: any = Provider;
   ReactDOM.render(
-      <ProviderAny store={store}>
+      <Provider store={store}>
         <Router
             history={history}
         >{renderRoutes(Routes)}</Router>
-      </ProviderAny>,
+      </Provider>,
       document.getElementById("root"),
   );
 
