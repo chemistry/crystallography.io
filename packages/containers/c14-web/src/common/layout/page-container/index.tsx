@@ -1,8 +1,8 @@
 import * as React from "react";
 
-export const PageContainer  = ({
+export const PageContainer: React.SFC<{ title?: string, HeadComponent?: React.SFC }> = ({
     title, children, HeadComponent,
-}: { title?: string, HeadComponent?: React.FC, children: React.ReactNode }) => {
+}) => {
     return (
         <div>
             <header className="app-layout-header">

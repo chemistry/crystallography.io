@@ -4,7 +4,7 @@ const admin: any  = {
 
 };
 
-export const getAuthRouter: any = () => {
+export const getAuthRouter = () => {
     const router = Router();
 
     // setting cookies for auth
