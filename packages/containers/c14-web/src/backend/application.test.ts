@@ -3,7 +3,7 @@ import * as React from "react";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { startApplication } from './application';
 
-describe.skip("Express Application", () => {
+describe("Express Application", () => {
 
     const noop = (name: any)=> {
     }
