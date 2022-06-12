@@ -1,6 +1,6 @@
 # Crystal Structure Search Application
 
-[![Release version](https://img.shields.io/github/v/release/chemistry/crystallography.io?color=green.svg)](https://github.com/chemistry/crystallography.io/releases)
+[![Release version](https://img.shields.io/github/v/release/chemistry/app.crystallography.io?color=green.svg)](https://github.com/chemistry/app.crystallography.io/releases)
 [![GitHub Build Status](https://github.com/chemistry/crystallography.io/workflows/CI/badge.svg)](https://github.com/chemistry/crystallography.io/actions?query=workflow%3ACI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
@@ -9,7 +9,7 @@ Website: [Crystal Structure Search](http://crystallography.io/)
 
 ![CrystalStructureSearch](https://github.com/chemistry/crystallography.io/blob/master/crystal-structure-search.png?raw=true)
 
-Application for Desktop [Download](https://github.com/chemistry/crystallography.io/releases)
+Application for Desktop [Download](https://github.com/chemistry/app.crystallography.io/releases)
 Supported platforms:
 
 * Windows
@@ -17,10 +17,6 @@ Supported platforms:
 * MaxOS
 
 ## Include Packages
-
-### Application
-
-* [@chemistry/structure-search](https://github.com/chemistry/crystallography.io/tree/master/packages/application/structure-search) - Main Electron Application
 
 ### Containers
 
