@@ -5,11 +5,6 @@ import {
   SearchHistoryIcon, SignInIcon,
 } from "../../icons";
 
-if (process.env.BROWSER) {
-    // tslint:disable-next-line
-    require("./index.scss");
-}
-
 export const NavMenuBottom = ({ onClick }: { onClick?: () => void }) => {
     return (<div className="nav-menu">
         <ul className="nav-menu-list">
