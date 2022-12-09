@@ -36,7 +36,7 @@
         "body-parser": "1.18.3",
         "bunyan": "1.8.15",
         "connect-timeout": "1.9.0",
-        "express": "4.16.3",
+        "express": "4.17.3",
         "mongodb": "3.6.3",
         "socket.io": "2.4.0"
     },
