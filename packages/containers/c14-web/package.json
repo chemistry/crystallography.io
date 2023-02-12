@@ -85,7 +85,7 @@
         "html-webpack-plugin": "5.3.2",
         "mini-css-extract-plugin": "2.2.0",
         "node-sass": "6.0.1",
-        "nodemon": "2.0.6",
+        "nodemon": "2.0.20",
         "rimraf": "3.0.2",
         "sass-loader": "12.1.0",
         "style-loader": "3.2.1",
