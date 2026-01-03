@@ -105,4 +105,4 @@ docker stack deploy -c docker-stack.yml --with-registry-auth "crystallography-io
 ## License
 
   This project is licensed under the MIT license, Copyright (c) 2020 Volodymyr Vreshch.
-  For more information see [LICENSE.md](https://github.com/chemistry/crystallography.io/blob/master/LICENSE.md).
+  For more information see [LICENSE.md](https://github.com/chemistry/crystallography.io/blob/master/LICENSE).
