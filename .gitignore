@@ -24,3 +24,6 @@ lerna-debug.log
 .npmrc
 terraform.tfstate
 terraform.tfstate.backup
+
+# typescript
+*.tsbuildinfo
