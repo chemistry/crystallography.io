@@ -13,7 +13,6 @@ import {
 } from './common';
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./search-main.scss");
 }
 

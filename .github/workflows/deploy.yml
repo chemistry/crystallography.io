@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/containers/**'
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker images
+        run: |
+          docker compose build
+          docker compose push
+
+      - name: Deploy to Docker Swarm
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            docker image prune -af
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cd /opt/crystallography.io
+            docker stack deploy -c docker-compose.yaml crystallography-io --with-registry-auth

@@ -17,7 +17,6 @@ export function errorHandler(err: Error | ErrorDTO, req: Request, res: Response,
             title: "Unknown Error",
             detail: err.toString(),
         } as ErrorDTO;
-        // tslint:disable-next-line
         console.error(err);
     }
     res

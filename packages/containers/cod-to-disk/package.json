@@ -1,44 +1,36 @@
 {
-    "name": "@chemistry/cod-to-disk",
-    "private": true,
-    "version": "0.0.18",
-    "description": "Synchronization COD to Disk ",
-    "author": {
-        "name": "Volodymyr Vreshch",
-        "url": "http://vreshch.com/"
-    },
-    "license": "MIT",
-    "keywords": [
-        "COD syncronization",
-        "crystallography",
-        "Git"
-    ],
-    "engines": {
-      "node": ">=16.0.0"
-    },
-    "devEngines": {
-      "node": ">=16.0.0"
-    },
-    "repository": "https://github.com/chemistry/crystallography.io/tree/master/packages/containers/cod-to-disk",
-    "scripts": {
-        "build_push": "./build_push.sh",
-        "build": "rimraf dist/* && tsc",
-        "deploy": "./deploy.sh",
-        "start": "node dist/index.js"
-    },
-    "dependencies": {
-        "@google-cloud/logging": "9.0.1",
-        "@sentry/node": "5.30.0",
-        "@sentry/tracing": "5.30.0",
-        "@types/shelljs": "0.8.8",
-        "node-cron": "2.0.3",
-        "amqplib": "0.6.0",
-        "shelljs": "0.8.4"
-    },
-    "devDependencies": {
-        "@types/node": "14.14.2",
-        "@types/node-cron": "2.0.3",
-        "rimraf": "3.0.2",
-        "typescript": "4.3.5"
-    }
+  "name": "@chemistry/cod-to-disk",
+  "private": true,
+  "version": "0.0.18",
+  "description": "Synchronization COD to Disk",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "https://vreshch.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "COD synchronization",
+    "crystallography"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "rimraf dist/* && tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@sentry/node": "^8.0.0",
+    "amqplib": "^0.10.0",
+    "node-cron": "^3.0.0",
+    "shelljs": "^0.8.5"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.0",
+    "@types/node": "^22.0.0",
+    "@types/node-cron": "^3.0.0",
+    "@types/shelljs": "^0.8.15",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.9.0"
+  }
 }

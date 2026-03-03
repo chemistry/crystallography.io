@@ -139,7 +139,6 @@ function setupLoopFields(result: any, fields: any) {
         const newCoordLoop = prepareCoordLoop(coordLoop[0]);
         loopFields.push(newCoordLoop);
     } else {
-        // tslint:disable-next-line
         console.error("COORD LOOP NOT FOUND", fields._cod_database_code);
     }
 

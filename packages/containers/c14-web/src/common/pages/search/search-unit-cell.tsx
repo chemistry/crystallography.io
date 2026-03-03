@@ -10,7 +10,6 @@ import { searchByUnitCell, SearchState } from "../../store/search-by-unit-cell-p
 import { useValidationError } from "./common";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./search-main.scss");
 }
 // param Validation
@@ -312,7 +311,6 @@ export const SearchByUnitCellPage = (): JSX.Element => {
     const { a, b, c, alpha, beta, gamma, tolerance } = useSelector((state: RootState) =>  state.searchByUnitCellSlice.search);
 
     const handleSubmit = (data: SearchFormData) => {
-        // tslint:disable-next-line
         dispatch(searchByUnitCell({
             ...data, page: 1
         }));

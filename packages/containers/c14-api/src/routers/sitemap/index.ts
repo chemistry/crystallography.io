@@ -25,7 +25,6 @@ const getSitemapsList  = ({ db }: { db: Db }) => {
             res.write("</sitemapindex>");
             res.end();
         } catch (e) {
-            // tslint:disable-next-line
             console.error(String(e));
             Sentry.captureException(e);
             res.end();
@@ -39,7 +38,6 @@ const getStaticSiteMap  = ({ db }: { db: Db }) => {
         const URLS = ["/", "/search/author",  "/search/name", "/search/formula", "/search/unitcell",  "/authors", "/catalog", "/about", "/contact"];
 
         res.write('<?xml version="1.0" encoding="UTF-8"?>');
-        // tslint:disable-next-line
         res.write('<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">');
         const data = URLS.map((url)=> {
             return `<url><loc>${HOST}${url}</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`;
@@ -70,7 +68,6 @@ const getStructuresList  = ({ db }: { db: Db }) => {
             res.set("Content-Type", "text/xml");
             res.write('<?xml version="1.0" encoding="UTF-8"?>');
 
-            // tslint:disable-next-line
             res.write('<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">');
 
             (doc.structures || []).forEach((structureId: number)=> {
@@ -80,7 +77,6 @@ const getStructuresList  = ({ db }: { db: Db }) => {
             res.write("</urlset>");
             res.end();
         } catch (e) {
-            // tslint:disable-next-line
             console.error(String(e));
             Sentry.captureException(e);
             res.status(500).end();

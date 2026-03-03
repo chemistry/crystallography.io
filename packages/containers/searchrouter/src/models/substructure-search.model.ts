@@ -1,9 +1,9 @@
 import {
-    ObjectID,
+    ObjectId,
 } from "mongodb";
 
 export interface SubstructureSearchModel {
-    _id: ObjectID;
+    _id: ObjectId;
     createdAt: Date;
     updatedAt: Date;
     searchQuery: object;
@@ -22,7 +22,7 @@ export interface SubstructureSearchModel {
 }
 
 export interface ChunkSearchModel {
-    _id: ObjectID;
+    _id: ObjectId;
     index: number;
     createdAt: Date;
     searchQuery: object;

@@ -1,62 +1,61 @@
 import express, { Express } from "express";
 import * as Sentry from "@sentry/node";
-import * as Tracing from "@sentry/tracing"
-const http = require("http");
-const Queue = require("bee-queue");
-
-import {
-    Db,
-} from "mongodb";
+import http from "http";
+import { Queue, QueueEvents } from "bullmq";
+import { Db } from "mongodb";
 
 import { initExpress } from "./app.express";
 import { initIO } from "./app.io";
 import { initQueue } from "./app.queue";
 
+const redisConnection = {
+    host: process.env.REDIS_HOST || 'redis',
+    port: Number(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD || undefined,
+};
 
-const initSentry = ({ app }: { app: Express })=> {
+const initSentry = ({ app }: { app: Express }) => {
     Sentry.init({
-        dsn: "https://6b267d143384483792e6aa59c19a5383@o187202.ingest.sentry.io/5595516",
-        integrations: [
-          new Sentry.Integrations.Http({ tracing: true }),
-          new Tracing.Integrations.Express({ app }),
-        ],
+        dsn: process.env.SENTRY_DSN || "",
+        integrations: [],
         tracesSampleRate: 1.0,
     });
-}
+};
 
-export async function startServer({ db, mw, hc } : { db: Db, mw: any, hc: any }) {
+export async function startServer({ db, mw, hc }: { db: Db, mw: any, hc: any }) {
     const app = express();
     const server = http.createServer(app);
+
     const queue = new Queue("substructure-search", {
-        redis: {
-            host: process.env.REDIS_HOST || 'redis',
-            port: process.env.REDIS_PORT || 6379,
-            password: process.env.REDIS_PASSWORD || ''
+        connection: redisConnection,
+        defaultJobOptions: {
+            removeOnComplete: true,
+            removeOnFail: true,
         },
-        isWorker: false,
-        removeOnSuccess: true,
-        removeOnFailure: true,
     });
-    app.use(Sentry.Handlers.requestHandler() as any);
-    app.use(Sentry.Handlers.tracingHandler() as any);
+
+    const queueEvents = new QueueEvents("substructure-search", {
+        connection: redisConnection,
+    });
+
+    initSentry({ app });
 
     app.use("/", hc);
     app.use(mw);
 
-    process.on("SIGINT", () => {
-        queue.close();
+    process.on("SIGINT", async () => {
+        await queue.close();
+        await queueEvents.close();
     });
 
     /*-- Socket IO --*/
     const io = initIO(server, db, queue);
 
     /*-- Queue --*/
-    initQueue(io, db, queue);
+    initQueue(io, db, queue, queueEvents);
 
     /*-- Express --*/
     await initExpress(app, queue, db);
-
-    app.use(Sentry.Handlers.errorHandler() as any);
 
     return server;
 }

@@ -29,7 +29,6 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
             });
 
         } catch(e) {
-            // tslint:disable-next-line
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({
@@ -53,7 +52,6 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
         try {
             structuresIds = JSON.parse(ids);
         } catch (e) {
-            // tslint:disable-next-line
             console.error(`error in parsing : ${ids},  ERROR: ${e}`)
             structuresIds = [];
         }
@@ -86,7 +84,6 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
             });
 
         } catch (e) {
-            // tslint:disable-next-line
             console.error(String(e));
             Sentry.captureException(e);
             return res.status(500).json({

@@ -1,6 +1,6 @@
 import {
     Db,
-    ObjectID,
+    ObjectId,
 } from "mongodb";
 import {
     ChunkSearchModel,

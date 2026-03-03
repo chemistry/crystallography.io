@@ -16,11 +16,10 @@ export function prepareChunksForSearch(searchQuery: object, fingerPrints: IFinge
                 return;
             }
             for (let i = 0; i < fp.length; i++) {
-                /* tslint:disable no-bitwise */
                 if ((fp[i] & qfp[i]) !== qfp[i]) {
                     return;
                 }
-                /* tslint:enable no-bitwise */
+                
             }
             found = true;
             fragmentsIdsList.push(fpm._id);

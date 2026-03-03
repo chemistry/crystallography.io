@@ -23,7 +23,6 @@ export const processMessage = async ({ fileName, codId, context }: { fileName: s
         const dataNames = Object.keys(jcif);
 
         if (dataNames.length === 0) {
-            // tslint:disable-next-line
             console.error("error while parsing processing file", fileName);
             throw new Error("wrong data format");
         }
@@ -54,7 +53,6 @@ export const processMessage = async ({ fileName, codId, context }: { fileName: s
 
     } catch(e) {
         Sentry.captureException(e);
-        // tslint:disable-next-line
         console.error(e);
     }
 }

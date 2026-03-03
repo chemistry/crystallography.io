@@ -1,36 +1,24 @@
 {
-    "compilerOptions": {
-        "jsx": "react",
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": true,
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "skipLibCheck": true,
-        "declaration": true,
-        "outDir": "dist",
-        "lib": ["es2015", "es2016", "dom"],
-        "typeRoots": ["node_modules/@types"]
-    },
-
-    "rules": {
-    },
-    "exclude": [
-        "node_modules",
-        "dist",
-        "**/*.test.ts",
-        "**/*.check.ts",
-        "**/mocks",
-        "**/fixtures"
-    ],
-
-    "awesomeTypescriptLoaderOptions": {
-        "forkChecker": true,
-        "useWebpackText": true
-    },
-
-    "atom": {
-        "rewriteTsconfig": false
-    }
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "jsx": "react",
+    "lib": ["ES2024", "DOM"],
+    "typeRoots": ["node_modules/@types"]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.check.ts",
+    "**/mocks",
+    "**/fixtures"
+  ]
 }

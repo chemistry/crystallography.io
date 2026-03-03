@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { LoaderIcon } from "./loader-icon";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./index.scss");
 }
 

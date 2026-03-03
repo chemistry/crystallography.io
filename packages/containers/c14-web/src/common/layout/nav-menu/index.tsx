@@ -6,7 +6,6 @@ import {
 } from "../../icons";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./index.scss");
 }
 

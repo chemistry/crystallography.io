@@ -6,7 +6,6 @@ import { AppMobileNavigation, AppNavigation  } from "./layout";
 // import LogoTitle from "./title.svg";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./index.scss");
 }
 

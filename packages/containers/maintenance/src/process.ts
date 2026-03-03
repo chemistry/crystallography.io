@@ -40,7 +40,6 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
 
     } catch(e) {
         Sentry.captureException(e);
-        // tslint:disable-next-line
         console.error(e);
     }
 }

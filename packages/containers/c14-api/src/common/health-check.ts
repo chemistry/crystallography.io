@@ -34,7 +34,6 @@ export const  healthCheck = (checks: (()=>Promise<void>)[]) => {
             writeOK(res);
         } catch(err) {
             writeFail(res);
-            // tslint:disable-next-line
             console.error(err);
         }
     });

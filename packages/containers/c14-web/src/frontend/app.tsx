@@ -3,7 +3,6 @@ import * as ReactGA from 'react-ga';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
 import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
 import { Router } from "react-router-dom";
@@ -11,17 +10,13 @@ import { AppContextType, ApplicationContext, getApplication } from "../common";
 
 import { registerSW } from "./register-sw";
 
-const appContext: ApplicationContext =  {
-   type: AppContextType.frontend,
+const appContext: ApplicationContext = {
+    type: AppContextType.frontend,
 };
 
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
-        dsn: "https://c8451c59d8bf44b8b7734de1a5b380d7@o187202.ingest.sentry.io/5595579",
-        autoSessionTracking: true,
-        integrations: [
-        new Integrations.BrowserTracing(),
-        ],
+        dsn: process.env.SENTRY_DSN || "",
         tracesSampleRate: 1.0,
     });
 }
@@ -40,19 +35,19 @@ if (process.env.NODE_ENV !== 'development') {
         });
     }
 
-  const { Routes, getStore } = await getApplication(appContext);
+    const { Routes, getStore } = await getApplication(appContext);
 
-  const initialState = (window as any).__INITIAL_STATE__ || {};
-  const store = getStore(initialState);
+    const initialState = (window as any).__INITIAL_STATE__ || {};
+    const store = getStore(initialState);
 
-  ReactDOM.render(
-      <Provider store={store}>
-        <Router
-            history={history}
-        >{renderRoutes(Routes)}</Router>
-      </Provider>,
-      document.getElementById("root"),
-  );
+    ReactDOM.render(
+        <Provider store={store}>
+            <Router
+                history={history}
+            >{renderRoutes(Routes)}</Router>
+        </Provider>,
+        document.getElementById("root"),
+    );
 
-  registerSW();
+    registerSW();
 })();

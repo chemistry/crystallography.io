@@ -1,10 +1,8 @@
 import { Molecule } from "@chemistry/molecule";
 import * as Sentry from "@sentry/node";
 import { NextFunction, Request, Response } from "express";
-import {
-    Db,
-    ObjectID,
-} from "mongodb";
+import { Db, ObjectId } from "mongodb";
+import { Queue } from "bullmq";
 import {
     saveSearchLog,
     SearchType,
@@ -22,11 +20,9 @@ import {
 let fingerPrints: IFingerprintModel[] = [];
 import { prepareChunksForSearch } from "./fingerprint.helper";
 
-export async function postSubstructureSearchCreator(queue: any, db: Db) {
-    // tslint:disable-next-line
+export async function postSubstructureSearchCreator(queue: Queue, db: Db) {
     console.time('fingerprints loaded');
-    fingerPrints = await db.collection("fingerprints").find({}).toArray();
-    // tslint:disable-next-line
+    fingerPrints = await db.collection("fingerprints").find({}).toArray() as any[];
     console.timeEnd('fingerprints loaded');
 
     return (req: Request, res: Response, next: NextFunction) => {
@@ -35,8 +31,8 @@ export async function postSubstructureSearchCreator(queue: any, db: Db) {
 }
 
 function processSubstructureSearch({
-  req, res, next, queue, db,
-}: { req: Request, res: Response, next: NextFunction, queue: any, db: Db }) {
+    req, res, next, queue, db,
+}: { req: Request, res: Response, next: NextFunction, queue: Queue, db: Db }) {
     if (!req.body || !req.body.searchQuery) {
         return next({
             status: "message#1",
@@ -80,8 +76,7 @@ function processSubstructureSearch({
     }
 
     scheduleSearch(jmol, queue, db)
-      .then(({searchId, isFinished}) => {
-
+        .then(({ searchId, isFinished }) => {
             saveSearchLog({
                 config: { db },
                 req,
@@ -105,15 +100,15 @@ function processSubstructureSearch({
                 },
             };
             res.json(response);
-      })
-      .catch((err) => {
+        })
+        .catch((err) => {
             Sentry.captureException(err);
             return next({
                 status: "message#2",
                 title: "DB error",
                 detail: "Not able to save to database" + String(err),
             });
-      });
+        });
 }
 
 function clearBondOrder(searchQuery: any): object {
@@ -126,9 +121,8 @@ function clearBondOrder(searchQuery: any): object {
 }
 
 async function scheduleSearch(
-    searchQuery: object, queue: any, db: Db,
-): Promise<{searchId: string, isFinished: boolean}> {
-
+    searchQuery: object, queue: Queue, db: Db,
+): Promise<{ searchId: string, isFinished: boolean }> {
     const searchChunks = prepareChunksForSearch(searchQuery, fingerPrints);
     const searchId = await saveSearchRecord(db, searchQuery, searchChunks.length);
     const isFinished = (searchChunks.length === 0);
@@ -142,11 +136,11 @@ async function scheduleSearch(
     };
 }
 
-async function saveSearchRecord(db: Db, searchQuery: object, chunkLength: number): Promise<ObjectID> {
+async function saveSearchRecord(db: Db, searchQuery: object, chunkLength: number): Promise<ObjectId> {
     const createdAt = new Date();
     const isFinished = (chunkLength === 0);
     const searchStatus: SubstructureSearchModel = {
-        _id: new ObjectID(),
+        _id: new ObjectId(),
         createdAt,
         updatedAt: createdAt,
         searchQuery,
@@ -165,7 +159,7 @@ async function saveSearchRecord(db: Db, searchQuery: object, chunkLength: number
     };
 
     const insertResponse = await db.collection("substructure-searches")
-          .insertOne(searchStatus);
+        .insertOne(searchStatus as any);
     const insertId = insertResponse.insertedId;
     return insertId;
 }
@@ -174,9 +168,8 @@ async function scheduleChunksToSearch(
     searchId: string,
     chunks: number[][],
     searchQuery: object,
-    queue: any,
+    queue: Queue,
 ): Promise<void> {
-
     for (let i = 0; i < chunks.length; i++) {
         const toCheck = chunks[i];
 
@@ -187,9 +180,9 @@ async function scheduleChunksToSearch(
             searchQuery,
         };
 
-        queue.createJob(jobData)
-          .setId(searchId + ":" + i)
-          .timeout(50000)
-          .save();
+        await queue.add("search", jobData, {
+            jobId: searchId + ":" + i,
+            attempts: 1,
+        });
     }
 }

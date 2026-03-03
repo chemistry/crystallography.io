@@ -1,4 +1,3 @@
-// tslint:disable:max-line-length
 const aCase = /^\(.+\)\s+(.+)$/;
 const nameChars = "\\w\\u00C0-\\u021B\\-\\`'’ιλḰṕḾŃḱóOů̅ουḿα\u2019";
 

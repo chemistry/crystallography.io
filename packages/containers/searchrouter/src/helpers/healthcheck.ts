@@ -2,12 +2,13 @@ import * as fs from "fs";
 import { Db } from "mongodb";
 import * as os from "os";
 import * as path from "path";
+import { Queue } from "bullmq";
 
 import { Request, Response } from "express";
 const packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, "../../package.json"), "utf8"));
 const { name, version } = packageJSON;
 
-export function healthCheck({ db, queue }: { db: Db, queue: any }): (req: Request, res: Response) => void {
+export function healthCheck({ db, queue }: { db: Db, queue: Queue }): (req: Request, res: Response) => void {
     return (req: Request, res: Response) => {
         res.header("Content-Type", "application/json");
         const writeFail = () => {
@@ -23,21 +24,19 @@ export function healthCheck({ db, queue }: { db: Db, queue: any }): (req: Reques
 
         (async () => {
             try {
-
-              const [
-                  queueStat,
-                  mongoCheck,
-              ] = await Promise.all([
-                  queue.checkHealth(),
-                  db.stats(),
-              ]);
-              if (queueStat.active > -1 && mongoCheck.ok) {
-                  writeOK();
-              } else {
-                writeFail();
-              }
+                const [
+                    jobCounts,
+                    mongoCheck,
+                ] = await Promise.all([
+                    queue.getJobCounts(),
+                    db.stats(),
+                ]);
+                if (mongoCheck.ok) {
+                    writeOK();
+                } else {
+                    writeFail();
+                }
             } catch (err) {
-                // tslint:disable-next-line
                 console.error(err);
                 writeFail();
             }
@@ -45,9 +44,8 @@ export function healthCheck({ db, queue }: { db: Db, queue: any }): (req: Reques
     };
 }
 
-export function statusCheck({ db, queue }: { db: Db, queue: any }): (req: Request, res: Response) => void {
-
-  return (req: Request, res: Response) => {
+export function statusCheck({ db, queue }: { db: Db, queue: Queue }): (req: Request, res: Response) => void {
+    return (req: Request, res: Response) => {
         const writeFail = () => {
             res.status(500).send(JSON.stringify({
                 status: "FAIL",
@@ -58,10 +56,10 @@ export function statusCheck({ db, queue }: { db: Db, queue: any }): (req: Reques
         (async () => {
             try {
                 const [
-                    queueStat,
+                    jobCounts,
                     mongoCheck,
                 ] = await Promise.all([
-                    queue.checkHealth(),
+                    queue.getJobCounts(),
                     db.stats(),
                 ]);
 
@@ -74,13 +72,12 @@ export function statusCheck({ db, queue }: { db: Db, queue: any }): (req: Reques
                     uptime: process.uptime(),
                     NODE_ENV: process.env.NODE_ENV,
                     hostname: os.hostname(),
-                    queue: queueStat,
+                    queue: jobCounts,
                 }, null, 4)).end();
 
             } catch (err) {
-              // tslint:disable-next-line
-              console.error(err);
-              writeFail();
+                console.error(err);
+                writeFail();
             }
         })();
     };

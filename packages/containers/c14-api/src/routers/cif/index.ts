@@ -18,7 +18,6 @@ export const getCifDataRouter = () => {
             if (err) {
                 res.status(404);
                 res.json({ error: "Not found" });
-                // tslint:disable-next-line
                 console.error(err);
                 return;
             }

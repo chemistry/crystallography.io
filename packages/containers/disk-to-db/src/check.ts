@@ -1,20 +1,15 @@
 import { MongoClient } from 'mongodb';
 import { processMessage } from './process';
 
-// tslint:disable-next-line
 (async ()=> {
-    // tslint:disable-next-line
 
     /* mongodb.crystallography.io */
-    const mongoClient = await MongoClient.connect('mongodb://root:random@localhost:27017', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+    const mongoClient = new MongoClient('mongodb://root:random@localhost:27017');
+    await mongoClient.connect();
     const db = mongoClient.db("crystallography");
 
     const context: any = {
         log: (message: string) => {
-            // tslint:disable-next-line
             console.log(message);
         },
         getChanel: (): any => {
@@ -34,12 +29,10 @@ import { processMessage } from './process';
             fileName: '/home/data/cif/7/70/14/7701497.cif', codId: '7701497', context
         });
     }
-    // tslint:disable-next-line
     console.time('process-files');
 
     await processMessage2243694();
     await processMessage7701497();
 
-    // tslint:disable-next-line
     console.timeEnd('process-files');
 })();

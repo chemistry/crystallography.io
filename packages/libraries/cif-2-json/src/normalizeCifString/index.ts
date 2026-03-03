@@ -1,6 +1,5 @@
 let FROM: string[] = [];
 let TO: string[] = [];
-/* tslint:disable:max-line-length */
 // 1. Greek letters
 // Based on list :: http://www.dionysia.org/html/entities/symbols.html
 FROM = FROM.concat(["$-alpha", "$-beta", "$-gamma", "$-delta", "$-epsilon", "$-zeta", "$-eta", "$-theta", "$-iota", "$-kappa", "$-lambd", "$-mu", "$-nu", "$-xi", "$-omicron", "$-pi", "$-rho", "$-sigmaf", "$-sigma", "$-tau", "$-upsilon", "$-phi", "$-chi", "$-psi", "$-omega", "$-thetasym", "$-upsih", "$-piv"]);
@@ -86,7 +85,7 @@ const FROM_REGEX: RegExp[] = FROM.map((toReplace) => {
     return new RegExp(escapeRegExp(toReplace), "g");
 });
 
-/* tslint:enable:max-line-length */
+
 
 export function normalizeCifString(text: string): string {
     let from;
@@ -112,10 +111,9 @@ export function normalizeCifString(text: string): string {
     });
 
     // Something were not interpreted
-    /* tslint:disable:max-line-length */
     from = ["'", '\\"', "\\=", "\\`", "\\~", "\\.", "\\^", "\\;", "\\<", "\\,", "\\>", "\\(", "\\?", "\\&", "\\/", "\\%"];
     to = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-    /* tslint:enable:max-line-length */
+    
     text = replaceChars(text, from, to);
 
     return text;

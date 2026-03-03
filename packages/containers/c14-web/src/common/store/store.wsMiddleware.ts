@@ -4,7 +4,6 @@ import { updateSearchResults } from "./search-results.slice";
 
 let io: any;
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     io = require('socket.io-client');
 }
 let socket: any = null;

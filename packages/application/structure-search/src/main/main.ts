@@ -27,7 +27,6 @@ export async function createWindow() {
   });
 
   const appHost = options["app-host"];
-  // tslint:disable-next-line
   console.log(`Opening application at following host: ${appHost}`);
 
   try {

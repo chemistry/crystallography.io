@@ -1,29 +1,24 @@
 import * as Sentry from "@sentry/node";
-import * as Tracing from "@sentry/tracing";
 import { startApplication } from "./app";
 import { getLogger } from "./common/express-logger";
 import { getMongoConnection } from "./common/mongo";
 import { Express } from "express";
 import { mongoCheck, healthCheck } from "./common/health-check";
 
-const getPort = ()=> {
+const getPort = () => {
     const port = process.env.PORT;
-    if (port && isFinite(parseInt(port, 10))  && parseInt(port, 10) > 0) {
+    if (port && isFinite(parseInt(port, 10)) && parseInt(port, 10) > 0) {
         return parseInt(port, 10);
     }
     return 8080;
-}
+};
 
-const initSentry = ({ app }: { app: Express })=> {
+const initSentry = () => {
     Sentry.init({
-        dsn: "https://017ac8f85b4047af8fd3c3854025dda5@o187202.ingest.sentry.io/5595472",
-        integrations: [
-          new Sentry.Integrations.Http({ tracing: true }),
-          new Tracing.Integrations.Express({ app }),
-        ],
+        dsn: process.env.SENTRY_DSN || "",
         tracesSampleRate: 1.0,
     });
-}
+};
 
 const getApplicationContext = async () => {
     const { db } = await getMongoConnection();
@@ -32,40 +27,34 @@ const getApplicationContext = async () => {
 
     return {
         logger: {
-            trace:(message: string) => {
-                // tslint:disable-next-line
+            trace: (message: string) => {
                 console.log(message);
                 logger.trace(message);
             },
             info: (message: string) => {
-                // tslint:disable-next-line
                 console.log(message);
                 logger.info(message);
             },
             error: (message: string) => {
-                // tslint:disable-next-line
-                console.log(message);
+                console.error(message);
                 logger.error(message);
             }
         },
         onAppInit: (app: Express) => {
-            initSentry({ app });
-            app.use(Sentry.Handlers.requestHandler());
-            app.use(Sentry.Handlers.tracingHandler());
+            initSentry();
             app.use("/", healthCheck([mongoCheck({ db })]));
             app.use(mw);
         },
-        onAppInitEnd: (app: Express) => {
-            app.use(Sentry.Handlers.errorHandler());
+        onAppInitEnd: (_app: Express) => {
+            // Sentry error handler placeholder
         },
         PORT,
         db
-    }
-}
+    };
+};
 
 (async () => {
     try {
-        // tslint:disable-next-line
         console.time("App Start");
 
         const context = await getApplicationContext();
@@ -78,16 +67,13 @@ const getApplicationContext = async () => {
         });
 
         app.on("error", (err: any) => {
-            // tslint:disable-next-line
             console.error(err);
         });
 
         logger.trace(`Application Started on port: ${PORT}`);
-        // tslint:disable-next-line
         console.timeEnd("App Start");
     } catch (e) {
         Sentry.captureException(e);
-        // tslint:disable-next-line
         console.error(e);
         process.exit(-1);
     }

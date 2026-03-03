@@ -7,13 +7,11 @@ import { useGaAnalytics } from "../../hooks/useAnalytics";
 import { searchStructureByStructure } from "../../store/search-by-structure.slice";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./search-main.scss");
 }
 
 let MolPad: any = null;
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     MolPad = require('@chemistry/molpad').MolPad;
 }
 

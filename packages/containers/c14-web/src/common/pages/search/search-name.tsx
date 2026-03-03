@@ -11,7 +11,6 @@ import { SearchState, searchStructureByName } from "../../store/search-by-name-p
 import { useValidationError, Validator } from "./common";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./search-main.scss");
 }
 

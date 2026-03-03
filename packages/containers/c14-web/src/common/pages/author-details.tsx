@@ -7,7 +7,6 @@ import { StructuresList } from "../components/structure-list/structure-list";
 import { RootState } from "../store";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./catalog.scss");
 }
 

@@ -1,7 +1,3 @@
-import {
-  ObjectID,
-} from "mongodb";
-
 export interface JobOutputModel {
     searchId: string;
     index: number;

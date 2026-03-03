@@ -80,7 +80,6 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
             });
 
         } catch(e) {
-            // tslint:disable-next-line
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({

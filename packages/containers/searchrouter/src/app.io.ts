@@ -1,24 +1,18 @@
-const socketIO = require("socket.io");
-import {
-    Db,
-} from "mongodb";
-import {
-    QueueHelperController,
-} from "./helpers";
+import { Server } from "socket.io";
+import { Db } from "mongodb";
+import { Queue } from "bullmq";
+import { QueueHelperController } from "./helpers";
 
-export function initIO(server: any, db: Db, queue: any): any {
-    const io = socketIO(server, {
+export function initIO(server: any, db: Db, queue: Queue): Server {
+    const io = new Server(server, {
         path: "/api/v1/live",
-        handlePreflightRequest: (req: any, res: any) => {
-            res.writeHead(200, {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "GET,POST"
-            });
-            res.end();
-        }
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"],
+        },
     });
 
-    io.on("connect", (socket: any) => {
+    io.on("connection", (socket: any) => {
         socket.on("get:results-update", ({ id, version, page }: {
             id: string, version: string, page: string,
         }) => {

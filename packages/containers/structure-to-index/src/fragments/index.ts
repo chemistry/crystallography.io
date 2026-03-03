@@ -1,7 +1,6 @@
 import { Collection } from "mongodb";
 import { AppContext } from "../app";
 
-// tslint:disable-next-line
 const Molecule3D: any = require('@chemistry/molecule3d').Molecule3D;
 
 
@@ -69,7 +68,6 @@ async function fragmentsUpdate(fragmentsDB: Collection, doc: any) {
         });
 
     } catch(e) {
-        // tslint:disable-next-line
         console.log(e);
     }
 }

@@ -3,7 +3,6 @@ import { CloseIcon } from "../../icons";
 import { NavMenuBottom, NavMenuTop } from "../nav-menu";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./index.scss");
 }
 
