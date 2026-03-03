@@ -175,13 +175,12 @@ describe("cif2json#parse", () => {
     describe("performance test", () => {
         it("should process the file", () => {
             const cifData = loadMock("2222708.cif");
-            /* tslint:disable */
             console.time("performance:");
             for (var i = 0; i < 30; i++) {
                 const parseResult = sut(cifData);
             }
             console.timeEnd("performance:");
-            /* tslint:enable */
+            
             // reference 608-696 ms; droped to 190ms
             // n~30 -> 578ms; droped to 140ms
             // 130 ms
@@ -189,10 +188,8 @@ describe("cif2json#parse", () => {
 
         it("should fastly process big files", () => {
           const cifData = loadMock("4128884.cif");
-          // tslint:disable-next-line
           console.time("performance2:");
           const parseResult = sut(cifData);
-          // tslint:disable-next-line
           console.timeEnd("performance2:");
         });
         // 624ms

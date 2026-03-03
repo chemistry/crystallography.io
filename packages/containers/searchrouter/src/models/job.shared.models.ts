@@ -27,6 +27,6 @@ export interface JobResponseModel {
         pagesAvailable: number;
     };
     data: {
-        results: number[],
+        results: number[] | null,
     };
 }

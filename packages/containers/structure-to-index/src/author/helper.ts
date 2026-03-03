@@ -1,4 +1,3 @@
-// tslint:disable:max-line-length
 const aCase = /^\(.+\)\s+(.+)$/;
 const nameChars = "\\w\\u00C0-\\u021B\\-\\`'’ιλḰṕḾŃḱóOů̅ουḿα\u2019";
 
@@ -108,7 +107,7 @@ export const extractAuthorsList = (doc: {[key: string]: any}): string[] => {
         return (item.columns || []).indexOf("_publ_author_name") !== -1;
     });
     if (theLoops.length !== 1) {
-        return;
+        return [];
     }
     const colIdx = theLoops[0].columns.indexOf("_publ_author_name");
 

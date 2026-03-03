@@ -1,2 +1,0 @@
-// console.time = () => {}
-// console.timeEnd = () => {}

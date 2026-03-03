@@ -17,7 +17,7 @@ export const processMessage = async ({ structureId, context }: { structureId: nu
         await processFormulaIndex({ structureId, context });
         await processUnitCellIndex({ structureId, context });
         await processFragments({ structureId, context });
-    } catch (e) {
+    } catch (e: any) {
         logger.error(String(e));
         Sentry.captureException(e);
     }

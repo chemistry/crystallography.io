@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import firebase from "firebase/app";
 import { AppThunk } from "./common";
 
 const userSlice = createSlice({
@@ -17,12 +16,12 @@ const userSlice = createSlice({
       },
   },
   reducers: {
-    userLoginStart(state, action) {
+    userLoginStart(state, _action) {
         state.error = { code: "", message: ""};
         state.isLoading = true;
         state.auth = false;
     },
-    userLoginSucess(state, action) {
+    userLoginSucess(state, _action) {
         state.error = { code: "", message: ""};
         state.isLoading = false;
         state.auth = true;
@@ -39,34 +38,15 @@ const userSlice = createSlice({
 export const { userLoginSucess, userLoginFailed } = userSlice.actions;
 export default userSlice.reducer;
 
-let auth: any = null;
-const getAuth = () => {
-  return auth = auth ? auth : firebase.auth();
-};
-
+// Firebase auth removed — login is a no-op until auth provider is replaced
 export const loginUser = (
     { email, password }: { email: string; password: string; },
 ): AppThunk => async (dispatch) => {
-
   try {
-    const user = await getAuth().signInWithEmailAndPassword(
-      email,
-      password,
-    );
-    const idToken = await user.user.getIdToken();
-
-
-    await fetch('/sessionLogin', {
-        method: 'POST',
-        body: JSON.stringify({ idToken  })
-    });
-
-    await firebase.auth().signOut();
-
-    // Reload Application Page
-    window.location.assign("/profile");
-    dispatch(userLoginSucess(user));
-  } catch (err) {
+    // TODO: Replace with Supabase or other auth provider
+    console.warn("Auth not configured — login disabled", { email });
+    dispatch(userLoginFailed({ code: "auth/not-configured", message: "Authentication provider not configured" }));
+  } catch (err: any) {
     const { code, message } = err;
     dispatch(userLoginFailed({ code, message }));
   }

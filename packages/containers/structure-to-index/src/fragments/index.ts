@@ -1,7 +1,6 @@
 import { Collection } from "mongodb";
 import { AppContext } from "../app";
 
-// tslint:disable-next-line
 const Molecule3D: any = require('@chemistry/molecule3d').Molecule3D;
 
 
@@ -24,7 +23,7 @@ export const processFragments = async ({ structureId, context }: { structureId: 
     const fragmentsDB = db.collection("fragments");
     const structuresDB  = db.collection("structures")
 
-    const doc = await structuresDB.findOne({ _id: structureId })
+    const doc = await structuresDB.findOne({ _id: structureId } as any)
     if (!doc) {
         return;
     }
@@ -69,7 +68,6 @@ async function fragmentsUpdate(fragmentsDB: Collection, doc: any) {
         });
 
     } catch(e) {
-        // tslint:disable-next-line
         console.log(e);
     }
 }

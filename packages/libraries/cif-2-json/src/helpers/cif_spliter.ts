@@ -1,4 +1,3 @@
-// tslint:disable-next-line
 require("./cif_polyfil");
 
 export function splitDataBloks(lines: string[]) {

@@ -2,7 +2,6 @@ import * as React from "react";
 import { NavLink } from "react-router-dom";
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require("./index.scss");
 }
 

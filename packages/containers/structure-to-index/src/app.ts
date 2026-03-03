@@ -4,7 +4,7 @@ import { processMessage } from './process';
 
 export interface AppContext {
     logger: {
-        trace:(message: string) => void;
+        trace: (message: string) => void;
         info: (message: string) => void;
         error: (message: string) => void;
     },
@@ -13,22 +13,19 @@ export interface AppContext {
     db: Db;
 }
 
-export const app = async(context: AppContext) => {
+export const app = async (context: AppContext) => {
     const { logger, chanel, QUEUE_NAME } = context;
 
     chanel.consume(QUEUE_NAME, async (originalMessage: any) => {
         const message = JSON.parse(originalMessage.content.toString());
         const { structureId } = message;
 
-        const transaction = Sentry.startTransaction({
-            op: "structure-to-index",
-            name: "process message",
+        await Sentry.startSpan({ name: "process message", op: "structure-to-index" }, async () => {
+            await processMessage({ structureId, context });
         });
-        await processMessage({ structureId, context });
-        transaction.finish();
 
         chanel.ack(originalMessage);
     }, { noAck: false });
 
     logger.trace('---------------------------------------------------');
-}
+};

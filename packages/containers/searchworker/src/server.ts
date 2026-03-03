@@ -1,12 +1,10 @@
 import * as Sentry from "@sentry/node";
-const Queue = require("bee-queue");
+import { Worker } from "bullmq";
 import {
     Matcher,
     Molecule,
 } from "@chemistry/molecule";
-import {
-    Db,
-} from "mongodb";
+import { Db } from "mongodb";
 import { getLogger } from "./common/logger";
 import { getMongoConnection } from "./common/mongo";
 import {
@@ -14,68 +12,64 @@ import {
     JobOutputModel,
 } from "./models";
 
+const redisConnection = {
+    host: process.env.REDIS_HOST || 'redis',
+    port: Number(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD || undefined,
+};
+
 export async function startWorker() {
     try {
-        const queue = new Queue("substructure-search", {
-            redis: {
-                host: process.env.REDIS_HOST || 'redis',
-                port: process.env.REDIS_PORT || 6379,
-                password: process.env.REDIS_PASSWORD || ''
-            },
-            isWorker: true,
-            removeOnSuccess: true,
-            removeOnFailure: true,
-        });
-
         const { db } = await getMongoConnection();
         const logger = await getLogger();
 
-        queue.process((job: { data: JobInputModel }, done: (err: any, outData: JobOutputModel) => void) => {
-            const searchId = job.data.searchId;
-            const chunkId = job.data.index;
+        const worker = new Worker("substructure-search", async (job) => {
+            const data = job.data as JobInputModel;
+            const searchId = data.searchId;
+            const chunkId = data.index;
 
-            processQ(db, job)
-                .then((out: any) => {
-                    done(null, out);
-                })
-                .catch((err: any) => {
-                    Sentry.captureException(err);
-                    logger.error(`"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err })}`);
+            try {
+                return await processQ(db, data);
+            } catch (err: any) {
+                Sentry.captureException(err);
+                logger.error(`"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err: String(err) })}`);
 
-                    done(err, {
-                        index: chunkId,
-                        searchId,
-                        time: 0,
-                        results: [],
-                    });
-                });
+                return {
+                    index: chunkId,
+                    searchId,
+                    time: 0,
+                    results: [],
+                } as JobOutputModel;
+            }
+        }, {
+            connection: redisConnection,
+            removeOnComplete: { count: 0 },
+            removeOnFail: { count: 0 },
         });
 
-        const closeConnections = () => {
-            // tslint:disable-next-line
+        const closeConnections = async () => {
             console.log('closing connection');
-            queue.close();
+            await worker.close();
         };
         process.on('SIGINT', closeConnections);
         process.on('SIGTERM', closeConnections);
 
         logger.trace(`${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`);
 
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
-        // tslint:disable-next-line
         console.error(e);
         process.exit(-1);
     }
 }
 
-async function processQ(db: Db, job: { data: JobInputModel }): Promise<JobOutputModel> {
+async function processQ(db: Db, data: JobInputModel): Promise<JobOutputModel> {
     const timeStart = process.hrtime();
 
-    const searchId = job.data.searchId;
-    const chunkId = job.data.index;
-    const searchQuery =  job.data.searchQuery;
-    const toCheck = job.data.toCheck;
+    const searchId = data.searchId;
+    const chunkId = data.index;
+    const searchQuery = data.searchQuery;
+    const toCheck = data.toCheck;
 
     const molecule = new Molecule();
     molecule.load(searchQuery as any);
@@ -85,7 +79,7 @@ async function processQ(db: Db, job: { data: JobInputModel }): Promise<JobOutput
 
     const fragments = db.collection("fragments");
     const cursor = fragments.find({
-        _id: { $in: toCheck },
+        _id: { $in: toCheck } as any,
     });
     const foundIds: number[] = [];
 
@@ -93,7 +87,6 @@ async function processQ(db: Db, job: { data: JobInputModel }): Promise<JobOutput
         const doc: any = await cursor.next();
 
         for (const fragment of doc.fragments) {
-
             if (!moleculeMatcher.canMatchByElements(fragment)) {
                 continue;
             }

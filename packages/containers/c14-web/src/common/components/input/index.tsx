@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { useClickOutside } from '../../hooks';
 
 if (process.env.BROWSER) {
-    // tslint:disable-next-line
     require('./index.scss');
 }
 
@@ -24,7 +23,6 @@ const defaultAutocompleteOptions = {
           + item.replace(re, '<b>$1</b>') +
         '</div>';
     },
-    // tslint:disable-next-line
     onSelect(e: any, term: any, item: any) {},
 };
 

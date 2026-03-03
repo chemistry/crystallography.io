@@ -16,7 +16,7 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
 
         try {
             const structure =  await db.collection("structures").findOne({
-                _id: Number(id),
+                _id: Number(id) as any,
             });
 
             res.json({
@@ -28,8 +28,7 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
                 data: structure,
             });
 
-        } catch(e) {
-            // tslint:disable-next-line
+        } catch(e: any) {
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({
@@ -49,11 +48,10 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
         const { ids, expand } = req?.body || { ids: "[]", expand: false};
         const structureMapper = mapStructure(expand);
 
-        let structuresIds: number[] = null;
+        let structuresIds: number[] = [];
         try {
             structuresIds = JSON.parse(ids);
-        } catch (e) {
-            // tslint:disable-next-line
+        } catch (e: any) {
             console.error(`error in parsing : ${ids},  ERROR: ${e}`)
             structuresIds = [];
         }
@@ -71,7 +69,7 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
             }
 
             const data = await db.collection("structures").find({
-                _id: { $in : structuresIds },
+                _id: { $in : structuresIds } as any,
             })
             .map(structureMapper)
             .toArray();
@@ -85,8 +83,7 @@ export const getStructureRouter = ({ db }: { db: Db}) => {
                 data,
             });
 
-        } catch (e) {
-            // tslint:disable-next-line
+        } catch (e: any) {
             console.error(String(e));
             Sentry.captureException(e);
             return res.status(500).json({

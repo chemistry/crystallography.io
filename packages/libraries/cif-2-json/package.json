@@ -1,34 +1,32 @@
 {
-    "name": "@chemistry/cif-2-json",
-    "version": "0.0.18",
-    "description": "Tool for converting CIF to JSON and manipulate with content",
-    "author": {
-        "name": "Volodymyr Vreshch",
-        "url": "http://vreshch.com/"
-    },
-    "engines": {
-        "node": ">=6.0.0"
-    },
-    "keywords": [
-        "crystallography",
-        "cif",
-        "json"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/vreshch/cif2json.git"
-    },
-    "main": "dist/cif-2-json.js",
-    "typings": "dist/index.d.ts",
-    "scripts": {
-        "build": "webpack-cli --config webpack.config.js --mode production"
-    },
-    "devDependencies": {
-        "ts-loader": "8.1.0",
-        "typescript": "4.3.5",
-        "webpack": "4.43.0",
-        "webpack-cli": "3.3.12",
-        "webpack-serve": "3.2.0"
-    },
-    "gitHead": "a97cb8f77d7053bfb70026998eed49ad5737c6d0"
+  "name": "@chemistry/cif-2-json",
+  "version": "0.0.18",
+  "description": "Tool for converting CIF to JSON and manipulate with content",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "https://vreshch.com/"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "crystallography",
+    "cif",
+    "json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vreshch/cif2json.git"
+  },
+  "main": "dist/cif-2-json.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --emitDeclarationOnly && webpack-cli --config webpack.config.js --mode production"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.9.0",
+    "webpack": "^5.97.0",
+    "webpack-cli": "^6.0.0"
+  }
 }

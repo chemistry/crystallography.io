@@ -1,19 +1,15 @@
-FROM node:16.6.1-alpine3.11
-RUN mkdir /app
+FROM node:22-alpine AS builder
 WORKDIR /app
-
-# install python
-RUN apk update && apk add --no-cache python2 make g++ pkgconfig libsecret-dev
-ENV PKG_CONFIG_PATH=/usr/lib/pkgcon
-
-# Install rsync & gsutil
-RUN apk add --update subversion rsync openssh && rm -rf /var/cache/apk/*
-
-# setup packages
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
-ENV NODE_ENV=production
-COPY . /app
+COPY . .
 RUN npm run build
 
-CMD [ "/bin/sh", "/app/start-script.sh"]
+FROM node:22-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+RUN apk add --no-cache rsync openssh subversion
+COPY package.json ./
+RUN npm install --omit=dev
+COPY --from=builder /app/dist ./dist
+CMD ["node", "dist/index.js"]

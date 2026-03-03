@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 
 export const RegisterPage = () => {
   const { register, handleSubmit } = useForm();
-  // tslint:disable-next-line
   const onSubmit = (data: any) => {
   };
   return (

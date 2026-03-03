@@ -1,29 +1,40 @@
-#npm node modules
+# Dependencies
 node_modules
-coverage
+
+# Build output
+dist/
 build
-temp
-# Generated docs with JSDoc
-docs
-TODO
+lib/
+.next
+
+# Environment
+.env
 credentials.json
 credentials.base64.json
-.next
-dist/
-lib/
+
+# Coverage
+coverage
+
+# Terraform
 .terraform/
-# Sublime text project space
-*.sublime-workspace
-*.sublime-project
-# zip file
-*.zip
-npm-debug.log
-# Mac DS_Store Files
-.DS_Store
-lerna-debug.log
-.npmrc
 terraform.tfstate
 terraform.tfstate.backup
 
-# typescript
+# IDE / OS
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+temp
+
+# Logs
+npm-debug.log
+lerna-debug.log
+
+# Auth
+.npmrc
+
+# TypeScript
 *.tsbuildinfo
+
+# Archives
+*.zip

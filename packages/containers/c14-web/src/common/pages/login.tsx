@@ -1,12 +1,13 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../store/common";
 import { RootState } from "../store";
 import { loginUser } from "../store/user.slice";
 
 export const LoginPage = () => {
   const { register, handleSubmit } = useForm();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const auth = useSelector((state: RootState) => state.user.auth);
   const error = useSelector((state: RootState) => state.user.error);
 

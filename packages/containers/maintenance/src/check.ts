@@ -21,15 +21,12 @@ const getMockContext = async (): Promise<AppContext> => {
     try {
         const context = await getMockContext();
 
-        // tslint:disable-next-line
         console.time('message processed');
         await processMessage({ context });
 
         context.close();
-        // tslint:disable-next-line
         console.timeEnd('message processed');
     } catch(e) {
-        // tslint:disable-next-line
         console.error(e);
         process.exit(-1);
     }

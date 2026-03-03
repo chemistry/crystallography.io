@@ -1,38 +1,34 @@
 import { NextFunction, Request, Response } from "express";
-import {
-    Db,
-    ObjectID,
-} from "mongodb";
-import {
-    ChunksHelper,
-} from "../helpers";
+import { Db, ObjectId } from "mongodb";
+import { Queue } from "bullmq";
+import { ChunksHelper } from "../helpers";
 import {
     JobResponseModel,
     SubstructureSearchModel,
 } from "../models";
 
 interface AppConfig {
-    queue: any;
+    queue: Queue;
     db: Db;
 }
-const RESULTS_PER_PAGE  = 100;
+const RESULTS_PER_PAGE = 100;
 
-export function getSubstructureSearchCreator(queue: any, db: Db) {
+export function getSubstructureSearchCreator(queue: Queue, db: Db) {
     const config: AppConfig = {
         queue,
         db,
     };
     return (req: Request, res: Response, next: NextFunction) => {
-          Promise.resolve(
-              processGetFn({ req, res, next, config }),
-          )
-          .catch(next);
+        Promise.resolve(
+            processGetFn({ req, res, next, config }),
+        )
+        .catch(next);
     };
 }
 
 async function processGetFn({
     req, res, next, config,
-}: {req: Request, res: Response, next: NextFunction, config: AppConfig }) {
+}: { req: Request, res: Response, next: NextFunction, config: AppConfig }) {
     const { searchId } = req.params;
     const { queue, db } = config;
     const page = parseInt(req.query.page as any || 1, 10);
@@ -51,8 +47,8 @@ async function processGetFn({
             detail: "Wrong page Params",
         });
     }
-    const searchRecord: SubstructureSearchModel = await db.collection("substructure-searches").findOne({
-        _id: ObjectID.createFromHexString(searchId),
+    const searchRecord = await db.collection("substructure-searches").findOne({
+        _id: ObjectId.createFromHexString(searchId),
     }, {
         projection: {
             resultsLength: 1,
@@ -61,7 +57,7 @@ async function processGetFn({
             foundResults: 1,
             queue: 1,
         },
-    });
+    }) as any as SubstructureSearchModel;
     if (!searchRecord) {
         return next({
             status: 404,
@@ -79,11 +75,11 @@ async function processGetFn({
     const [min, max] = calcProjection;
     let allResults: number[][] = [];
     if (min !== -1 && max !== -1) {
-        const resSearchRecord: SubstructureSearchModel = await db.collection("substructure-searches").findOne({
-            _id: ObjectID.createFromHexString(searchId),
+        const resSearchRecord = await db.collection("substructure-searches").findOne({
+            _id: ObjectId.createFromHexString(searchId),
         }, {
-            projection: { results: { $slice: [ min, (max - min + 1) ] } },
-        });
+            projection: { results: { $slice: [min, (max - min + 1)] } },
+        }) as any as SubstructureSearchModel;
         if (min === 0) {
             allResults = resSearchRecord.results;
         } else {
@@ -98,7 +94,7 @@ async function processGetFn({
     const status = searchRecord.status;
     const found = searchRecord.foundResults;
     const { failed, succeeded, total } = searchRecord.queue;
-    const progress = (total === 0) ? 100 : Math.round(( (failed + succeeded)  / total) * 100);
+    const progress = (total === 0) ? 100 : Math.round(((failed + succeeded) / total) * 100);
     const pagesAvailable = ChunksHelper.getAvailablePagesCount(resultsLength, RESULTS_PER_PAGE);
     const results = ChunksHelper.getPageResults(resultsLength, allResults, page, RESULTS_PER_PAGE);
 

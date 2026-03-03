@@ -1,7 +1,5 @@
-import {
-    Db,
-    ObjectID,
-} from "mongodb";
+import { Db, ObjectId } from "mongodb";
+import { Queue } from "bullmq";
 import {
     ChunkSearchModel,
     ChunkStatusModel,
@@ -10,11 +8,9 @@ import {
     SearchStatusModel,
     SubstructureSearchModel,
 } from "../models";
-import {
-    ChunksHelper,
-} from "./chunks.helper";
+import { ChunksHelper } from "./chunks.helper";
 
-const RESULTS_PER_PAGE  = 100;
+const RESULTS_PER_PAGE = 100;
 
 export class QueueHelperController {
 
@@ -25,9 +21,8 @@ export class QueueHelperController {
         result: JobOutputModel,
         status: ChunkStatusModel,
     }): Promise<number> {
-        // tslint:disable-next-line;
         const now = new Date();
-        const rowId = ObjectID.createFromHexString(result.searchId);
+        const rowId = ObjectId.createFromHexString(result.searchId);
 
         const collection = db.collection("substructure-searches");
         let incObj: any = {
@@ -36,7 +31,7 @@ export class QueueHelperController {
         if (status === ChunkStatusModel.failed) {
             incObj = {
                 "queue.failed": 1,
-              };
+            };
         }
         await collection.updateOne({
             _id: rowId,
@@ -44,8 +39,8 @@ export class QueueHelperController {
             $set: {
                 updatedAt: new Date(),
                 status: "processing",
-                ["results." + result.index ]: result.results,
-                ["resultsLength." + result.index ]: result.results.length,
+                ["results." + result.index]: result.results,
+                ["resultsLength." + result.index]: result.results.length,
             },
             $inc: {
                 ...incObj,
@@ -53,12 +48,12 @@ export class QueueHelperController {
                 version: 1,
             },
             $push: {
-                processedIndexes: result.index,
+                processedIndexes: result.index as any,
             },
         });
-        const record: SubstructureSearchModel = await collection.findOne({
+        const record = await collection.findOne({
             _id: rowId,
-        }, { projection: { queue: 1, version: 1, isCanceled: 1 } });
+        }, { projection: { queue: 1, version: 1, isCanceled: 1 } }) as any as SubstructureSearchModel;
 
         const processed = record.queue.failed + record.queue.succeeded;
         const total = record.queue.total;
@@ -90,80 +85,80 @@ export class QueueHelperController {
         fromVersion: number,
         page: number,
     }): Promise<JobResponseModel> {
-      const collection = db.collection("substructure-searches");
-      const rowId = ObjectID.createFromHexString(searchId);
-      const record: SubstructureSearchModel = await collection.findOne({
-          _id: rowId,
-      }, { projection: { status: 1, queue: 1, foundResults: 1, resultsLength: 1, version: 1, processedIndexes: 1 } });
+        const collection = db.collection("substructure-searches");
+        const rowId = ObjectId.createFromHexString(searchId);
+        const record = await collection.findOne({
+            _id: rowId,
+        }, { projection: { status: 1, queue: 1, foundResults: 1, resultsLength: 1, version: 1, processedIndexes: 1 } }) as any as SubstructureSearchModel;
 
-      const { foundResults, version, status, resultsLength, processedIndexes } = record;
-      const { failed, succeeded, total } = record.queue;
+        const { foundResults, version, status, resultsLength, processedIndexes } = record;
+        const { failed, succeeded, total } = record.queue;
 
-      const progress = (total === 0) ? 100 : Math.round(((failed + succeeded)  / total) * 100);
-      const pagesAvailable = ChunksHelper.getAvailablePagesCount(resultsLength, RESULTS_PER_PAGE);
+        const progress = (total === 0) ? 100 : Math.round(((failed + succeeded) / total) * 100);
+        const pagesAvailable = ChunksHelper.getAvailablePagesCount(resultsLength, RESULTS_PER_PAGE);
 
-      let results = null;
-      const shouldUpdateResults = ChunksHelper.willHaveResultsUpdate({
-          fromVersion,
-          resultsLength,
-          RESULTS_PER_PAGE,
-          processedIndexes,
-      });
-      let min = -1;
-      let max = -1;
-      if (shouldUpdateResults) {
-          const calcProjection = ChunksHelper.getProjectionsBasedOnLength(
-              resultsLength,
-              page,
-              RESULTS_PER_PAGE,
-          );
-          [min, max] = calcProjection;
-          let allResults: number[][] = [];
-          if (min !== -1 && max !== -1) {
-              const resSearchRecord: SubstructureSearchModel = await db.collection("substructure-searches").findOne({
-                  _id: ObjectID.createFromHexString(searchId),
-              }, {
-                  projection: { results: { $slice: [ min, (max - min + 1) ] } },
-              });
-              if (min === 0) {
-                  allResults = resSearchRecord.results;
-              } else {
-                  allResults = [
-                      ...(new Array(min)).fill([]),
-                      ...resSearchRecord.results,
-                  ];
-              }
-              results = ChunksHelper.getPageResults(resultsLength, allResults, page, RESULTS_PER_PAGE);
-          }
-      }
+        let results = null;
+        const shouldUpdateResults = ChunksHelper.willHaveResultsUpdate({
+            fromVersion,
+            resultsLength,
+            RESULTS_PER_PAGE,
+            processedIndexes,
+        });
+        let min = -1;
+        let max = -1;
+        if (shouldUpdateResults) {
+            const calcProjection = ChunksHelper.getProjectionsBasedOnLength(
+                resultsLength,
+                page,
+                RESULTS_PER_PAGE,
+            );
+            [min, max] = calcProjection;
+            let allResults: number[][] = [];
+            if (min !== -1 && max !== -1) {
+                const resSearchRecord = await db.collection("substructure-searches").findOne({
+                    _id: ObjectId.createFromHexString(searchId),
+                }, {
+                    projection: { results: { $slice: [min, (max - min + 1)] } },
+                }) as any as SubstructureSearchModel;
+                if (min === 0) {
+                    allResults = resSearchRecord.results;
+                } else {
+                    allResults = [
+                        ...(new Array(min)).fill([]),
+                        ...resSearchRecord.results,
+                    ];
+                }
+                results = ChunksHelper.getPageResults(resultsLength, allResults, page, RESULTS_PER_PAGE);
+            }
+        }
 
-      const response: JobResponseModel = {
-          meta: {
-              id: searchId,
-              status,
-              progress,
-              version,
-              found: foundResults,
-              page,
-              pagesAvailable,
-          },
-          data: {
-              results,
-          },
-      };
-      return response;
+        const response: JobResponseModel = {
+            meta: {
+                id: searchId,
+                status,
+                progress,
+                version,
+                found: foundResults,
+                page,
+                pagesAvailable,
+            },
+            data: {
+                results,
+            },
+        };
+        return response;
     }
 
     public static async cancelSearchChunks({
         searchId,
         db,
         queue,
-    }: { searchId: string, db: Db, queue: any }): Promise<void> {
+    }: { searchId: string, db: Db, queue: Queue }): Promise<void> {
         const collection = db.collection("substructure-searches");
-        const rowId = ObjectID.createFromHexString(searchId);
-        const record: SubstructureSearchModel = await collection.findOne({
+        const rowId = ObjectId.createFromHexString(searchId);
+        const record = await collection.findOne({
             _id: rowId,
-        }, { projection: { status: 1, queue: 1, version: 1, processedIndexes: 1 } });
+        }, { projection: { status: 1, queue: 1, version: 1, processedIndexes: 1 } }) as any as SubstructureSearchModel;
         const { failed, succeeded, total } = record.queue;
         const { status, version, processedIndexes, isCanceled } = record;
         if (status === "finished" || isCanceled) {
@@ -179,9 +174,14 @@ export class QueueHelperController {
             return;
         }
         for (const jobId of jobsToCancel) {
-            await removeJob({
-                jobId, queue,
-            });
+            try {
+                const job = await queue.getJob(jobId);
+                if (job) {
+                    await job.remove();
+                }
+            } catch (_err) {
+                // Job may already be completed or removed
+            }
         }
         await collection.updateOne({
             _id: rowId,
@@ -189,15 +189,4 @@ export class QueueHelperController {
             $set: { status: "canceled", isCanceled: true },
         });
     }
-}
-
-function removeJob({jobId, queue}: {jobId: string, queue: any}): Promise<void> {
-    return new Promise((resolve, reject) => {
-        queue.removeJob(jobId, (err: any) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve();
-        });
-    });
 }

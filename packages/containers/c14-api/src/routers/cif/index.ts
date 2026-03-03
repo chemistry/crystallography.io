@@ -14,11 +14,10 @@ export const getCifDataRouter = () => {
         const fileId = req.params.id || "";
         const file = DATA_DIRECTORY + "/cif/" + normName(fileId);
 
-        fs.stat(file, (err: Error) => {
+        fs.stat(file, (err) => {
             if (err) {
                 res.status(404);
                 res.json({ error: "Not found" });
-                // tslint:disable-next-line
                 console.error(err);
                 return;
             }

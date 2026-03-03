@@ -74,8 +74,7 @@ export const getNameSearchRouter = ({ db }: { db: Db}) => {
                 data: structures,
             });
 
-        } catch(e) {
-            // tslint:disable-next-line
+        } catch(e: any) {
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({

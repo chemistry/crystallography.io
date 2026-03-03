@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const PageContainer: React.SFC<{ title?: string, HeadComponent?: React.SFC }> = ({
+export const PageContainer: React.FC<React.PropsWithChildren<{ title?: string, HeadComponent?: React.FC }>> = ({
     title, children, HeadComponent,
 }) => {
     return (

@@ -99,10 +99,6 @@ module.exports = {
               },
           }),
         ])),
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
-        }),
         new MiniCssExtractPlugin({
             filename: '[name].[fullhash].css',
         }),

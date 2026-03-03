@@ -98,8 +98,7 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
                 },
                 data: namesCombined,
             });
-        } catch (e) {
-            // tslint:disable-next-line
+        } catch (e: any) {
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({
