@@ -21,7 +21,7 @@
   "main": "dist/cif-2-json.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack-cli --config webpack.config.js --mode production"
+    "build": "tsc --emitDeclarationOnly && webpack-cli --config webpack.config.js --mode production"
   },
   "devDependencies": {
     "ts-loader": "^9.5.0",

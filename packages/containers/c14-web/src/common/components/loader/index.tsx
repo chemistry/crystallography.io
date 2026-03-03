@@ -9,7 +9,7 @@ if (process.env.BROWSER) {
     require("./index.scss");
 }
 
-export const Loader: React.SFC<{ isVisible: boolean, scrollElement: MutableRefObject<any>}> = ({ isVisible,  scrollElement, children }) => {
+export const Loader: React.FC<React.PropsWithChildren<{ isVisible: boolean, scrollElement: MutableRefObject<any>}>> = ({ isVisible,  scrollElement, children }) => {
     const containerRef = useRef(null);
     const [top, setTop] = useState("50%");
 

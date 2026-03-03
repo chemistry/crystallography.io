@@ -32,8 +32,8 @@ const getContext = async (): Promise<AppContext> => {
         exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
             return shell.exec(command);
         },
-        sendNoticeToQueue: (data: object): Promise<void> => {
-            return chanel.sendToQueue(NOTICE_WRITE_QUEUE, Buffer.from(JSON.stringify(data)));
+        sendNoticeToQueue: async (data: object): Promise<void> => {
+            chanel.sendToQueue(NOTICE_WRITE_QUEUE, Buffer.from(JSON.stringify(data)));
         },
         db,
         QUEUE_NAME: READ_QUEUE_NAME
@@ -48,7 +48,7 @@ const getContext = async (): Promise<AppContext> => {
         await app(context);
 
         console.timeEnd('application start');
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);

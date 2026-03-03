@@ -70,7 +70,7 @@ export const getAuthorRouter = ({ db }: { db: Db}) => {
                 data: (authors || []),
             });
 
-        } catch(e) {
+        } catch(e: any) {
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({
@@ -133,7 +133,7 @@ export const getAuthorRouter = ({ db }: { db: Db}) => {
                 }
             });
 
-        } catch(e) {
+        } catch(e: any) {
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({

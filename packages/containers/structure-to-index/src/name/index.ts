@@ -10,11 +10,11 @@ export const processNamesIndex = async ({ structureId, context }: { structureId:
     const structuresDB  = db.collection("structures")
     await ensureStructureNamesIndexes(namesDB);
 
-    const doc = await structuresDB.findOne({ _id: structureId })
+    const doc = await structuresDB.findOne({ _id: structureId } as any)
     if (!doc) {
         return;
     }
-    await clearDocLinks(namesDB, doc._id);
+    await clearDocLinks(namesDB, doc._id as unknown as number);
 
     if (!doc.mineral && !doc.commonname && !doc.chemname) {
         return;

@@ -30,7 +30,7 @@ import { healthCheck, mongoCheck } from "./common/health-check";
             console.log('closing connection');
         });
 
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);

@@ -24,7 +24,7 @@ const getSitemapsList  = ({ db }: { db: Db }) => {
 
             res.write("</sitemapindex>");
             res.end();
-        } catch (e) {
+        } catch (e: any) {
             console.error(String(e));
             Sentry.captureException(e);
             res.end();
@@ -58,7 +58,7 @@ const getStructuresList  = ({ db }: { db: Db }) => {
                 return;
             }
             const page = parseInt(req.params[0], 10);
-            const doc = await db.collection("sitemap").findOne({ _id: page });
+            const doc = await db.collection("sitemap").findOne({ _id: page as any });
             if (!doc) {
                 res.status(404);
                 res.end("Wrong sitemap");
@@ -76,7 +76,7 @@ const getStructuresList  = ({ db }: { db: Db }) => {
 
             res.write("</urlset>");
             res.end();
-        } catch (e) {
+        } catch (e: any) {
             console.error(String(e));
             Sentry.captureException(e);
             res.status(500).end();

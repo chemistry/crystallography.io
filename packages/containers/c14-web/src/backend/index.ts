@@ -80,7 +80,7 @@ console.time("App Start");
 
         logger.trace(`Application Started on port: ${PORT}`);
         console.timeEnd("App Start");
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);

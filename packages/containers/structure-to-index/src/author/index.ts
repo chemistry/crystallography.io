@@ -6,7 +6,7 @@ export const processAuthorsIndex = async ({ structureId, context }: { structureI
     const { logger, db } = context;
 
     const structureDB = db.collection("structures");
-    const doc = await structureDB.findOne({ _id: structureId })
+    const doc = await structureDB.findOne({ _id: structureId } as any)
     if (!doc) {
         return;
     }
@@ -35,7 +35,7 @@ export const processAuthorsIndex = async ({ structureId, context }: { structureI
         await saveAuthorRecord(authorsDB, authorRecord);
     }
 
-    await saveAuthorsToDoc(structureDB, authorsToSave, doc._id);
+    await saveAuthorsToDoc(structureDB, authorsToSave, doc._id as unknown as number);
     await ensureAuthorsDBIndexes(authorsDB);
 }
 
@@ -151,7 +151,7 @@ function extractAuthorsList(doc: any): string[] {
         return (item.columns || []).indexOf("_publ_author_name") !== -1;
     });
     if (theLoops.length !== 1) {
-        return;
+        return [];
     }
     const colIdx = theLoops[0].columns.indexOf("_publ_author_name");
 

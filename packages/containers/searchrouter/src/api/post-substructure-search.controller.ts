@@ -47,7 +47,7 @@ function processSubstructureSearch({
         jmol = JSON.parse(searchQuery);
         searchQueryJSON = jmol;
         jmol = clearBondOrder(jmol);
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         return next({
             status: "message#2",
@@ -66,7 +66,7 @@ function processSubstructureSearch({
                 detail: "Wrong Molecule Params; " + err,
             });
         }
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         return next({
             status: "message#4",

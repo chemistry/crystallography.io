@@ -56,7 +56,7 @@ export async function startWorker() {
 
         logger.trace(`${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`);
 
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);
@@ -79,7 +79,7 @@ async function processQ(db: Db, data: JobInputModel): Promise<JobOutputModel> {
 
     const fragments = db.collection("fragments");
     const cursor = fragments.find({
-        _id: { $in: toCheck },
+        _id: { $in: toCheck } as any,
     });
     const foundIds: number[] = [];
 

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../store/common";
 import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
 import { StructuresList } from "../../components/structure-list/structure-list";
 import { ErrorToast } from "../../components/toast";
@@ -86,7 +87,7 @@ const SearchSummary = ({ totalResults }: {totalResults: number })=> {
 
 
 const SearchResults = ()=> {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const containerRef = useRef(null);
     const isLoading = useSelector((state: RootState) => state.searchByFormulaSlice.isLoading);
     const structures = useSelector((state: RootState) => {
@@ -155,7 +156,7 @@ const SearchResults = ()=> {
 
 export const SearchByFormulaPage = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.search.page);
     const gaEvent  = useGaAnalytics();
 

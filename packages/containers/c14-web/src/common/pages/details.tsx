@@ -24,7 +24,7 @@ export const DetailsPage = () => {
     const { id } = useParams() as any;
     const currentId = parseInt(id, 10);
 
-    const HeadComponent: React.SFC = () => {
+    const HeadComponent: React.FC = () => {
         return (<span>Crystal Structure of <CompoundName model={structure} /></span>);
     };
 
@@ -50,7 +50,7 @@ export const DetailsPage = () => {
         if (structure) {
             try {
                 viewer.load(structure);
-            } catch (e) { }
+            } catch (e: any) { }
         }
         return () => {
             if (viewer) {

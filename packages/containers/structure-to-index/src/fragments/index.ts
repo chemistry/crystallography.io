@@ -23,7 +23,7 @@ export const processFragments = async ({ structureId, context }: { structureId: 
     const fragmentsDB = db.collection("fragments");
     const structuresDB  = db.collection("structures")
 
-    const doc = await structuresDB.findOne({ _id: structureId })
+    const doc = await structuresDB.findOne({ _id: structureId } as any)
     if (!doc) {
         return;
     }

@@ -31,7 +31,7 @@ export async function createWindow() {
 
   try {
       await win.loadURL(appHost);
-  } catch (e) {
+  } catch (e: any) {
       // console.log(e);
       // Load Simple Fallback URL
       await win.loadFile(path.join(__dirname, "../renderer/index.html"));

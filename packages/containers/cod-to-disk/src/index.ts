@@ -27,7 +27,7 @@ const getContext = async (): Promise<AppContext> => {
             return shell.exec(command);
         },
         execAsync: (command: string): Readable => {
-            return shell.exec(command, { async: true }).stdout;
+            return shell.exec(command, { async: true }).stdout!;
         },
         sendToQueue: (data: object): void => {
             chanel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(data)));
@@ -43,7 +43,7 @@ const getContext = async (): Promise<AppContext> => {
         await app(context);
 
         console.timeEnd('application start');
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);

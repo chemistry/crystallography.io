@@ -61,7 +61,7 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
                 .toArray();
 
             const authorsCollection = authors.map(({full, count}: any) => ({full, count}));
-            const structuresIds = authors.reduce((acc, { structures }) => acc.concat(structures), []);
+            const structuresIds = authors.reduce((acc: number[], { structures }) => acc.concat(structures), [] as number[]);
             const uniqStructureIds = [...new Set([...structuresIds])];
 
             const totalPages = Math.ceil(uniqStructureIds.length / RESULTS_PER_PAGE);
@@ -79,7 +79,7 @@ export const getAuthorSearchRouter = ({ db }: { db: Db}) => {
                 }
             });
 
-        } catch(e) {
+        } catch(e: any) {
             console.error(e.stack);
             Sentry.captureException(e);
             return res.status(500).json({

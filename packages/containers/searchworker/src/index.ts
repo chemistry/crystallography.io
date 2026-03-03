@@ -28,7 +28,7 @@ if (cluster.isPrimary) {
                 console.error(`${new Date().toLocaleString()} searchworker:master - fork event; isDead: ${worker.isDead()}`);
             });
 
-        } catch (e) {
+        } catch (e: any) {
             Sentry.captureException(e);
             console.error(String(e));
             process.exit(-1);

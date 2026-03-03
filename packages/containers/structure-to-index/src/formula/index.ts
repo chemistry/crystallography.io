@@ -6,7 +6,7 @@ export const processFormulaIndex = async ({ structureId, context }: { structureI
 
     const structureDB = db.collection("structures");
     const formulasDB = db.collection("formulas");
-    const doc = await structureDB.findOne({ _id: structureId })
+    const doc = await structureDB.findOne({ _id: structureId } as any)
     if (!doc) {
         return;
     }
@@ -17,8 +17,8 @@ export const processFormulaIndex = async ({ structureId, context }: { structureI
         return;
     }
 
-    await clearDocLinks(formulasDB, doc._id);
-    await processFormula(formulasDB, formula, doc._id);
+    await clearDocLinks(formulasDB, doc._id as unknown as number);
+    await processFormula(formulasDB, formula, doc._id as unknown as number);
 
     await ensureFormulasDBIndexes(formulasDB);
 }

@@ -39,7 +39,7 @@ const getContext = async (): Promise<AppContext> => {
         await app(context);
 
         console.timeEnd('application start');
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);

@@ -5,7 +5,7 @@ export const processUnitCellIndex = async ({ structureId, context }: { structure
     const { logger, db } = context;
 
     const structureDB = db.collection("structures");
-    const doc = await structureDB.findOne({ _id: structureId })
+    const doc = await structureDB.findOne({ _id: structureId } as any)
 
     if (!doc) {
         return;

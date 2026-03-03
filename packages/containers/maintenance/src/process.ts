@@ -11,7 +11,7 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
         const ids: number[] = await db.collection("structures").find({}, {
             sort: "_id",
             _id: 1,
-        } as any).map(({_id}: {_id: number}) => Number(_id)).toArray();
+        } as any).map((doc: any) => Number(doc._id)).toArray();
 
         const structureCatalogDocs = [];
         for (let i = 0; i < Math.ceil(ids.length / CATALOG_PAGE_SIZE); i++) {
@@ -22,8 +22,8 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
                 structures,
             });
         }
-        await db.collection("catalog").remove({});
-        await db.collection("catalog").insertMany(structureCatalogDocs);
+        await db.collection("catalog").deleteMany({});
+        await db.collection("catalog").insertMany(structureCatalogDocs as any);
 
         // save sitemap catalog
         const sitemapDocs = [];
@@ -35,8 +35,8 @@ export const processMessage = async ({ context }: { context: AppContext}) => {
             });
         }
 
-        await db.collection("sitemap").remove({});
-        await db.collection("sitemap").insertMany(sitemapDocs);
+        await db.collection("sitemap").deleteMany({});
+        await db.collection("sitemap").insertMany(sitemapDocs as any);
 
     } catch(e) {
         Sentry.captureException(e);

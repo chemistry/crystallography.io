@@ -41,7 +41,7 @@ export type RootState = ReturnType<typeof reducer>;
 export const getStore = (preloadedState: RootState | null) => {
     return configureStore({
       reducer,
-      middleware,
+      middleware: middleware as any,
       devTools: isDevelopment,
       preloadedState: (preloadedState ? preloadedState : {}) as any,
     });

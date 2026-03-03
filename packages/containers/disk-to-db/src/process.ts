@@ -31,7 +31,7 @@ export const processMessage = async ({ fileName, codId, context }: { fileName: s
         const now = (new Date());
 
         await collection.findOneAndUpdate({
-            _id: Number(codId),
+            _id: Number(codId) as any,
         }, {
             '$set':  {
                 _id: Number(codId),
@@ -43,13 +43,13 @@ export const processMessage = async ({ fileName, codId, context }: { fileName: s
             }
         }, {
             upsert: true,
-            returnOriginal: false,
-        });
+            returnDocument: 'after',
+        } as any);
 
-        collection = null;
-        fileContent = null;
+        collection = null as any;
+        fileContent = null as any;
         jcif = null;
-        dataToSave = null;
+        dataToSave = null as any;
 
     } catch(e) {
         Sentry.captureException(e);

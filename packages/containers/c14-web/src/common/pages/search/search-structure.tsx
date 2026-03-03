@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../store/common";
 import { useHistory } from "react-router-dom";
 import { SearchTab } from "../../components";
 import { useGaAnalytics } from "../../hooks/useAnalytics";
@@ -17,7 +17,7 @@ if (process.env.BROWSER) {
 
 export const SearchByStructurePage = () => {
     const molpadRef = useRef(null);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const history = useHistory();
     const gaEvent =  useGaAnalytics();
 
@@ -35,7 +35,7 @@ export const SearchByStructurePage = () => {
             });
             const searchId = await dispatch(searchStructureByStructure({
                 molecule: jmol,
-            }));
+            })) as any;
             if (searchId) {
                 history.push(`/results/${searchId}/1`);
             }

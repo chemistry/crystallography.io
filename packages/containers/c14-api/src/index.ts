@@ -66,13 +66,13 @@ const getApplicationContext = async () => {
             app.listen(PORT, "0.0.0.0", resolve);
         });
 
-        app.on("error", (err: any) => {
+        (app as any).on("error", (err: any) => {
             console.error(err);
         });
 
         logger.trace(`Application Started on port: ${PORT}`);
         console.timeEnd("App Start");
-    } catch (e) {
+    } catch (e: any) {
         Sentry.captureException(e);
         console.error(e);
         process.exit(-1);

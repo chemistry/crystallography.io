@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../store/common";
 import { useParams } from "react-router";
 import { RouteConfig } from "react-router-config";
 import { RootState } from "../store";
@@ -22,7 +23,7 @@ const numberWithSpaces = (x: number): string => {
 const MAX_PAGES = 10;
 
 export const SearchResultsPage  = ()=> {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const { id, page } = useParams() as any;
     const isLoading = useSelector((state: RootState) => state.searchResults.isLoading);
     const pages = useSelector((state: RootState)=> state.searchResults.meta.pagesAvailable);
