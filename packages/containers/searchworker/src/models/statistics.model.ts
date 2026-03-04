@@ -1,5 +1,5 @@
 export interface SearchStatisticsModel {
-    fileId: string;
-    time: number;
-    rowId: string;
+  fileId: string;
+  time: number;
+  rowId: string;
 }

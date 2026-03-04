@@ -1,13 +1,13 @@
 export interface JobOutputModel {
-    searchId: string;
-    index: number;
-    results: number[];
-    time: number;
+  searchId: string;
+  index: number;
+  results: number[];
+  time: number;
 }
 
 export interface JobInputModel {
-    searchId: string;
-    index: number;
-    toCheck: number[];
-    searchQuery: object;
+  searchId: string;
+  index: number;
+  toCheck: number[];
+  searchQuery: object;
 }
