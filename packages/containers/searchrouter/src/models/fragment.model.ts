@@ -1,4 +1,4 @@
 export interface IFragmentModel {
-    _id: number;
-    fragments: any[];
+  _id: number;
+  fragments: any[];
 }

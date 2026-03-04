@@ -1,9 +1,0 @@
-{
-    "extends": "../../../tsconfig.json",
-    "compilerOptions": {
-        "target": "ES2017",
-        "outDir": "build/main",
-        "types": ["node"]
-    },
-    "include": [ "./src/main/*" ]
-}

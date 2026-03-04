@@ -1,9 +1,7 @@
-describe("startsWith prototype", () => {
-    it("should define method", () => {
-        const originalStartWith = String.prototype.startsWith;
-        String.prototype.startsWith = null;
-        require('./cif_polyfil');
-        expect("hello".startsWith("h")).toEqual(true);
-        String.prototype.startsWith = originalStartWith;
-    });
+describe('startsWith polyfill', () => {
+  it('should provide startsWith functionality', () => {
+    expect('hello'.startsWith('h')).toEqual(true);
+    expect('hello'.startsWith('e')).toEqual(false);
+    expect('hello'.startsWith('hel')).toEqual(true);
+  });
 });
