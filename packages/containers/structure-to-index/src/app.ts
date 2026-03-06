@@ -1,31 +1,35 @@
-import * as Sentry from "@sentry/node";
-import { Db } from 'mongodb';
+import * as Sentry from '@sentry/node';
+import type { Db } from 'mongodb';
 import { processMessage } from './process';
 
 export interface AppContext {
-    logger: {
-        trace: (message: string) => void;
-        info: (message: string) => void;
-        error: (message: string) => void;
-    },
-    QUEUE_NAME: string;
-    chanel: any;
-    db: Db;
+  logger: {
+    trace: (message: string) => void;
+    info: (message: string) => void;
+    error: (message: string) => void;
+  };
+  QUEUE_NAME: string;
+  chanel: any;
+  db: Db;
 }
 
 export const app = async (context: AppContext) => {
-    const { logger, chanel, QUEUE_NAME } = context;
+  const { logger, chanel, QUEUE_NAME } = context;
 
-    chanel.consume(QUEUE_NAME, async (originalMessage: any) => {
-        const message = JSON.parse(originalMessage.content.toString());
-        const { structureId } = message;
+  chanel.consume(
+    QUEUE_NAME,
+    async (originalMessage: any) => {
+      const message = JSON.parse(originalMessage.content.toString());
+      const { structureId } = message;
 
-        await Sentry.startSpan({ name: "process message", op: "structure-to-index" }, async () => {
-            await processMessage({ structureId, context });
-        });
+      await Sentry.startSpan({ name: 'process message', op: 'structure-to-index' }, async () => {
+        await processMessage({ structureId, context });
+      });
 
-        chanel.ack(originalMessage);
-    }, { noAck: false });
+      chanel.ack(originalMessage);
+    },
+    { noAck: false }
+  );
 
-    logger.trace('---------------------------------------------------');
+  logger.trace('---------------------------------------------------');
 };
