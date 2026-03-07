@@ -13,28 +13,32 @@ export const LoginPage = () => {
 
   return (
     <div>
-        <header className="app-layout-header">
-            <h2 className="text-primary">Login</h2>
-        </header>
-        <div className="app-layout-content">
+      <header className="app-layout-header">
+        <h2 className="text-primary">Login</h2>
+      </header>
+      <div className="app-layout-content">
         <h1>Login</h1>
-        <hr/>
-          <div><b>{auth ? "Logged IN" : null}</b></div>
-          <>{error.code ? error.message : null}</>
-          <form onSubmit={handleSubmit(onSubmit)}>
-          <div style={{ padding: "20px" }}>
-            <div >Email:
-              <input type="text"  name="email" ref={register as any}  />
+        <hr />
+        <div>
+          <b>{auth ? 'Logged IN' : null}</b>
+        </div>
+        <>{error.code ? error.message : null}</>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div style={{ padding: '20px' }}>
+            <div>
+              Email:
+              <input type="text" name="email" ref={register as any} />
             </div>
-            <div>Password:
-              <input type="text" name="password" ref={register as any}  />
+            <div>
+              Password:
+              <input type="text" name="password" ref={register as any} />
             </div>
             <div>
               <input type="submit" name="Submit" />
             </div>
           </div>
         </form>
-        </div>
+      </div>
     </div>
   );
 };

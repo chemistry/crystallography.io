@@ -40,7 +40,12 @@ export const AuthorDetailsPage = () => {
             </div>
           </div>
           <Loader isVisible={isLoading} scrollElement={containerRef}>
-            <Pagination currentPage={currentPage} maxPages={MAX_PAGES} totalPages={pages} url={`/author/${name}`} />
+            <Pagination
+              currentPage={currentPage}
+              maxPages={MAX_PAGES}
+              totalPages={pages}
+              url={`/author/${name}`}
+            />
             <StructuresList list={structures} />
           </Loader>
         </div>

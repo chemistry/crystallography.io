@@ -144,7 +144,8 @@ export const getApplication: ApplicationFactory = async (context) => {
       element: DetailsPage,
       title: 'Crystal Structure',
       description: 'Crystal Structure',
-      loadData: async (store: any, params: any) => store.getState().fetchStructureDetailsData(params),
+      loadData: async (store: any, params: any) =>
+        store.getState().fetchStructureDetailsData(params),
     },
     {
       path: '/contact',

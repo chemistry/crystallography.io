@@ -59,7 +59,12 @@ export const SearchResultsPage = () => {
                 <h4 className="text-primary">{`Total Results: ${numberWithSpaces(found)}`}</h4>
               </div>
             </div>
-            <Pagination currentPage={currentPage} maxPages={MAX_PAGES} totalPages={pages} url={`/results/${id}`} />
+            <Pagination
+              currentPage={currentPage}
+              maxPages={MAX_PAGES}
+              totalPages={pages}
+              url={`/results/${id}`}
+            />
             <StructuresList list={structures} />
           </Loader>
         </div>

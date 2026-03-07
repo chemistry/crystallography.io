@@ -39,7 +39,9 @@ const AuthorsTable = ({ authors }: { authors: AuthorsRecord[] }) => {
           return (
             <tr key={index}>
               <td>{index}</td>
-              <td><NavLink to={`/author/${full}`}>{full}</NavLink></td>
+              <td>
+                <NavLink to={`/author/${full}`}>{full}</NavLink>
+              </td>
               <td>{date}</td>
               <td>{count}</td>
             </tr>
@@ -93,7 +95,12 @@ export const AuthorsPage = () => {
           </div>
           <div className="columns">
             <div className="column col-10">
-              <Pagination currentPage={currentPage} maxPages={10} totalPages={pages} url="/authors" />
+              <Pagination
+                currentPage={currentPage}
+                maxPages={10}
+                totalPages={pages}
+                url="/authors"
+              />
             </div>
           </div>
         </Loader>

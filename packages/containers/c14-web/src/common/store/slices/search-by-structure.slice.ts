@@ -2,7 +2,15 @@ import type { StateCreator } from 'zustand';
 
 export interface SearchByStructureState {
   searchByStructure: {
-    meta: { id: string; status: string; progress: number; version: number; found: number; page: number; pagesAvailable: number };
+    meta: {
+      id: string;
+      status: string;
+      progress: number;
+      version: number;
+      found: number;
+      page: number;
+      pagesAvailable: number;
+    };
     search: { molecule: any };
     data: { structureById: Record<string, any>; structureIds: number[] };
     error: string | null;

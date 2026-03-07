@@ -23,7 +23,8 @@ import { createSearchResultsSlice } from './slices/search-results.slice';
 import { createUserSlice } from './slices/user.slice';
 
 export interface AppState
-  extends CatalogPageState,
+  extends
+    CatalogPageState,
     DetailsPageState,
     AuthorsListPageState,
     AuthorDetailsPageState,

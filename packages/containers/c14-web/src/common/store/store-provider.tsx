@@ -16,11 +16,7 @@ export const StoreProvider = ({
   if (!storeRef.current) {
     storeRef.current = createAppStore(initialState);
   }
-  return (
-    <StoreContext.Provider value={storeRef.current}>
-      {children}
-    </StoreContext.Provider>
-  );
+  return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>;
 };
 
 export const useAppStore = <T,>(selector: (state: AppState) => T): T => {

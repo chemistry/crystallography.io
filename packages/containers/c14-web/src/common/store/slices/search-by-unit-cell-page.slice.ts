@@ -36,7 +36,16 @@ export const createSearchByUnitCellSlice: StateCreator<SearchByUnitCellState> = 
   searchByUnitCellSlice: {
     data: { structureById: {}, structureIds: [] },
     meta: { totalPages: 0, totalResults: 0 },
-    search: { a: '', b: '', c: '', alpha: '90.0', beta: '90.0', gamma: '90.0', tolerance: '1.5', page: 1 },
+    search: {
+      a: '',
+      b: '',
+      c: '',
+      alpha: '90.0',
+      beta: '90.0',
+      gamma: '90.0',
+      tolerance: '1.5',
+      page: 1,
+    },
     status: SearchState.empty,
     error: null,
     isLoading: false,

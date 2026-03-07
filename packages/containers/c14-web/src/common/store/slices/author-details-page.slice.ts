@@ -4,7 +4,11 @@ import { getStructures } from '../../../models';
 export interface AuthorDetailsPageState {
   authorsDetailsPage: {
     meta: { total: number; pages: number; name: string };
-    data: { structureById: Record<string, any>; structureIdsLoaded: number[]; structureIds: number[] };
+    data: {
+      structureById: Record<string, any>;
+      structureIdsLoaded: number[];
+      structureIds: number[];
+    };
     error: string | null;
     isLoading: boolean;
   };

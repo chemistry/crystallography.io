@@ -35,12 +35,23 @@ export interface SearchResultsState {
     isLoading: boolean;
   };
   fetchSearchResultsData: (params: { id: string; page: string }) => Promise<void>;
-  updateSearchResults: (data: { meta: SearchResultsMeta; data: { results: number[] } }) => Promise<void>;
+  updateSearchResults: (data: {
+    meta: SearchResultsMeta;
+    data: { results: number[] };
+  }) => Promise<void>;
 }
 
 export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, get) => ({
   searchResults: {
-    meta: { id: '', status: SearchState.empty, progress: 0, version: 0, found: 0, page: 0, pagesAvailable: 0 },
+    meta: {
+      id: '',
+      status: SearchState.empty,
+      progress: 0,
+      version: 0,
+      found: 0,
+      page: 0,
+      pagesAvailable: 0,
+    },
     data: { structureById: {}, structureIds: [] },
     status: SearchState.empty,
     error: null,
@@ -86,14 +97,22 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
       set((s) => ({
         searchResults: {
           ...s.searchResults,
-          data: { ...s.searchResults.data, structureById: { ...structureById, ...s.searchResults.data.structureById } },
+          data: {
+            ...s.searchResults.data,
+            structureById: { ...structureById, ...s.searchResults.data.structureById },
+          },
         },
       }));
     } catch (err: any) {
       const errors = err?.response?.data?.errors;
       const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
       set((s) => ({
-        searchResults: { ...s.searchResults, isLoading: false, status: SearchState.failed, error: message },
+        searchResults: {
+          ...s.searchResults,
+          isLoading: false,
+          status: SearchState.failed,
+          error: message,
+        },
       }));
     }
   },
@@ -133,7 +152,10 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
       set((s) => ({
         searchResults: {
           ...s.searchResults,
-          data: { ...s.searchResults.data, structureById: { ...structureById, ...s.searchResults.data.structureById } },
+          data: {
+            ...s.searchResults.data,
+            structureById: { ...structureById, ...s.searchResults.data.structureById },
+          },
         },
       }));
     }

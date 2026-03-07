@@ -4,7 +4,11 @@ import { getStructures, getCatalogContent } from '../../../models';
 export interface CatalogPageState {
   catalogPage: {
     meta: { pages: number };
-    data: { structureById: Record<string, any>; structureIdsLoaded: number[]; structureIds: number[] };
+    data: {
+      structureById: Record<string, any>;
+      structureIdsLoaded: number[];
+      structureIds: number[];
+    };
     error: string | null;
     isLoading: boolean;
   };
