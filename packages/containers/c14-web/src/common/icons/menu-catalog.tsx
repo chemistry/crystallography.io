@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export const MenuCatalogIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M8.99997 0H1.49997C0.671219 0 -3.05176e-05 0.67125 -3.05176e-05 1.5V9C-3.05176e-05 9.828 0.671219 10.5 1.49997 10.5H8.99997C9.82872 10.5 10.5 9.828 10.5 9V1.5C10.5 0.67125 9.82872 0 8.99997 0ZM8.99997 9H1.49997V1.5H8.99997V9Z" fill="white"/>

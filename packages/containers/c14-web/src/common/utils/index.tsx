@@ -1,6 +1,6 @@
-import * as React from "react";
-import { StructureModel } from "../models";
-import { NavLink } from "react-router-dom";
+import type { FC } from 'react';
+import { StructureModel } from '../models';
+import { NavLink } from 'react-router-dom';
 
 export type HighlightFunction = (name: string) => string;
 
@@ -8,7 +8,7 @@ const CapitalizeFirstLetter = (name: string): string => {
     return name.charAt(0).toUpperCase() + name.slice(1);
 };
 
-export const CompoundName: React.FC<{ model: StructureModel, highlight?: HighlightFunction }> = ({ model, highlight}) => {
+export const CompoundName: FC<{ model: StructureModel, highlight?: HighlightFunction }> = ({ model, highlight}) => {
     const compoundName = model.commonname || model.chemname || model.mineral;
     if (highlight && compoundName) {
         return (<span>CapitalizeFirstLetter(highlight(compoundName))</span>);
@@ -22,7 +22,7 @@ export const CompoundName: React.FC<{ model: StructureModel, highlight?: Highlig
     );
 };
 
-export const CompoundFormula: React.FC<{ model: StructureModel }> = ({ model }) => {
+export const CompoundFormula: FC<{ model: StructureModel }> = ({ model }) => {
     let formula = model.formula || model.calcformula || '';
     formula = formula.replace(/[-\s+]/g, "");
     formula = formula.replace(/([\])a-zA-Z])([.,0-9]+)/g, (match, p1, p2) => {
@@ -43,7 +43,7 @@ const getAuthorDetails = (author: { name: string; link: string }, i: number, arr
     return (<span key={i}>{author.name}</span>);
 }
 
-export const AuthorsList: React.FC<{ model: StructureModel }> = ({ model }) => {
+export const AuthorsList: FC<{ model: StructureModel }> = ({ model }) => {
     if (!model.__authors || !Array.isArray(model.__authors) || model.__authors.length === 0) {
         return (<span></span>);
     }

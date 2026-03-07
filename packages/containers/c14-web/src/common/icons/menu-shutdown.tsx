@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export const MenuShutdownIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fillRule="evenodd" clipRule="evenodd" d="M12 0C12.5523 0 13 0.447715 13 1V12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12V1C11 0.447715 11.4477 0 12 0Z" fill="white"/>

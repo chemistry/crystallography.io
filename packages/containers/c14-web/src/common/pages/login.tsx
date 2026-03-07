@@ -1,18 +1,14 @@
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../store/common";
-import { RootState } from "../store";
-import { loginUser } from "../store/user.slice";
+import { useForm } from 'react-hook-form';
+import { useAppStore } from '../store';
 
 export const LoginPage = () => {
   const { register, handleSubmit } = useForm();
-  const dispatch = useAppDispatch();
-  const auth = useSelector((state: RootState) => state.user.auth);
-  const error = useSelector((state: RootState) => state.user.error);
+  const auth = useAppStore((s) => s.user.auth);
+  const error = useAppStore((s) => s.user.error);
+  const loginUser = useAppStore((s) => s.loginUser);
 
-  const onSubmit = (data: { email: string; password: string}) => {
-      dispatch(loginUser(data));
+  const onSubmit = (data: { email: string; password: string }) => {
+    loginUser(data);
   };
 
   return (

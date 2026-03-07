@@ -1,20 +1,12 @@
-import * as React from "react";
-import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../store/common";
-import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
-import { StructuresList } from "../../components/structure-list/structure-list";
-import { ErrorToast } from "../../components/toast";
-import { useGaAnalytics } from "../../hooks/useAnalytics";
-import { RootState } from "../../store";
-import { searchByUnitCell, SearchState } from "../../store/search-by-unit-cell-page.slice";
-import { useValidationError } from "./common";
+import { useRef, useState, FormEvent } from 'react';
+import { useAppStore } from '../../store';
+import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components';
+import { StructuresList } from '../../components/structure-list/structure-list';
+import { ErrorToast } from '../../components/toast';
+import { SearchState } from '../../store/slices/search-by-unit-cell-page.slice';
+import { useValidationError } from './common';
 
-if (process.env.BROWSER) {
-    require("./search-main.scss");
-}
-// param Validation
-const getPramsValidators = (param: string)=> {
+const getPramsValidators = (param: string) => {
     return [{
         type: 'required',
         isValid(value: string) {
@@ -37,8 +29,7 @@ const getPramsValidators = (param: string)=> {
     }];
 }
 
-// angle Validation
-const getAngleValidators = (param: string)=> {
+const getAngleValidators = (param: string) => {
     return [{
         type: 'required',
         isValid(value: string) {
@@ -92,7 +83,17 @@ interface FormInitialValue {
     tolerance: string;
 }
 
-const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormInitialValue, onSubmit: (data: SearchFormData) => void}) => {
+interface SearchFormData {
+    a: string;
+    b: string;
+    c: string;
+    alpha: string;
+    beta: string;
+    gamma: string;
+    tolerance: string;
+}
+
+const SearchByUnitCellForm = ({ onSubmit, initialValue }: { initialValue: FormInitialValue, onSubmit: (data: SearchFormData) => void }) => {
     const [a, setA] = useState(initialValue.a);
     const [b, setB] = useState(initialValue.b);
     const [c, setC] = useState(initialValue.c);
@@ -100,7 +101,6 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
     const [beta, setBeta] = useState(initialValue.beta);
     const [gamma, setGamma] = useState(initialValue.gamma);
     const [tolerance, setTolerance] = useState(initialValue.tolerance);
-    const gaEvent =  useGaAnalytics();
 
     const aError = useValidationError(getPramsValidators('a'), a);
     const bError = useValidationError(getPramsValidators('b'), b);
@@ -113,12 +113,8 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
 
     const error = aError || bError || cError || alphaError || betaError || gammaError || toleranceError;
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        gaEvent({
-            category: 'Search',
-            action: 'Search:Structure',
-        });
         onSubmit({ a, b, c, alpha, beta, gamma, tolerance });
     }
 
@@ -133,7 +129,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                                 className="form-input"
                                 name="name"
                                 autoComplete="off"
-                                onChange={(e)=> { setA(e.target.value);}}
+                                onChange={(e) => { setA(e.target.value); }}
                                 value={a}></input>
                         </div>
                         <div className="column col-6">
@@ -143,7 +139,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                             className="form-input"
                             name="name"
                             autoComplete="off"
-                            onChange={(e)=> { setAlpha(e.target.value)}}
+                            onChange={(e) => { setAlpha(e.target.value) }}
                             value={alpha}></input>
                         </div>
                 </div>
@@ -155,7 +151,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                         className="form-input"
                         name="name"
                         autoComplete="off"
-                        onChange={(e)=> { setB(e.target.value)}}
+                        onChange={(e) => { setB(e.target.value) }}
                         value={b}></input>
                     </div>
                     <div className="column col-6">
@@ -166,7 +162,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                         name="name"
                         autoComplete="off"
                         value={beta}
-                        onChange={(e)=> { setBeta(e.target.value)}}
+                        onChange={(e) => { setBeta(e.target.value) }}
                         ></input>
                     </div>
                 </div>
@@ -178,7 +174,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                             className="form-input"
                             name="name"
                             autoComplete="off"
-                            onChange={(e)=> { setC(e.target.value)}}
+                            onChange={(e) => { setC(e.target.value) }}
                             value={c}></input>
                     </div>
                     <div className="column col-6">
@@ -189,7 +185,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                             name="name"
                             autoComplete="off"
                             value={gamma}
-                            onChange={(e)=> { setGamma(e.target.value)}}
+                            onChange={(e) => { setGamma(e.target.value) }}
                         ></input>
                     </div>
                 </div>
@@ -203,7 +199,7 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
                         name="tolerance"
                         autoComplete="off"
                         value={tolerance}
-                        onChange={(e)=> { setTolerance(e.target.value);}}
+                        onChange={(e) => { setTolerance(e.target.value); }}
                         ></input>
                     </div>
                 </div>
@@ -219,17 +215,8 @@ const SearchByUnitCellForm = ({ onSubmit , initialValue }: { initialValue: FormI
         </form>
     )
 }
-interface SearchFormData {
-    a: string;
-    b: string;
-    c: string;
-    alpha: string;
-    beta: string;
-    gamma: string;
-    tolerance: string;
-}
 
-const SearchSummary = ({ totalResults }: {totalResults: number })=> {
+const SearchSummary = ({ totalResults }: { totalResults: number }) => {
     return (
         <div className="search-layout__results-header">
             <h4 className="text-primary">Results: {totalResults}</h4>
@@ -237,58 +224,52 @@ const SearchSummary = ({ totalResults }: {totalResults: number })=> {
     )
 }
 
-const SearchResults = ()=> {
-    const dispatch = useAppDispatch();
+const SearchResults = () => {
     const containerRef = useRef(null);
-    const isLoading = useSelector((state: RootState) => state.searchByUnitCellSlice.isLoading);
-    const structures = useSelector((state: RootState) => {
-        const structuresIds = state.searchByUnitCellSlice.data.structureIds;
-        const structuresById: any = state.searchByUnitCellSlice.data.structureById;
-
-        return structuresIds.map((id) => {
-            return structuresById[id];
-        }).filter((item) => !!item);
+    const isLoading = useAppStore((s) => s.searchByUnitCellSlice.isLoading);
+    const structures = useAppStore((s) => {
+        const structuresIds = s.searchByUnitCellSlice.data.structureIds;
+        const structuresById: any = s.searchByUnitCellSlice.data.structureById;
+        return structuresIds.map((id) => structuresById[id]).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByUnitCellSlice.search.page);
-    const totalPages = useSelector((state: RootState) => state.searchByUnitCellSlice.meta.totalPages);
-    const error = useSelector((state: RootState) => state.searchByUnitCellSlice.error);
-    const hasNoResults = useSelector((state: RootState) => {
-        const status = state.searchByUnitCellSlice.status;
-        const resultCount = Object.keys(state.searchByUnitCellSlice.data.structureById).length;
+    const currentPage = useAppStore((s) => s.searchByUnitCellSlice.search.page);
+    const totalPages = useAppStore((s) => s.searchByUnitCellSlice.meta.totalPages);
+    const error = useAppStore((s) => s.searchByUnitCellSlice.error);
+    const hasNoResults = useAppStore((s) => {
+        const status = s.searchByUnitCellSlice.status;
+        const resultCount = Object.keys(s.searchByUnitCellSlice.data.structureById).length;
         return (status === SearchState.success && resultCount === 0);
     });
-    const totalResults = useSelector((state: RootState) => {
+    const totalResults = useAppStore((s) => {
         return Math.max(
-            Object.keys(state.searchByUnitCellSlice.data.structureById).length,
-            state.searchByUnitCellSlice.meta.totalResults
+            Object.keys(s.searchByUnitCellSlice.data.structureById).length,
+            s.searchByUnitCellSlice.meta.totalResults
         );
     });
-    const search = useSelector((state: RootState) => state.searchByUnitCellSlice.search);
+    const search = useAppStore((s) => s.searchByUnitCellSlice.search);
 
-    const showSummary = useSelector((state: RootState) => {
-        const status = state.searchByUnitCellSlice.status;
+    const showSummary = useAppStore((s) => {
+        const status = s.searchByUnitCellSlice.status;
         const resultCount = Math.max(
-            Object.keys(state.searchByUnitCellSlice.data.structureById).length,
-            state.searchByUnitCellSlice.meta.totalResults
+            Object.keys(s.searchByUnitCellSlice.data.structureById).length,
+            s.searchByUnitCellSlice.meta.totalResults
         );
-
         return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
     });
 
+    const searchByUnitCell = useAppStore((s) => s.searchByUnitCell);
+
     const onPageNavigate = (page: number) => {
-        dispatch(searchByUnitCell({
-            ...search,
-            page
-        }));
+        searchByUnitCell({ ...search, page });
     }
 
     return (
         <div>
             <div className="search-layout__results-list">
                 <div ref={containerRef}>
-                    { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
-                    { hasNoResults ? <NoSearchResults /> : null }
-                    { error ? <ErrorToast error={error} /> : null }
+                    {showSummary ? <SearchSummary totalResults={totalResults} /> : null}
+                    {hasNoResults ? <NoSearchResults /> : null}
+                    {error ? <ErrorToast error={error} /> : null}
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <Pagination
                             currentPage={currentPage}
@@ -305,28 +286,24 @@ const SearchResults = ()=> {
     )
 }
 
-export const SearchByUnitCellPage = (): JSX.Element => {
-
-    const dispatch = useAppDispatch();
-    const currentPage = useSelector((state: RootState) => state.searchByUnitCellSlice.search.page);
-    const { a, b, c, alpha, beta, gamma, tolerance } = useSelector((state: RootState) =>  state.searchByUnitCellSlice.search);
+export const SearchByUnitCellPage = () => {
+    const { a, b, c, alpha, beta, gamma, tolerance } = useAppStore((s) => s.searchByUnitCellSlice.search);
+    const searchByUnitCell = useAppStore((s) => s.searchByUnitCell);
 
     const handleSubmit = (data: SearchFormData) => {
-        dispatch(searchByUnitCell({
-            ...data, page: 1
-        }));
+        searchByUnitCell({ ...data, page: 1 });
     }
 
     return (
         <div className="search-layout-tabs">
             <header className="app-layout-header">
-                  <h2 className="text-primary">Crystal Structure Search</h2>
-                  <SearchTab />
+                <h2 className="text-primary">Crystal Structure Search</h2>
+                <SearchTab />
             </header>
             <div className="app-layout-content">
                 <div className="search-layout__page">
                     <div>
-                        <SearchByUnitCellForm onSubmit={handleSubmit} initialValue={{ a, b, c, alpha, beta, gamma, tolerance }}/>
+                        <SearchByUnitCellForm onSubmit={handleSubmit} initialValue={{ a, b, c, alpha, beta, gamma, tolerance }} />
                     </div>
                     <div>
                         <SearchResults />

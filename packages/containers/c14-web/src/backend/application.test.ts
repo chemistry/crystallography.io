@@ -1,10 +1,10 @@
 const request = require('supertest');
-import * as React from 'react';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { createElement } from 'react';
+import { createStore } from 'zustand/vanilla';
 import { startApplication } from './application';
 
 describe('Express Application', () => {
-  const noop = (name: any) => {};
+  const noop = (_name: any) => {};
   const mockContext: any = {
     logger: {
       trace: noop,
@@ -19,22 +19,16 @@ describe('Express Application', () => {
     appFactory: () => {
       const Routes = [
         {
-          component: () => React.createElement('h1', null, 'App'),
+          component: () => createElement('h1', null, 'App'),
         },
       ];
-      const mockSlice = createSlice({
-        name: 'structures',
-        initialState: [],
-        reducers: {},
-      });
-      const getStore = () => {
-        return configureStore({
-          reducer: {
-            structures: mockSlice.reducer,
-          },
-        });
+      const createAppStore = (initialState?: any) => {
+        return createStore(() => ({
+          structures: [],
+          ...initialState,
+        }));
       };
-      return Promise.resolve({ Routes, getStore });
+      return Promise.resolve({ Routes, createAppStore });
     },
   };
 

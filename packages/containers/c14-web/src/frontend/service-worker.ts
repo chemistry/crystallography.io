@@ -4,19 +4,11 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst, StaleWhileRevalidate, NetworkOnly } from 'workbox-strategies';
 
-declare let __webpack_hash__: string;
-
 skipWaiting();
 clientsClaim();
 
 // Precache all static resources
 precacheAndRoute((self as any).__WB_MANIFEST);
-precacheAndRoute([
-  { url: 'icon-512.png', revision: __webpack_hash__ },
-  { url: 'icon-192.png', revision: __webpack_hash__ },
-  { url: 'favicon.ico', revision: __webpack_hash__ },
-  { url: 'manifest.json', revision: __webpack_hash__ },
-]);
 
 // Caching Images for 30 days
 registerRoute(
@@ -54,10 +46,8 @@ registerRoute(
   ({ request }) => request.destination === 'document',
   async (params: any) => {
     try {
-      // Attempt a network request.
       return await networkOnly.handle(params);
     } catch (error) {
-      // If it fails, return the cached HTML.
       return caches.match(FALLBACK_HTML_URL, {
         cacheName: CACHE_NAME,
       });
