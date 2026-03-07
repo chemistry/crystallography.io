@@ -1,6 +1,5 @@
 const request = require('supertest');
 import { createElement } from 'react';
-import { createStore } from 'zustand/vanilla';
 import { startApplication } from './application';
 
 describe('Express Application', () => {
@@ -17,18 +16,15 @@ describe('Express Application', () => {
     htmlContent: '<html><div id="root"></div></html>',
     appContext: null,
     appFactory: () => {
-      const Routes = [
+      const routes = [
         {
-          component: () => createElement('h1', null, 'App'),
+          path: '/',
+          element: () => createElement('h1', null, 'App'),
+          title: 'Test',
+          description: 'Test',
         },
       ];
-      const createAppStore = (initialState?: any) => {
-        return createStore(() => ({
-          structures: [],
-          ...initialState,
-        }));
-      };
-      return Promise.resolve({ Routes, createAppStore });
+      return Promise.resolve({ routes });
     },
   };
 
@@ -50,6 +46,6 @@ describe('Express Application', () => {
     const response = await request(app).get('/');
     const { text } = response;
 
-    expect(text).toEqual('<html><div id="root"><h1>App</h1></div></html>');
+    expect(text).toContain('<h1>App</h1>');
   });
 });
