@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export const LoaderIcon = () => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">

@@ -1,6 +1,8 @@
-import { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import type { EffectCallback, DependencyList } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppStoreApi } from '../store';
+import type { RouteDefinition } from '../index';
 
 let IS_FIRST_MOUNT_AFTER_LOAD = true;
 
@@ -15,19 +17,19 @@ const isStoreDataMissed = () => {
   );
 };
 
-export const useInBrowser = (effect: React.EffectCallback, deps?: React.DependencyList) => {
+export const useInBrowser = (effect: EffectCallback, deps?: DependencyList) => {
   if (typeof window !== 'undefined') {
     useEffect(effect, deps);
   }
 };
 
-export const useLoadedData = (route: any) => {
-  const dispatch = useDispatch();
+export const useLoadedData = (route: RouteDefinition) => {
+  const store = useAppStoreApi();
   const params = useParams();
 
   const fetchData = () => {
-    if (route && route.loadData) {
-      route.loadData(dispatch, params);
+    if (route?.loadData) {
+      route.loadData(store, params);
     }
   };
 

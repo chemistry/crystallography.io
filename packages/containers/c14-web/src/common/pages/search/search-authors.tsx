@@ -1,32 +1,20 @@
-import * as React from "react";
-import { useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../store/common";
-import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
-import { Input } from "../../components/input";
-import { StructuresList } from "../../components/structure-list/structure-list";
-import { ErrorToast } from "../../components/toast";
-import { useGaAnalytics } from "../../hooks/useAnalytics";
-import { RootState } from "../../store";
-import { SearchState, searchStructureByAuthor } from "../../store/search-by-author-page.slice";
-import {
-    Validator, useValidationError
-} from './common';
-
-if (process.env.BROWSER) {
-    require("./search-main.scss");
-}
+import { useState, useRef, FormEvent } from 'react';
+import { useAppStore } from '../../store';
+import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components';
+import { Input } from '../../components/input';
+import { StructuresList } from '../../components/structure-list/structure-list';
+import { ErrorToast } from '../../components/toast';
+import { SearchState } from '../../store/slices/search-by-author-page.slice';
+import { Validator, useValidationError } from './common';
 
 interface SearchFormData {
     name: string;
 }
 
 const renderItemValue = (item: any, search: any) => {
-    // escape special characters
     search = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     const re = new RegExp('(^' + search.split(' ').join('|') + ')', 'gi');
 
-    // If the data OK - return values
     if (item.value && item.count) {
         let valueWords = item.value.split(' ');
         valueWords = valueWords.map((word: any) => {
@@ -44,30 +32,23 @@ const renderItemValue = (item: any, search: any) => {
 }
 
 const autoCompleteSource = (value: any, response: any) => {
-
     fetch('/api/v1/autocomplete/author?name=' + encodeURIComponent(value), {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
     })
-    .then((res)=> {
-        return res.json();
-    })
-    .then((data)=> {
+    .then((res) => res.json())
+    .then((data) => {
         if (data.data && Array.isArray(data.data)) {
-            const responseData = data.data.map((item: any) => {
-                return {
-                    value: item.full,
-                    count: item.count,
-                };
-            });
+            const responseData = data.data.map((item: any) => ({
+                value: item.full,
+                count: item.count,
+            }));
             response(value, responseData);
             return;
         }
         response(value, []);
     })
-    .catch(()=> {
+    .catch(() => {
         response(value, []);
     });
 }
@@ -81,8 +62,7 @@ const rangeValidator: Validator = {
 }
 
 const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
-
-    const [name, setName ] = useState(initialValue);
+    const [name, setName] = useState(initialValue);
     const [suggestionsVisible, setSuggestionsVisible] = useState(false);
     const error = useValidationError([rangeValidator], name);
 
@@ -97,10 +77,9 @@ const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, 
         setName(nameValue);
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         setSuggestionsVisible(false);
         event.preventDefault();
-
         if (name !== '') {
             onSubmit({ name });
         }
@@ -127,7 +106,7 @@ const SearchByAuthorForm = ({ onSubmit, initialValue }: { initialValue: string, 
     )
 }
 
-const SearchSummary = ({ totalResults }: {totalResults: number })=> {
+const SearchSummary = ({ totalResults }: { totalResults: number }) => {
     return (
         <div className="search-layout__results-header">
             <h4 className="text-primary">Results: {totalResults}</h4>
@@ -135,58 +114,51 @@ const SearchSummary = ({ totalResults }: {totalResults: number })=> {
     )
 }
 
-const SearchResults = ()=> {
-    const dispatch = useAppDispatch();
+const SearchResults = () => {
     const containerRef = useRef(null);
-    const isLoading = useSelector((state: RootState) => state.searchByAuthorSlice.isLoading);
-    const structures = useSelector((state: RootState) => {
-        const structuresIds = state.searchByAuthorSlice.data.structureIds;
-        const structuresById: any = state.searchByAuthorSlice.data.structureById;
-
-        return structuresIds.map((id) => {
-            return structuresById[id];
-        }).filter((item) => !!item);
+    const isLoading = useAppStore((s) => s.searchByAuthorSlice.isLoading);
+    const structures = useAppStore((s) => {
+        const structuresIds = s.searchByAuthorSlice.data.structureIds;
+        const structuresById: any = s.searchByAuthorSlice.data.structureById;
+        return structuresIds.map((id) => structuresById[id]).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByAuthorSlice.search.page);
-    const searchString = useSelector((state: RootState) => state.searchByAuthorSlice.search.name);
-    const totalPages = useSelector((state: RootState) => state.searchByAuthorSlice.meta.totalPages);
-    const hasNoResults = useSelector((state: RootState) => {
-        const status = state.searchByAuthorSlice.status;
-        const resultCount = Object.keys(state.searchByAuthorSlice.data.structureById).length;
+    const currentPage = useAppStore((s) => s.searchByAuthorSlice.search.page);
+    const searchString = useAppStore((s) => s.searchByAuthorSlice.search.name);
+    const totalPages = useAppStore((s) => s.searchByAuthorSlice.meta.totalPages);
+    const hasNoResults = useAppStore((s) => {
+        const status = s.searchByAuthorSlice.status;
+        const resultCount = Object.keys(s.searchByAuthorSlice.data.structureById).length;
         return (status === SearchState.success && resultCount === 0);
     });
-    const error = useSelector((state: RootState) => state.searchByAuthorSlice.error);
-    const totalResults = useSelector((state: RootState) =>{
+    const error = useAppStore((s) => s.searchByAuthorSlice.error);
+    const totalResults = useAppStore((s) => {
         return Math.max(
-            Object.keys(state.searchByAuthorSlice.data.structureById).length,
-            state.searchByAuthorSlice.meta.totalResults
+            Object.keys(s.searchByAuthorSlice.data.structureById).length,
+            s.searchByAuthorSlice.meta.totalResults
         );
     });
-
-    const showSummary = useSelector((state: RootState) => {
-        const status = state.searchByAuthorSlice.status;
+    const showSummary = useAppStore((s) => {
+        const status = s.searchByAuthorSlice.status;
         const resultCount = Math.max(
-            Object.keys(state.searchByAuthorSlice.data.structureById).length,
-            state.searchByAuthorSlice.meta.totalResults
+            Object.keys(s.searchByAuthorSlice.data.structureById).length,
+            s.searchByAuthorSlice.meta.totalResults
         );
-
         return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
     });
 
+    const searchStructureByAuthor = useAppStore((s) => s.searchStructureByAuthor);
+
     const onPageNavigate = (page: number) => {
-        dispatch(searchStructureByAuthor({
-            name: searchString,
-            page
-        }));
+        searchStructureByAuthor({ name: searchString, page });
     }
 
     return (
         <div>
             <div className="search-layout__results-list">
                 <div ref={containerRef}>
-                    { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
-                    { hasNoResults ? <NoSearchResults /> : null }
-                    { error ? <ErrorToast error={error} /> : null }
+                    {showSummary ? <SearchSummary totalResults={totalResults} /> : null}
+                    {hasNoResults ? <NoSearchResults /> : null}
+                    {error ? <ErrorToast error={error} /> : null}
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <Pagination
                             currentPage={currentPage}
@@ -204,32 +176,24 @@ const SearchResults = ()=> {
 }
 
 export const SearchByAuthorsPage = () => {
-
-    const dispatch = useAppDispatch();
-    const page = useSelector((state: RootState) => state.searchByAuthorSlice.search.page);
-    const gaEvent = useGaAnalytics();
+    const page = useAppStore((s) => s.searchByAuthorSlice.search.page);
+    const searchStructureByAuthor = useAppStore((s) => s.searchStructureByAuthor);
 
     const handleSubmit = (data: SearchFormData) => {
-        gaEvent({
-            category: 'Search',
-            action: 'Search:Author',
-        });
-        dispatch(searchStructureByAuthor({
-            ...data, page
-        }));
+        searchStructureByAuthor({ ...data, page });
     }
-    const searchString = useSelector((state: RootState) => state.searchByAuthorSlice.meta.searchString);
+    const searchString = useAppStore((s) => s.searchByAuthorSlice.meta.searchString);
 
     return (
         <div className="search-layout-tabs">
             <header className="app-layout-header">
-                  <h2 className="text-primary">Crystal Structure Search</h2>
-                  <SearchTab />
+                <h2 className="text-primary">Crystal Structure Search</h2>
+                <SearchTab />
             </header>
             <div className="app-layout-content">
                 <div className="search-layout__page">
                     <div>
-                        <SearchByAuthorForm onSubmit={handleSubmit} initialValue={searchString}/>
+                        <SearchByAuthorForm onSubmit={handleSubmit} initialValue={searchString} />
                     </div>
                     <div>
                         <SearchResults />

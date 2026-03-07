@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { StructureModel } from "../../models";
 import { CompoundFormula, CompoundName, AuthorsList } from "../../utils";

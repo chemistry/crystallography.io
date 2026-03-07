@@ -1,30 +1,20 @@
-import * as React from "react";
-import { useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../store/common";
-import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
-import { Input } from "../../components/input";
-import { StructuresList } from "../../components/structure-list/structure-list";
-import { ErrorToast } from "../../components/toast";
-import { useGaAnalytics } from "../../hooks/useAnalytics";
-import { RootState } from "../../store";
-import { SearchState, searchStructureByName } from "../../store/search-by-name-page.slice";
-import { useValidationError, Validator } from "./common";
-
-if (process.env.BROWSER) {
-    require("./search-main.scss");
-}
+import { useState, useRef, FormEvent } from 'react';
+import { useAppStore } from '../../store';
+import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components';
+import { Input } from '../../components/input';
+import { StructuresList } from '../../components/structure-list/structure-list';
+import { ErrorToast } from '../../components/toast';
+import { SearchState } from '../../store/slices/search-by-name-page.slice';
+import { useValidationError, Validator } from './common';
 
 interface SearchFormData {
     name: string;
 }
 
 const renderItemValue = (item: any, search: any) => {
-    // escape special characters
     search = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     const re = new RegExp('(^' + search.split(' ').join('|') + ')', 'gi');
 
-    // If the data OK - return values
     if (item.value && item.count) {
         let valueWords = item.value.split(' ');
         valueWords = valueWords.map((word: any) => {
@@ -42,45 +32,33 @@ const renderItemValue = (item: any, search: any) => {
 }
 
 const autoCompleteSource = (value: any, response: any) => {
-
     fetch('/api/v1/autocomplete/name?name=' + encodeURIComponent(value), {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
     })
-    .then((res)=> {
-        return res.json();
-    })
-    .then((data)=> {
+    .then((res) => res.json())
+    .then((data) => {
         if (data.data && Array.isArray(data.data)) {
-            const responseData = data.data.map((item: any) => {
-                return {
-                    value: item.name,
-                    count: item.count,
-                };
-            });
+            const responseData = data.data.map((item: any) => ({
+                value: item.name,
+                count: item.count,
+            }));
             response(value, responseData);
             return;
         }
         response(value, []);
     })
-    .catch(()=> {
+    .catch(() => {
         response(value, []);
     });
 }
 
 function countWords(searchText: string) {
-    let searchWords = [];
     const SMALL_WORDS_SIZE = 3;
 
     if (searchText) {
         const text = searchText.replace(/[^a-z0-9]/gmi, ' ').replace(/\s+/g, ' ');
-
-        searchWords = text.split(' ').filter((word) => {
-            return word.length > SMALL_WORDS_SIZE;
-        });
-
+        const searchWords = text.split(' ').filter((word) => word.length > SMALL_WORDS_SIZE);
         return searchWords.length;
     }
     return 0;
@@ -107,8 +85,7 @@ const countWordsValidator: Validator = {
 };
 
 const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
-
-    const [name, setName ] = useState(initialValue);
+    const [name, setName] = useState(initialValue);
     const [suggestionsVisible, setSuggestionsVisible] = useState(false);
     const error = useValidationError([rangeValidator, countWordsValidator], name);
 
@@ -123,10 +100,9 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
         setName(nameValue);
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         setSuggestionsVisible(false);
         event.preventDefault();
-
         if (name !== '') {
             onSubmit({ name });
         }
@@ -153,7 +129,7 @@ const SearchByNameForm = ({ onSubmit, initialValue }: { initialValue: string, on
     )
 }
 
-const SearchSummary = ({ totalResults }: {totalResults: number })=> {
+const SearchSummary = ({ totalResults }: { totalResults: number }) => {
     return (
         <div className="search-layout__results-header">
             <h4 className="text-primary">Results: {totalResults}</h4>
@@ -161,59 +137,51 @@ const SearchSummary = ({ totalResults }: {totalResults: number })=> {
     )
 }
 
-const SearchResults = ()=> {
-    const dispatch = useAppDispatch();
+const SearchResults = () => {
     const containerRef = useRef(null);
-    const isLoading = useSelector((state: RootState) => state.searchByNameSlice.isLoading);
-    const structures = useSelector((state: RootState) => {
-        const structuresIds = state.searchByNameSlice.data.structureIds;
-        const structuresById: any = state.searchByNameSlice.data.structureById;
-
-        return structuresIds.map((id) => {
-            return structuresById[id];
-        }).filter((item) => !!item);
+    const isLoading = useAppStore((s) => s.searchByNameSlice.isLoading);
+    const structures = useAppStore((s) => {
+        const structuresIds = s.searchByNameSlice.data.structureIds;
+        const structuresById: any = s.searchByNameSlice.data.structureById;
+        return structuresIds.map((id) => structuresById[id]).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByNameSlice.search.page);
-    const searchString = useSelector((state: RootState) => state.searchByNameSlice.search.name);
-
-    const error = useSelector((state: RootState) => state.searchByNameSlice.error);
-    const totalPages = useSelector((state: RootState) => state.searchByNameSlice.meta.totalPages);
-    const hasNoResults = useSelector((state: RootState) => {
-        const status = state.searchByNameSlice.status;
-        const resultCount = Object.keys(state.searchByNameSlice.data.structureById).length;
+    const currentPage = useAppStore((s) => s.searchByNameSlice.search.page);
+    const searchString = useAppStore((s) => s.searchByNameSlice.search.name);
+    const error = useAppStore((s) => s.searchByNameSlice.error);
+    const totalPages = useAppStore((s) => s.searchByNameSlice.meta.totalPages);
+    const hasNoResults = useAppStore((s) => {
+        const status = s.searchByNameSlice.status;
+        const resultCount = Object.keys(s.searchByNameSlice.data.structureById).length;
         return (status === SearchState.success && resultCount === 0);
     });
-    const totalResults = useSelector((state: RootState) =>{
+    const totalResults = useAppStore((s) => {
         return Math.max(
-            Object.keys(state.searchByNameSlice.data.structureById).length,
-            state.searchByNameSlice.meta.totalResults
+            Object.keys(s.searchByNameSlice.data.structureById).length,
+            s.searchByNameSlice.meta.totalResults
         );
     });
-
-    const showSummary = useSelector((state: RootState) => {
-        const status = state.searchByNameSlice.status;
+    const showSummary = useAppStore((s) => {
+        const status = s.searchByNameSlice.status;
         const resultCount = Math.max(
-            Object.keys(state.searchByNameSlice.data.structureById).length,
-            state.searchByNameSlice.meta.totalResults
+            Object.keys(s.searchByNameSlice.data.structureById).length,
+            s.searchByNameSlice.meta.totalResults
         );
-
         return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
     });
 
+    const searchStructureByName = useAppStore((s) => s.searchStructureByName);
+
     const onPageNavigate = (page: number) => {
-        dispatch(searchStructureByName({
-            name: searchString,
-            page
-        }));
+        searchStructureByName({ name: searchString, page });
     }
 
     return (
         <div>
             <div className="search-layout__results-list">
                 <div ref={containerRef}>
-                    { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
-                    { hasNoResults ? <NoSearchResults /> : null }
-                    { error ? <ErrorToast error={error} /> : null }
+                    {showSummary ? <SearchSummary totalResults={totalResults} /> : null}
+                    {hasNoResults ? <NoSearchResults /> : null}
+                    {error ? <ErrorToast error={error} /> : null}
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <Pagination
                             currentPage={currentPage}
@@ -231,32 +199,24 @@ const SearchResults = ()=> {
 }
 
 export const SearchByNamePage = () => {
-
-    const dispatch = useAppDispatch();
-    const page = useSelector((state: RootState) => state.searchByNameSlice.search.page);
-    const sendEvent = useGaAnalytics();
+    const page = useAppStore((s) => s.searchByNameSlice.search.page);
+    const searchStructureByName = useAppStore((s) => s.searchStructureByName);
 
     const handleSubmit = (data: SearchFormData) => {
-        sendEvent({
-            category: 'Search',
-            action: 'Search:Name',
-        });
-        dispatch(searchStructureByName({
-            ...data, page
-        }));
+        searchStructureByName({ ...data, page });
     }
-    const searchString = useSelector((state: RootState) => state.searchByNameSlice.meta.searchString);
+    const searchString = useAppStore((s) => s.searchByNameSlice.meta.searchString);
 
     return (
         <div className="search-layout-tabs">
             <header className="app-layout-header">
-                  <h2 className="text-primary">Crystal Structure Search</h2>
-                  <SearchTab />
+                <h2 className="text-primary">Crystal Structure Search</h2>
+                <SearchTab />
             </header>
             <div className="app-layout-content">
                 <div className="search-layout__page">
                     <div>
-                        <SearchByNameForm onSubmit={handleSubmit} initialValue={searchString}/>
+                        <SearchByNameForm onSubmit={handleSubmit} initialValue={searchString} />
                     </div>
                     <div>
                         <SearchResults />
@@ -268,7 +228,7 @@ export const SearchByNamePage = () => {
 }
 
 
-export const DemoFormData = ()=> {
+export const DemoFormData = () => {
     return (
         <div>
 <h2 className="text-primary">Badges</h2>

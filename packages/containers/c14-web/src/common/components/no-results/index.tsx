@@ -1,5 +1,3 @@
-import React from "react";
-
 export const NoSearchResults = ()=> {
     return (
         <div className="search-layout__no-results">

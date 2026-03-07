@@ -1,6 +1,6 @@
-import * as React from "react";
+import type { FC, PropsWithChildren } from 'react';
 
-export const PageContainer: React.FC<React.PropsWithChildren<{ title?: string, HeadComponent?: React.FC }>> = ({
+export const PageContainer: FC<PropsWithChildren<{ title?: string, HeadComponent?: FC }>> = ({
     title, children, HeadComponent,
 }) => {
     return (

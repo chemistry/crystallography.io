@@ -1,149 +1,141 @@
-import * as bodyParser from "body-parser";
-import timeout from "connect-timeout";
-import * as Sentry from "@sentry/node";
-import express, { NextFunction, Request, Response, Express } from "express";
-import escapeHTML from "lodash.escape";
-import * as path from "path";
-import * as React from "react";
-import { renderToString } from "react-dom/server";
-import { Provider } from "react-redux";
-import { StaticRouter } from "react-router";
-import { matchRoutes, renderRoutes } from "react-router-config";
-import { ApplicationContext, ApplicationFactory } from "../common";
-import { getAuthRouter } from "./auth.router";
+import * as bodyParser from 'body-parser';
+import timeout from 'connect-timeout';
+import * as Sentry from '@sentry/node';
+import express from 'express';
+import type { NextFunction, Request, Response, Express } from 'express';
+import * as path from 'path';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom/server';
+import { matchPath, Routes, Route } from 'react-router-dom';
+import { StoreProvider } from '../common/store';
+import { createAppStore } from '../common/store/create-app-store';
+import { App } from '../common/app';
+import type { ApplicationContext, ApplicationFactory, RouteDefinition } from '../common';
+import { getAuthRouter } from './auth.router';
 
 export interface ExpressContext {
-    logger: {
-        trace:(message: string) => void;
-        info: (message: string) => void;
-        error: (message: string) => void;
-    },
-    PORT: number;
-    htmlContent: string;
-    onAppInit: (app: Express) => void;
-    onAppInitEnd: (express: Express) => void;
-    appContext: ApplicationContext;
-    appFactory: ApplicationFactory;
+  logger: {
+    trace: (message: string) => void;
+    info: (message: string) => void;
+    error: (message: string) => void;
+  };
+  PORT: number;
+  htmlContent: string;
+  onAppInit: (app: Express) => void;
+  onAppInitEnd: (express: Express) => void;
+  appContext: ApplicationContext;
+  appFactory: ApplicationFactory;
+}
+
+function escapeHTML(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function renderHTML(
-    fileContent: string, componentHTML: string, initialState: any, metaData: { title: string, description: string },
+  fileContent: string,
+  componentHTML: string,
+  initialState: any,
+  metaData: { title: string; description: string }
 ): string {
-    let html = fileContent;
-    if (metaData && metaData.title) {
-        html = html.replace("<title>Crystallography Online Website</title>", "<title>" + escapeHTML(metaData.title) + "</title>");
-    }
-    if (metaData && metaData.description) {
-        html = html.replace(
-          '<meta name="description" content="" />',
-          '<meta name="description" content="' + escapeHTML(metaData.description) + '" />',
-        );
-    }
+  let html = fileContent;
+  if (metaData?.title) {
+    html = html.replace(
+      '<title>Crystallography Online Website</title>',
+      '<title>' + escapeHTML(metaData.title) + '</title>'
+    );
+  }
+  if (metaData?.description) {
+    html = html.replace(
+      '<meta name="description" content="" />',
+      '<meta name="description" content="' + escapeHTML(metaData.description) + '" />'
+    );
+  }
 
-    html = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + "</div>");
-    html = html.replace("window.__INITIAL_STATE__={};", "window.__INITIAL_STATE__=" + JSON.stringify(initialState) + ";");
-    return html;
+  html = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + '</div>');
+  html = html.replace(
+    'window.__INITIAL_STATE__={};',
+    'window.__INITIAL_STATE__=' + JSON.stringify(initialState) + ';'
+  );
+  return html;
 }
 
-const loadSiteData = (routes: any, url: string, dispatch: any) => {
-  const branch = matchRoutes(routes, url);
-
-  const promises = branch.map(({ route, match }) => {
-    if (!route.loadData) {
-        return Promise.resolve();
-    }
-    const preParams: any = match.params || {};
-    const params = Object.keys(preParams).reduce((acc, key) => {
-        return { ...acc, [key]: decodeURIComponent(preParams[key] || "") };
-    }, {});
-    return route.loadData(dispatch, params);
-  });
+const loadSiteData = async (routes: RouteDefinition[], url: string, store: any) => {
+  const promises = routes
+    .filter((route) => route.loadData && matchPath(route.path, url))
+    .map((route) => {
+      const match = matchPath(route.path, url);
+      const preParams: Record<string, string> = (match?.params as Record<string, string>) || {};
+      const params = Object.keys(preParams).reduce(
+        (acc, key) => ({ ...acc, [key]: decodeURIComponent(preParams[key] || '') }),
+        {} as Record<string, string>
+      );
+      return route.loadData!(store, params);
+    });
   return Promise.all(promises);
 };
 
-const getMetadata = (routes: any, url: string) => {
-  const branches = matchRoutes(routes, url);
-
-  const titleRes = branches
-    .map(({ route: { title } }) => title)
-    .filter((title) => !!title)
-    .join(",");
-
-  const descriptionRes = branches
-      .map(({ route: { description } }) => description)
-      .filter((description) => !!description)
-      .join(",");
+const getMetadata = (routes: RouteDefinition[], url: string) => {
+  const matched = routes.find((route) => matchPath(route.path, url));
   return {
-      title: titleRes,
-      description: descriptionRes,
+    title: matched?.title || '',
+    description: matched?.description || '',
   };
 };
 
 export async function startApplication(context: ExpressContext) {
-    const { htmlContent, logger, appFactory, appContext, onAppInit, onAppInitEnd } = context;
-    logger.trace('application started');
+  const { htmlContent, logger, appFactory, appContext, onAppInit, onAppInitEnd } = context;
+  logger.trace('application started');
 
-    const app = express();
+  const app = express();
 
-    // Add UTF-8 symbols parser
-    app.set("query parser", "simple");
+  app.set('query parser', 'simple');
+  app.use(timeout('5s'));
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.disable('x-powered-by');
 
-    app.use(timeout("5s"));
+  onAppInit(app);
 
-    app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.static(path.join(__dirname, '/../static'), { index: false }));
+  app.use(getAuthRouter());
 
-    // Remove header
-    app.disable("x-powered-by");
+  app.use(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { routes } = await appFactory(appContext);
+      const store = createAppStore();
 
-    // Add Logs to application
-    onAppInit(app);
+      await loadSiteData(routes, req.url, store);
+      const metaData = getMetadata(routes, req.url);
 
-    // Serve static files
-    app.use(express.static(path.join(__dirname, "/../static"), {index: false}));
+      const componentHTML = renderToString(
+        <StoreProvider initialState={store.getState()}>
+          <StaticRouter location={req.url}>
+            <Routes>
+              <Route element={<App routes={routes} />}>
+                {routes.map((route) => (
+                  <Route key={route.path} path={route.path} element={<route.element />} />
+                ))}
+              </Route>
+            </Routes>
+          </StaticRouter>
+        </StoreProvider>
+      );
 
-    app.use(getAuthRouter());
+      const initialState = store.getState();
+      const HTML = renderHTML(htmlContent, componentHTML, initialState, metaData);
+      res.header('Content-Type', 'text/html; charset=utf-8').status(200).end(HTML);
+    } catch (error) {
+      Sentry.captureException(error);
+      logger.error(String(error));
+      next(error);
+    }
+  });
 
-    // Rendering to StaticRouter
-    app.use(async (req: Request, res: Response, next: NextFunction) => {
+  onAppInitEnd(app);
 
-        try {
-            const ctx: any = {
-                status: 200,
-            };
-            const { Routes, getStore } = await appFactory(appContext);
-            const store = getStore(null);
-
-            await loadSiteData(Routes, req.url, store.dispatch);
-            const metaData = getMetadata(Routes, req.url);
-
-            const App = () => {
-                return renderRoutes(Routes);
-            };
-
-            const content = (
-                <Provider store={store}>
-                    <StaticRouter location={req.url} context={ctx}>
-                        <App />
-                    </StaticRouter>
-                </Provider>
-            );
-
-            const componentHTML = renderToString(content);
-            const initialState = store.getState();
-            const HTML = renderHTML(htmlContent, componentHTML, initialState, metaData);
-            res
-                .header("Content-Type", "text/html; charset=utf-8")
-                .status(ctx.status)
-                .end(HTML);
-
-        } catch (error) {
-            Sentry.captureException(error);
-            logger.error(String(error));
-            next(error);
-        }
-    });
-
-    onAppInitEnd(app);
-
-    return { app };
+  return { app };
 }

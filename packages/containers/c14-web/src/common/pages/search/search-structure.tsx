@@ -1,43 +1,34 @@
-import * as React from "react";
-import { useRef } from "react";
-import { useAppDispatch } from "../../store/common";
-import { useHistory } from "react-router-dom";
-import { SearchTab } from "../../components";
-import { useGaAnalytics } from "../../hooks/useAnalytics";
-import { searchStructureByStructure } from "../../store/search-by-structure.slice";
-
-if (process.env.BROWSER) {
-    require("./search-main.scss");
-}
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SearchTab } from '../../components';
+import { useAppStore } from '../../store';
+import { useInBrowser } from '../../services';
 
 let MolPad: any = null;
-if (process.env.BROWSER) {
-    MolPad = require('@chemistry/molpad').MolPad;
-}
 
 export const SearchByStructurePage = () => {
     const molpadRef = useRef(null);
-    const dispatch = useAppDispatch();
-    const history = useHistory();
-    const gaEvent =  useGaAnalytics();
+    const navigate = useNavigate();
+    const searchStructureByStructure = useAppStore((s) => s.searchStructureByStructure);
+
+    useInBrowser(() => {
+        (async () => {
+            const mod = await import('@chemistry/molpad');
+            MolPad = mod.MolPad;
+        })();
+    }, []);
 
     const handleSubmit = async () => {
         if (MolPad && molpadRef && molpadRef.current) {
-            const molpad = molpadRef.current;
+            const molpad = molpadRef.current as any;
             const validationMessage = molpad.isSutableForSearch();
             if (validationMessage !== '') {
-                return alert(validationMessage);
+                return;
             }
             const jmol = molpad.getJmol();
-            gaEvent({
-                category: 'Search',
-                action: 'Search:Structure',
-            });
-            const searchId = await dispatch(searchStructureByStructure({
-                molecule: jmol,
-            })) as any;
+            const searchId = await searchStructureByStructure({ molecule: jmol });
             if (searchId) {
-                history.push(`/results/${searchId}/1`);
+                navigate(`/results/${searchId}/1`);
             }
         }
     }
@@ -45,8 +36,8 @@ export const SearchByStructurePage = () => {
     return (
         <div className="search-layout-tabs">
             <header className="app-layout-header">
-                  <h2 className="text-primary">Crystal Structure Search</h2>
-                  <SearchTab />
+                <h2 className="text-primary">Crystal Structure Search</h2>
+                <SearchTab />
             </header>
             <div className="app-layout-content">
                 <div className="search-layout__page">

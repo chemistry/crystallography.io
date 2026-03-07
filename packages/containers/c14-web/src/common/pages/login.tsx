@@ -1,44 +1,44 @@
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../store/common";
-import { RootState } from "../store";
-import { loginUser } from "../store/user.slice";
+import { useForm } from 'react-hook-form';
+import { useAppStore } from '../store';
 
 export const LoginPage = () => {
   const { register, handleSubmit } = useForm();
-  const dispatch = useAppDispatch();
-  const auth = useSelector((state: RootState) => state.user.auth);
-  const error = useSelector((state: RootState) => state.user.error);
+  const auth = useAppStore((s) => s.user.auth);
+  const error = useAppStore((s) => s.user.error);
+  const loginUser = useAppStore((s) => s.loginUser);
 
-  const onSubmit = (data: { email: string; password: string}) => {
-      dispatch(loginUser(data));
+  const onSubmit = (data: any) => {
+    loginUser(data as { email: string; password: string });
   };
 
   return (
     <div>
-        <header className="app-layout-header">
-            <h2 className="text-primary">Login</h2>
-        </header>
-        <div className="app-layout-content">
+      <header className="app-layout-header">
+        <h2 className="text-primary">Login</h2>
+      </header>
+      <div className="app-layout-content">
         <h1>Login</h1>
-        <hr/>
-          <div><b>{auth ? "Logged IN" : null}</b></div>
-          <>{error.code ? error.message : null}</>
-          <form onSubmit={handleSubmit(onSubmit)}>
-          <div style={{ padding: "20px" }}>
-            <div >Email:
-              <input type="text"  name="email" ref={register as any}  />
+        <hr />
+        <div>
+          <b>{auth ? 'Logged IN' : null}</b>
+        </div>
+        <>{error.code ? error.message : null}</>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div style={{ padding: '20px' }}>
+            <div>
+              Email:
+              <input type="text" name="email" ref={register as any} />
             </div>
-            <div>Password:
-              <input type="text" name="password" ref={register as any}  />
+            <div>
+              Password:
+              <input type="text" name="password" ref={register as any} />
             </div>
             <div>
               <input type="submit" name="Submit" />
             </div>
           </div>
         </form>
-        </div>
+      </div>
     </div>
   );
 };

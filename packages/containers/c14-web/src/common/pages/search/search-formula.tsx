@@ -1,18 +1,10 @@
-import * as React from "react";
-import { useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../store/common";
-import { Loader, NoSearchResults, Pagination, SearchTab } from "../../components";
-import { StructuresList } from "../../components/structure-list/structure-list";
-import { ErrorToast } from "../../components/toast";
-import { useGaAnalytics } from "../../hooks/useAnalytics";
-import { RootState } from "../../store";
-import { SearchState, searchStructureByFormula } from "../../store/search-by-formula-page.slice";
-import { useValidationError, Validator } from "./common";
-
-if (process.env.BROWSER) {
-    require("./search-main.scss");
-}
+import { useState, useRef, FormEvent, ChangeEvent } from 'react';
+import { useAppStore } from '../../store';
+import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components';
+import { StructuresList } from '../../components/structure-list/structure-list';
+import { ErrorToast } from '../../components/toast';
+import { SearchState } from '../../store/slices/search-by-formula-page.slice';
+import { useValidationError, Validator } from './common';
 
 interface SearchFormData {
     formula: string;
@@ -40,18 +32,17 @@ const formulaValidator: Validator = {
 };
 
 
-const SearchByFormulaForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void })=> {
-
+const SearchByFormulaForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
     const [value, setValue] = useState(initialValue);
     const error = useValidationError([nonEmptyValidator, formulaValidator], value);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!!value) {
             onSubmit({ formula: value });
         }
     }
-    const onValueChange = (event: React.ChangeEvent<HTMLInputElement>)=> {
+    const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     }
 
@@ -77,7 +68,7 @@ const SearchByFormulaForm = ({ onSubmit, initialValue }: { initialValue: string,
 }
 
 
-const SearchSummary = ({ totalResults }: {totalResults: number })=> {
+const SearchSummary = ({ totalResults }: { totalResults: number }) => {
     return (
         <div className="search-layout__results-header">
             <h4 className="text-primary">Results: {totalResults}</h4>
@@ -86,58 +77,51 @@ const SearchSummary = ({ totalResults }: {totalResults: number })=> {
 }
 
 
-const SearchResults = ()=> {
-    const dispatch = useAppDispatch();
+const SearchResults = () => {
     const containerRef = useRef(null);
-    const isLoading = useSelector((state: RootState) => state.searchByFormulaSlice.isLoading);
-    const structures = useSelector((state: RootState) => {
-        const structuresIds = state.searchByFormulaSlice.data.structureIds;
-        const structuresById: any = state.searchByFormulaSlice.data.structureById;
-
-        return structuresIds.map((id) => {
-            return structuresById[id];
-        }).filter((item) => !!item);
+    const isLoading = useAppStore((s) => s.searchByFormulaSlice.isLoading);
+    const structures = useAppStore((s) => {
+        const structuresIds = s.searchByFormulaSlice.data.structureIds;
+        const structuresById: any = s.searchByFormulaSlice.data.structureById;
+        return structuresIds.map((id) => structuresById[id]).filter((item) => !!item);
     });
-    const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.search.page);
-    const searchString = useSelector((state: RootState) => state.searchByFormulaSlice.search.formula);
-    const error = useSelector((state: RootState) => state.searchByFormulaSlice.error);
-
-    const totalPages = useSelector((state: RootState) => state.searchByFormulaSlice.meta.totalPages);
-    const hasNoResults = useSelector((state: RootState) => {
-        const status = state.searchByFormulaSlice.status;
-        const resultCount = Object.keys(state.searchByFormulaSlice.data.structureById).length;
+    const currentPage = useAppStore((s) => s.searchByFormulaSlice.search.page);
+    const searchString = useAppStore((s) => s.searchByFormulaSlice.search.formula);
+    const error = useAppStore((s) => s.searchByFormulaSlice.error);
+    const totalPages = useAppStore((s) => s.searchByFormulaSlice.meta.totalPages);
+    const hasNoResults = useAppStore((s) => {
+        const status = s.searchByFormulaSlice.status;
+        const resultCount = Object.keys(s.searchByFormulaSlice.data.structureById).length;
         return (status === SearchState.success && resultCount === 0);
     });
-    const totalResults = useSelector((state: RootState) =>{
+    const totalResults = useAppStore((s) => {
         return Math.max(
-            Object.keys(state.searchByFormulaSlice.data.structureById).length,
-            state.searchByFormulaSlice.meta.totalResults
+            Object.keys(s.searchByFormulaSlice.data.structureById).length,
+            s.searchByFormulaSlice.meta.totalResults
         );
     });
-    const showSummary = useSelector((state: RootState) => {
-        const status = state.searchByFormulaSlice.status;
+    const showSummary = useAppStore((s) => {
+        const status = s.searchByFormulaSlice.status;
         const resultCount = Math.max(
-            Object.keys(state.searchByFormulaSlice.data.structureById).length,
-            state.searchByAuthorSlice.meta.totalResults
+            Object.keys(s.searchByFormulaSlice.data.structureById).length,
+            s.searchByFormulaSlice.meta.totalResults
         );
-
         return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
     });
 
+    const searchStructureByFormula = useAppStore((s) => s.searchStructureByFormula);
+
     const onPageNavigate = (page: number) => {
-        dispatch(searchStructureByFormula({
-            formula: searchString,
-            page
-        }));
+        searchStructureByFormula({ formula: searchString, page });
     }
 
     return (
         <div>
             <div className="search-layout__results-list">
                 <div ref={containerRef}>
-                    { showSummary ? <SearchSummary totalResults={totalResults}/> : null }
-                    { hasNoResults ? <NoSearchResults /> : null }
-                    { error ? <ErrorToast error={error} /> : null }
+                    {showSummary ? <SearchSummary totalResults={totalResults} /> : null}
+                    {hasNoResults ? <NoSearchResults /> : null}
+                    {error ? <ErrorToast error={error} /> : null}
                     <Loader isVisible={isLoading} scrollElement={containerRef}>
                         <Pagination
                             currentPage={currentPage}
@@ -155,32 +139,24 @@ const SearchResults = ()=> {
 }
 
 export const SearchByFormulaPage = () => {
-
-    const dispatch = useAppDispatch();
-    const currentPage = useSelector((state: RootState) => state.searchByFormulaSlice.search.page);
-    const gaEvent  = useGaAnalytics();
+    const currentPage = useAppStore((s) => s.searchByFormulaSlice.search.page);
+    const searchStructureByFormula = useAppStore((s) => s.searchStructureByFormula);
 
     const handleSubmit = (data: SearchFormData) => {
-        gaEvent({
-            category: 'Search',
-            action: 'Search:Formula',
-        });
-        dispatch(searchStructureByFormula({
-            ...data, page: currentPage
-        }));
+        searchStructureByFormula({ ...data, page: currentPage });
     }
-    const searchString = useSelector((state: RootState) => state.searchByFormulaSlice.search.formula);
+    const searchString = useAppStore((s) => s.searchByFormulaSlice.search.formula);
 
     return (
         <div className="search-layout-tabs">
             <header className="app-layout-header">
-                  <h2 className="text-primary">Crystal Structure Search</h2>
-                  <SearchTab />
+                <h2 className="text-primary">Crystal Structure Search</h2>
+                <SearchTab />
             </header>
             <div className="app-layout-content">
                 <div className="search-layout__page">
                     <div>
-                        <SearchByFormulaForm onSubmit={handleSubmit} initialValue={searchString}/>
+                        <SearchByFormulaForm onSubmit={handleSubmit} initialValue={searchString} />
                     </div>
                     <div>
                         <SearchResults />

@@ -1,53 +1,42 @@
-import { createBrowserHistory } from "history";
-import * as ReactGA from 'react-ga';
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as Sentry from "@sentry/react";
-import { Provider } from "react-redux";
-import { renderRoutes } from "react-router-config";
-import { Router } from "react-router-dom";
-import { AppContextType, ApplicationContext, getApplication } from "../common";
-
-import { registerSW } from "./register-sw";
+import { hydrateRoot } from 'react-dom/client';
+import * as Sentry from '@sentry/react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AppContextType, getApplication } from '../common';
+import type { ApplicationContext } from '../common';
+import { StoreProvider } from '../common/store';
+import { App } from '../common/app';
+import { registerSW } from './register-sw';
 
 const appContext: ApplicationContext = {
-    type: AppContextType.frontend,
+  type: AppContextType.frontend,
 };
 
 if (process.env.NODE_ENV !== 'development') {
-    Sentry.init({
-        dsn: process.env.SENTRY_DSN || "",
-        tracesSampleRate: 1.0,
-    });
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN || '',
+    tracesSampleRate: 1.0,
+  });
 }
 
 (async () => {
-    const history = createBrowserHistory();
+  const { routes } = await getApplication(appContext);
 
-    if (process.env.NODE_ENV !== 'development') {
-        ReactGA.initialize('UA-125802766-1');
-        ReactGA.set({ page: location.pathname });
-        ReactGA.pageview(location.pathname);
+  const initialState = (window as any).__INITIAL_STATE__ || {};
 
-        history.listen((location, action) => {
-            ReactGA.set({ page: location.pathname });
-            ReactGA.pageview(location.pathname);
-        });
-    }
+  hydrateRoot(
+    document.getElementById('root')!,
+    <StoreProvider initialState={initialState}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<App routes={routes} />}>
+            {routes.map((route) => (
+              <Route key={route.path} path={route.path} element={<route.element />} />
+            ))}
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </StoreProvider>
+  );
 
-    const { Routes, getStore } = await getApplication(appContext);
-
-    const initialState = (window as any).__INITIAL_STATE__ || {};
-    const store = getStore(initialState);
-
-    ReactDOM.render(
-        <Provider store={store}>
-            <Router
-                history={history}
-            >{renderRoutes(Routes)}</Router>
-        </Provider>,
-        document.getElementById("root"),
-    );
-
-    registerSW();
+  registerSW();
 })();

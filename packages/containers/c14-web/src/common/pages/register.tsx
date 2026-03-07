@@ -1,34 +1,35 @@
-import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
 export const RegisterPage = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
-  };
+  const onSubmit = (data: any) => {};
   return (
     <div>
       <header className="app-layout-header">
-          <h2 className="text-primary">Register</h2>
+        <h2 className="text-primary">Register</h2>
       </header>
       <div className="app-layout-content">
-          <h1>Register</h1>
-          <hr/>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div style={{ padding: "20px" }}>
-              <div >Name:
-                <input type="text"  name="name" ref={register as any} />
-              </div>
-              <div >Email:
-                <input type="text"  name="email" ref={register as any} />
-              </div>
-              <div>Pwd:
-                <input type="text" name="password" ref={register as any} />
-              </div>
-              <div>
-                <input type="submit" name="Submit" />
-              </div>
+        <h1>Register</h1>
+        <hr />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div style={{ padding: '20px' }}>
+            <div>
+              Name:
+              <input type="text" name="name" ref={register as any} />
             </div>
-          </form>
+            <div>
+              Email:
+              <input type="text" name="email" ref={register as any} />
+            </div>
+            <div>
+              Pwd:
+              <input type="text" name="password" ref={register as any} />
+            </div>
+            <div>
+              <input type="submit" name="Submit" />
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );

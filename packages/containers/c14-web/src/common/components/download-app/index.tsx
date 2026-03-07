@@ -1,9 +1,3 @@
-import * as React from 'react';
-
-if (process.env.BROWSER) {
-    require('./index.scss');
-}
-
 export const DownloadApplication = ()=> {
     return (
         <div className="c-download-application">
