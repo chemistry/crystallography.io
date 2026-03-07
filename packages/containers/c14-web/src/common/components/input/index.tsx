@@ -160,8 +160,8 @@ export const Input = ({
   const selectSuggestion = (idx: number) => {
     return () => {
       const newSuggestions = suggestions.map((res) => ({
-        isSelected: false,
         ...res,
+        isSelected: false,
       }));
       setSuggestions(newSuggestions);
       setSuggestionsVisible(false);

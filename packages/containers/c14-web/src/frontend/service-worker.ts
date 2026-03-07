@@ -44,15 +44,15 @@ self.addEventListener('install', async (event) => {
 const networkOnly = new NetworkOnly();
 registerRoute(
   ({ request }) => request.destination === 'document',
-  async (params: any) => {
+  (async (params: any) => {
     try {
       return await networkOnly.handle(params);
-    } catch (error) {
+    } catch (_error) {
       return caches.match(FALLBACK_HTML_URL, {
         cacheName: CACHE_NAME,
       });
     }
-  }
+  }) as any
 );
 
 self.addEventListener('message', (event) => {

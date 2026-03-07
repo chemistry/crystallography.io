@@ -7,8 +7,8 @@ export const LoginPage = () => {
   const error = useAppStore((s) => s.user.error);
   const loginUser = useAppStore((s) => s.loginUser);
 
-  const onSubmit = (data: { email: string; password: string }) => {
-    loginUser(data);
+  const onSubmit = (data: any) => {
+    loginUser(data as { email: string; password: string });
   };
 
   return (
