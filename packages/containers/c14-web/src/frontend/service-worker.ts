@@ -42,18 +42,15 @@ self.addEventListener('install', async (event) => {
 });
 
 const networkOnly = new NetworkOnly();
-registerRoute(
-  ({ request }) => request.destination === 'document',
-  (async (params: any) => {
-    try {
-      return await networkOnly.handle(params);
-    } catch (_error) {
-      return caches.match(FALLBACK_HTML_URL, {
-        cacheName: CACHE_NAME,
-      });
-    }
-  }) as any
-);
+registerRoute(({ request }) => request.destination === 'document', (async (params: any) => {
+  try {
+    return await networkOnly.handle(params);
+  } catch (_error) {
+    return caches.match(FALLBACK_HTML_URL, {
+      cacheName: CACHE_NAME,
+    });
+  }
+}) as any);
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
