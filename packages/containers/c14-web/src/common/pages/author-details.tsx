@@ -13,7 +13,7 @@ const MAX_PAGES = 10;
 
 export const AuthorDetailsPage = () => {
   const { page, name } = useParams();
-  let currentPage = parseInt(page as string, 10);
+  let currentPage = parseInt(page!, 10);
   currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
 
   const found = useAppStore((s) => s.authorsDetailsPage.meta.total);

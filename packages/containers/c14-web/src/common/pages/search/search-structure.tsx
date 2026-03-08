@@ -19,7 +19,7 @@ export const SearchByStructurePage = () => {
     }, []);
 
     const handleSubmit = async () => {
-        if (MolPad && molpadRef && molpadRef.current) {
+        if (MolPad && molpadRef?.current) {
             const molpad = molpadRef.current as any;
             const validationMessage = molpad.isSutableForSearch();
             if (validationMessage !== '') {

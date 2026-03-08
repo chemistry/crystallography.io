@@ -41,7 +41,7 @@ const structureCommonCalcAttributes = [
   'doi',
 ];
 
-export function getStructureAttributes(expand: boolean = false): string[] {
+export function getStructureAttributes(expand = false): string[] {
   let res = [...structureCommonAttributes, ...structureCommonCalcAttributes];
   if (expand) {
     res = [...res, ...structureCommonAttributesDetails];
@@ -50,16 +50,16 @@ export function getStructureAttributes(expand: boolean = false): string[] {
   return res;
 }
 
-export function mapStructure(expand: boolean = false) {
+export function mapStructure(expand = false) {
   const attributes = getStructureAttributes(expand);
 
   return (item: any) => {
-    const itemFilted = attributes.reduce((acc: any, attr: string) => {
+    const itemFilted = attributes.reduce<any>((acc: any, attr: string) => {
       if (Object.prototype.hasOwnProperty.call(item, attr)) {
         acc[attr] = item[attr];
       }
       return acc;
-    }, {} as any);
+    }, {});
 
     if (Object.keys(item).length === 1) {
       return {

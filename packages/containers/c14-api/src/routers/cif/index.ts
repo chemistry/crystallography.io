@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import type { Db } from 'mongodb';
-import * as Sentry from '@sentry/node';
 import path from 'path';
 import fs from 'fs';
 

@@ -7,10 +7,10 @@ const MULTI_LINE_COMMENTS_DELIMER = /^(\s*);(.{0,})$/;
 export function cifProcessLoop(lines: string[]) {
   let val: string | undefined;
   let line: string | undefined;
-  let values: (string | undefined)[] = [];
+  let values: (string | undefined)[];
   const columns: string[] = [];
   const data: (string | undefined)[][] = [];
-  let multilineMatch = false;
+  let multilineMatch: boolean;
 
   line = lines.pop();
   while (line && line.length > 1 && line.startsWith('_') && LOOP_KEY.exec(line)) {
@@ -20,7 +20,6 @@ export function cifProcessLoop(lines: string[]) {
   }
 
   loopData: while (line !== undefined && isDataLine(line)) {
-    values = [];
     multilineMatch = !!MULTI_LINE_COMMENTS_DELIMER.exec(line);
     if (multilineMatch) {
       lines.push(line);
@@ -96,7 +95,7 @@ function cleanLoopData({
  */
 function readMultilineData(lines: string[]): string | undefined {
   let line = lines.pop();
-  if (!line) return undefined;
+  if (!line) {return undefined;}
   const multilineMatch = MULTI_LINE_COMMENTS_DELIMER.exec(line);
   if (multilineMatch) {
     const resLines: string[] = [];

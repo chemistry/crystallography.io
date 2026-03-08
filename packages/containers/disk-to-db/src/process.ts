@@ -1,8 +1,6 @@
 import { parse } from '@chemistry/cif-2-json';
 import * as Sentry from '@sentry/node';
-import type { Db, MongoClient } from 'mongodb';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as util from 'util';
 import { cleanupJCif } from './helpers';
 import type { AppContext } from './app';

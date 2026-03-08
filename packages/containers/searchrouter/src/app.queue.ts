@@ -12,7 +12,7 @@ export function initQueue(io: Server, db: Db, queue: Queue, queueEvents: QueueEv
     await processWorkerResponse(io, db, jobId, result as JobOutputModel, ChunkStatusModel.finished);
   });
 
-  queueEvents.on('failed', async ({ jobId, failedReason }) => {
+  queueEvents.on('failed', async ({ jobId, failedReason: _failedReason }) => {
     const result: JobOutputModel = {
       searchId: jobId.split(':')[0],
       index: Number(jobId.split(':')[1]),

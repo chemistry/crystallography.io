@@ -45,7 +45,7 @@ const networkOnly = new NetworkOnly();
 registerRoute(({ request }) => request.destination === 'document', (async (params: any) => {
   try {
     return await networkOnly.handle(params);
-  } catch (_error) {
+  } catch {
     return caches.match(FALLBACK_HTML_URL, {
       cacheName: CACHE_NAME,
     });
@@ -53,7 +53,7 @@ registerRoute(({ request }) => request.destination === 'document', (async (param
 }) as any);
 
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+  if (event.data?.type === 'SKIP_WAITING') {
     (self as any).skipWaiting();
   }
 });

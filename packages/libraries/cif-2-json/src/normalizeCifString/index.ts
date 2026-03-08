@@ -798,10 +798,10 @@ export function normalizeCifString(text: string): string {
     return '';
   }
   if (
-    text.indexOf('\\') === -1 &&
-    text.indexOf('&#') === -1 &&
-    text.indexOf('°') === -1 &&
-    text.indexOf('$-') === -1
+    !text.includes('\\') &&
+    !text.includes('&#') &&
+    !text.includes('°') &&
+    !text.includes('$-')
   ) {
     return text;
   }

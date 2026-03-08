@@ -9,7 +9,7 @@ import { healthCheck, mongoCheck } from './common/health-check';
     await new Promise((res) => setTimeout(res, 20000));
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 
-    const { db, close } = await getMongoConnection();
+    const { db, close: _close } = await getMongoConnection();
     const { logger, mw } = await getLogger();
     const hc = healthCheck([mongoCheck({ db })]);
 

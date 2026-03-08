@@ -21,7 +21,7 @@ const defaultAutocompleteOptions = {
       '</div>'
     );
   },
-  onSelect(_e: any, _term: any, _item: any) {},
+  onSelect(_e: any, _term: any, _item: any) { /* noop */ },
 };
 
 interface ISuggestedItem {
@@ -33,7 +33,7 @@ export const Input = ({
   initialValue,
   name,
   onChange,
-  placeholder,
+  placeholder: _placeholder,
   autoCompleteOptions,
   suggestionsVisible,
   setSuggestionsVisible,
@@ -124,7 +124,7 @@ export const Input = ({
 
   const autoCompleteKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const keyCode = event.keyCode;
-    if ([13, 27, 35, 36, 37, 38, 39, 40].indexOf(keyCode) === -1) {
+    if (![13, 27, 35, 36, 37, 38, 39, 40].includes(keyCode)) {
       if (value.length >= options.minChars) {
         if (value !== lastVal) {
           clearTimeout(timer);
@@ -133,7 +133,7 @@ export const Input = ({
               cache = {};
             }
             if (value in cache) {
-              if (cache.hasOwnProperty(value)) {
+              if (Object.hasOwn(cache, value)) {
                 autoCompleteSuggest(value, cache[value]);
                 return;
               }

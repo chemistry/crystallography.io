@@ -32,8 +32,8 @@ export const CompoundFormula: FC<{ model: StructureModel }> = ({ model }) => {
   return <span dangerouslySetInnerHTML={{ __html: formula }}></span>;
 };
 
-const getAuthorDetails = (author: { name: string; link: string }, i: number, arr: any) => {
-  if (!author || !author.name) {
+const getAuthorDetails = (author: { name: string; link: string }, i: number, _arr: any) => {
+  if (!author?.name) {
     return '';
   }
   if (author.link) {

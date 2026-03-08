@@ -39,46 +39,46 @@ function processSubstructureSearch({
   queue: Queue;
   db: Db;
 }) {
-  if (!req.body || !req.body.searchQuery) {
-    return next({
+  if (!req.body?.searchQuery) {
+    next({
       status: 'message#1',
       title: 'Wrong Search Query',
       detail: 'Wrong Search Query Params',
-    });
+    }); return;
   }
-  let jmol = {};
+  let jmol: any;
   const searchQuery = req.body.searchQuery;
-  let searchQueryJSON = {};
+  let searchQueryJSON: any;
   try {
     jmol = JSON.parse(searchQuery);
     searchQueryJSON = jmol;
     jmol = clearBondOrder(jmol);
   } catch (e: any) {
     Sentry.captureException(e);
-    return next({
+    next({
       status: 'message#2',
       title: 'Wrong Search Query',
       detail: 'Wrong Search Query Params',
-    });
+    }); return;
   }
   try {
     const molecule = new Molecule();
     molecule.load(jmol);
     const err = molecule.isSutableForSearch();
     if (err) {
-      return next({
+      next({
         status: 'message#3',
         title: 'Wrong Molecule',
         detail: 'Wrong Molecule Params; ' + err,
-      });
+      }); return;
     }
   } catch (e: any) {
     Sentry.captureException(e);
-    return next({
+    next({
       status: 'message#4',
       title: 'Wrong Search Query Molecule',
       detail: 'Wrong Search Query Molecule Params',
-    });
+    }); return;
   }
 
   scheduleSearch(jmol, queue, db)
@@ -107,9 +107,9 @@ function processSubstructureSearch({
       };
       res.json(response);
     })
-    .catch((err) => {
+    .catch((err: unknown) => {
       Sentry.captureException(err);
-      return next({
+      next({
         status: 'message#2',
         title: 'DB error',
         detail: 'Not able to save to database' + String(err),

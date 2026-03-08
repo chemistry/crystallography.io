@@ -17,7 +17,7 @@ export class QueueHelperController {
     result: JobOutputModel;
     status: ChunkStatusModel;
   }): Promise<number> {
-    const now = new Date();
+    const _now = new Date();
     const rowId = ObjectId.createFromHexString(result.searchId);
 
     const collection = db.collection('substructure-searches');
@@ -127,16 +127,13 @@ export class QueueHelperController {
       RESULTS_PER_PAGE,
       processedIndexes,
     });
-    let min = -1;
-    let max = -1;
     if (shouldUpdateResults) {
       const calcProjection = ChunksHelper.getProjectionsBasedOnLength(
         resultsLength,
         page,
         RESULTS_PER_PAGE
       );
-      [min, max] = calcProjection;
-      let allResults: number[][] = [];
+      const [min, max] = calcProjection;
       if (min !== -1 && max !== -1) {
         const resSearchRecord = (await db.collection('substructure-searches').findOne(
           {
@@ -146,11 +143,9 @@ export class QueueHelperController {
             projection: { results: { $slice: [min, max - min + 1] } },
           }
         )) as any as SubstructureSearchModel;
-        if (min === 0) {
-          allResults = resSearchRecord.results;
-        } else {
-          allResults = [...new Array(min).fill([]), ...resSearchRecord.results];
-        }
+        const allResults: number[][] = min === 0
+          ? resSearchRecord.results
+          : [...new Array(min).fill([]), ...resSearchRecord.results];
         results = ChunksHelper.getPageResults(resultsLength, allResults, page, RESULTS_PER_PAGE);
       }
     }
@@ -189,14 +184,14 @@ export class QueueHelperController {
       },
       { projection: { status: 1, queue: 1, version: 1, processedIndexes: 1 } }
     )) as any as SubstructureSearchModel;
-    const { failed, succeeded, total } = record.queue;
-    const { status, version, processedIndexes, isCanceled } = record;
-    if (status === 'finished' || isCanceled) {
+    const { total } = record.queue;
+    const { status, processedIndexes, isCanceled } = record;
+    if (status === ('finished' as string) || isCanceled) {
       return;
     }
     const jobsToCancel: string[] = [];
     for (let i = 0; i < total; i++) {
-      if (processedIndexes.indexOf(i) === -1) {
+      if (!processedIndexes.includes(i)) {
         jobsToCancel.push(searchId + ':' + i);
       }
     }
@@ -209,7 +204,7 @@ export class QueueHelperController {
         if (job) {
           await job.remove();
         }
-      } catch (_err) {
+      } catch {
         // Job may already be completed or removed
       }
     }

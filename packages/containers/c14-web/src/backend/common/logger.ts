@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 
-const getPackageName = () => {
+const _getPackageName = () => {
   const packagePath = path.resolve(__dirname, '../../../package.json');
   const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
   return (packageJSON.name || 'unknown').replace('@chemistry/', '');

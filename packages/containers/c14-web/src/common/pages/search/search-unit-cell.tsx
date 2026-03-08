@@ -29,7 +29,7 @@ const getPramsValidators = (param: string) => {
     }];
 }
 
-const getAngleValidators = (param: string) => {
+const _getAngleValidators = (param: string) => {
     return [{
         type: 'required',
         isValid(value: string) {

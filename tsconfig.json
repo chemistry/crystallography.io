@@ -1,9 +1,23 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["ES2024", "DOM", "DOM.Iterable"]
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "types": ["vitest/globals"],
+    "noEmit": true,
+    "paths": {
+      "@chemistry/cif-2-json": ["./packages/libraries/cif-2-json/src/index.ts"]
+    }
   },
   "include": ["packages/*/src/**/*", "packages/*/*/src/**/*"],
   "exclude": [

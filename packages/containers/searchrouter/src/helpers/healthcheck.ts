@@ -48,7 +48,7 @@ export function healthCheck({
 
     (async () => {
       try {
-        const [jobCounts, mongoCheck] = await Promise.all([queue.getJobCounts(), db.stats()]);
+        const [_jobCounts, mongoCheck] = await Promise.all([queue.getJobCounts(), db.stats()]);
         if (mongoCheck.ok) {
           writeOK();
         } else {
@@ -88,7 +88,7 @@ export function statusCheck({
 
     (async () => {
       try {
-        const [jobCounts, mongoCheck] = await Promise.all([queue.getJobCounts(), db.stats()]);
+        const [jobCounts, _mongoCheck] = await Promise.all([queue.getJobCounts(), db.stats()]);
 
         res
           .status(200)

@@ -33,22 +33,22 @@ async function processGetFn({
   config: AppConfig;
 }) {
   const { searchId } = req.params;
-  const { queue, db } = config;
+  const { db } = config;
   const page = parseInt((req.query.page as any) || 1, 10);
 
   if (!searchId || searchId.length < 18 || searchId.length > 32) {
-    return next({
+    next({
       status: 400,
       title: 'Wrong SearchId',
       detail: 'Wrong SearchID Params',
-    });
+    }); return;
   }
   if (!page || !isFinite(page)) {
-    return next({
+    next({
       status: 400,
       title: 'Invalid page',
       detail: 'Wrong page Params',
-    });
+    }); return;
   }
   const searchRecord = (await db.collection('substructure-searches').findOne(
     {
@@ -65,11 +65,11 @@ async function processGetFn({
     }
   )) as any as SubstructureSearchModel;
   if (!searchRecord) {
-    return next({
+    next({
       status: 404,
       title: 'Search Record Not Found',
       detail: 'Search Record Not Found',
-    });
+    }); return;
   }
   const resultsLength = searchRecord.resultsLength;
 

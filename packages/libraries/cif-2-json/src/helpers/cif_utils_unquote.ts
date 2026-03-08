@@ -5,10 +5,10 @@ export function unquoteLine(str: string): string {
   if (str.length < 2) {
     return str;
   }
-  if (str.charAt(0) === "'" && str.charAt(str.length - 1) === "'") {
+  if (str.startsWith("'") && str.endsWith("'")) {
     return replaceAll(str.substring(1, str.length - 1), "'", "'");
   }
-  if (str.charAt(0) === '"' && str.charAt(str.length - 1) === '"') {
+  if (str.startsWith('"') && str.endsWith('"')) {
     return replaceAll(str.substring(1, str.length - 1), '\\"', '"');
   }
   return str;

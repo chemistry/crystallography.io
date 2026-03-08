@@ -13,7 +13,7 @@ if (cluster.isPrimary) {
     try {
       await checkConnection();
 
-      const statistics: SearchStatisticsModel[] = [];
+      const _statistics: SearchStatisticsModel[] = [];
       console.log(
         `${new Date().toLocaleString()} searchworker:master started with pid ${process.pid} on ${numCPUs} cpus`
       );

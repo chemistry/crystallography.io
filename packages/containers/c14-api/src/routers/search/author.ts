@@ -67,9 +67,9 @@ export const getAuthorSearchRouter = ({ db }: { db: Db }) => {
         .toArray();
 
       const authorsCollection = authors.map(({ full, count }: any) => ({ full, count }));
-      const structuresIds = authors.reduce(
+      const structuresIds = authors.reduce<number[]>(
         (acc: number[], { structures }) => acc.concat(structures),
-        [] as number[]
+        []
       );
       const uniqStructureIds = [...new Set([...structuresIds])];
 

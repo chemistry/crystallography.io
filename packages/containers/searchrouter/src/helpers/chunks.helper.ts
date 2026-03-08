@@ -1,11 +1,3 @@
-import type { Db } from 'mongodb';
-import type {
-  ChunkSearchModel,
-  ChunkStatusModel,
-  JobOutputModel,
-  SubstructureSearchModel,
-} from '../models';
-
 export class ChunksHelper {
   public static getAvailablePagesCount(resultsLength: number[], RESULTS_PER_PAGE: number): number {
     let res = 0;
@@ -84,10 +76,10 @@ export class ChunksHelper {
   }
 
   public static willHaveResultsUpdate({
-    fromVersion,
-    resultsLength,
-    RESULTS_PER_PAGE,
-    processedIndexes,
+    fromVersion: _fromVersion,
+    resultsLength: _resultsLength,
+    RESULTS_PER_PAGE: _RESULTS_PER_PAGE,
+    processedIndexes: _processedIndexes,
   }: {
     fromVersion: number;
     resultsLength: number[];

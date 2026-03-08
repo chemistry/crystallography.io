@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import type { MutableRefObject } from 'react';
 
 export const useClickOutside = (ref: MutableRefObject<any>, callback: () => void) => {

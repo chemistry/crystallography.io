@@ -1,6 +1,7 @@
-node_modules
-dist
-coverage
+dist/
+coverage/
+node_modules/
+package-lock.json
+*.snap
 *.min.js
 *.bundle.js
-package-lock.json

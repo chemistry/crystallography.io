@@ -8,7 +8,7 @@ export const processUnitCellIndex = async ({
   structureId: number;
   context: AppContext;
 }) => {
-  const { logger, db } = context;
+  const { db } = context;
 
   const structureDB = db.collection('structures');
   const doc = await structureDB.findOne({ _id: structureId } as any);

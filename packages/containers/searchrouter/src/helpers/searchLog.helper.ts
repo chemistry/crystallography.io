@@ -9,7 +9,7 @@ export enum SearchType {
   'formula' = 'formula',
   'unitCell' = 'unitCell',
 }
-interface SearchLogModel {
+interface _SearchLogModel {
   ip: string;
   uid: string;
   data: Date;

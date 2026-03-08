@@ -54,7 +54,6 @@ export const getStructureRouter = ({ db }: { db: Db }) => {
       structuresIds = JSON.parse(ids);
     } catch (e: any) {
       console.error(`error in parsing : ${ids},  ERROR: ${e}`);
-      structuresIds = [];
     }
 
     try {

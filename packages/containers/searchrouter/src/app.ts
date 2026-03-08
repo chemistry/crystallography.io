@@ -15,7 +15,7 @@ const redisConnection = {
   password: process.env.REDIS_PASSWORD || undefined,
 };
 
-const initSentry = ({ app }: { app: Express }) => {
+const initSentry = ({ app: _app }: { app: Express }) => {
   Sentry.init({
     dsn: process.env.SENTRY_DSN || '',
     integrations: [],

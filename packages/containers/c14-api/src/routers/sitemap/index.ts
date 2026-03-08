@@ -4,7 +4,6 @@ import type { Request, Response } from 'express';
 import * as Sentry from '@sentry/node';
 
 const HOST = 'https://crystallography.io';
-const CATALOGS_PAGES_PER_SITEMAP = 10;
 
 const getSitemapsList = ({ db }: { db: Db }) => {
   return async (req: Request, res: Response) => {
@@ -31,7 +30,7 @@ const getSitemapsList = ({ db }: { db: Db }) => {
   };
 };
 
-const getStaticSiteMap = ({ db }: { db: Db }) => {
+const getStaticSiteMap = ({ db: _db }: { db: Db }) => {
   return (req: Request, res: Response) => {
     res.set('Content-Type', 'text/xml');
     const URLS = [
@@ -63,8 +62,7 @@ const getStructuresList = ({ db }: { db: Db }) => {
   return async (req: Request, res: Response) => {
     try {
       if (
-        !req.params ||
-        !req.params[0] ||
+        !req.params?.[0] ||
         !isFinite(parseInt(req.params[0], 10)) ||
         parseInt(req.params[0], 10) <= 0
       ) {

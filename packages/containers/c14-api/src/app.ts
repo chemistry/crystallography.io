@@ -51,7 +51,7 @@ export async function startApplication(context: ApplicationContext) {
 
   onAppInitEnd(app);
 
-  app.use((err: any, req: any, res: any, next: any) => {
+  app.use((err: any, req: any, res: any, _next: any) => {
     if (err) {
       logger.error(err.stack);
     }

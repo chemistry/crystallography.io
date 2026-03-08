@@ -191,7 +191,7 @@ function elementCompare(a: string, b: string) {
 export function formulaToString(formulaObj: any): string {
   const formulaDataArray = Object.keys(formulaObj)
     .filter((key) => {
-      return ELEMENTS.indexOf(key) !== -1;
+      return ELEMENTS.includes(key);
     })
     .map((key) => {
       return {

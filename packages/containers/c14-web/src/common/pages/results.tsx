@@ -7,7 +7,7 @@ import { useBrowserEffect } from '../hooks';
 import { subscribeToWSUpdates, closeWSSubscription } from '../store/ws-manager';
 
 const parsePage = (page?: string): number => {
-  let currentPage = parseInt(page as string, 10);
+  let currentPage = parseInt(page!, 10);
   currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
   return currentPage;
 };

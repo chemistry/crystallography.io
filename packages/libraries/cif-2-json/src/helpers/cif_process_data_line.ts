@@ -10,17 +10,16 @@ export function cifProcessDataLine(lines: string[]) {
   let line: string | undefined;
   let value;
   let key;
-  let match;
   let match2;
   let resLines;
 
   line = lines.pop();
   const result = Object.create(null) as Record<string, string>;
 
-  if (line?.startsWith('_') && SINGLE_LINE_COMMENT.exec(line)) {
-    match = SINGLE_LINE_COMMENT.exec(line);
-    key = '_' + match![1];
-    value = match![3];
+  const match = line?.startsWith('_') ? SINGLE_LINE_COMMENT.exec(line) : null;
+  if (match) {
+    key = '_' + match[1];
+    value = match[3];
     result[key] = value === '?' ? '' : unquoteAndReplace(value);
     return result;
   }

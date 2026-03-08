@@ -1,7 +1,8 @@
 import type { Collection } from 'mongodb';
 import type { AppContext } from '../app';
 
-const Molecule3D: any = require('@chemistry/molecule3d').Molecule3D;
+import molecule3dModule from '@chemistry/molecule3d';
+const Molecule3D: any = (molecule3dModule as any).Molecule3D;
 
 const BLACK_LIST = [2003119, 2000129, 2105953, 4323098, 4323099];
 

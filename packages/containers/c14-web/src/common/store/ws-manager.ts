@@ -25,7 +25,7 @@ export const subscribeToWSUpdates = async (store: AppStore) => {
   const io = (await import('socket.io-client')).default;
   const { id, status, version, page } = store.getState().searchResults.meta;
 
-  if (status === 'processing' || status === 'created') {
+  if (status === ('processing' as string) || status === ('created' as string)) {
     if (!socket) {
       openSocket(io);
 

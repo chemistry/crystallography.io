@@ -7,7 +7,7 @@ import { StructuresList } from '../components/structure-list/structure-list';
 
 export const CatalogPage = () => {
   const { page } = useParams();
-  let currentPage = parseInt(page as string, 10);
+  let currentPage = parseInt(page!, 10);
   currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
 
   const isLoading = useAppStore((s) => s.catalogPage.isLoading);

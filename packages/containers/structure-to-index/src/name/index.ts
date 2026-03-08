@@ -10,7 +10,7 @@ export const processNamesIndex = async ({
   structureId: number;
   context: AppContext;
 }) => {
-  const { logger, db } = context;
+  const { db } = context;
 
   const namesDB = db.collection('names');
   const structuresDB = db.collection('structures');

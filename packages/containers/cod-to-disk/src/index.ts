@@ -23,7 +23,7 @@ const getContext = async (): Promise<AppContext> => {
 
   return {
     logger,
-    exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
+    exec: (command: string, _options?: ExecOptions & { async?: false }): ShellString => {
       return shell.exec(command);
     },
     execAsync: (command: string): Readable => {

@@ -95,7 +95,7 @@ const waitTillFileExists = new Transform({
           .then(() => {
             return { fileName, codId };
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             Sentry.captureException(e);
             console.error(e);
           });

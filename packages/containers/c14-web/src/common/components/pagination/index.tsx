@@ -11,7 +11,7 @@ const PageLinkTemplate = ({
 }) => {
   if (onPageNavigate) {
     return (
-      <a className="c-page-link" onClick={() => onPageNavigate(page)}>
+      <a className="c-page-link" onClick={() => { onPageNavigate(page); }}>
         {page}
       </a>
     );

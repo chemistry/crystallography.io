@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 
 export const RegisterPage = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {};
+  const onSubmit = (_data: any) => { /* noop */ };
   return (
     <div>
       <header className="app-layout-header">

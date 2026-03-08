@@ -30,7 +30,7 @@ const getContext = async (): Promise<AppContext> => {
     getChanel: () => {
       return chanel;
     },
-    exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
+    exec: (command: string, _options?: ExecOptions & { async?: false }): ShellString => {
       return shell.exec(command);
     },
     sendNoticeToQueue: async (data: object): Promise<void> => {

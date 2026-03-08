@@ -18,11 +18,11 @@ const DownloadIcon = () => {
 };
 
 export const DetailsPage = () => {
-  const isLoading = useAppStore((s) => s.detailsPage.isLoading);
+  const _isLoading = useAppStore((s) => s.detailsPage.isLoading);
   const structure: any = useAppStore((s) => s.detailsPage.data.details);
 
   const { id } = useParams();
-  const currentId = parseInt(id as string, 10);
+  const currentId = parseInt(id!, 10);
 
   const HeadComponent = () => {
     return (
@@ -54,13 +54,13 @@ export const DetailsPage = () => {
       if (structure) {
         try {
           viewer.load(structure);
-        } catch (_e: any) {}
+        } catch { /* viewer load may fail */ }
       }
     })();
     return () => {
       if (viewer) {
         const element = document.getElementById('viewer');
-        if (element) element.innerHTML = '<div></div>';
+        if (element) {element.innerHTML = '<div></div>';}
         viewer.onDestroy();
         viewer = null;
       }

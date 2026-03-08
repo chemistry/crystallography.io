@@ -179,7 +179,7 @@ describe('cif2json#parse', () => {
       const cifData = loadMock('2222708.cif');
       console.time('performance:');
       for (let i = 0; i < 30; i++) {
-        const parseResult = sut(cifData);
+        const _parseResult = sut(cifData);
       }
       console.timeEnd('performance:');
 
@@ -191,7 +191,7 @@ describe('cif2json#parse', () => {
     it('should fastly process big files', () => {
       const cifData = loadMock('4128884.cif');
       console.time('performance2:');
-      const parseResult = sut(cifData);
+      const _parseResult = sut(cifData);
       console.timeEnd('performance2:');
     });
     // 624ms

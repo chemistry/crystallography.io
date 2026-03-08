@@ -13,7 +13,7 @@ Sentry.init({
 
 const getContext = async (): Promise<AppContext> => {
   const packagePath = path.resolve(__dirname, '../package.json');
-  const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
+  const _packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
   const { db, close } = await getMongoConnection();
   const logger = await getLogger();

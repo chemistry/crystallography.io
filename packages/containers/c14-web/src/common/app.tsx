@@ -23,7 +23,7 @@ export const App = ({ routes }: { routes: RouteDefinition[] }) => {
   return (
     <main className={cn('app', isOpen && 'is-open-navigation')}>
       <aside className="app-mobile-navigation">
-        <div className="app-mobile-navigation-icon" onClick={() => setOpen(!isOpen)}>
+        <div className="app-mobile-navigation-icon" onClick={() => { setOpen(!isOpen); }}>
           <NavBtnIcon />
         </div>
         <div className="app-mobile-navigation-logo">
@@ -31,13 +31,13 @@ export const App = ({ routes }: { routes: RouteDefinition[] }) => {
         </div>
       </aside>
       <aside className="app-navigation-menu">
-        <AppMobileNavigation onClick={() => setOpen(!isOpen)} />
+        <AppMobileNavigation onClick={() => { setOpen(!isOpen); }} />
       </aside>
-      <aside className="app-navigation-menu-layout" onClick={() => setOpen(false)}></aside>
+      <aside className="app-navigation-menu-layout" onClick={() => { setOpen(false); }}></aside>
       <aside className="app-navigation">
         <AppNavigation />
       </aside>
-      <div className="app-collapse-button" onClick={() => setOpen(!isOpen)}>
+      <div className="app-collapse-button" onClick={() => { setOpen(!isOpen); }}>
         <CollapseIcon />
       </div>
       <section className="app-layout">

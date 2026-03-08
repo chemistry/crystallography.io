@@ -10,7 +10,7 @@ const getStructuresData = async (ids: number[]) => {
   return res.data;
 };
 
-const difference = (arr1: any[], arr2: any[]) => {
+const _difference = (arr1: any[], arr2: any[]) => {
   return arr1.filter((x) => !arr2.includes(x));
 };
 

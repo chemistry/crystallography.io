@@ -70,9 +70,9 @@ const loadSiteData = async (routes: RouteDefinition[], url: string, store: any) 
     .map((route) => {
       const match = matchPath(route.path, url);
       const preParams: Record<string, string> = (match?.params as Record<string, string>) || {};
-      const params = Object.keys(preParams).reduce(
+      const params = Object.keys(preParams).reduce<Record<string, string>>(
         (acc, key) => ({ ...acc, [key]: decodeURIComponent(preParams[key] || '') }),
-        {} as Record<string, string>
+        {}
       );
       return route.loadData!(store, params);
     });

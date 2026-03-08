@@ -22,7 +22,7 @@ interface SearchResultsMeta {
 }
 
 const parsePage = (page?: string): number => {
-  const currentPage = parseInt(page as string, 10);
+  const currentPage = parseInt(page!, 10);
   return currentPage && isFinite(currentPage) ? currentPage : 1;
 };
 

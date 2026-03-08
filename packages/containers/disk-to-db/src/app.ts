@@ -29,7 +29,7 @@ export const app = async (context: AppContext) => {
         await Sentry.startSpan({ name: 'process message', op: 'disk-to-db' }, async () => {
           await processMessage({ ...message, context });
 
-          if (message && message.codId && isFinite(Number(message.codId))) {
+          if (message?.codId && isFinite(Number(message.codId))) {
             const { codId } = message;
             await sendNoticeToQueue({ structureId: Number(codId) });
           } else {

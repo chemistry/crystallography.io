@@ -7,5 +7,5 @@ export const useBrowserEffect = (callBack: EffectCallback, deps?: DependencyList
     return;
   }
 
-  return useEffect(callBack, deps);
+  useEffect(callBack, deps);
 };

@@ -1,4 +1,4 @@
-require('./cif_polyfil');
+import './cif_polyfil';
 
 export function splitDataBloks(lines: string[]) {
   lines.reverse();

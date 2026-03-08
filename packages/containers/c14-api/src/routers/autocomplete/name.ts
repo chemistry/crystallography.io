@@ -129,7 +129,7 @@ const uniqById = (names: any[]) => {
   const addedIds: any[] = [];
   names.forEach((name) => {
     const id = name._id.toString();
-    if (addedIds.indexOf(id) === -1) {
+    if (!addedIds.includes(id)) {
       res.push(name);
       addedIds.push(id);
     }
@@ -139,6 +139,6 @@ const uniqById = (names: any[]) => {
 
 const numberOccurrence = (words: string[], sentence: string) => {
   return words.reduce((res, curr) => {
-    return sentence.indexOf(curr) !== -1 ? res + 1 : res;
+    return sentence.includes(curr) ? res + 1 : res;
   }, 0);
 };

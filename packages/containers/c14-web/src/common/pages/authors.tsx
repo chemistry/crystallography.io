@@ -58,7 +58,7 @@ const numberWithSpaces = (x: number): string => {
 
 export const AuthorsPage = () => {
   const { page } = useParams();
-  let currentPage = parseInt(page as string, 10);
+  let currentPage = parseInt(page!, 10);
   currentPage = currentPage && isFinite(currentPage) ? currentPage : 1;
 
   const isLoading = useAppStore((s) => s.authorsListPage.isLoading);

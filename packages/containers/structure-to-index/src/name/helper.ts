@@ -33,7 +33,7 @@ export function prepareWords(chemName: string): WordsRecord {
 }
 
 function ucFirst(str: string): string {
-  if (!str || !str.length) {
+  if (!str?.length) {
     return str || '';
   }
   const f = str.charAt(0).toUpperCase();

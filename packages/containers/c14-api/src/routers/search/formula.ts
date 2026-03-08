@@ -4,8 +4,6 @@ import type { Db } from 'mongodb';
 import * as Sentry from '@sentry/node';
 import { formulaToString, parseFormula } from './formula.helper';
 
-const RESULTS_PER_PAGE = 100;
-
 export const getFormulaSearchRouter = ({ db }: { db: Db }) => {
   const router = Router();
 
@@ -22,8 +20,7 @@ export const getFormulaSearchRouter = ({ db }: { db: Db }) => {
       });
     }
 
-    let page: number = parseInt(req.body.page as string, 10);
-    page = page && isFinite(page) ? page : 1;
+    const _page: number = parseInt(req.body.page as string, 10) || 1;
 
     const formula = req.body.formula || '';
 
