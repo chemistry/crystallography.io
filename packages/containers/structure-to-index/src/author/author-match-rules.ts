@@ -35,7 +35,7 @@ import {
   case34,
 } from './author-patterns';
 
-interface AuthorDetails {
+export interface AuthorDetails {
   family: string;
   first: string;
   second: string;

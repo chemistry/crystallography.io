@@ -7,7 +7,7 @@ const MULTI_LINE_COMMENTS = /^_(\S+)(\s*)$/;
 const MULTI_LINE_COMMENTS_DELIMER = /^(\s*);(.{0,})$/;
 
 export function cifProcessDataLine(lines: string[]) {
-  let line;
+  let line: string | undefined;
   let value;
   let key;
   let match;
@@ -15,18 +15,18 @@ export function cifProcessDataLine(lines: string[]) {
   let resLines;
 
   line = lines.pop();
-  const result = Object.create(null);
+  const result = Object.create(null) as Record<string, string>;
 
-  if (line.startsWith('_') && SINGLE_LINE_COMMENT.exec(line)) {
+  if (line?.startsWith('_') && SINGLE_LINE_COMMENT.exec(line)) {
     match = SINGLE_LINE_COMMENT.exec(line);
-    key = '_' + match[1];
-    value = match[3];
+    key = '_' + match![1];
+    value = match![3];
     result[key] = value === '?' ? '' : unquoteAndReplace(value);
     return result;
   }
 
   if (lines.length > 1) {
-    if (line.startsWith('_')) {
+    if (line?.startsWith('_')) {
       match2 = MULTI_LINE_COMMENTS.exec(line);
 
       if (match2) {
@@ -46,11 +46,11 @@ export function cifProcessDataLine(lines: string[]) {
           while (lines.length !== 0) {
             line = lines.pop();
 
-            if (MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
+            if (line && MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
               break;
             }
 
-            resLines.push(line);
+            resLines.push(line ?? '');
           }
 
           value = resLines.join('\n');
@@ -59,7 +59,7 @@ export function cifProcessDataLine(lines: string[]) {
           return result;
         } else {
           key = '_' + match2[1];
-          value = lines.pop();
+          value = lines.pop() ?? '';
           result[key] = value === '?' ? '' : unquoteAndReplace(value);
           return result;
         }

@@ -1,22 +1,16 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2024",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "jsx": "react",
-    "lib": ["ES2024", "DOM"],
-    "typeRoots": ["node_modules/@types"]
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2024", "DOM", "DOM.Iterable"]
   },
+  "include": ["packages/*/src/**/*", "packages/*/*/src/**/*"],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.test.ts",
+    "**/*.spec.ts",
     "**/*.check.ts",
     "**/mocks",
     "**/fixtures"

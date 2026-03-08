@@ -5,21 +5,21 @@ const LOOP_KEY = /^_(\S+)$/;
 const MULTI_LINE_COMMENTS_DELIMER = /^(\s*);(.{0,})$/;
 
 export function cifProcessLoop(lines: string[]) {
-  let val;
-  let line;
-  let values = [];
-  const columns = [];
-  const data = [];
+  let val: string | undefined;
+  let line: string | undefined;
+  let values: (string | undefined)[] = [];
+  const columns: string[] = [];
+  const data: (string | undefined)[][] = [];
   let multilineMatch = false;
 
   line = lines.pop();
   while (line && line.length > 1 && line.startsWith('_') && LOOP_KEY.exec(line)) {
-    const key = '_' + LOOP_KEY.exec(line)[1];
+    const key = '_' + LOOP_KEY.exec(line)![1];
     columns.push(key);
     line = lines.length > 0 ? lines.pop() : undefined;
   }
 
-  loopData: while (isDataLine(line)) {
+  loopData: while (line !== undefined && isDataLine(line)) {
     values = [];
     multilineMatch = !!MULTI_LINE_COMMENTS_DELIMER.exec(line);
     if (multilineMatch) {
@@ -37,7 +37,7 @@ export function cifProcessLoop(lines: string[]) {
       }
       line = lines.pop();
 
-      if (!isDataLine(line)) {
+      if (line === undefined || !isDataLine(line)) {
         break loopData;
       }
       multilineMatch = !!MULTI_LINE_COMMENTS_DELIMER.exec(line);
@@ -46,7 +46,7 @@ export function cifProcessLoop(lines: string[]) {
         val = readMultilineData(lines);
         values = values.concat([val]);
       } else {
-        val = splitDataLine(line, -1);
+        val = splitDataLine(line, -1) as unknown as string;
         values = values.concat(val);
       }
     }
@@ -73,9 +73,15 @@ export function cifProcessLoop(lines: string[]) {
 /*
   Remove extra array from loop data
 */
-function cleanLoopData({ columns, data }: { columns: string[]; data: string[][] }): {
+function cleanLoopData({
+  columns,
+  data,
+}: {
   columns: string[];
-  data: string[][] | string[];
+  data: (string | undefined)[][];
+}): {
+  columns: string[];
+  data: (string | undefined)[][] | (string | undefined)[];
 } {
   if (columns.length === 1) {
     return {
@@ -88,31 +94,33 @@ function cleanLoopData({ columns, data }: { columns: string[]; data: string[][] 
 /**
  * will read multiline data
  */
-function readMultilineData(lines: string[]) {
+function readMultilineData(lines: string[]): string | undefined {
   let line = lines.pop();
+  if (!line) return undefined;
   const multilineMatch = MULTI_LINE_COMMENTS_DELIMER.exec(line);
   if (multilineMatch) {
-    const resLines = [];
+    const resLines: string[] = [];
     const firstline = (multilineMatch[2] || '').trim();
     if (firstline) {
       resLines.push(firstline);
     }
     while (lines.length !== 0) {
       line = lines.pop();
-      if (MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
+      if (line && MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
         break;
       }
-      resLines.push(line);
+      resLines.push(line ?? '');
     }
 
     return resLines.join('\n');
   }
+  return undefined;
 }
 
 /**
  * true is line still corespond loop data block
  */
-function isDataLine(line: string): boolean {
+function isDataLine(line: string | undefined): line is string {
   if (!line) {
     return false;
   }

@@ -15,8 +15,8 @@ export function cif2json(text: string): any {
   for (const key of dataKeys) {
     result[key] = cifParser(data[key]);
   }
-  data = null;
-  lines = null;
+  data = {};
+  lines = [];
 
   return result;
 }

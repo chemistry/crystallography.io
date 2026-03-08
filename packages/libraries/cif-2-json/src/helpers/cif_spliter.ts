@@ -6,7 +6,7 @@ export function splitDataBloks(lines: string[]) {
   const result = Object.create(null);
 
   while (lines.length > 0) {
-    const line = lines.pop().trim();
+    const line = lines.pop()!.trim();
     if (!line || line.startsWith('#')) {
       continue;
     }
