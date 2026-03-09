@@ -1,40 +1,15 @@
-# Dependencies
 node_modules
-
-# Build output
-dist/
-build
-lib/
+dist
 .next
-
-# Environment
-.env
-credentials.json
-credentials.base64.json
-
-# Coverage
 coverage
 
-# Terraform
-.terraform/
+.env
+credentials.json
+
+.terraform
 terraform.tfstate
 terraform.tfstate.backup
 
-# IDE / OS
 .DS_Store
-*.sublime-workspace
-*.sublime-project
-temp
-
-# Logs
-npm-debug.log
-lerna-debug.log
-
-# Auth
-.npmrc
-
-# TypeScript
 *.tsbuildinfo
-
-# Archives
-*.zip
+npm-debug.log

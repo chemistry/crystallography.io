@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, matchPath } from 'react-router-dom';
-import { cn } from './utils/cn';
-import { CollapseIcon, LogoMobileIcon, NavBtnIcon } from './icons';
-import { AppMobileNavigation, AppNavigation } from './layout';
-import type { RouteDefinition } from './index';
+import { cn } from './utils/cn.js';
+import { CollapseIcon, LogoMobileIcon, NavBtnIcon } from './icons/index.js';
+import { AppMobileNavigation, AppNavigation } from './layout/index.js';
+import type { RouteDefinition } from './index.js';
 
 if (process.env.BROWSER) {
   import('./styles/tailwind.css');

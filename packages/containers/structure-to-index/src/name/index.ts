@@ -1,7 +1,7 @@
-import type { Collection } from 'mongodb';
-import type { AppContext } from '../app';
-import { prepareWords } from './helper';
-import type { WordsRecord } from './helper';
+import type { Collection, Document, Filter, WithId } from 'mongodb';
+import type { AppContext } from '../app.js';
+import { prepareWords } from './helper.js';
+import type { WordsRecord } from './helper.js';
 
 export const processNamesIndex = async ({
   structureId,
@@ -10,13 +10,13 @@ export const processNamesIndex = async ({
   structureId: number;
   context: AppContext;
 }) => {
-  const { logger, db } = context;
+  const { db } = context;
 
   const namesDB = db.collection('names');
   const structuresDB = db.collection('structures');
   await ensureStructureNamesIndexes(namesDB);
 
-  const doc = await structuresDB.findOne({ _id: structureId } as any);
+  const doc = await structuresDB.findOne({ _id: structureId } as unknown as Filter<Document>);
   if (!doc) {
     return;
   }
@@ -29,7 +29,7 @@ export const processNamesIndex = async ({
   await processNames(namesDB, doc);
 };
 
-async function processNames(namesDB: Collection, doc: any) {
+async function processNames(namesDB: Collection, doc: WithId<Document>) {
   const wordsRows: WordsRecord[] = [];
   if (doc.mineral) {
     wordsRows.push(prepareWords(doc.mineral));
@@ -44,7 +44,7 @@ async function processNames(namesDB: Collection, doc: any) {
   if (wordsRows.length) {
     for (const wordsRow of wordsRows) {
       // process words row
-      await processWordRow(namesDB, wordsRow, doc._id);
+      await processWordRow(namesDB, wordsRow, doc._id as unknown as string);
     }
   }
 }
@@ -62,50 +62,46 @@ async function processWordRow(namesDB: Collection, wRow: WordsRecord, docId: str
 }
 
 async function addNewName(namesDB: Collection, wRow: WordsRecord, docId: string) {
-  let row: any = {
-    words: [],
-  };
   const firstword = wRow.firstword.toUpperCase();
 
-  row = {
-    ...row,
+  interface NameRow {
+    words: string[];
+    name: string;
+    a: string;
+    ab?: string;
+    abc?: string;
+    abcd?: string;
+    abcde?: string;
+    wa: string[];
+    wab: string[];
+    wabc: string[];
+    wabcd: string[];
+    wabcde: string[];
+  }
+
+  const row: NameRow = {
     words: wRow.words.slice(0) || [],
     name: wRow.name,
     a: firstword.charAt(0),
-  };
-
-  if (firstword.length > 1) {
-    row = {
-      ...row,
-      ab: firstword.substr(0, 2),
-    };
-  }
-  if (firstword.length > 2) {
-    row = {
-      ...row,
-      abc: firstword.substr(0, 3),
-    };
-  }
-  if (firstword.length > 3) {
-    row = {
-      ...row,
-      abcd: firstword.substr(0, 4),
-    };
-  }
-  if (firstword.length > 4) {
-    row = {
-      ...row,
-      abcde: firstword.substr(0, 5),
-    };
-  }
-  row = {
-    ...row,
     wa: [],
     wab: [],
     wabc: [],
     wabcd: [],
     wabcde: [],
   };
+
+  if (firstword.length > 1) {
+    row.ab = firstword.substr(0, 2);
+  }
+  if (firstword.length > 2) {
+    row.abc = firstword.substr(0, 3);
+  }
+  if (firstword.length > 3) {
+    row.abcd = firstword.substr(0, 4);
+  }
+  if (firstword.length > 4) {
+    row.abcde = firstword.substr(0, 5);
+  }
 
   row.words.forEach((word: string) => {
     let s;
@@ -150,7 +146,7 @@ async function addNewName(namesDB: Collection, wRow: WordsRecord, docId: string)
   });
 }
 
-async function updateName(namesDB: Collection, record: any, docId: string) {
+async function updateName(namesDB: Collection, record: WithId<Document>, docId: string) {
   if (record.structures.indexOf(docId) === -1) {
     const newStructures = record.structures.slice(0);
     newStructures.push(docId);
@@ -168,9 +164,9 @@ async function updateName(namesDB: Collection, record: any, docId: string) {
   }
 }
 
-async function findNameByRow(namesDB: Collection, wRow: any) {
+async function findNameByRow(namesDB: Collection, wRow: WordsRecord) {
   const firstword = wRow.firstword.toUpperCase();
-  const where: any = {
+  const where: Record<string, string> = {
     name: wRow.name,
   };
 

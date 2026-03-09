@@ -23,7 +23,10 @@ export interface StructureModel {
   lastpage: string;
   doi: string;
   articleHtml: string;
-  loops: any[];
+  sg: string;
+  diffrtemp: string;
+  Robs: string;
+  loops: Record<string, string[]>[];
 
   __authors: { name: string; link: string }[];
 }

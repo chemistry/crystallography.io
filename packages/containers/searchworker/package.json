@@ -2,25 +2,17 @@
   "name": "@chemistry/searchworker",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Search Worker for Substructure Search",
+  "license": "MIT",
   "author": {
     "name": "Volodymyr Vreshch",
     "url": "https://vreshch.com/"
   },
-  "keywords": [
-    "molecule",
-    "crystallography",
-    "substructure",
-    "VF2"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=22.0.0"
-  },
   "scripts": {
     "build": "rimraf dist/* && tsc",
     "start": "node dist/index.js",
-    "start:dev": "cross-env SHOW_DEBUG_INFO=true nodemon -e ts -w ./src -x ts-node src/index.ts"
+    "start:dev": "cross-env SHOW_DEBUG_INFO=true nodemon -e ts -w ./src -x tsx src/index.ts"
   },
   "dependencies": {
     "@chemistry/molecule": "^1.6.3",
@@ -28,14 +20,5 @@
     "bullmq": "^5.0.0",
     "ioredis": "^5.4.0",
     "mongodb": "^6.18.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.0.0",
-    "cross-env": "^7.0.0",
-    "nodemon": "^3.1.0",
-    "rimraf": "^5.0.0",
-    "supertest": "^7.0.0",
-    "ts-node": "^10.9.0",
-    "typescript": "^5.9.0"
   }
 }

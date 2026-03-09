@@ -1,5 +1,5 @@
-import type { Collection } from 'mongodb';
-import type { AppContext } from '../app';
+import type { Collection, Document, Filter, WithId } from 'mongodb';
+import type { AppContext } from '../app.js';
 
 export const processUnitCellIndex = async ({
   structureId,
@@ -8,10 +8,10 @@ export const processUnitCellIndex = async ({
   structureId: number;
   context: AppContext;
 }) => {
-  const { logger, db } = context;
+  const { db } = context;
 
   const structureDB = db.collection('structures');
-  const doc = await structureDB.findOne({ _id: structureId } as any);
+  const doc = await structureDB.findOne({ _id: structureId } as unknown as Filter<Document>);
 
   if (!doc) {
     return;
@@ -21,7 +21,7 @@ export const processUnitCellIndex = async ({
   await ensureUnitCellDBIndexes(structureDB);
 };
 
-async function addUnitCellInformation(structureDB: Collection, doc: any) {
+async function addUnitCellInformation(structureDB: Collection, doc: WithId<Document>) {
   const docId = doc._id;
   const a = parseFloat(doc.a);
   const b = parseFloat(doc.b);

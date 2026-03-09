@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import type { Db } from 'mongodb';
-import { getNameSearchRouter } from './name';
-import { getAuthorSearchRouter } from './author';
-import { getFormulaSearchRouter } from './formula';
-import { getUnitCellSearchRouter } from './unit-cell';
+import { getNameSearchRouter } from './name.js';
+import { getAuthorSearchRouter } from './author.js';
+import { getFormulaSearchRouter } from './formula.js';
+import { getUnitCellSearchRouter } from './unit-cell.js';
 
 export const getSearchRouters = ({ db }: { db: Db }) => {
   const router = Router();

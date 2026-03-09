@@ -1,7 +1,15 @@
 import { Router } from 'express';
 import type { NextFunction, Request, Response } from 'express';
 
-const admin: any = {};
+const admin: {
+  auth: () => {
+    createSessionCookie: (idToken: string, options: { expiresIn: number }) => Promise<string>;
+  };
+} = {} as {
+  auth: () => {
+    createSessionCookie: (idToken: string, options: { expiresIn: number }) => Promise<string>;
+  };
+};
 
 export const getAuthRouter = () => {
   const router = Router();

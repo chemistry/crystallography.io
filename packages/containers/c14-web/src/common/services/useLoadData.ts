@@ -1,8 +1,8 @@
 import type { EffectCallback, DependencyList } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppStoreApi } from '../store';
-import type { RouteDefinition } from '../index';
+import { useAppStoreApi } from '../store/index.js';
+import type { RouteDefinition } from '../index.js';
 
 let IS_FIRST_MOUNT_AFTER_LOAD = true;
 
@@ -11,10 +11,8 @@ const isStoreDataMissed = () => {
     return false;
   }
 
-  return (
-    !(window as any).__INITIAL_STATE__ ||
-    Object.keys((window as any).__INITIAL_STATE__).length === 0
-  );
+  const win = window as unknown as { __INITIAL_STATE__?: Record<string, unknown> };
+  return !win.__INITIAL_STATE__ || Object.keys(win.__INITIAL_STATE__).length === 0;
 };
 
 export const useInBrowser = (effect: EffectCallback, deps?: DependencyList) => {
@@ -29,7 +27,7 @@ export const useLoadedData = (route: RouteDefinition) => {
 
   const fetchData = () => {
     if (route?.loadData) {
-      route.loadData(store, params);
+      route.loadData(store, params as Record<string, string>);
     }
   };
 

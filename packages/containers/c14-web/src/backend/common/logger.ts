@@ -1,7 +1,13 @@
-import * as path from 'path';
-import * as fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
+import type { Request, Response, NextFunction } from 'express';
 
-const getPackageName = () => {
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const _getPackageName = () => {
   const packagePath = path.resolve(__dirname, '../../../package.json');
   const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
   return (packageJSON.name || 'unknown').replace('@chemistry/', '');
@@ -20,7 +26,7 @@ export const getLogger = async () => {
     },
   };
 
-  const mw = (req: any, res: any, next: any) => {
+  const mw = (req: Request, res: Response, next: NextFunction) => {
     next();
   };
 

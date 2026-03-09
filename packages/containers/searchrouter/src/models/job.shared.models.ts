@@ -1,4 +1,4 @@
-import type { SearchStatusModel } from './substructure-search.model';
+import type { SearchStatusModel } from './substructure-search.model.js';
 
 export interface JobOutputModel {
   searchId: string;

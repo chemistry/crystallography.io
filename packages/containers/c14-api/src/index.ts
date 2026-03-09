@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/node';
-import { startApplication } from './app';
-import { getLogger } from './common/express-logger';
-import { getMongoConnection } from './common/mongo';
+import { startApplication } from './app.js';
+import { getLogger } from './common/express-logger.js';
+import { getMongoConnection } from './common/mongo.js';
 import type { Express } from 'express';
-import { mongoCheck, healthCheck } from './common/health-check';
+import type { Server } from 'http';
+import { mongoCheck, healthCheck } from './common/health-check.js';
 
 const getPort = () => {
   const port = process.env.PORT;
@@ -62,17 +63,17 @@ const getApplicationContext = async () => {
 
     const { app } = await startApplication(context);
 
-    await new Promise<void>((resolve) => {
-      app.listen(PORT, '0.0.0.0', resolve);
+    const server = await new Promise<Server>((resolve) => {
+      const s = app.listen(PORT, '0.0.0.0', () => resolve(s));
     });
 
-    (app as any).on('error', (err: any) => {
+    server.on('error', (err: Error) => {
       console.error(err);
     });
 
     logger.trace(`Application Started on port: ${PORT}`);
     console.timeEnd('App Start');
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);

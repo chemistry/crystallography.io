@@ -1,12 +1,13 @@
-import { cifProcessDataLine } from './cif_process_data_line';
-import { cifProcessLoop } from './cif_process_loop';
+import type { CifDataBlock } from '../types.js';
+import { cifProcessDataLine } from './cif_process_data_line.js';
+import { cifProcessLoop } from './cif_process_loop.js';
 
 const LOOP_START = /^(\s*)loop_(\s*)$/i;
 
-export function cifParser(lines: string[]): any {
+export function cifParser(lines: string[]): CifDataBlock {
   lines.reverse();
 
-  const result: any = {};
+  const result: CifDataBlock = {};
 
   while (lines.length > 0) {
     const line = lines[lines.length - 1];

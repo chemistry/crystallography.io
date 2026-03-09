@@ -1,9 +1,11 @@
 import { Server } from 'socket.io';
+import type { Socket } from 'socket.io';
+import type http from 'node:http';
 import type { Db } from 'mongodb';
 import type { Queue } from 'bullmq';
-import { QueueHelperController } from './helpers';
+import { QueueHelperController } from './helpers/index.js';
 
-export function initIO(server: any, db: Db, queue: Queue): Server {
+export function initIO(server: http.Server, db: Db, queue: Queue): Server {
   const io = new Server(server, {
     path: '/api/v1/live',
     cors: {
@@ -12,7 +14,7 @@ export function initIO(server: any, db: Db, queue: Queue): Server {
     },
   });
 
-  io.on('connection', (socket: any) => {
+  io.on('connection', (socket: Socket & { lastRoom?: string }) => {
     socket.on(
       'get:results-update',
       ({ id, version, page }: { id: string; version: string; page: string }) => {

@@ -2,8 +2,8 @@ import type { NextFunction, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import type { Db } from 'mongodb';
 import type { Queue } from 'bullmq';
-import { ChunksHelper } from '../helpers';
-import type { JobResponseModel, SubstructureSearchModel } from '../models';
+import { ChunksHelper } from '../helpers/index.js';
+import type { JobResponseModel, SubstructureSearchModel } from '../models/index.js';
 
 interface AppConfig {
   queue: Queue;
@@ -33,8 +33,8 @@ async function processGetFn({
   config: AppConfig;
 }) {
   const { searchId } = req.params;
-  const { queue, db } = config;
-  const page = parseInt((req.query.page as any) || 1, 10);
+  const { db } = config;
+  const page = parseInt(String(req.query.page || 1), 10);
 
   if (!searchId || searchId.length < 18 || searchId.length > 32) {
     return next({
@@ -63,7 +63,7 @@ async function processGetFn({
         queue: 1,
       },
     }
-  )) as any as SubstructureSearchModel;
+  )) as unknown as SubstructureSearchModel;
   if (!searchRecord) {
     return next({
       status: 404,
@@ -88,7 +88,7 @@ async function processGetFn({
       {
         projection: { results: { $slice: [min, max - min + 1] } },
       }
-    )) as any as SubstructureSearchModel;
+    )) as unknown as SubstructureSearchModel;
     if (min === 0) {
       allResults = resSearchRecord.results;
     } else {

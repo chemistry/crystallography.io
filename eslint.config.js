@@ -12,14 +12,13 @@ export default tseslint.config(
     rules: {
       'prettier/prettier': 'error',
       'prefer-const': 'error',
-      'no-misleading-character-class': 'off',
-      'no-useless-assignment': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-require-imports': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
     },
   },
   {

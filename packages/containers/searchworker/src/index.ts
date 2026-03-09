@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/node';
 import cluster from 'cluster';
-import os from 'os';
+import os from 'node:os';
 
-import type { SearchStatisticsModel } from './models';
-import { startWorker } from './server';
-import { checkConnection } from './common/utils';
+import type { SearchStatisticsModel } from './models/index.js';
+import { startWorker } from './server.js';
+import { checkConnection } from './common/utils.js';
 
 const numCPUs = os.cpus().length;
 
@@ -13,7 +13,7 @@ if (cluster.isPrimary) {
     try {
       await checkConnection();
 
-      const statistics: SearchStatisticsModel[] = [];
+      const _statistics: SearchStatisticsModel[] = [];
       console.log(
         `${new Date().toLocaleString()} searchworker:master started with pid ${process.pid} on ${numCPUs} cpus`
       );
@@ -22,16 +22,16 @@ if (cluster.isPrimary) {
         cluster.fork();
       }
 
-      cluster.on('exit', (worker: any) => {
+      cluster.on('exit', (worker) => {
         console.error(`worker ${worker.process.pid} died`);
       });
 
-      cluster.on('fork', (worker: any) => {
+      cluster.on('fork', (worker) => {
         console.error(
           `${new Date().toLocaleString()} searchworker:master - fork event; isDead: ${worker.isDead()}`
         );
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       Sentry.captureException(e);
       console.error(String(e));
       process.exit(-1);

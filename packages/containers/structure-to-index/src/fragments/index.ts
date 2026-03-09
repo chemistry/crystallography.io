@@ -1,7 +1,8 @@
-import type { Collection } from 'mongodb';
-import type { AppContext } from '../app';
+import type { Collection, Document, Filter, WithId } from 'mongodb';
+import type { AppContext } from '../app.js';
+import pkg from '@chemistry/molecule3d';
 
-const Molecule3D: any = require('@chemistry/molecule3d').Molecule3D;
+const { Molecule3D } = pkg;
 
 const BLACK_LIST = [2003119, 2000129, 2105953, 4323098, 4323099];
 
@@ -22,7 +23,7 @@ export const processFragments = async ({
   const fragmentsDB = db.collection('fragments');
   const structuresDB = db.collection('structures');
 
-  const doc = await structuresDB.findOne({ _id: structureId } as any);
+  const doc = await structuresDB.findOne({ _id: structureId } as unknown as Filter<Document>);
   if (!doc) {
     return;
   }
@@ -30,9 +31,9 @@ export const processFragments = async ({
   await fragmentsUpdate(fragmentsDB, doc);
 };
 
-async function fragmentsUpdate(fragmentsDB: Collection, doc: any) {
+async function fragmentsUpdate(fragmentsDB: Collection, doc: WithId<Document>) {
   try {
-    let molecule = new Molecule3D();
+    const molecule = new Molecule3D();
 
     molecule.load(doc);
 
@@ -50,7 +51,6 @@ async function fragmentsUpdate(fragmentsDB: Collection, doc: any) {
       fragments: molecule.export(),
     };
     molecule.destroy();
-    molecule = null;
 
     await fragmentsDB.updateOne(
       {

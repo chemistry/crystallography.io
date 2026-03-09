@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 import type { Db } from 'mongodb';
 import * as cron from 'node-cron';
-import { processMessage } from './process';
+import { processMessage } from './process.js';
 
 export interface AppContext {
   logger: {

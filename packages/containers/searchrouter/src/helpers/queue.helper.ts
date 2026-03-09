@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb';
-import type { Db } from 'mongodb';
+import type { Db, Document } from 'mongodb';
 import type { Queue } from 'bullmq';
-import { ChunkStatusModel } from '../models';
-import type { JobOutputModel, JobResponseModel, SubstructureSearchModel } from '../models';
-import { ChunksHelper } from './chunks.helper';
+import { ChunkStatusModel } from '../models/index.js';
+import type { JobOutputModel, JobResponseModel, SubstructureSearchModel } from '../models/index.js';
+import { ChunksHelper } from './chunks.helper.js';
 
 const RESULTS_PER_PAGE = 100;
 
@@ -17,11 +17,10 @@ export class QueueHelperController {
     result: JobOutputModel;
     status: ChunkStatusModel;
   }): Promise<number> {
-    const now = new Date();
     const rowId = ObjectId.createFromHexString(result.searchId);
 
     const collection = db.collection('substructure-searches');
-    let incObj: any = {
+    let incObj: Record<string, number> = {
       'queue.succeeded': 1,
     };
     if (status === ChunkStatusModel.failed) {
@@ -46,8 +45,8 @@ export class QueueHelperController {
           version: 1,
         },
         $push: {
-          processedIndexes: result.index as any,
-        },
+          processedIndexes: result.index,
+        } as Document,
       }
     );
     const record = (await collection.findOne(
@@ -55,7 +54,7 @@ export class QueueHelperController {
         _id: rowId,
       },
       { projection: { queue: 1, version: 1, isCanceled: 1 } }
-    )) as any as SubstructureSearchModel;
+    )) as unknown as SubstructureSearchModel;
 
     const processed = record.queue.failed + record.queue.succeeded;
     const total = record.queue.total;
@@ -112,7 +111,7 @@ export class QueueHelperController {
           processedIndexes: 1,
         },
       }
-    )) as any as SubstructureSearchModel;
+    )) as unknown as SubstructureSearchModel;
 
     const { foundResults, version, status, resultsLength, processedIndexes } = record;
     const { failed, succeeded, total } = record.queue;
@@ -120,23 +119,20 @@ export class QueueHelperController {
     const progress = total === 0 ? 100 : Math.round(((failed + succeeded) / total) * 100);
     const pagesAvailable = ChunksHelper.getAvailablePagesCount(resultsLength, RESULTS_PER_PAGE);
 
-    let results = null;
+    let results: number[] | null = null;
     const shouldUpdateResults = ChunksHelper.willHaveResultsUpdate({
       fromVersion,
       resultsLength,
       RESULTS_PER_PAGE,
       processedIndexes,
     });
-    let min = -1;
-    let max = -1;
     if (shouldUpdateResults) {
       const calcProjection = ChunksHelper.getProjectionsBasedOnLength(
         resultsLength,
         page,
         RESULTS_PER_PAGE
       );
-      [min, max] = calcProjection;
-      let allResults: number[][] = [];
+      const [min, max] = calcProjection;
       if (min !== -1 && max !== -1) {
         const resSearchRecord = (await db.collection('substructure-searches').findOne(
           {
@@ -145,7 +141,8 @@ export class QueueHelperController {
           {
             projection: { results: { $slice: [min, max - min + 1] } },
           }
-        )) as any as SubstructureSearchModel;
+        )) as unknown as SubstructureSearchModel;
+        let allResults: number[][];
         if (min === 0) {
           allResults = resSearchRecord.results;
         } else {
@@ -188,9 +185,9 @@ export class QueueHelperController {
         _id: rowId,
       },
       { projection: { status: 1, queue: 1, version: 1, processedIndexes: 1 } }
-    )) as any as SubstructureSearchModel;
-    const { failed, succeeded, total } = record.queue;
-    const { status, version, processedIndexes, isCanceled } = record;
+    )) as unknown as SubstructureSearchModel;
+    const { total } = record.queue;
+    const { status, processedIndexes, isCanceled } = record;
     if (status === 'finished' || isCanceled) {
       return;
     }
@@ -209,7 +206,7 @@ export class QueueHelperController {
         if (job) {
           await job.remove();
         }
-      } catch (_err) {
+      } catch {
         // Job may already be completed or removed
       }
     }

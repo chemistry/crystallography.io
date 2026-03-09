@@ -1,6 +1,18 @@
-import type { AppStore } from './create-app-store';
+import type { AppStore } from './create-app-store.js';
+import type { SearchResultsMeta } from './slices/search-results.slice.js';
 
-let socket: any = null;
+interface WSResultsUpdate {
+  meta: SearchResultsMeta;
+  data: { results: number[] };
+}
+
+interface SocketInstance {
+  close: () => void;
+  on: (event: string, callback: (data: unknown) => void) => void;
+  emit: (event: string, data: Record<string, unknown>) => void;
+}
+
+let socket: SocketInstance | null = null;
 
 const closeSocket = () => {
   if (socket) {
@@ -9,7 +21,7 @@ const closeSocket = () => {
   }
 };
 
-const openSocket = (io: any) => {
+const openSocket = (io: (url: string, opts: { path: string }) => SocketInstance) => {
   if (!socket) {
     socket = io('https://crystallography.io', {
       path: '/api/v1/live',
@@ -28,16 +40,20 @@ export const subscribeToWSUpdates = async (store: AppStore) => {
   if (status === 'processing' || status === 'created') {
     if (!socket) {
       openSocket(io);
+    }
 
-      socket.on('results-update', (res: any) => {
+    if (socket) {
+      socket.on('results-update', (data: unknown) => {
+        const res = data as WSResultsUpdate;
         store.getState().updateSearchResults(res);
 
         if (res.meta.status === 'finished' && res.meta.id === id) {
           closeSocket();
         }
       });
+
+      socket.emit('get:results-update', { id, page, version });
     }
-    socket.emit('get:results-update', { id, page, version });
   } else {
     closeSocket();
   }

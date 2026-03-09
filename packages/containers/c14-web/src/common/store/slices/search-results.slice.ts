@@ -1,5 +1,5 @@
 import type { StateCreator } from 'zustand';
-import { getStructures } from '../../../models';
+import { getStructures } from '../../../models/index.js';
 
 export enum SearchState {
   empty = 'empty',
@@ -11,7 +11,7 @@ export enum SearchState {
   failed = 'failed',
 }
 
-interface SearchResultsMeta {
+export interface SearchResultsMeta {
   id: string;
   status: SearchState;
   progress: number;
@@ -29,7 +29,7 @@ const parsePage = (page?: string): number => {
 export interface SearchResultsState {
   searchResults: {
     meta: SearchResultsMeta;
-    data: { structureById: Record<string, any>; structureIds: number[] };
+    data: { structureById: Record<string, Record<string, unknown>>; structureIds: number[] };
     status: SearchState;
     error: string | null;
     isLoading: boolean;
@@ -89,8 +89,8 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
       }));
 
       const structures = await getStructures(structuresToLoad);
-      const structureById: Record<string, any> = {};
-      structures.data.forEach((el: any) => {
+      const structureById: Record<string, Record<string, unknown>> = {};
+      structures.data.forEach((el) => {
         structureById[el.id] = el.attributes;
       });
 
@@ -103,9 +103,8 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
           },
         },
       }));
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors;
-      const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({
         searchResults: {
           ...s.searchResults,
@@ -144,8 +143,9 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
       });
       const res2 = await response2.json();
 
-      const structureById: Record<string, any> = {};
-      res2.data.forEach((el: any) => {
+      const structureById: Record<string, Record<string, unknown>> = {};
+      const resData = res2.data as { id: string; attributes: Record<string, unknown> }[];
+      resData.forEach((el) => {
         structureById[el.id] = el.attributes;
       });
 

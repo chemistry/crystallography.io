@@ -1,7 +1,7 @@
-import type { AppContext } from './app';
-import { getLogger } from './common/logger';
-import { getMongoConnection } from './common/mongo';
-import { processMessage } from './process';
+import type { AppContext } from './app.js';
+import { getLogger } from './common/logger.js';
+import { getMongoConnection } from './common/mongo.js';
+import { processMessage } from './process.js';
 
 const getMockContext = async (): Promise<AppContext> => {
   const { db, close } = await getMongoConnection();

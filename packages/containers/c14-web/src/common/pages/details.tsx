@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
-import { PageContainer } from '../layout';
-import { useInBrowser } from '../services';
-import { useAppStore } from '../store';
-import { AuthorsList, CompoundName } from '../utils';
+import { PageContainer } from '../layout/index.js';
+import type { StructureModel } from '../models/index.js';
+import { useInBrowser } from '../services/index.js';
+import { useAppStore } from '../store/index.js';
+import { AuthorsList, CompoundName } from '../utils/index.js';
 
 const DownloadIcon = () => {
   return (
@@ -18,8 +19,8 @@ const DownloadIcon = () => {
 };
 
 export const DetailsPage = () => {
-  const isLoading = useAppStore((s) => s.detailsPage.isLoading);
-  const structure: any = useAppStore((s) => s.detailsPage.data.details);
+  const _isLoading = useAppStore((s) => s.detailsPage.isLoading);
+  const structure = useAppStore((s) => s.detailsPage.data.details) as unknown as StructureModel;
 
   const { id } = useParams();
   const currentId = parseInt(id as string, 10);
@@ -43,18 +44,27 @@ export const DetailsPage = () => {
   }
 
   useInBrowser(() => {
-    let viewer: any = null;
+    interface Mol3DViewInstance {
+      append: (el: HTMLElement | null) => void;
+      onInit: () => void;
+      load: (data: Record<string, unknown>) => void;
+      onDestroy: () => void;
+    }
+    let viewer: Mol3DViewInstance | null = null;
     (async () => {
       const { Mol3DView } = await import('@chemistry/crystalview');
-      viewer = new Mol3DView({ bgcolor: '#212529' });
+      const instance = new Mol3DView({ bgcolor: '#212529' });
+      viewer = instance as unknown as Mol3DViewInstance;
       const element = document.getElementById('viewer');
       viewer.append(element);
       viewer.onInit();
 
       if (structure) {
         try {
-          viewer.load(structure);
-        } catch (_e: any) {}
+          viewer.load(structure as unknown as Record<string, unknown>);
+        } catch {
+          // Viewer load may fail for invalid structures
+        }
       }
     })();
     return () => {

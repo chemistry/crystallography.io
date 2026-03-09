@@ -1,10 +1,11 @@
-const request = require('supertest');
+import request from 'supertest';
 import { createElement } from 'react';
-import { startApplication } from './application';
+import { startApplication } from './application.js';
+import type { ExpressContext } from './application.js';
 
 describe('Express Application', () => {
-  const noop = (_name: any) => {};
-  const mockContext: any = {
+  const noop = (_name: string) => {};
+  const mockContext: ExpressContext = {
     logger: {
       trace: noop,
       info: noop,

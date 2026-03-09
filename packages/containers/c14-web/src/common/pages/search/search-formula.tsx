@@ -1,168 +1,181 @@
-import { useState, useRef, FormEvent, ChangeEvent } from 'react';
-import { useAppStore } from '../../store';
-import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components';
-import { StructuresList } from '../../components/structure-list/structure-list';
-import { ErrorToast } from '../../components/toast';
-import { SearchState } from '../../store/slices/search-by-formula-page.slice';
-import { useValidationError, Validator } from './common';
+import { useState, useRef, type FormEvent, type ChangeEvent } from 'react';
+import { useAppStore } from '../../store/index.js';
+import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components/index.js';
+import { StructuresList } from '../../components/structure-list/structure-list.js';
+import type { StructureModel } from '../../models/index.js';
+import { ErrorToast } from '../../components/toast/index.js';
+import { SearchState } from '../../store/slices/search-by-formula-page.slice.js';
+import { useValidationError, type Validator } from './common/index.js';
 
 interface SearchFormData {
-    formula: string;
+  formula: string;
 }
 
 const nonEmptyValidator: Validator = {
-    type: 'empty',
-    isValid(value: string) {
-        return (value !== '');
-    },
-    message: 'Formula can not be empty',
+  type: 'empty',
+  isValid(value: string) {
+    return value !== '';
+  },
+  message: 'Formula can not be empty',
 };
 
 const formulaValidator: Validator = {
-    type: 'formula',
-    isValid(value: string) {
-        const s1 = /^((He|Li|Be|Ne|Na|Mg|Al|Si|Cl|Ar|Ca|Sc|Ti|Cr|Mn|Fe|Co|Ni|Cu|Zn|Ga|Ge|As|Se|Br|Kr|Rb|Sr|Zr|Nb|Mo|Tc|Ru|Rh|Pd|Ag|Cd|In|Sn|Sb|Te|Xe|Cs|Ba|La|Ce|Pr|Nd|Pm|Sm|Eu|Gd|Tb|Dy|Ho|Er|Tm|Yb|Lu|Hf|Ta|Re|Os|Ir|Pt|Au|Hg|Tl|Pb|Bi|Po|At|Rn|Fr|Ra|Ac|Th|Pa|Np|Pu|Am|Cm|Bk|Cf|Es|Fm|Md|No|Lr|Rf|Db|Sg|Bh|Hs|Mt|Ds|Rg|Cn|Q|H|D|B|C|N|O|F|P|S|K|V|Y|I|W|U){1,1}[*0-9]{0,10})+$/;
+  type: 'formula',
+  isValid(value: string) {
+    const s1 =
+      /^((He|Li|Be|Ne|Na|Mg|Al|Si|Cl|Ar|Ca|Sc|Ti|Cr|Mn|Fe|Co|Ni|Cu|Zn|Ga|Ge|As|Se|Br|Kr|Rb|Sr|Zr|Nb|Mo|Tc|Ru|Rh|Pd|Ag|Cd|In|Sn|Sb|Te|Xe|Cs|Ba|La|Ce|Pr|Nd|Pm|Sm|Eu|Gd|Tb|Dy|Ho|Er|Tm|Yb|Lu|Hf|Ta|Re|Os|Ir|Pt|Au|Hg|Tl|Pb|Bi|Po|At|Rn|Fr|Ra|Ac|Th|Pa|Np|Pu|Am|Cm|Bk|Cf|Es|Fm|Md|No|Lr|Rf|Db|Sg|Bh|Hs|Mt|Ds|Rg|Cn|Q|H|D|B|C|N|O|F|P|S|K|V|Y|I|W|U){1,1}[*0-9]{0,10})+$/;
 
-        if (!value.match(s1)) {
-            return false;
-        }
-        return true;
-    },
-    message: 'Incorrect Formula (correct examples: C6H6, C12H*N2, CuSO4)',
+    if (!value.match(s1)) {
+      return false;
+    }
+    return true;
+  },
+  message: 'Incorrect Formula (correct examples: C6H6, C12H*N2, CuSO4)',
 };
 
+const SearchByFormulaForm = ({
+  onSubmit,
+  initialValue,
+}: {
+  initialValue: string;
+  onSubmit: (data: SearchFormData) => void;
+}) => {
+  const [value, setValue] = useState(initialValue);
+  const error = useValidationError([nonEmptyValidator, formulaValidator], value);
 
-const SearchByFormulaForm = ({ onSubmit, initialValue }: { initialValue: string, onSubmit: (data: SearchFormData) => void }) => {
-    const [value, setValue] = useState(initialValue);
-    const error = useValidationError([nonEmptyValidator, formulaValidator], value);
-
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!!value) {
-            onSubmit({ formula: value });
-        }
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (value) {
+      onSubmit({ formula: value });
     }
-    const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-    }
+  };
+  const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <div className="has-icon-left has-button-right">
-                    <i className="form-icon icon icon-search search-layout__search-icon"></i>
-                    <div className="c-form-input">
-                        <input
-                            type="text"
-                            className="form-input"
-                            name="formula"
-                            autoComplete="off"
-                            value={value}
-                            onChange={onValueChange} />
-                    </div>
-                    <button className="form-button btn" disabled={!!error} title={error}>Search</button>
-                </div>
-            </div>
-        </form>
-    );
-}
-
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
+        <div className="has-icon-left has-button-right">
+          <i className="form-icon icon icon-search search-layout__search-icon"></i>
+          <div className="c-form-input">
+            <input
+              type="text"
+              className="form-input"
+              name="formula"
+              autoComplete="off"
+              value={value}
+              onChange={onValueChange}
+            />
+          </div>
+          <button className="form-button btn" disabled={!!error} title={error}>
+            Search
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+};
 
 const SearchSummary = ({ totalResults }: { totalResults: number }) => {
-    return (
-        <div className="search-layout__results-header">
-            <h4 className="text-primary">Results: {totalResults}</h4>
-        </div>
-    )
-}
-
+  return (
+    <div className="search-layout__results-header">
+      <h4 className="text-primary">Results: {totalResults}</h4>
+    </div>
+  );
+};
 
 const SearchResults = () => {
-    const containerRef = useRef(null);
-    const isLoading = useAppStore((s) => s.searchByFormulaSlice.isLoading);
-    const structures = useAppStore((s) => {
-        const structuresIds = s.searchByFormulaSlice.data.structureIds;
-        const structuresById: any = s.searchByFormulaSlice.data.structureById;
-        return structuresIds.map((id) => structuresById[id]).filter((item) => !!item);
-    });
-    const currentPage = useAppStore((s) => s.searchByFormulaSlice.search.page);
-    const searchString = useAppStore((s) => s.searchByFormulaSlice.search.formula);
-    const error = useAppStore((s) => s.searchByFormulaSlice.error);
-    const totalPages = useAppStore((s) => s.searchByFormulaSlice.meta.totalPages);
-    const hasNoResults = useAppStore((s) => {
-        const status = s.searchByFormulaSlice.status;
-        const resultCount = Object.keys(s.searchByFormulaSlice.data.structureById).length;
-        return (status === SearchState.success && resultCount === 0);
-    });
-    const totalResults = useAppStore((s) => {
-        return Math.max(
-            Object.keys(s.searchByFormulaSlice.data.structureById).length,
-            s.searchByFormulaSlice.meta.totalResults
-        );
-    });
-    const showSummary = useAppStore((s) => {
-        const status = s.searchByFormulaSlice.status;
-        const resultCount = Math.max(
-            Object.keys(s.searchByFormulaSlice.data.structureById).length,
-            s.searchByFormulaSlice.meta.totalResults
-        );
-        return resultCount !== 0 && [SearchState.processing, SearchState.started, SearchState.success].includes(status);
-    });
-
-    const searchStructureByFormula = useAppStore((s) => s.searchStructureByFormula);
-
-    const onPageNavigate = (page: number) => {
-        searchStructureByFormula({ formula: searchString, page });
-    }
-
+  const containerRef = useRef(null);
+  const isLoading = useAppStore((s) => s.searchByFormulaSlice.isLoading);
+  const structures = useAppStore((s) => {
+    const structuresIds = s.searchByFormulaSlice.data.structureIds;
+    const structuresById = s.searchByFormulaSlice.data.structureById;
+    return structuresIds
+      .map((id) => structuresById[id])
+      .filter((item) => !!item) as unknown as StructureModel[];
+  });
+  const currentPage = useAppStore((s) => s.searchByFormulaSlice.search.page);
+  const searchString = useAppStore((s) => s.searchByFormulaSlice.search.formula);
+  const error = useAppStore((s) => s.searchByFormulaSlice.error);
+  const totalPages = useAppStore((s) => s.searchByFormulaSlice.meta.totalPages);
+  const hasNoResults = useAppStore((s) => {
+    const status = s.searchByFormulaSlice.status;
+    const resultCount = Object.keys(s.searchByFormulaSlice.data.structureById).length;
+    return status === SearchState.success && resultCount === 0;
+  });
+  const totalResults = useAppStore((s) => {
+    return Math.max(
+      Object.keys(s.searchByFormulaSlice.data.structureById).length,
+      s.searchByFormulaSlice.meta.totalResults
+    );
+  });
+  const showSummary = useAppStore((s) => {
+    const status = s.searchByFormulaSlice.status;
+    const resultCount = Math.max(
+      Object.keys(s.searchByFormulaSlice.data.structureById).length,
+      s.searchByFormulaSlice.meta.totalResults
+    );
     return (
-        <div>
-            <div className="search-layout__results-list">
-                <div ref={containerRef}>
-                    {showSummary ? <SearchSummary totalResults={totalResults} /> : null}
-                    {hasNoResults ? <NoSearchResults /> : null}
-                    {error ? <ErrorToast error={error} /> : null}
-                    <Loader isVisible={isLoading} scrollElement={containerRef}>
-                        <Pagination
-                            currentPage={currentPage}
-                            maxPages={10}
-                            totalPages={totalPages}
-                            url='/search'
-                            onPageNavigate={onPageNavigate}
-                        />
-                        <StructuresList list={structures} />
-                    </Loader>
-                </div>
-            </div>
+      resultCount !== 0 &&
+      [SearchState.processing, SearchState.started, SearchState.success].includes(status)
+    );
+  });
+
+  const searchStructureByFormula = useAppStore((s) => s.searchStructureByFormula);
+
+  const onPageNavigate = (page: number) => {
+    searchStructureByFormula({ formula: searchString, page });
+  };
+
+  return (
+    <div>
+      <div className="search-layout__results-list">
+        <div ref={containerRef}>
+          {showSummary ? <SearchSummary totalResults={totalResults} /> : null}
+          {hasNoResults ? <NoSearchResults /> : null}
+          {error ? <ErrorToast error={error} /> : null}
+          <Loader isVisible={isLoading} scrollElement={containerRef}>
+            <Pagination
+              currentPage={currentPage}
+              maxPages={10}
+              totalPages={totalPages}
+              url="/search"
+              onPageNavigate={onPageNavigate}
+            />
+            <StructuresList list={structures} />
+          </Loader>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
 export const SearchByFormulaPage = () => {
-    const currentPage = useAppStore((s) => s.searchByFormulaSlice.search.page);
-    const searchStructureByFormula = useAppStore((s) => s.searchStructureByFormula);
+  const currentPage = useAppStore((s) => s.searchByFormulaSlice.search.page);
+  const searchStructureByFormula = useAppStore((s) => s.searchStructureByFormula);
 
-    const handleSubmit = (data: SearchFormData) => {
-        searchStructureByFormula({ ...data, page: currentPage });
-    }
-    const searchString = useAppStore((s) => s.searchByFormulaSlice.search.formula);
+  const handleSubmit = (data: SearchFormData) => {
+    searchStructureByFormula({ ...data, page: currentPage });
+  };
+  const searchString = useAppStore((s) => s.searchByFormulaSlice.search.formula);
 
-    return (
-        <div className="search-layout-tabs">
-            <header className="app-layout-header">
-                <h2 className="text-primary">Crystal Structure Search</h2>
-                <SearchTab />
-            </header>
-            <div className="app-layout-content">
-                <div className="search-layout__page">
-                    <div>
-                        <SearchByFormulaForm onSubmit={handleSubmit} initialValue={searchString} />
-                    </div>
-                    <div>
-                        <SearchResults />
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="search-layout-tabs">
+      <header className="app-layout-header">
+        <h2 className="text-primary">Crystal Structure Search</h2>
+        <SearchTab />
+      </header>
+      <div className="app-layout-content">
+        <div className="search-layout__page">
+          <div>
+            <SearchByFormulaForm onSubmit={handleSubmit} initialValue={searchString} />
+          </div>
+          <div>
+            <SearchResults />
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import type { Db } from 'mongodb';
-import { buildNameWhere, buildNameWhereAnd, buildNameWhereOr } from './helper';
+import { buildNameWhere, buildNameWhereAnd, buildNameWhereOr } from './helper.js';
 import * as Sentry from '@sentry/node';
 
 const RESULTS_PER_SUGGESTION = 100;
@@ -93,8 +93,8 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
         },
         data: namesCombined,
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [
@@ -112,23 +112,29 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
   return router;
 };
 
-const getNamesCount = async (where: any, db: Db): Promise<number> => {
-  return (await db.collection('names').countDocuments(where)) as any as Promise<number>;
+interface NameEntry {
+  _id: unknown;
+  name: string;
+  count: number;
+}
+
+const getNamesCount = async (where: Record<string, unknown>, db: Db): Promise<number> => {
+  return await db.collection('names').countDocuments(where);
 };
-const getNameCollection = async (where: any, db: Db) => {
+const getNameCollection = async (where: Record<string, unknown>, db: Db): Promise<NameEntry[]> => {
   return await db
     .collection('names')
     .find(where)
     .sort({ count: -1 })
     .limit(RESULTS_PER_SUGGESTION)
-    .map(({ _id, name, count }: any) => ({ _id, name, count }))
+    .map((doc) => ({ _id: doc._id, name: doc.name as string, count: doc.count as number }))
     .toArray();
 };
-const uniqById = (names: any[]) => {
-  const res: any[] = [];
-  const addedIds: any[] = [];
+const uniqById = (names: NameEntry[]): NameEntry[] => {
+  const res: NameEntry[] = [];
+  const addedIds: string[] = [];
   names.forEach((name) => {
-    const id = name._id.toString();
+    const id = String(name._id);
     if (addedIds.indexOf(id) === -1) {
       res.push(name);
       addedIds.push(id);

@@ -1,5 +1,5 @@
 import type { StateCreator } from 'zustand';
-import { getStructures } from '../../../models';
+import { getStructures } from '../../../models/index.js';
 
 export enum SearchState {
   empty,
@@ -22,7 +22,7 @@ interface UnitCellSearch {
 
 export interface SearchByUnitCellState {
   searchByUnitCellSlice: {
-    data: { structureById: Record<string, any>; structureIds: number[] };
+    data: { structureById: Record<string, Record<string, unknown>>; structureIds: number[] };
     meta: { totalPages: number; totalResults: number };
     search: UnitCellSearch;
     status: SearchState;
@@ -86,8 +86,8 @@ export const createSearchByUnitCellSlice: StateCreator<SearchByUnitCellState> = 
       }));
 
       const structures = await getStructures(structuresToLoad);
-      const structureById: Record<string, any> = {};
-      structures.data.forEach((el: any) => {
+      const structureById: Record<string, Record<string, unknown>> = {};
+      structures.data.forEach((el) => {
         structureById[el.id] = el.attributes;
       });
 
@@ -99,9 +99,8 @@ export const createSearchByUnitCellSlice: StateCreator<SearchByUnitCellState> = 
           data: { ...s.searchByUnitCellSlice.data, structureById },
         },
       }));
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors;
-      const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({
         searchByUnitCellSlice: {
           ...s.searchByUnitCellSlice,

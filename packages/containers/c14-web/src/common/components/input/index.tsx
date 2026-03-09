@@ -1,16 +1,34 @@
 import { useRef, useState } from 'react';
-import { useClickOutside } from '../../hooks';
+import { useClickOutside } from '../../hooks/index.js';
 
-const defaultAutocompleteOptions = {
-  source: 0 as any,
+interface ISuggestedItem {
+  value: string;
+  isSelected: boolean;
+}
+
+export interface AutocompleteOptions {
+  source:
+    | ((value: string, suggest: (value: string, data: ISuggestedItem[]) => void) => void)
+    | number;
+  minChars: number;
+  delay: number;
+  cache: number;
+  menuClass: string;
+  renderItemValue: (item: ISuggestedItem, search: string) => React.ReactNode;
+  renderItem: (item: string, search: string) => string;
+  onSelect: (e: unknown, term: string, item: unknown) => void;
+}
+
+const defaultAutocompleteOptions: AutocompleteOptions = {
+  source: 0,
   minChars: 3,
   delay: 150,
   cache: 1,
   menuClass: '',
-  renderItemValue(item: any, _search: any) {
+  renderItemValue(item: ISuggestedItem, _search: string) {
     return item.value;
   },
-  renderItem(item: any, search: any) {
+  renderItem(item: string, search: string) {
     search = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     const re = new RegExp('(' + search.split(' ').join('|') + ')', 'gi');
     return (
@@ -21,19 +39,14 @@ const defaultAutocompleteOptions = {
       '</div>'
     );
   },
-  onSelect(_e: any, _term: any, _item: any) {},
+  onSelect(_e: unknown, _term: string, _item: unknown) {},
 };
-
-interface ISuggestedItem {
-  value: string;
-  isSelected: boolean;
-}
 
 export const Input = ({
   initialValue,
   name,
   onChange,
-  placeholder,
+  placeholder: _placeholder,
   autoCompleteOptions,
   suggestionsVisible,
   setSuggestionsVisible,
@@ -42,14 +55,14 @@ export const Input = ({
   name: string;
   onChange: (name: string) => void;
   placeholder: string;
-  autoCompleteOptions: any;
+  autoCompleteOptions: Partial<AutocompleteOptions>;
   suggestionsVisible: boolean;
   setSuggestionsVisible: (isVisible: boolean) => void;
 }) => {
-  let cache: any = {};
-  let timer: any = null;
+  let cache: Record<string, ISuggestedItem[]> = {};
+  let timer: ReturnType<typeof setTimeout> | null = null;
 
-  const clickRef = useRef<any>();
+  const clickRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialValue);
   const [suggestions, setSuggestions] = useState<ISuggestedItem[]>([]);
   const lastVal = initialValue;
@@ -65,7 +78,7 @@ export const Input = ({
 
   const options = Object.assign({}, defaultAutocompleteOptions, autoCompleteOptions);
 
-  const autoCompleteSuggest = (newValue: any, data: ISuggestedItem[]) => {
+  const autoCompleteSuggest = (newValue: string, data: ISuggestedItem[]) => {
     cache[newValue] = data;
     if (data.length && newValue.length >= options.minChars) {
       setSuggestions(data);
@@ -127,13 +140,13 @@ export const Input = ({
     if ([13, 27, 35, 36, 37, 38, 39, 40].indexOf(keyCode) === -1) {
       if (value.length >= options.minChars) {
         if (value !== lastVal) {
-          clearTimeout(timer);
+          if (timer !== null) clearTimeout(timer);
           if (options.cache) {
             if (!cache) {
               cache = {};
             }
             if (value in cache) {
-              if (cache.hasOwnProperty(value)) {
+              if (Object.prototype.hasOwnProperty.call(cache, value)) {
                 autoCompleteSuggest(value, cache[value]);
                 return;
               }
@@ -147,7 +160,9 @@ export const Input = ({
             }
           }
           timer = setTimeout(() => {
-            options.source(value, autoCompleteSuggest);
+            if (typeof options.source === 'function') {
+              options.source(value, autoCompleteSuggest);
+            }
           }, options.delay);
         }
       }
@@ -205,8 +220,8 @@ const Suggestions = ({
   value,
 }: {
   suggestions: ISuggestedItem[];
-  onSelectSuggestion: any;
-  renderItemValue: any;
+  onSelectSuggestion: (index: number) => () => void;
+  renderItemValue: (item: ISuggestedItem, search: string) => React.ReactNode;
   value: string;
 }) => {
   return (

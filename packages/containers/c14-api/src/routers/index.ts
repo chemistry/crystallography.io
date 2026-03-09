@@ -1,12 +1,12 @@
 import type { Db } from 'mongodb';
 import { Router } from 'express';
-import { getStructureRouter } from './structure';
-import { getCatalogRouter } from './catalog';
-import { getAuthorRouter } from './authors';
-import { getSearchRouters } from './search';
-import { getAutocompleteRouters } from './autocomplete';
-import { getSitemapRouters } from './sitemap';
-import { getCifDataRouter } from './cif';
+import { getStructureRouter } from './structure/index.js';
+import { getCatalogRouter } from './catalog/index.js';
+import { getAuthorRouter } from './authors/index.js';
+import { getSearchRouters } from './search/index.js';
+import { getAutocompleteRouters } from './autocomplete/index.js';
+import { getSitemapRouters } from './sitemap/index.js';
+import { getCifDataRouter } from './cif/index.js';
 
 export const getRouters = ({ db }: { db: Db }) => {
   const router = Router();

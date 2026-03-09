@@ -1,10 +1,24 @@
 {
   "name": "@chemistry/cif-2-json",
   "version": "0.0.18",
+  "type": "module",
   "description": "Tool for converting CIF to JSON and manipulate with content",
   "author": {
     "name": "Volodymyr Vreshch",
     "url": "https://vreshch.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vreshch/cif2json.git"
+  },
+  "main": "dist/cif-2-json.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/cif-2-json.js",
+      "require": "./dist/cif-2-json.js"
+    }
   },
   "engines": {
     "node": ">=22.0.0"
@@ -14,18 +28,11 @@
     "cif",
     "json"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vreshch/cif2json.git"
-  },
-  "main": "dist/cif-2-json.js",
-  "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc --emitDeclarationOnly && webpack-cli --config webpack.config.js --mode production"
+    "build": "tsc --emitDeclarationOnly && webpack-cli --config webpack.config.cjs --mode production"
   },
   "devDependencies": {
     "ts-loader": "^9.5.0",
-    "typescript": "^5.9.0",
     "webpack": "^5.97.0",
     "webpack-cli": "^6.0.0"
   }

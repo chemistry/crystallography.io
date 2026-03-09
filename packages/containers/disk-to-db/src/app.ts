@@ -1,8 +1,9 @@
 import * as Sentry from '@sentry/node';
+import type { Channel, ConsumeMessage } from 'amqplib';
 import type { Db } from 'mongodb';
 import type { ExecOptions, ShellString } from 'shelljs';
-import { processMessage } from './process';
-import type { CodFileRecord } from './process';
+import { processMessage } from './process.js';
+import type { CodFileRecord } from './process.js';
 
 export interface AppContext {
   logger: {
@@ -10,7 +11,7 @@ export interface AppContext {
     info: (message: string) => void;
     error: (message: string) => void;
   };
-  getChanel: () => any;
+  getChanel: () => Channel;
   QUEUE_NAME: string;
   db: Db;
   sendNoticeToQueue: (data: object) => Promise<void>;
@@ -23,7 +24,10 @@ export const app = async (context: AppContext) => {
 
   chanel.consume(
     QUEUE_NAME,
-    async (originalMessage: any) => {
+    async (originalMessage: ConsumeMessage | null) => {
+      if (!originalMessage) {
+        return;
+      }
       const messages: CodFileRecord[] = JSON.parse(originalMessage.content.toString());
       for (const message of messages) {
         await Sentry.startSpan({ name: 'process message', op: 'disk-to-db' }, async () => {

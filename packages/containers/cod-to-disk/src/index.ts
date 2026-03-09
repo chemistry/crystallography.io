@@ -1,10 +1,12 @@
 import * as Sentry from '@sentry/node';
-import { Readable } from 'stream';
+import type { Readable } from 'node:stream';
 import * as shell from 'shelljs';
-import { ShellString, ExecOptions } from 'shelljs';
-import { app, AppContext } from './app';
-import { getChanel } from './common/rabbitmq';
-import { getLogger } from './common/logger';
+import type { ShellString } from 'shelljs';
+import type { ExecOptions } from 'shelljs';
+import { app } from './app.js';
+import type { AppContext } from './app.js';
+import { getChanel } from './common/rabbitmq.js';
+import { getLogger } from './common/logger.js';
 
 const QUEUE_NAME = 'COD_FILE_CHANGED';
 
@@ -23,7 +25,7 @@ const getContext = async (): Promise<AppContext> => {
 
   return {
     logger,
-    exec: (command: string, options?: ExecOptions & { async?: false }): ShellString => {
+    exec: (command: string, _options?: ExecOptions & { async?: false }): ShellString => {
       return shell.exec(command);
     },
     execAsync: (command: string): Readable => {
@@ -43,7 +45,7 @@ const getContext = async (): Promise<AppContext> => {
     await app(context);
 
     console.timeEnd('application start');
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);

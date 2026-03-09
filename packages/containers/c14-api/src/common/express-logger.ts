@@ -1,5 +1,10 @@
-import * as path from 'path';
-import * as fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import type { Request, Response, NextFunction } from 'express';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const getPackageName = () => {
   const packagePath = path.resolve(__dirname, '../../package.json');
@@ -20,7 +25,7 @@ export const getLogger = async () => {
     },
   };
 
-  const mw = (req: any, res: any, next: any) => {
+  const mw = (req: Request, res: Response, next: NextFunction) => {
     next();
   };
 

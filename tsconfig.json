@@ -1,24 +1,14 @@
 {
-  "compilerOptions": {
-    "target": "ES2024",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "jsx": "react",
-    "lib": ["ES2024", "DOM"],
-    "typeRoots": ["node_modules/@types"]
-  },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.check.ts",
-    "**/mocks",
-    "**/fixtures"
+  "files": [],
+  "references": [
+    { "path": "packages/libraries/cif-2-json" },
+    { "path": "packages/containers/c14-api" },
+    { "path": "packages/containers/c14-web" },
+    { "path": "packages/containers/searchrouter" },
+    { "path": "packages/containers/searchworker" },
+    { "path": "packages/containers/cod-to-disk" },
+    { "path": "packages/containers/disk-to-db" },
+    { "path": "packages/containers/structure-to-index" },
+    { "path": "packages/containers/maintenance" }
   ]
 }

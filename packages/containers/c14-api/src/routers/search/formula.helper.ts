@@ -126,7 +126,7 @@ export function isValidFormulaStrict(formula: string): boolean {
   return !!formula.match(FORMULA_QUERY_REGEX_S);
 }
 
-export function validElements(formula: string): any {
+export function validElements(formula: string): number {
   FORMULA_QUERY_REGEX.lastIndex = 0;
   let foundIndex = 0;
   while (FORMULA_QUERY_REGEX.exec(formula)) {
@@ -136,9 +136,11 @@ export function validElements(formula: string): any {
   return foundIndex;
 }
 
-export function parseFormula(formulaStr: string, autoCompleteMode: boolean): any {
+export type FormulaObj = Record<string, number | string>;
+
+export function parseFormula(formulaStr: string, autoCompleteMode: boolean): FormulaObj {
   let found;
-  const formulaObj: any = {};
+  const formulaObj: FormulaObj = {};
 
   FORMULA_QUERY_REGEX.lastIndex = 0;
 
@@ -153,10 +155,10 @@ export function parseFormula(formulaStr: string, autoCompleteMode: boolean): any
       if (formulaObj[element] === '*' || count === '*') {
         formulaObj[element] = '*';
       } else {
-        formulaObj[element] = parseFloat(formulaObj[element]) + parseFloat(count as any);
+        formulaObj[element] = parseFloat(String(formulaObj[element])) + parseFloat(String(count));
       }
     } else {
-      formulaObj[element] = parseFloat(count as any);
+      formulaObj[element] = parseFloat(String(count));
     }
   }
 
@@ -188,7 +190,7 @@ function elementCompare(a: string, b: string) {
   return a < b ? -1 : 1;
 }
 
-export function formulaToString(formulaObj: any): string {
+export function formulaToString(formulaObj: FormulaObj): string {
   const formulaDataArray = Object.keys(formulaObj)
     .filter((key) => {
       return ELEMENTS.indexOf(key) !== -1;

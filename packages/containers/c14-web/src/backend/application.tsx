@@ -3,15 +3,21 @@ import timeout from 'connect-timeout';
 import * as Sentry from '@sentry/node';
 import express from 'express';
 import type { NextFunction, Request, Response, Express } from 'express';
-import * as path from 'path';
+import path from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { matchPath, Routes, Route } from 'react-router-dom';
-import { StoreProvider } from '../common/store';
-import { createAppStore } from '../common/store/create-app-store';
-import { App } from '../common/app';
-import type { ApplicationContext, ApplicationFactory, RouteDefinition } from '../common';
-import { getAuthRouter } from './auth.router';
+import { StoreProvider } from '../common/store/index.js';
+import { createAppStore } from '../common/store/create-app-store.js';
+import { App } from '../common/app.js';
+import type { ApplicationContext, ApplicationFactory, RouteDefinition } from '../common/index.js';
+import type { AppStore } from '../common/store/create-app-store.js';
+import { getAuthRouter } from './auth.router.js';
+
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export interface ExpressContext {
   logger: {
@@ -39,7 +45,7 @@ function escapeHTML(str: string): string {
 function renderHTML(
   fileContent: string,
   componentHTML: string,
-  initialState: any,
+  initialState: Record<string, unknown>,
   metaData: { title: string; description: string }
 ): string {
   let html = fileContent;
@@ -64,7 +70,7 @@ function renderHTML(
   return html;
 }
 
-const loadSiteData = async (routes: RouteDefinition[], url: string, store: any) => {
+const loadSiteData = async (routes: RouteDefinition[], url: string, store: AppStore) => {
   const promises = routes
     .filter((route) => route.loadData && matchPath(route.path, url))
     .map((route) => {
@@ -125,7 +131,7 @@ export async function startApplication(context: ExpressContext) {
         </StoreProvider>
       );
 
-      const initialState = store.getState();
+      const initialState = store.getState() as unknown as Record<string, unknown>;
       const HTML = renderHTML(htmlContent, componentHTML, initialState, metaData);
       res.header('Content-Type', 'text/html; charset=utf-8').status(200).end(HTML);
     } catch (error) {

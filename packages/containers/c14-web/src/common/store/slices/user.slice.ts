@@ -27,8 +27,9 @@ export const createUserSlice: StateCreator<UserState> = (set) => ({
           error: { code: 'auth/not-configured', message: 'Authentication provider not configured' },
         },
       }));
-    } catch (err: any) {
-      const { code, message } = err;
+    } catch (err: unknown) {
+      const code = err instanceof Error ? err.name : 'unknown';
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({
         user: { ...s.user, auth: false, error: { code, message } },
       }));

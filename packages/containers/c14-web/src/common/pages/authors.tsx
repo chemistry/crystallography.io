@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import { useAppStore } from '../store';
-import { Loader } from '../components/loader';
-import { Pagination } from '../components/pagination';
+import { useAppStore } from '../store/index.js';
+import { Loader } from '../components/loader/index.js';
+import { Pagination } from '../components/pagination/index.js';
 
 const formatDate = (date: Date): string => {
   const dayOfMonth = `${date.getDate() < 9 ? '0' : ''}${date.getDate()}`;
@@ -15,7 +15,7 @@ interface AuthorsRecord {
   full: string;
   count: number;
   updated: string;
-  created: number;
+  id: number;
 }
 
 const AuthorsTable = ({ authors }: { authors: AuthorsRecord[] }) => {
@@ -66,7 +66,10 @@ export const AuthorsPage = () => {
   const { total, pages } = useAppStore((s) => s.authorsListPage.meta);
 
   const authors: AuthorsRecord[] = useAppStore((s) => s.authorsListPage.data.authorsList).map(
-    (res: any, index: number) => ({ index: index + 1, ...res })
+    (res: { full: string; count: number; updated: string; id: number }, index: number) => ({
+      index: index + 1,
+      ...res,
+    })
   );
 
   const split = Math.ceil(authors.length / 2);

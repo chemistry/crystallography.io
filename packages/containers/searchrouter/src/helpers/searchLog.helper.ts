@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 
-import type { Db } from 'mongodb';
+import type { Db, InsertOneResult } from 'mongodb';
 
 export enum SearchType {
   'structure' = 'structure',
@@ -8,17 +8,6 @@ export enum SearchType {
   'name' = 'name',
   'formula' = 'formula',
   'unitCell' = 'unitCell',
-}
-interface SearchLogModel {
-  ip: string;
-  uid: string;
-  data: Date;
-  searchType: SearchType;
-  details: object;
-  results: {
-    pages: number;
-    total: number;
-  };
 }
 export async function saveSearchLog({
   config,
@@ -32,7 +21,7 @@ export async function saveSearchLog({
   searchType: SearchType;
   details: object;
   results: { pages: number; total: number };
-}): Promise<any> {
+}): Promise<InsertOneResult> {
   const { db } = config;
   const doc = {
     ip: getUserIP(req),
@@ -46,9 +35,11 @@ export async function saveSearchLog({
 }
 function getUserIP(req: Request): string {
   return (
-    ((req.headers['x-forwarded-for'] || '') as any).split(',').pop() ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress
+    String(req.headers['x-forwarded-for'] || '')
+      .split(',')
+      .pop() ||
+    req.socket.remoteAddress ||
+    ''
   );
 }
 function getUid(req: Request) {

@@ -6,7 +6,7 @@ import {
   MenuNewsIcon,
   MenuSearchIcon,
   SignInIcon,
-} from '../../icons';
+} from '../../icons/index.js';
 
 export const NavMenuBottom = ({ onClick }: { onClick?: () => void }) => {
   return (

@@ -18,10 +18,11 @@ import {
   SearchHistoryPage,
   SearchResultsPage,
   OfflinePage,
-} from './pages';
-import { setup } from './setup';
-import { useLoadedData } from './services';
-import { AuthorDetailsPage } from './pages/author-details';
+} from './pages/index.js';
+import { setup } from './setup.js';
+import { useLoadedData } from './services/index.js';
+import { AuthorDetailsPage } from './pages/author-details.js';
+import type { AppStore } from './store/create-app-store.js';
 
 export enum AppContextType {
   frontend = 'frontend',
@@ -37,7 +38,7 @@ export interface RouteDefinition {
   element: React.ComponentType;
   title: string;
   description: string;
-  loadData?: (storeActions: any, params: any) => Promise<void>;
+  loadData?: (store: AppStore, params: Record<string, string>) => Promise<void>;
 }
 
 export interface Application {
@@ -110,7 +111,8 @@ export const getApplication: ApplicationFactory = async (context) => {
       element: SearchResultsPage,
       title: 'Crystal Structure Search',
       description: 'Crystal Structure Search Online: Search Results',
-      loadData: async (store: any, params: any) => store.getState().fetchSearchResultsData(params),
+      loadData: async (store: AppStore, params: Record<string, string>) =>
+        store.getState().fetchSearchResultsData(params as { id: string; page: string }),
     },
     {
       path: '/about',
@@ -123,29 +125,32 @@ export const getApplication: ApplicationFactory = async (context) => {
       element: AuthorsPage,
       title: 'Crystallographers List',
       description: 'Top Crystallographers by published Structures count (based on cod database)',
-      loadData: async (store: any, params: any) => store.getState().fetchAuthorsListData(params),
+      loadData: async (store: AppStore, params: Record<string, string>) =>
+        store.getState().fetchAuthorsListData(params as { page: string }),
     },
     {
       path: '/author/:name/:page?',
       element: AuthorDetailsPage,
       title: 'Structures published',
       description: 'Crystal Structures published',
-      loadData: async (store: any, params: any) => store.getState().fetchAuthorDetailsData(params),
+      loadData: async (store: AppStore, params: Record<string, string>) =>
+        store.getState().fetchAuthorDetailsData(params as { page: string; name: string }),
     },
     {
       path: '/catalog/:page?',
       element: CatalogPage,
       title: 'Crystal Structures List',
       description: 'Crystal Structures List',
-      loadData: async (store: any, params: any) => store.getState().fetchCatalogData(params),
+      loadData: async (store: AppStore, params: Record<string, string>) =>
+        store.getState().fetchCatalogData(params as { page: string }),
     },
     {
       path: '/structure/:id',
       element: DetailsPage,
       title: 'Crystal Structure',
       description: 'Crystal Structure',
-      loadData: async (store: any, params: any) =>
-        store.getState().fetchStructureDetailsData(params),
+      loadData: async (store: AppStore, params: Record<string, string>) =>
+        store.getState().fetchStructureDetailsData(params as { id: string }),
     },
     {
       path: '/contact',

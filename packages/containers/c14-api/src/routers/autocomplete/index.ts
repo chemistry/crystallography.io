@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Db } from 'mongodb';
-import { getAuthorAutocompleteRouter } from './author';
-import { getNameAutocompleteRouter } from './name';
+import { getAuthorAutocompleteRouter } from './author.js';
+import { getNameAutocompleteRouter } from './name.js';
 
 export const getAutocompleteRouters = ({ db }: { db: Db }) => {
   const router = Router();

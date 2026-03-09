@@ -1,4 +1,4 @@
-export function buildNameWhere(name: string): any {
+export function buildNameWhere(name: string): Record<string, unknown> {
   if (name.length === 1) {
     return {
       a: name.toUpperCase(),

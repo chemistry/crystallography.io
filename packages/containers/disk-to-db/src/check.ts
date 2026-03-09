@@ -1,5 +1,8 @@
+import type { Channel } from 'amqplib';
 import { MongoClient } from 'mongodb';
-import { processMessage } from './process';
+import type { ShellString } from 'shelljs';
+import { processMessage } from './process.js';
+import type { AppContext } from './app.js';
 
 (async () => {
   /* mongodb.crystallography.io */
@@ -7,12 +10,24 @@ import { processMessage } from './process';
   await mongoClient.connect();
   const db = mongoClient.db('crystallography');
 
-  const context: any = {
-    log: (message: string) => {
-      console.log(message);
+  const context: AppContext = {
+    logger: {
+      trace: (message: string) => {
+        console.log(message);
+      },
+      info: (message: string) => {
+        console.log(message);
+      },
+      error: (message: string) => {
+        console.error(message);
+      },
     },
-    getChanel: (): any => {
-      return null;
+    getChanel: () => {
+      return null as unknown as Channel;
+    },
+    sendNoticeToQueue: async () => {},
+    exec: () => {
+      return '' as unknown as ShellString;
     },
     QUEUE_NAME: 'QUEUE_NAME',
     db,

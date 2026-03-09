@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Pagination } from '../components';
-import { Loader } from '../components/loader';
-import { StructuresList } from '../components/structure-list/structure-list';
-import { useAppStore } from '../store';
+import { Pagination } from '../components/index.js';
+import { Loader } from '../components/loader/index.js';
+import { StructuresList } from '../components/structure-list/structure-list.js';
+import type { StructureModel } from '../models/index.js';
+import { useAppStore } from '../store/index.js';
 
 const numberWithSpaces = (x: number): string => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -21,8 +22,8 @@ export const AuthorDetailsPage = () => {
   const pages = useAppStore((s) => s.authorsDetailsPage.meta.pages);
   const structures = useAppStore((s) => {
     const ids = s.authorsDetailsPage.data.structureIds;
-    const byId: any = s.authorsDetailsPage.data.structureById;
-    return ids.map((id) => byId[id]).filter((item) => !!item);
+    const byId = s.authorsDetailsPage.data.structureById;
+    return ids.map((id) => byId[id]).filter((item) => !!item) as unknown as StructureModel[];
   });
 
   const containerRef = useRef(null);

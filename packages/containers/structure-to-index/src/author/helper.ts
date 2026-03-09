@@ -1,8 +1,16 @@
-import { sanitizeAuthorName } from './author-sanitize';
-import { authorMatchRules, prefixPattern } from './author-match-rules';
+import { sanitizeAuthorName } from './author-sanitize.js';
+import { authorMatchRules, prefixPattern } from './author-match-rules.js';
 
-export const extractAuthorsList = (doc: { [key: string]: any }): string[] => {
-  const theLoops = (doc.loops || []).filter((item: any) => {
+interface LoopItem {
+  columns: string[];
+  data: (string | string[])[];
+}
+
+export const extractAuthorsList = (doc: {
+  loops?: LoopItem[];
+  [key: string]: unknown;
+}): string[] => {
+  const theLoops = (doc.loops || []).filter((item: LoopItem) => {
     return (item.columns || []).indexOf('_publ_author_name') !== -1;
   });
   if (theLoops.length !== 1) {
@@ -10,7 +18,7 @@ export const extractAuthorsList = (doc: { [key: string]: any }): string[] => {
   }
   const colIdx = theLoops[0].columns.indexOf('_publ_author_name');
 
-  return (theLoops[0].data || []).map((row: any) => {
+  return (theLoops[0].data || []).map((row: string | string[]) => {
     if (typeof row === 'string') {
       return row;
     }

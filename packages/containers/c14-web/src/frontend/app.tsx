@@ -1,11 +1,11 @@
 import { hydrateRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppContextType, getApplication } from '../common';
-import type { ApplicationContext } from '../common';
-import { StoreProvider } from '../common/store';
-import { App } from '../common/app';
-import { registerSW } from './register-sw';
+import { AppContextType, getApplication } from '../common/index.js';
+import type { ApplicationContext } from '../common/index.js';
+import { StoreProvider } from '../common/store/index.js';
+import { App } from '../common/app.js';
+import { registerSW } from './register-sw.js';
 
 const appContext: ApplicationContext = {
   type: AppContextType.frontend,
@@ -21,7 +21,8 @@ if (process.env.NODE_ENV !== 'development') {
 (async () => {
   const { routes } = await getApplication(appContext);
 
-  const initialState = (window as any).__INITIAL_STATE__ || {};
+  const win = window as unknown as { __INITIAL_STATE__?: Record<string, unknown> };
+  const initialState = win.__INITIAL_STATE__ || {};
 
   hydrateRoot(
     document.getElementById('root')!,

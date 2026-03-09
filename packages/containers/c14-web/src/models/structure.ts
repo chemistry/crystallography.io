@@ -10,11 +10,15 @@ const getStructuresData = async (ids: number[]) => {
   return res.data;
 };
 
-const difference = (arr1: any[], arr2: any[]) => {
+const _difference = (arr1: number[], arr2: number[]) => {
   return arr1.filter((x) => !arr2.includes(x));
 };
 
-export const getStructures = async (ids: number[]): Promise<any> => {
+interface StructureResponse {
+  data: { id: string; attributes: Record<string, unknown> }[];
+}
+
+export const getStructures = async (ids: number[]): Promise<StructureResponse> => {
   if (ids.length === 0) {
     return { data: [] };
   }

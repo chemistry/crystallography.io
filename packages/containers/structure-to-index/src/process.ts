@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/node';
-import type { AppContext } from './app';
-import { processAuthorsIndex } from './author';
-import { processNamesIndex } from './name';
-import { processFormulaIndex } from './formula';
-import { processUnitCellIndex } from './unitcell';
-import { processFragments } from './fragments';
+import type { AppContext } from './app.js';
+import { processAuthorsIndex } from './author/index.js';
+import { processNamesIndex } from './name/index.js';
+import { processFormulaIndex } from './formula/index.js';
+import { processUnitCellIndex } from './unitcell/index.js';
+import { processFragments } from './fragments/index.js';
 
 export const processMessage = async ({
   structureId,
@@ -23,7 +23,7 @@ export const processMessage = async ({
     await processFormulaIndex({ structureId, context });
     await processUnitCellIndex({ structureId, context });
     await processFragments({ structureId, context });
-  } catch (e: any) {
+  } catch (e: unknown) {
     logger.error(String(e));
     Sentry.captureException(e);
   }

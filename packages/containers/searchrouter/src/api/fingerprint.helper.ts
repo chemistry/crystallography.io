@@ -1,5 +1,5 @@
 import { Molecule } from '@chemistry/molecule';
-import type { IFingerprintModel } from '../models';
+import type { IFingerprintModel } from '../models/index.js';
 
 export function prepareChunksForSearch(
   searchQuery: object,

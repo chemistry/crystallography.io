@@ -1,19 +1,13 @@
 {
   "name": "@chemistry/structure-to-index",
-  "private": true,
   "version": "0.0.18",
+  "private": true,
+  "type": "module",
   "description": "Crystal Structure Index Builder",
+  "license": "MIT",
   "author": {
     "name": "Volodymyr Vreshch",
     "url": "https://vreshch.com/"
-  },
-  "license": "MIT",
-  "keywords": [
-    "crystallography",
-    "indexing"
-  ],
-  "engines": {
-    "node": ">=22.0.0"
   },
   "scripts": {
     "build": "rimraf dist/* && tsc",
@@ -28,10 +22,6 @@
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.0",
-    "@types/node": "^22.0.0",
-    "@types/shelljs": "^0.8.15",
-    "rimraf": "^5.0.0",
-    "ts-node": "^10.9.0",
-    "typescript": "^5.9.0"
+    "@types/shelljs": "^0.8.15"
   }
 }

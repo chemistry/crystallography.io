@@ -1,7 +1,7 @@
 import { createContext, useContext, useRef } from 'react';
 import { useStore } from 'zustand';
-import type { AppState, AppStore } from './create-app-store';
-import { createAppStore } from './create-app-store';
+import type { AppState, AppStore } from './create-app-store.js';
+import { createAppStore } from './create-app-store.js';
 
 const StoreContext = createContext<AppStore | null>(null);
 

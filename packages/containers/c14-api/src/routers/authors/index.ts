@@ -12,19 +12,32 @@ const authorItemSchema = z.object({
 
 const AUTHORS_PER_PAGE = 300;
 
+interface AuthorAttributes {
+  full: string;
+  count: number;
+  updated: string;
+  structures?: number[];
+}
+
+interface AuthorMapped {
+  id: unknown;
+  type: string;
+  attributes: AuthorAttributes;
+}
+
 const authorMapper = (showDetails: boolean) => {
-  return (item: any) => {
-    const o = {
+  return (item: Record<string, unknown>): AuthorMapped => {
+    const o: AuthorMapped = {
       id: item._id,
       type: 'author',
       attributes: {
-        full: item.full,
-        count: item.count,
-        updated: item.updated,
+        full: item.full as string,
+        count: item.count as number,
+        updated: item.updated as string,
       },
-    } as any;
+    };
     if (showDetails && Array.isArray(item.structures)) {
-      o.attributes.structures = item.structures;
+      o.attributes.structures = item.structures as number[];
     }
     return o;
   };
@@ -76,8 +89,8 @@ export const getAuthorRouter = ({ db }: { db: Db }) => {
         },
         data: authors || [],
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [
@@ -147,8 +160,8 @@ export const getAuthorRouter = ({ db }: { db: Db }) => {
           results: pageContent,
         },
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [

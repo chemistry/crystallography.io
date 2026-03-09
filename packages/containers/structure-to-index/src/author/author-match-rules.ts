@@ -33,9 +33,9 @@ import {
   case32,
   case33,
   case34,
-} from './author-patterns';
+} from './author-patterns.js';
 
-interface AuthorDetails {
+export interface AuthorDetails {
   family: string;
   first: string;
   second: string;

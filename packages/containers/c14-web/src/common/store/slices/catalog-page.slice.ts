@@ -1,11 +1,11 @@
 import type { StateCreator } from 'zustand';
-import { getStructures, getCatalogContent } from '../../../models';
+import { getStructures, getCatalogContent } from '../../../models/index.js';
 
 export interface CatalogPageState {
   catalogPage: {
     meta: { pages: number };
     data: {
-      structureById: Record<string, any>;
+      structureById: Record<string, Record<string, unknown>>;
       structureIdsLoaded: number[];
       structureIds: number[];
     };
@@ -41,8 +41,8 @@ export const createCatalogPageSlice: StateCreator<CatalogPageState> = (set) => (
       }));
 
       const structuresData = await getStructures(structures);
-      const structureById: Record<string, any> = {};
-      structuresData.data.forEach((el: any) => {
+      const structureById: Record<string, Record<string, unknown>> = {};
+      structuresData.data.forEach((el) => {
         structureById[el.id] = el.attributes;
       });
 
@@ -57,9 +57,8 @@ export const createCatalogPageSlice: StateCreator<CatalogPageState> = (set) => (
           },
         },
       }));
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors;
-      const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({ catalogPage: { ...s.catalogPage, isLoading: false, error: message } }));
     }
   },

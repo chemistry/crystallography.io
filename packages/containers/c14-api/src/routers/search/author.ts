@@ -23,14 +23,15 @@ export const getAuthorSearchRouter = ({ db }: { db: Db }) => {
     }
 
     let name = String(req.body.name || '');
-    const nameChars = "\\w\\u00C0-\\u021B\\-\\`'’ιλḰṕḾŃḱóOů̅ουḿα\u2019";
+    const nameChars =
+      "\\w\\u00C0-\\u021B\\-\\x60''\\u03B9\\u03BB\\u1E30\\u1E55\\u1E3E\\u0143\\u1E31\\u00F3O\\u016F\\u03BF\\u03C5\\u1E3F\\u03B1\\u2019";
     name = name
-      .replace(new RegExp('[^' + nameChars + '\\.\\-\\s]'), '')
+      .replace(new RegExp('[^' + nameChars + '\\.\\-\\s]', 'v'), '')
       .replace(/\s+/g, ' ')
       .trim();
 
-    let page: number = parseInt(req.body.page as string, 10);
-    page = page && isFinite(page) ? page : 1;
+    const parsedPage = parseInt(req.body.page as string, 10);
+    const page = parsedPage && isFinite(parsedPage) ? parsedPage : 1;
 
     const authorSearchSchema = z.object({
       name: z.string().min(3).max(255),
@@ -60,13 +61,17 @@ export const getAuthorSearchRouter = ({ db }: { db: Db }) => {
         structures: number[];
       }[] = await db
         .collection('authors')
-        .find<any>(where, {
+        .find(where, {
           sort: { count: -1 },
         })
-        .map(({ full, count, structures }: any) => ({ full, count, structures }))
+        .map((doc) => ({
+          full: doc.full as string,
+          count: doc.count as number,
+          structures: doc.structures as number[],
+        }))
         .toArray();
 
-      const authorsCollection = authors.map(({ full, count }: any) => ({ full, count }));
+      const authorsCollection = authors.map(({ full, count }) => ({ full, count }));
       const structuresIds = authors.reduce(
         (acc: number[], { structures }) => acc.concat(structures),
         [] as number[]
@@ -90,8 +95,8 @@ export const getAuthorSearchRouter = ({ db }: { db: Db }) => {
           structures: resultingPages,
         },
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [

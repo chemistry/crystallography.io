@@ -1,22 +1,21 @@
-import { cifParser } from './cif_parser';
-import { splitDataBloks } from './cif_spliter';
+import type { CifResult } from '../types.js';
+import { cifParser } from './cif_parser.js';
+import { splitDataBloks } from './cif_spliter.js';
 
-export function cif2json(text: string): any {
+export function cif2json(text: string): CifResult {
   if (!text) {
     return {};
   }
 
-  let lines = text.replace('\r', '').split('\n');
+  const lines = text.replace('\r', '').split('\n');
 
-  let data = splitDataBloks(lines);
-  const result: any = {};
+  const data = splitDataBloks(lines);
+  const result: CifResult = {};
 
   const dataKeys = Object.keys(data);
   for (const key of dataKeys) {
     result[key] = cifParser(data[key]);
   }
-  data = null;
-  lines = null;
 
   return result;
 }

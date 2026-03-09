@@ -10,7 +10,7 @@ export function errorHandler(
   err: Error | ErrorDTO,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) {
   let errDTO: ErrorDTO;
   const e = err as ErrorDTO;
