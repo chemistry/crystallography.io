@@ -15,8 +15,5 @@
     "outDir": "dist"
   },
   "include": ["src"],
-  "exclude": ["**/*.test.ts"],
-  "references": [
-    { "path": "../../libraries/cif-2-json" }
-  ]
+  "exclude": ["**/*.test.ts"]
 }
