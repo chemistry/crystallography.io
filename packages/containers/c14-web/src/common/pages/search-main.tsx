@@ -1,4 +1,4 @@
-import { SearchTab } from '../components';
+import { SearchTab } from '../components/index.js';
 
 export const SearchPage = () => {
   return (

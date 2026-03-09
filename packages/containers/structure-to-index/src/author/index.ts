@@ -1,5 +1,6 @@
-import type { AppContext } from '../app';
-import { extractAuthorDetails } from './helper';
+import type { Collection, Document, Filter, WithId } from 'mongodb';
+import type { AppContext } from '../app.js';
+import { extractAuthorDetails } from './helper.js';
 
 export const processAuthorsIndex = async ({
   structureId,
@@ -11,7 +12,7 @@ export const processAuthorsIndex = async ({
   const { logger, db } = context;
 
   const structureDB = db.collection('structures');
-  const doc = await structureDB.findOne({ _id: structureId } as any);
+  const doc = await structureDB.findOne({ _id: structureId } as unknown as Filter<Document>);
   if (!doc) {
     return;
   }
@@ -46,7 +47,14 @@ export const processAuthorsIndex = async ({
   await ensureAuthorsDBIndexes(authorsDB);
 };
 
-async function saveAuthorRecord(authorsDB: any, recordData: any) {
+async function saveAuthorRecord(
+  authorsDB: Collection,
+  recordData: {
+    docId: unknown;
+    name: string;
+    recognizedRecord: { family?: string; first?: string; second?: string };
+  }
+) {
   const record = recordData.recognizedRecord;
   const family = ucfirst(record.family || '');
   const full = getAuthorFullByDetails(record);
@@ -73,16 +81,23 @@ async function saveAuthorRecord(authorsDB: any, recordData: any) {
     },
     {
       upsert: true,
-      returnNewDocument: true,
+      returnDocument: 'after',
     }
   );
-  const recordId = authorSaveRecord.lastErrorObject.upserted || authorSaveRecord.value._id;
+
+  if (!authorSaveRecord) {
+    return;
+  }
 
   const authorDoc = await authorsDB.findOne({
-    _id: recordId,
+    _id: authorSaveRecord._id,
   });
 
-  const authorStructures = authorDoc.structures || [];
+  if (!authorDoc) {
+    return;
+  }
+
+  const authorStructures = (authorDoc.structures as unknown[]) || [];
   if (authorStructures.indexOf(recordData.docId) === -1) {
     authorStructures.push(recordData.docId);
   }
@@ -106,8 +121,15 @@ async function saveAuthorRecord(authorsDB: any, recordData: any) {
   );
 }
 
-async function saveAuthorsToDoc(structureDB: any, authorRecordsData: any, docId: number) {
-  const authorsInfo = authorRecordsData.map((item: any) => {
+async function saveAuthorsToDoc(
+  structureDB: Collection,
+  authorRecordsData: {
+    name: string;
+    recognizedRecord: { family?: string; first?: string; second?: string };
+  }[],
+  docId: number
+) {
+  const authorsInfo = authorRecordsData.map((item) => {
     return {
       name: item.name,
       link: getAuthorFullByDetails(item.recognizedRecord),
@@ -116,7 +138,7 @@ async function saveAuthorsToDoc(structureDB: any, authorRecordsData: any, docId:
 
   await structureDB.updateOne(
     {
-      _id: docId,
+      _id: docId as unknown as Filter<Document>['_id'],
     },
     {
       $set: {
@@ -126,14 +148,16 @@ async function saveAuthorsToDoc(structureDB: any, authorRecordsData: any, docId:
   );
 }
 
-async function ensureAuthorsDBIndexes(authorsDB: any) {
+async function ensureAuthorsDBIndexes(authorsDB: Collection) {
   await authorsDB.createIndex({ abc: 1 });
   await authorsDB.createIndex({ a: 1, count: -1 });
   await authorsDB.createIndex({ ab: 1, count: -1 });
   await authorsDB.createIndex({ abc: 1, count: -1 });
 }
 
-function getAuthorFullByDetails(autorDB: any): string {
+function getAuthorFullByDetails(
+  autorDB: { family?: string; first?: string; second?: string } | null
+): string {
   if (!autorDB) {
     return '';
   }
@@ -159,8 +183,9 @@ function getAuthorFullByDetails(autorDB: any): string {
   return full;
 }
 
-function extractAuthorsList(doc: any): string[] {
-  const theLoops = (doc.loops || []).filter((item: any) => {
+function extractAuthorsList(doc: WithId<Document>): string[] {
+  const loops = (doc.loops || []) as { columns: string[]; data: (string | string[])[] }[];
+  const theLoops = loops.filter((item) => {
     return (item.columns || []).indexOf('_publ_author_name') !== -1;
   });
   if (theLoops.length !== 1) {
@@ -168,7 +193,7 @@ function extractAuthorsList(doc: any): string[] {
   }
   const colIdx = theLoops[0].columns.indexOf('_publ_author_name');
 
-  return (theLoops[0].data || []).map((row: any) => {
+  return (theLoops[0].data || []).map((row: string | string[]) => {
     if (Array.isArray(row)) {
       return row[colIdx];
     }

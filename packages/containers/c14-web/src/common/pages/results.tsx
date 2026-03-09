@@ -1,10 +1,11 @@
 import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppStore, useAppStoreApi } from '../store';
-import { Loader, Pagination } from '../components';
-import { StructuresList } from '../components/structure-list/structure-list';
-import { useBrowserEffect } from '../hooks';
-import { subscribeToWSUpdates, closeWSSubscription } from '../store/ws-manager';
+import { useAppStore, useAppStoreApi } from '../store/index.js';
+import { Loader, Pagination } from '../components/index.js';
+import { StructuresList } from '../components/structure-list/structure-list.js';
+import type { StructureModel } from '../models/index.js';
+import { useBrowserEffect } from '../hooks/index.js';
+import { subscribeToWSUpdates, closeWSSubscription } from '../store/ws-manager.js';
 
 const parsePage = (page?: string): number => {
   let currentPage = parseInt(page as string, 10);
@@ -30,8 +31,10 @@ export const SearchResultsPage = () => {
 
   const structures = useAppStore((s) => {
     const ids = s.searchResults.data.structureIds;
-    const byId: any = s.searchResults.data.structureById;
-    return ids.map((structureId) => byId[structureId]).filter((item) => !!item);
+    const byId = s.searchResults.data.structureById;
+    return ids
+      .map((structureId) => byId[structureId])
+      .filter((item) => !!item) as unknown as StructureModel[];
   });
 
   useBrowserEffect(() => {

@@ -2,9 +2,9 @@ import * as Sentry from '@sentry/node';
 import type { Db } from 'mongodb';
 import type { Queue, QueueEvents } from 'bullmq';
 import type { Server } from 'socket.io';
-import { QueueHelperController } from './helpers';
-import { ChunkStatusModel } from './models';
-import type { JobOutputModel } from './models';
+import { QueueHelperController } from './helpers/index.js';
+import { ChunkStatusModel } from './models/index.js';
+import type { JobOutputModel } from './models/index.js';
 
 export function initQueue(io: Server, db: Db, queue: Queue, queueEvents: QueueEvents) {
   queueEvents.on('completed', async ({ jobId, returnvalue }) => {
@@ -12,7 +12,7 @@ export function initQueue(io: Server, db: Db, queue: Queue, queueEvents: QueueEv
     await processWorkerResponse(io, db, jobId, result as JobOutputModel, ChunkStatusModel.finished);
   });
 
-  queueEvents.on('failed', async ({ jobId, failedReason }) => {
+  queueEvents.on('failed', async ({ jobId }) => {
     const result: JobOutputModel = {
       searchId: jobId.split(':')[0],
       index: Number(jobId.split(':')[1]),

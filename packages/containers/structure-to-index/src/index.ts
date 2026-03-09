@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/node';
 
-import { app } from './app';
-import type { AppContext } from './app';
-import { getLogger } from './common/logger';
-import { getMongoConnection } from './common/mongo';
-import { getChanel } from './common/rabbitmq';
+import { app } from './app.js';
+import type { AppContext } from './app.js';
+import { getLogger } from './common/logger.js';
+import { getMongoConnection } from './common/mongo.js';
+import { getChanel } from './common/rabbitmq.js';
 
 const QUEUE_NAME = 'STRUCTURE_CHANGED';
 
@@ -40,7 +40,7 @@ const getContext = async (): Promise<AppContext> => {
     await app(context);
 
     console.timeEnd('application start');
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);

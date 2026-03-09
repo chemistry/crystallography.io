@@ -11,12 +11,12 @@ export interface SearchByStructureState {
       page: number;
       pagesAvailable: number;
     };
-    search: { molecule: any };
-    data: { structureById: Record<string, any>; structureIds: number[] };
+    search: { molecule: unknown };
+    data: { structureById: Record<string, Record<string, unknown>>; structureIds: number[] };
     error: string | null;
     isLoading: boolean;
   };
-  searchStructureByStructure: (params: { molecule: any }) => Promise<string | null>;
+  searchStructureByStructure: (params: { molecule: unknown }) => Promise<string | null>;
 }
 
 export const createSearchByStructureSlice: StateCreator<SearchByStructureState> = (set) => ({
@@ -63,9 +63,8 @@ export const createSearchByStructureSlice: StateCreator<SearchByStructureState> 
         return data.meta.id;
       }
       return null;
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors;
-      const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({
         searchByStructure: { ...s.searchByStructure, isLoading: false, error: message },
       }));

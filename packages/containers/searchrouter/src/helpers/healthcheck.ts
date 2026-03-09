@@ -1,10 +1,16 @@
-import * as fs from 'fs';
+import fs from 'node:fs';
 import type { Db } from 'mongodb';
-import * as os from 'os';
-import * as path from 'path';
+import os from 'node:os';
+import path from 'node:path';
 import type { Queue } from 'bullmq';
 
 import type { Request, Response } from 'express';
+
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf8'));
 const { name, version } = packageJSON;
 
@@ -48,8 +54,8 @@ export function healthCheck({
 
     (async () => {
       try {
-        const [jobCounts, mongoCheck] = await Promise.all([queue.getJobCounts(), db.stats()]);
-        if (mongoCheck.ok) {
+        const [, dbStats] = await Promise.all([queue.getJobCounts(), db.stats()]);
+        if (dbStats.ok) {
           writeOK();
         } else {
           writeFail();
@@ -88,7 +94,7 @@ export function statusCheck({
 
     (async () => {
       try {
-        const [jobCounts, mongoCheck] = await Promise.all([queue.getJobCounts(), db.stats()]);
+        const [queueJobCounts] = await Promise.all([queue.getJobCounts(), db.stats()]);
 
         res
           .status(200)
@@ -103,7 +109,7 @@ export function statusCheck({
                 uptime: process.uptime(),
                 NODE_ENV: process.env.NODE_ENV,
                 hostname: os.hostname(),
-                queue: jobCounts,
+                queue: queueJobCounts,
               },
               null,
               4

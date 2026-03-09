@@ -11,9 +11,10 @@ export const getAuthorAutocompleteRouter = ({ db }: { db: Db }) => {
 
   router.get('/', async (req: Request, res: Response) => {
     let name = String(req.query.name || '');
-    const nameChars = "\\w\\u00C0-\\u021B\\-\\`'’ιλḰṕḾŃḱóOů̅ουḿα\u2019";
+    const nameChars =
+      "\\w\\u00C0-\\u021B\\-\\x60''\\u03B9\\u03BB\\u1E30\\u1E55\\u1E3E\\u0143\\u1E31\\u00F3O\\u016F\\u03BF\\u03C5\\u1E3F\\u03B1\\u2019";
     name = name
-      .replace(new RegExp('[^' + nameChars + '\\.\\-\\s]'), '')
+      .replace(new RegExp('[^' + nameChars + '\\.\\-\\s]', 'v'), '')
       .replace(/\s+/g, ' ')
       .trim();
 
@@ -50,8 +51,8 @@ export const getAuthorAutocompleteRouter = ({ db }: { db: Db }) => {
         },
         data: authors || [],
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [
@@ -69,18 +70,18 @@ export const getAuthorAutocompleteRouter = ({ db }: { db: Db }) => {
   return router;
 };
 
-function getAuthorsCount(where: any, db: Db): Promise<number> {
-  return db.collection('authors').countDocuments(where) as any as Promise<number>;
+function getAuthorsCount(where: Record<string, unknown>, db: Db): Promise<number> {
+  return db.collection('authors').countDocuments(where);
 }
 
-function getAuthorsCollection(where: any, db: Db) {
+function getAuthorsCollection(where: Record<string, unknown>, db: Db) {
   return db
     .collection('authors')
     .find(where, {
       sort: { count: -1 },
       limit: RESULTS_PER_SUGGESTION,
     })
-    .map(({ full, count }: any) => ({ full, count }))
+    .map((doc) => ({ full: doc.full as string, count: doc.count as number }))
     .toArray();
 }
 

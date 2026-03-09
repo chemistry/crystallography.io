@@ -1,11 +1,7 @@
+node_modules
+dist
+coverage
 .git
 .github
 .editorconfig
-dist
-build
-lerna-debug.log
 README.md
-/node_modules/*
-/packages/**/node_modules/*
-/packages/**/dist/*
-/coverage/*

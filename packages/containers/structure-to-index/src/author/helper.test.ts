@@ -1,4 +1,4 @@
-import { extractAuthorDetails, extractAuthorsList } from './helper';
+import { extractAuthorsList } from './helper.js';
 
 describe('extractAuthorDetails', () => {
   it('should parse arrays in case of string list', () => {

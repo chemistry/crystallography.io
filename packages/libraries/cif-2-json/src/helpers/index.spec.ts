@@ -1,5 +1,6 @@
-import { loadMock } from '../mocks/mockHelper';
-import { cif2json } from './index';
+import type { CifLoop } from '../types.js';
+import { loadMock } from '../mocks/mockHelper.js';
+import { cif2json } from './index.js';
 
 describe('cif2json#parse', () => {
   const sut = cif2json;
@@ -63,18 +64,21 @@ describe('cif2json#parse', () => {
     expect(Array.isArray(parseResult.data_1000004.loop_)).toEqual(true);
   });
 
+  const getLoops = (parseResult: ReturnType<typeof sut>, key: string): CifLoop[] => {
+    const block = parseResult[key];
+    expect(block).toBeDefined();
+    expect(block.loop_).toBeDefined();
+    return block.loop_!;
+  };
+
   it('should parse correctly loop_ keys as array', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    expect(Array.isArray(parseResult.data_1000004.loop_)).toEqual(true);
-
-    const loops = parseResult.data_1000004.loop_;
-
-    loops.forEach((loop: any) => {
+    loops.forEach((loop) => {
       expect(Array.isArray(loop.columns)).toEqual(true);
       expect(Array.isArray(loop.data)).toEqual(true);
-
       expect(loop.columns.length).toBeGreaterThan(0);
     });
   });
@@ -82,11 +86,9 @@ describe('cif2json#parse', () => {
   it('should return array of strings for single column', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    expect(Array.isArray(parseResult.data_1000004.loop_)).toEqual(true);
-    const loops = parseResult.data_1000004.loop_;
-
-    loops.forEach((loop: any) => {
+    loops.forEach((loop) => {
       expect(Array.isArray(loop.columns)).toEqual(true);
       expect(Array.isArray(loop.data)).toEqual(true);
 
@@ -99,18 +101,17 @@ describe('cif2json#parse', () => {
   it('should return 4 loop_', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    const loops = parseResult.data_1000004.loop_;
     expect(loops.length).toEqual(4);
   });
 
   it('should return loop_[columns&data] as array', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    const loops = parseResult.data_1000004.loop_;
-
-    loops.forEach((loop: any) => {
+    loops.forEach((loop) => {
       expect(Array.isArray(loop.columns)).toEqual(true);
       expect(Array.isArray(loop.data)).toEqual(true);
     });
@@ -119,10 +120,9 @@ describe('cif2json#parse', () => {
   it('should return some values in loop_[columns]', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    const loops = parseResult.data_1000004.loop_;
-
-    loops.forEach((loop: any) => {
+    loops.forEach((loop) => {
       expect(loop.columns.length).toBeGreaterThan(0);
     });
   });
@@ -130,10 +130,9 @@ describe('cif2json#parse', () => {
   it('should return some values in loop_[data]', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    const loops = parseResult.data_1000004.loop_;
-
-    loops.forEach((loop: any) => {
+    loops.forEach((loop) => {
       expect(loop.data.length).toBeGreaterThan(0);
     });
   });
@@ -141,12 +140,12 @@ describe('cif2json#parse', () => {
   it('should return loop_[data] & loop_[columns] of equal length', () => {
     const cifData = loadMock('002_single_dataline.cif');
     const parseResult = sut(cifData);
+    const loops = getLoops(parseResult, 'data_1000004');
 
-    const loops = parseResult.data_1000004.loop_;
-    loops.forEach((loop: any) => {
+    loops.forEach((loop) => {
       const colsCount = loop.columns.length;
       expect(Array.isArray(loop.data)).toEqual(true);
-      loop.data.forEach((line: any) => {
+      loop.data.forEach((line) => {
         if (typeof line === 'string') {
           expect(colsCount).toEqual(1);
         } else {
@@ -167,7 +166,6 @@ describe('cif2json#parse', () => {
     const parseResult = sut(cifData);
     expect(parseResult.data_2222708).toBeDefined();
 
-    // '_chemical_name_systematic'
     const nameSystematic = parseResult.data_2222708._chemical_name_systematic;
     expect(nameSystematic).toEqual(
       'Bromidobis(<i>N</i>,<i>N</i>-diphenylthiourea-κ<i>S</i>)copper(I)\nmonohydrate'
@@ -179,22 +177,17 @@ describe('cif2json#parse', () => {
       const cifData = loadMock('2222708.cif');
       console.time('performance:');
       for (let i = 0; i < 30; i++) {
-        const parseResult = sut(cifData);
+        sut(cifData);
       }
       console.timeEnd('performance:');
-
-      // reference 608-696 ms; droped to 190ms
-      // n~30 -> 578ms; droped to 140ms
-      // 130 ms
     });
 
     it('should fastly process big files', () => {
       const cifData = loadMock('4128884.cif');
       console.time('performance2:');
-      const parseResult = sut(cifData);
+      sut(cifData);
       console.timeEnd('performance2:');
     });
-    // 624ms
   });
 
   it('should parse multiline loops', () => {
@@ -202,7 +195,8 @@ describe('cif2json#parse', () => {
     const parseResult = sut(cifData);
     expect(parseResult.data_1100937).toBeDefined();
 
-    const authorLoop = parseResult.data_1100937.loop_.filter((item: any) => {
+    const loops = getLoops(parseResult, 'data_1100937');
+    const authorLoop = loops.filter((item) => {
       return item.columns.indexOf('_publ_author_name') !== -1;
     });
     expect(authorLoop.length).toEqual(1);
@@ -231,7 +225,8 @@ describe('cif2json#parse', () => {
     const parseResult = sut(cifData);
     expect(parseResult.data_1502740).toBeDefined();
 
-    const coordLoop = parseResult.data_1502740.loop_.filter((item: any) => {
+    const loops = getLoops(parseResult, 'data_1502740');
+    const coordLoop = loops.filter((item) => {
       return item.columns.indexOf('_atom_site_fract_x') !== -1;
     });
     expect(coordLoop.length).toEqual(1);

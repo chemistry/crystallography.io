@@ -10,10 +10,6 @@
     "declarationMap": true,
     "composite": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "rootDir": "src",
-    "outDir": "dist"
-  },
-  "include": ["src"],
-  "exclude": ["**/*.test.ts"]
+    "verbatimModuleSyntax": true
+  }
 }

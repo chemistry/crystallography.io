@@ -2,7 +2,7 @@ import type { Db } from 'mongodb';
 import { z } from 'zod';
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import { mapStructure } from '../../helpers';
+import { mapStructure } from '../../helpers/index.js';
 import * as Sentry from '@sentry/node';
 
 const structureIdSchema = z.number().int().min(1000000).max(9999999);
@@ -16,8 +16,8 @@ export const getStructureRouter = ({ db }: { db: Db }) => {
     const { id } = req.params;
 
     try {
-      const structure = await db.collection('structures').findOne({
-        _id: Number(id) as any,
+      const structure = await db.collection<{ _id: number }>('structures').findOne({
+        _id: Number(id),
       });
 
       res.json({
@@ -28,8 +28,8 @@ export const getStructureRouter = ({ db }: { db: Db }) => {
         errors: [],
         data: structure,
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [
@@ -49,10 +49,10 @@ export const getStructureRouter = ({ db }: { db: Db }) => {
     const { ids, expand } = req?.body || { ids: '[]', expand: false };
     const structureMapper = mapStructure(expand);
 
-    let structuresIds: number[] = [];
+    let structuresIds: number[];
     try {
       structuresIds = JSON.parse(ids);
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(`error in parsing : ${ids},  ERROR: ${e}`);
       structuresIds = [];
     }
@@ -72,9 +72,9 @@ export const getStructureRouter = ({ db }: { db: Db }) => {
       }
 
       const data = await db
-        .collection('structures')
+        .collection<{ _id: number }>('structures')
         .find({
-          _id: { $in: structuresIds } as any,
+          _id: { $in: structuresIds },
         })
         .map(structureMapper)
         .toArray();
@@ -87,7 +87,7 @@ export const getStructureRouter = ({ db }: { db: Db }) => {
         },
         data,
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(String(e));
       Sentry.captureException(e);
       return res.status(500).json({

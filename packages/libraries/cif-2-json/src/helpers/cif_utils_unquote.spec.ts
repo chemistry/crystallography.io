@@ -1,4 +1,4 @@
-import { unquoteLine } from './cif_utils_unquote';
+import { unquoteLine } from './cif_utils_unquote.js';
 
 describe('cif2json#cif_utils_unquote', () => {
   const sut = unquoteLine;

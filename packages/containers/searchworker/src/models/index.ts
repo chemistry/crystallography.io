@@ -1,3 +1,3 @@
-export * from './job.shared.models';
-export * from './statistics.model';
-export * from './statistics.model';
+export * from './job.shared.models.js';
+export * from './statistics.model.js';
+export * from './statistics.model.js';

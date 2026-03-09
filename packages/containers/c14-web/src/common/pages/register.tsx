@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 
 export const RegisterPage = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {};
+  const onSubmit = (_data: Record<string, unknown>) => {};
   return (
     <div>
       <header className="app-layout-header">
@@ -15,15 +15,15 @@ export const RegisterPage = () => {
           <div style={{ padding: '20px' }}>
             <div>
               Name:
-              <input type="text" name="name" ref={register as any} />
+              <input type="text" {...register('name')} />
             </div>
             <div>
               Email:
-              <input type="text" name="email" ref={register as any} />
+              <input type="text" {...register('email')} />
             </div>
             <div>
               Pwd:
-              <input type="text" name="password" ref={register as any} />
+              <input type="text" {...register('password')} />
             </div>
             <div>
               <input type="submit" name="Submit" />

@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
+import type { Channel, ConsumeMessage } from 'amqplib';
 import type { Db } from 'mongodb';
-import { processMessage } from './process';
+import { processMessage } from './process.js';
 
 export interface AppContext {
   logger: {
@@ -9,7 +10,7 @@ export interface AppContext {
     error: (message: string) => void;
   };
   QUEUE_NAME: string;
-  chanel: any;
+  chanel: Channel;
   db: Db;
 }
 
@@ -18,7 +19,10 @@ export const app = async (context: AppContext) => {
 
   chanel.consume(
     QUEUE_NAME,
-    async (originalMessage: any) => {
+    async (originalMessage: ConsumeMessage | null) => {
+      if (!originalMessage) {
+        return;
+      }
       const message = JSON.parse(originalMessage.content.toString());
       const { structureId } = message;
 

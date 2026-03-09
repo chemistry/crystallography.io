@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useAppStore } from '../store';
+import { useAppStore } from '../store/index.js';
 
 export const LoginPage = () => {
   const { register, handleSubmit } = useForm();
@@ -7,7 +7,7 @@ export const LoginPage = () => {
   const error = useAppStore((s) => s.user.error);
   const loginUser = useAppStore((s) => s.loginUser);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: Record<string, unknown>) => {
     loginUser(data as { email: string; password: string });
   };
 
@@ -27,11 +27,11 @@ export const LoginPage = () => {
           <div style={{ padding: '20px' }}>
             <div>
               Email:
-              <input type="text" name="email" ref={register as any} />
+              <input type="text" {...register('email')} />
             </div>
             <div>
               Password:
-              <input type="text" name="password" ref={register as any} />
+              <input type="text" {...register('password')} />
             </div>
             <div>
               <input type="submit" name="Submit" />

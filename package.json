@@ -1,58 +1,46 @@
 {
   "name": "@chemistry/crystallography-api",
   "version": "0.0.0",
+  "private": true,
+  "type": "module",
   "description": "Crystal Structure Search Application",
+  "license": "MIT",
   "author": {
     "name": "Volodymyr Vreshch",
     "url": "https://vreshch.com/"
   },
-  "license": "MIT",
-  "private": true,
-  "keywords": [
-    "cheminformatics",
-    "crystallography",
-    "cod"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemistry/crystallography.io.git"
+  },
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=10.0.0"
   },
   "workspaces": [
     "packages/libraries/*",
-    "packages/containers/c14-api",
-    "packages/containers/c14-web",
-    "packages/containers/searchrouter",
-    "packages/containers/searchworker",
-    "packages/containers/cod-to-disk",
-    "packages/containers/disk-to-db",
-    "packages/containers/structure-to-index",
-    "packages/containers/maintenance"
+    "packages/containers/*"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chemistry/crystallography.io.git"
-  },
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "tsc -b",
     "test": "vitest run",
-    "lint": "eslint 'packages/**/*.ts'",
-    "format": "prettier --write 'packages/**/*.ts'",
-    "format:check": "prettier --check 'packages/**/*.ts'",
-    "start": "npm run start:dev --workspaces --if-present",
-    "clean": "rimraf dist/* coverage/*",
-    "verify": "npm run lint && npm run build && npm run test"
+    "lint": "eslint 'packages/**/*.{ts,tsx}'",
+    "format": "prettier --write 'packages/**/*.{ts,tsx}'",
+    "format:check": "prettier --check 'packages/**/*.{ts,tsx}'",
+    "clean": "rimraf packages/**/dist coverage",
+    "verify": "npm run build && npm run lint && npm run test"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.56.1",
-    "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "nodemon": "^3.1.0",
     "prettier": "^3.8.1",
     "rimraf": "^5.0.0",
-    "ts-node": "^10.9.0",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.56.1",
     "vitest": "^4.0.18"

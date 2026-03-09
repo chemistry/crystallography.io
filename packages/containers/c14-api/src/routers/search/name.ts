@@ -2,7 +2,7 @@ import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
 import type { Db } from 'mongodb';
-import { mapStructure } from '../../helpers';
+import { mapStructure } from '../../helpers/index.js';
 import * as Sentry from '@sentry/node';
 
 const RESULTS_PER_PAGE = 100;
@@ -78,8 +78,8 @@ export const getNameSearchRouter = ({ db }: { db: Db }) => {
         },
         data: structures,
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [

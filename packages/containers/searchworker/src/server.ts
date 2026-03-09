@@ -1,10 +1,19 @@
 import * as Sentry from '@sentry/node';
 import { Worker } from 'bullmq';
 import { Matcher, Molecule } from '@chemistry/molecule';
-import type { Db } from 'mongodb';
-import { getLogger } from './common/logger';
-import { getMongoConnection } from './common/mongo';
-import type { JobInputModel, JobOutputModel } from './models';
+import type { Db, Document, Filter, WithId } from 'mongodb';
+
+interface JMol {
+  atoms: Array<
+    [number, number, number, string] | [number, number, number, string, boolean, string]
+  >;
+  bonds: Array<[number, number, number]>;
+  id: string;
+  title: string;
+}
+import { getLogger } from './common/logger.js';
+import { getMongoConnection } from './common/mongo.js';
+import type { JobInputModel, JobOutputModel } from './models/index.js';
 
 const redisConnection = {
   host: process.env.REDIS_HOST || 'redis',
@@ -26,7 +35,7 @@ export async function startWorker() {
 
         try {
           return await processQ(db, data);
-        } catch (err: any) {
+        } catch (err: unknown) {
           Sentry.captureException(err);
           logger.error(
             `"searchworker: job failed", ${JSON.stringify({ searchId, chunkId, err: String(err) })}`
@@ -57,7 +66,7 @@ export async function startWorker() {
     logger.trace(
       `${new Date().toLocaleString()} searchworker:fork started with pid ${process.pid}`
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);
@@ -73,19 +82,22 @@ async function processQ(db: Db, data: JobInputModel): Promise<JobOutputModel> {
   const toCheck = data.toCheck;
 
   const molecule = new Molecule();
-  molecule.load(searchQuery as any);
+  molecule.load(searchQuery as unknown as Record<string, unknown>);
   const qStat = molecule.getAtomsStatistic();
   molecule.sortAtomsByCODStatistics();
   const moleculeMatcher = new Matcher(molecule);
 
   const fragments = db.collection('fragments');
   const cursor = fragments.find({
-    _id: { $in: toCheck } as any,
+    _id: { $in: toCheck } as unknown as Filter<Document>,
   });
   const foundIds: number[] = [];
 
   nextfrag: while (await cursor.hasNext()) {
-    const doc: any = await cursor.next();
+    const doc = (await cursor.next()) as WithId<Document> & {
+      _id: number;
+      fragments: JMol[];
+    };
 
     for (const fragment of doc.fragments) {
       if (!moleculeMatcher.canMatchByElements(fragment)) {

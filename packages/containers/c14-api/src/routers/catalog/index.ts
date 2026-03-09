@@ -7,7 +7,7 @@ import * as Sentry from '@sentry/node';
 const catalogPageSchema = z.number().int().min(1).max(99999);
 const PER_PAGE = 100;
 
-const catalogMapper = (item: any) => {
+const catalogMapper = (item: Record<string, unknown>) => {
   return {
     id: item._id,
     type: 'catalog',
@@ -59,8 +59,8 @@ export const getCatalogRouter = ({ db }: { db: Db }) => {
         errors: [],
         data: catalog,
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [

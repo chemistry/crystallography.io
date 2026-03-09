@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 
 export const getRedisClient = async () => {
   const client = new Redis({

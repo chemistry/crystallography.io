@@ -33,14 +33,14 @@ const fieldsMaping = {
   _refine_ls_wR_factor_all: 'wRall',
   _refine_ls_wR_factor_gt: 'wRobs',
   _refine_ls_wR_factor_ref: 'wRref',
-} as any;
+} as Record<string, string>;
 
 const filterFields = Object.keys(fieldsMaping);
 
 const loopFieldsFilter = [['_publ_author_name'], ['_symmetry_equiv_pos_as_xyz']];
 
-export function cleanupJCif(jcif: any): object {
-  const result = {} as any;
+export function cleanupJCif(jcif: Record<string, unknown>): object {
+  const result: Record<string, unknown> = {};
 
   filterFields.forEach((fieldName) => {
     if (Object.prototype.hasOwnProperty.call(jcif, fieldName)) {
@@ -53,11 +53,11 @@ export function cleanupJCif(jcif: any): object {
   return result;
 }
 
-function constructFilterFunction(loopFieldsFilterList: any) {
-  return (loopItem: any) => {
+function constructFilterFunction(loopFieldsFilterList: string[][]) {
+  return (loopItem: { columns?: string[]; data?: unknown[][] }) => {
     const columns = loopItem.columns || [];
-    return loopFieldsFilterList.some((fieldsArray: any) => {
-      return columns.some((col: any) => {
+    return loopFieldsFilterList.some((fieldsArray: string[]) => {
+      return columns.some((col: string) => {
         return fieldsArray.indexOf(col) !== -1;
       });
     });
@@ -78,7 +78,7 @@ const coordFieldsOrder = [
   '_atom_site_disorder_group',
 ];
 
-function prepareCoordLoop(coordLoop: any) {
+function prepareCoordLoop(coordLoop: { columns: string[]; data?: unknown[][] }) {
   const colsIdx = coordFieldsOrder
     .map((colName) => {
       return {
@@ -99,7 +99,7 @@ function prepareCoordLoop(coordLoop: any) {
     return item.idx;
   });
 
-  const newData = (coordLoop.data || []).map((row: any) => {
+  const newData = (coordLoop.data || []).map((row: unknown[]) => {
     return dataIndexes.map((colIdx) => {
       return row[colIdx];
     });
@@ -111,20 +111,24 @@ function prepareCoordLoop(coordLoop: any) {
   };
 }
 
-function strLoops(loops: any) {
+function strLoops(loops: { columns: string[]; data?: unknown[][] }) {
   return {
     columns: loops.columns,
     data: loops.data,
   };
 }
 
-function setupLoopFields(result: any, fields: any) {
+function setupLoopFields(result: Record<string, unknown>, fields: Record<string, unknown>) {
   const loopFilter = constructFilterFunction(loopFieldsFilter);
-  const loopFields = (fields.loop_ || []).filter(loopFilter);
+  const rawLoops = (fields.loop_ || []) as { columns?: string[]; data?: unknown[][] }[];
+  const loops = rawLoops.filter((loop): loop is { columns: string[]; data?: unknown[][] } =>
+    Array.isArray(loop.columns)
+  );
+  const loopFields = loops.filter(loopFilter);
 
   // get coordinates loop
   const coordLoopFilter = constructFilterFunction([coordFields]);
-  const coordLoop = (fields.loop_ || []).filter(coordLoopFilter);
+  const coordLoop = loops.filter(coordLoopFilter);
   if (coordLoop.length === 1) {
     const newCoordLoop = prepareCoordLoop(coordLoop[0]);
     loopFields.push(newCoordLoop);

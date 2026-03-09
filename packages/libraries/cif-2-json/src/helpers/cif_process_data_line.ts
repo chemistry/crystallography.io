@@ -1,5 +1,5 @@
-import { normalizeCifString } from '../normalizeCifString';
-import { unquoteLine } from './cif_utils_unquote';
+import { normalizeCifString } from '../normalizeCifString/index.js';
+import { unquoteLine } from './cif_utils_unquote.js';
 
 // CONSTANTS
 const SINGLE_LINE_COMMENT = /^_(\S+)(\s+)(\S+|'.*'|".*")(\s*)$/;
@@ -17,8 +17,15 @@ export function cifProcessDataLine(lines: string[]) {
   line = lines.pop();
   const result = Object.create(null);
 
+  if (!line) {
+    return result;
+  }
+
   if (line.startsWith('_') && SINGLE_LINE_COMMENT.exec(line)) {
     match = SINGLE_LINE_COMMENT.exec(line);
+    if (!match) {
+      return result;
+    }
     key = '_' + match[1];
     value = match[3];
     result[key] = value === '?' ? '' : unquoteAndReplace(value);
@@ -46,7 +53,7 @@ export function cifProcessDataLine(lines: string[]) {
           while (lines.length !== 0) {
             line = lines.pop();
 
-            if (MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
+            if (!line || MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
               break;
             }
 
@@ -59,7 +66,7 @@ export function cifProcessDataLine(lines: string[]) {
           return result;
         } else {
           key = '_' + match2[1];
-          value = lines.pop();
+          value = lines.pop() ?? '';
           result[key] = value === '?' ? '' : unquoteAndReplace(value);
           return result;
         }

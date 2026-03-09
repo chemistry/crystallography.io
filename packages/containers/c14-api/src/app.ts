@@ -3,7 +3,7 @@ import timeout from 'connect-timeout';
 import cors from 'cors';
 import express from 'express';
 import type { Express } from 'express';
-import { getRouters } from './routers';
+import { getRouters } from './routers/index.js';
 import type { Db } from 'mongodb';
 
 export interface ApplicationContext {
@@ -51,12 +51,14 @@ export async function startApplication(context: ApplicationContext) {
 
   onAppInitEnd(app);
 
-  app.use((err: any, req: any, res: any, next: any) => {
-    if (err) {
-      logger.error(err.stack);
+  app.use(
+    (err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+      if (err) {
+        logger.error(err.stack || err.message);
+      }
+      res.status(500).send('Something broke!');
     }
-    res.status(500).send('Something broke!');
-  });
+  );
 
   return { app };
 }

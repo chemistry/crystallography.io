@@ -1,4 +1,4 @@
-import { normalizeCifString } from './index';
+import { normalizeCifString } from './index.js';
 
 describe('cif2json#normalizeCifString ', () => {
   const sut = normalizeCifString;

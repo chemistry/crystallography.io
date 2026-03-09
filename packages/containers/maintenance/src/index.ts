@@ -1,10 +1,15 @@
 import * as Sentry from '@sentry/node';
-import * as fs from 'fs';
-import * as path from 'path';
-import { app } from './app';
-import type { AppContext } from './app';
-import { getMongoConnection } from './common/mongo';
-import { getLogger } from './common/logger';
+import fs from 'node:fs';
+import path from 'node:path';
+import { app } from './app.js';
+import type { AppContext } from './app.js';
+import { getMongoConnection } from './common/mongo.js';
+import { getLogger } from './common/logger.js';
+
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN || '',
@@ -13,7 +18,7 @@ Sentry.init({
 
 const getContext = async (): Promise<AppContext> => {
   const packagePath = path.resolve(__dirname, '../package.json');
-  const packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
+  const _packageJSON = JSON.parse(fs.readFileSync(packagePath).toString());
 
   const { db, close } = await getMongoConnection();
   const logger = await getLogger();
@@ -39,7 +44,7 @@ const getContext = async (): Promise<AppContext> => {
     await app(context);
 
     console.timeEnd('application start');
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);

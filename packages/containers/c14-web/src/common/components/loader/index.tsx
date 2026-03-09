@@ -1,9 +1,12 @@
 import type { MutableRefObject } from 'react';
 import { useState, useCallback, useRef, useLayoutEffect } from 'react';
-import { LoaderIcon } from './loader-icon';
+import { LoaderIcon } from './loader-icon.js';
 
 export const Loader: React.FC<
-  React.PropsWithChildren<{ isVisible: boolean; scrollElement: MutableRefObject<any> }>
+  React.PropsWithChildren<{
+    isVisible: boolean;
+    scrollElement: MutableRefObject<HTMLDivElement | null>;
+  }>
 > = ({ isVisible, scrollElement, children }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [top, setTop] = useState('50%');

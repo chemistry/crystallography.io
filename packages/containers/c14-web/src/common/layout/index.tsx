@@ -1,3 +1,3 @@
-export * from './mobile-navigation';
-export * from './app-navigation';
-export * from './page-container';
+export * from './mobile-navigation/index.js';
+export * from './app-navigation/index.js';
+export * from './page-container/index.js';

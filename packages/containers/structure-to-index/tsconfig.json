@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
     "target": "ES2024",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "typeRoots": ["node_modules/@types"]
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "rootDir": "src",
+    "outDir": "dist"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["src"],
+  "exclude": ["**/*.test.ts"]
 }

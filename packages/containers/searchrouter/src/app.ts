@@ -1,13 +1,13 @@
 import express from 'express';
-import type { Express } from 'express';
+import type { Express, RequestHandler, Router } from 'express';
 import * as Sentry from '@sentry/node';
-import http from 'http';
+import http from 'node:http';
 import { Queue, QueueEvents } from 'bullmq';
 import type { Db } from 'mongodb';
 
-import { initExpress } from './app.express';
-import { initIO } from './app.io';
-import { initQueue } from './app.queue';
+import { initExpress } from './app.express.js';
+import { initIO } from './app.io.js';
+import { initQueue } from './app.queue.js';
 
 const redisConnection = {
   host: process.env.REDIS_HOST || 'redis',
@@ -15,7 +15,7 @@ const redisConnection = {
   password: process.env.REDIS_PASSWORD || undefined,
 };
 
-const initSentry = ({ app }: { app: Express }) => {
+const initSentry = (_config: { app: Express }) => {
   Sentry.init({
     dsn: process.env.SENTRY_DSN || '',
     integrations: [],
@@ -23,7 +23,7 @@ const initSentry = ({ app }: { app: Express }) => {
   });
 };
 
-export async function startServer({ db, mw, hc }: { db: Db; mw: any; hc: any }) {
+export async function startServer({ db, mw, hc }: { db: Db; mw: RequestHandler; hc: Router }) {
   const app = express();
   const server = http.createServer(app);
 

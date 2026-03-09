@@ -1,1 +1,1 @@
-export * from './structure.model';
+export * from './structure.model.js';

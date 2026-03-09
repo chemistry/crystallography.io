@@ -96,8 +96,8 @@ export const getUnitCellSearchRouter = ({ db }: { db: Db }) => {
           structures,
         },
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [

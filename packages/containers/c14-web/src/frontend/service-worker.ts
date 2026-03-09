@@ -1,4 +1,5 @@
 import { clientsClaim, skipWaiting } from 'workbox-core';
+import type { RouteHandlerCallbackOptions } from 'workbox-core/types.js';
 import { precacheAndRoute } from 'workbox-precaching';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { registerRoute } from 'workbox-routing';
@@ -8,7 +9,9 @@ skipWaiting();
 clientsClaim();
 
 // Precache all static resources
-precacheAndRoute((self as any).__WB_MANIFEST);
+precacheAndRoute(
+  (self as unknown as { __WB_MANIFEST: { revision: string | null; url: string }[] }).__WB_MANIFEST
+);
 
 // Caching Images for 30 days
 registerRoute(
@@ -38,22 +41,28 @@ const FALLBACK_HTML_URL = '/offline';
 
 // Precache default fallback page - offline.
 self.addEventListener('install', async (event) => {
-  (event as any).waitUntil(caches.open(CACHE_NAME).then((cache) => cache.add(FALLBACK_HTML_URL)));
+  (event as unknown as { waitUntil: (p: Promise<void>) => void }).waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.add(FALLBACK_HTML_URL))
+  );
 });
 
 const networkOnly = new NetworkOnly();
-registerRoute(({ request }) => request.destination === 'document', (async (params: any) => {
-  try {
-    return await networkOnly.handle(params);
-  } catch (_error) {
-    return caches.match(FALLBACK_HTML_URL, {
-      cacheName: CACHE_NAME,
-    });
+registerRoute(
+  ({ request }) => request.destination === 'document',
+  async (params: RouteHandlerCallbackOptions) => {
+    try {
+      return await networkOnly.handle(params);
+    } catch {
+      const cached = await caches.match(FALLBACK_HTML_URL, {
+        cacheName: CACHE_NAME,
+      });
+      return cached || new Response('Offline', { status: 503 });
+    }
   }
-}) as any);
+);
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
-    (self as any).skipWaiting();
+    skipWaiting();
   }
 });

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { StructureModel } from '../models';
+import type { StructureModel } from '../models/index.js';
 import { NavLink } from 'react-router-dom';
 
 export type HighlightFunction = (name: string) => string;
@@ -32,7 +32,11 @@ export const CompoundFormula: FC<{ model: StructureModel }> = ({ model }) => {
   return <span dangerouslySetInnerHTML={{ __html: formula }}></span>;
 };
 
-const getAuthorDetails = (author: { name: string; link: string }, i: number, arr: any) => {
+const getAuthorDetails = (
+  author: { name: string; link: string },
+  i: number,
+  _arr: { name: string; link: string }[]
+) => {
   if (!author || !author.name) {
     return '';
   }

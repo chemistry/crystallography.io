@@ -1,15 +1,15 @@
-import { startServer } from './app';
+import { startServer } from './app.js';
 import * as Sentry from '@sentry/node';
-import { getLogger } from './common/express-logger';
-import { getMongoConnection } from './common/mongo';
-import { healthCheck, mongoCheck } from './common/health-check';
+import { getLogger } from './common/express-logger.js';
+import { getMongoConnection } from './common/mongo.js';
+import { healthCheck, mongoCheck } from './common/health-check.js';
 
 (async () => {
   try {
     await new Promise((res) => setTimeout(res, 20000));
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 
-    const { db, close } = await getMongoConnection();
+    const { db } = await getMongoConnection();
     const { logger, mw } = await getLogger();
     const hc = healthCheck([mongoCheck({ db })]);
 
@@ -19,7 +19,7 @@ import { healthCheck, mongoCheck } from './common/health-check';
       console.log(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
       logger.info(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);
     });
-    server.on('error', (err: any) => {
+    server.on('error', (err: Error) => {
       console.error(err);
       logger.error(String(err));
     });
@@ -27,7 +27,7 @@ import { healthCheck, mongoCheck } from './common/health-check';
     process.on('SIGTERM', () => {
       console.log('closing connection');
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);

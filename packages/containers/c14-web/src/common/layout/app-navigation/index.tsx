@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { LogoIcon, TitleIcon } from '../../icons';
-import { NavMenuTop } from '../nav-menu';
+import { LogoIcon, TitleIcon } from '../../icons/index.js';
+import { NavMenuTop } from '../nav-menu/index.js';
 
 export const AppNavigation = () => {
   return (

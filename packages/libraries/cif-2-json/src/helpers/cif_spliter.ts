@@ -1,12 +1,14 @@
-require('./cif_polyfil');
-
 export function splitDataBloks(lines: string[]) {
   lines.reverse();
   let currentDataBlok = '';
   const result = Object.create(null);
 
   while (lines.length > 0) {
-    const line = lines.pop().trim();
+    const popped = lines.pop();
+    if (!popped) {
+      continue;
+    }
+    const line = popped.trim();
     if (!line || line.startsWith('#')) {
       continue;
     }

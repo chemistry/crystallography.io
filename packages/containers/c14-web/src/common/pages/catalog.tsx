@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Loader } from '../components/loader';
-import { Pagination } from '../components/pagination';
-import { useAppStore } from '../store';
-import { StructuresList } from '../components/structure-list/structure-list';
+import { Loader } from '../components/loader/index.js';
+import { Pagination } from '../components/pagination/index.js';
+import { useAppStore } from '../store/index.js';
+import { StructuresList } from '../components/structure-list/structure-list.js';
+import type { StructureModel } from '../models/index.js';
 
 export const CatalogPage = () => {
   const { page } = useParams();
@@ -16,8 +17,8 @@ export const CatalogPage = () => {
 
   const structures = useAppStore((s) => {
     const ids = s.catalogPage.data.structureIds;
-    const byId: any = s.catalogPage.data.structureById;
-    return ids.map((id) => byId[id]).filter((item) => !!item);
+    const byId = s.catalogPage.data.structureById;
+    return ids.map((id) => byId[id]).filter((item) => !!item) as unknown as StructureModel[];
   });
 
   return (

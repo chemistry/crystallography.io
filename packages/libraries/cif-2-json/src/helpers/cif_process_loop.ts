@@ -1,5 +1,5 @@
-import { normalizeCifString } from '../normalizeCifString';
-import { unquoteLine } from './cif_utils_unquote';
+import { normalizeCifString } from '../normalizeCifString/index.js';
+import { unquoteLine } from './cif_utils_unquote.js';
 
 const LOOP_KEY = /^_(\S+)$/;
 const MULTI_LINE_COMMENTS_DELIMER = /^(\s*);(.{0,})$/;
@@ -7,20 +7,23 @@ const MULTI_LINE_COMMENTS_DELIMER = /^(\s*);(.{0,})$/;
 export function cifProcessLoop(lines: string[]) {
   let val;
   let line;
-  let values = [];
-  const columns = [];
-  const data = [];
-  let multilineMatch = false;
+  let values: string[];
+  const columns: string[] = [];
+  const data: string[][] = [];
+  let multilineMatch: boolean;
 
   line = lines.pop();
   while (line && line.length > 1 && line.startsWith('_') && LOOP_KEY.exec(line)) {
-    const key = '_' + LOOP_KEY.exec(line)[1];
+    const loopMatch = LOOP_KEY.exec(line);
+    if (!loopMatch) {
+      break;
+    }
+    const key = '_' + loopMatch[1];
     columns.push(key);
     line = lines.length > 0 ? lines.pop() : undefined;
   }
 
   loopData: while (isDataLine(line)) {
-    values = [];
     multilineMatch = !!MULTI_LINE_COMMENTS_DELIMER.exec(line);
     if (multilineMatch) {
       lines.push(line);
@@ -88,18 +91,21 @@ function cleanLoopData({ columns, data }: { columns: string[]; data: string[][] 
 /**
  * will read multiline data
  */
-function readMultilineData(lines: string[]) {
+function readMultilineData(lines: string[]): string {
   let line = lines.pop();
+  if (!line) {
+    return '';
+  }
   const multilineMatch = MULTI_LINE_COMMENTS_DELIMER.exec(line);
   if (multilineMatch) {
-    const resLines = [];
+    const resLines: string[] = [];
     const firstline = (multilineMatch[2] || '').trim();
     if (firstline) {
       resLines.push(firstline);
     }
     while (lines.length !== 0) {
       line = lines.pop();
-      if (MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
+      if (!line || MULTI_LINE_COMMENTS_DELIMER.exec(line)) {
         break;
       }
       resLines.push(line);
@@ -107,12 +113,13 @@ function readMultilineData(lines: string[]) {
 
     return resLines.join('\n');
   }
+  return '';
 }
 
 /**
  * true is line still corespond loop data block
  */
-function isDataLine(line: string): boolean {
+function isDataLine(line: string | undefined): line is string {
   if (!line) {
     return false;
   }

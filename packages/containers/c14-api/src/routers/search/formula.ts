@@ -2,9 +2,9 @@ import { Router } from 'express';
 import type { Request, Response } from 'express';
 import type { Db } from 'mongodb';
 import * as Sentry from '@sentry/node';
-import { formulaToString, parseFormula } from './formula.helper';
-
-const RESULTS_PER_PAGE = 100;
+import { formulaToString, parseFormula } from './formula.helper.js';
+import type { FormulaObj } from './formula.helper.js';
+import type { Document } from 'mongodb';
 
 export const getFormulaSearchRouter = ({ db }: { db: Db }) => {
   const router = Router();
@@ -21,9 +21,6 @@ export const getFormulaSearchRouter = ({ db }: { db: Db }) => {
         ],
       });
     }
-
-    let page: number = parseInt(req.body.page as string, 10);
-    page = page && isFinite(page) ? page : 1;
 
     const formula = req.body.formula || '';
 
@@ -50,8 +47,8 @@ export const getFormulaSearchRouter = ({ db }: { db: Db }) => {
           structures,
         },
       });
-    } catch (e: any) {
-      console.error(e.stack);
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.stack : String(e));
       Sentry.captureException(e);
       return res.status(500).json({
         errors: [
@@ -69,7 +66,15 @@ export const getFormulaSearchRouter = ({ db }: { db: Db }) => {
   return router;
 };
 
-async function getFormulaCollection(where: any, db: Db): Promise<any> {
+interface FormulaCollectionResult {
+  formulas?: Document[];
+  data: number[];
+}
+
+async function getFormulaCollection(
+  where: Record<string, unknown>,
+  db: Db
+): Promise<FormulaCollectionResult> {
   const formulas = await db
     .collection('formulas')
     .find(where, {
@@ -86,11 +91,11 @@ async function getFormulaCollection(where: any, db: Db): Promise<any> {
   };
 }
 
-function reduceToStructure(records: any[]): number[] {
+function reduceToStructure(records: Document[]): number[] {
   if (records.length === 0) {
     return [];
   }
-  return records.reduce((sum, current) => {
+  return records.reduce<number[]>((sum, current) => {
     for (const strId of current.structures) {
       if (sum.indexOf(strId) === -1) {
         sum.push(strId);
@@ -100,8 +105,8 @@ function reduceToStructure(records: any[]): number[] {
   }, []);
 }
 
-function prepareWhere(formulaObj: any) {
-  const formulaCopy = Object.assign({}, formulaObj);
+function prepareWhere(formulaObj: FormulaObj): Record<string, unknown> {
+  const formulaCopy: Record<string, unknown> = Object.assign({}, formulaObj);
   Object.keys(formulaCopy).forEach((key) => {
     if (formulaCopy[key] === '*') {
       formulaCopy[key] = { $gt: 0 };
@@ -111,7 +116,7 @@ function prepareWhere(formulaObj: any) {
   return formulaCopy;
 }
 
-function prepareWhereSimilar(formulaObj: any) {
+function prepareWhereSimilar(formulaObj: FormulaObj): Record<string, unknown> {
   const where = prepareWhere(formulaObj);
   return {
     ...where,
@@ -119,7 +124,7 @@ function prepareWhereSimilar(formulaObj: any) {
   };
 }
 
-function prepareWhereExact(formulaObj: any) {
+function prepareWhereExact(formulaObj: FormulaObj): Record<string, unknown> {
   const where = prepareWhere(formulaObj);
   return {
     ...where,

@@ -2,7 +2,7 @@ import type { StateCreator } from 'zustand';
 
 export interface DetailsPageState {
   detailsPage: {
-    data: { details: Record<string, any> };
+    data: { details: Record<string, unknown> };
     error: string | null;
     isLoading: boolean;
   };
@@ -29,7 +29,7 @@ export const createDetailsPageSlice: StateCreator<DetailsPageState> = (set) => (
       const res = await response.json();
       const data = res.data;
 
-      let details: Record<string, any> = {};
+      let details: Record<string, unknown> = {};
       if (Array.isArray(data) && data.length === 1 && data[0].attributes) {
         details = data[0].attributes;
       }
@@ -37,9 +37,8 @@ export const createDetailsPageSlice: StateCreator<DetailsPageState> = (set) => (
       set((s) => ({
         detailsPage: { ...s.detailsPage, isLoading: true, data: { details } },
       }));
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors;
-      const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({ detailsPage: { ...s.detailsPage, isLoading: false, error: message } }));
     }
   },

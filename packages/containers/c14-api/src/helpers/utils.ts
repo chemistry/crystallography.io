@@ -53,13 +53,16 @@ export function getStructureAttributes(expand: boolean = false): string[] {
 export function mapStructure(expand: boolean = false) {
   const attributes = getStructureAttributes(expand);
 
-  return (item: any) => {
-    const itemFilted = attributes.reduce((acc: any, attr: string) => {
-      if (Object.prototype.hasOwnProperty.call(item, attr)) {
-        acc[attr] = item[attr];
-      }
-      return acc;
-    }, {} as any);
+  return (item: Record<string, unknown>) => {
+    const itemFilted = attributes.reduce(
+      (acc: Record<string, unknown>, attr: string) => {
+        if (Object.prototype.hasOwnProperty.call(item, attr)) {
+          acc[attr] = item[attr];
+        }
+        return acc;
+      },
+      {} as Record<string, unknown>
+    );
 
     if (Object.keys(item).length === 1) {
       return {
@@ -82,16 +85,16 @@ export function mapStructure(expand: boolean = false) {
   };
 }
 
-function filterLoopArray(loops: any) {
+function filterLoopArray(loops: unknown) {
   if (!Array.isArray(loops)) {
     return [];
   }
-  return loops.filter((item) => {
-    return item.columns.indexOf('_atom_site_fract_x') !== -1;
+  return loops.filter((item: Record<string, unknown>) => {
+    return (item.columns as string[]).indexOf('_atom_site_fract_x') !== -1;
   });
 }
 
-function getarticleHtml(item: any): string {
+function getarticleHtml(item: Record<string, unknown>): string {
   if (item.journal || item.year) {
     const nameTags = [];
 

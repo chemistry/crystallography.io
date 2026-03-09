@@ -1,4 +1,4 @@
-import { startServer } from './app';
+import { startServer } from './app.js';
 
 describe('startServer', () => {
   it('should export variable definition', () => {

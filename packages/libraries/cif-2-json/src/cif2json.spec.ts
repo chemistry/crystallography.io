@@ -1,4 +1,4 @@
-import { normalizeCifString, parse } from './index';
+import { normalizeCifString, parse } from './index.js';
 
 describe('index', () => {
   it('should define parse method', () => {

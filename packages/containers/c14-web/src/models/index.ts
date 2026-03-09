@@ -1,3 +1,3 @@
-export * from './catalog';
-export * from './structure';
-export * from './authors';
+export * from './catalog.js';
+export * from './structure.js';
+export * from './authors.js';

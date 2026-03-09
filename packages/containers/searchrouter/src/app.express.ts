@@ -1,11 +1,12 @@
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
-import type { Express } from 'express';
+import type { Express, RequestHandler } from 'express';
 import type { Db } from 'mongodb';
-import { getSubstructureSearchCreator, postSubstructureSearchCreator } from './api';
-import { errorHandler, healthCheck, statusCheck } from './helpers';
+import type { Queue } from 'bullmq';
+import { getSubstructureSearchCreator, postSubstructureSearchCreator } from './api/index.js';
+import { errorHandler, healthCheck, statusCheck } from './helpers/index.js';
 
-export async function initExpress(app: Express, queue: any, db: Db) {
+export async function initExpress(app: Express, queue: Queue, db: Db) {
   // Remove header
   app.disable('x-powered-by');
 
@@ -19,8 +20,8 @@ export async function initExpress(app: Express, queue: any, db: Db) {
   // Connection time out
   app.use(timeout('30s'));
 
-  app.use(bodyParser.json() as any);
-  app.use(bodyParser.urlencoded({ extended: true }) as any);
+  app.use(bodyParser.json() as RequestHandler);
+  app.use(bodyParser.urlencoded({ extended: true }) as RequestHandler);
 
   app.get('/ping', (req, res) => {
     res.send('pong');

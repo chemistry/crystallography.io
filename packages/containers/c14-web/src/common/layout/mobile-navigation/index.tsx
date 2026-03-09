@@ -1,5 +1,5 @@
-import { CloseIcon } from '../../icons';
-import { NavMenuBottom, NavMenuTop } from '../nav-menu';
+import { CloseIcon } from '../../icons/index.js';
+import { NavMenuBottom, NavMenuTop } from '../nav-menu/index.js';
 
 export const AppMobileNavigation = ({ onClick }: { onClick: () => void }) => {
   return (

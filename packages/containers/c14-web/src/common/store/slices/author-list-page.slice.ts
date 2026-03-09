@@ -1,10 +1,10 @@
 import type { StateCreator } from 'zustand';
-import { getAuthorsList } from '../../../models';
+import { getAuthorsList } from '../../../models/index.js';
 
 export interface AuthorsListPageState {
   authorsListPage: {
     meta: { total: number; pages: number };
-    data: { authorsList: any[] };
+    data: { authorsList: { full: string; count: number; updated: string; id: number }[] };
     error: string | null;
     isLoading: boolean;
   };
@@ -27,11 +27,13 @@ export const createAuthorsListPageSlice: StateCreator<AuthorsListPageState> = (s
 
       const data = await getAuthorsList(pageQ);
 
-      let authors: any[] = [];
+      let authors: { full: string; count: number; updated: string; id: number }[] = [];
       if (Array.isArray(data.data)) {
-        authors = data.data.map((el: any) => ({
+        authors = data.data.map((el) => ({
           id: el.id,
-          ...el.attributes,
+          full: el.attributes.full,
+          count: el.attributes.count,
+          updated: el.attributes.updated,
         }));
       }
 
@@ -43,9 +45,8 @@ export const createAuthorsListPageSlice: StateCreator<AuthorsListPageState> = (s
           meta: data.meta || { total: 0, pages: 0 },
         },
       }));
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors;
-      const message = Array.isArray(errors) && errors.length > 0 ? errors[0].title : err.toString();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       set((s) => ({ authorsListPage: { ...s.authorsListPage, isLoading: false, error: message } }));
     }
   },

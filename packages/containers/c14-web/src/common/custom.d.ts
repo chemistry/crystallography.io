@@ -6,6 +6,11 @@ declare module '*.svg' {
 }
 
 declare module '@chemistry/molpad' {
-  const MolPad: any;
+  const MolPad: React.ForwardRefExoticComponent<
+    React.RefAttributes<{
+      isSutableForSearch: () => string;
+      getJmol: () => unknown;
+    }>
+  >;
   export { MolPad };
 }

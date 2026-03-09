@@ -1,11 +1,16 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import * as Sentry from '@sentry/node';
 import type { Express } from 'express';
-import { AppContextType, getApplication } from '../common';
-import type { ApplicationContext } from '../common';
-import { startApplication } from './application';
-import { getLogger } from './common/logger';
+import { AppContextType, getApplication } from '../common/index.js';
+import type { ApplicationContext } from '../common/index.js';
+import { startApplication } from './application.js';
+import { getLogger } from './common/logger.js';
+
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 console.time('Context Prepare');
 
@@ -79,7 +84,7 @@ console.time('App Start');
 
     logger.trace(`Application Started on port: ${PORT}`);
     console.timeEnd('App Start');
-  } catch (e: any) {
+  } catch (e: unknown) {
     Sentry.captureException(e);
     console.error(e);
     process.exit(-1);

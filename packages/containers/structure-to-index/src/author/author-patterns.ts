@@ -1,4 +1,5 @@
-export const nameChars = "\\w\\u00C0-\\u021B\\-\\`''ιλḰṕḾŃḱóOů̅ουḿα\u2019";
+export const nameChars =
+  '\\w\\u00C0-\\u021B\\-\\`\\u2018\\u2019\\u03B9\\u03BB\\u1E30\\u1E55\\u1E3E\\u0143\\u1E31\\u00F3O\\u016F\\u03BF\\u03C5\\u1E3F\\u03B1';
 
 export const aCase = /^\(.+\)\s+(.+)$/;
 

@@ -1,5 +1,5 @@
-import { getMongoConnection } from './mongo';
-import { getRedisClient } from './reddis';
+import { getMongoConnection } from './mongo.js';
+import { getRedisClient } from './reddis.js';
 
 export const checkConnection = async () => {
   const { close } = await getMongoConnection();

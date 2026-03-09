@@ -1,11 +1,10 @@
 import { parse } from '@chemistry/cif-2-json';
 import * as Sentry from '@sentry/node';
-import type { Db, MongoClient } from 'mongodb';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as util from 'util';
-import { cleanupJCif } from './helpers';
-import type { AppContext } from './app';
+import type { ObjectId } from 'mongodb';
+import fs from 'node:fs';
+import util from 'node:util';
+import { cleanupJCif } from './helpers/index.js';
+import type { AppContext } from './app.js';
 
 export interface CodFileRecord {
   fileName: string;
@@ -24,9 +23,9 @@ export const processMessage = async ({
   context: AppContext;
 }) => {
   try {
-    let collection = context.db.collection('structures');
-    let fileContent = await readFile(fileName);
-    let jcif: any = parse(fileContent.toString());
+    const collection = context.db.collection('structures');
+    const fileContent = await readFile(fileName);
+    const jcif = parse(fileContent.toString()) as Record<string, Record<string, unknown>>;
 
     const dataNames = Object.keys(jcif);
 
@@ -35,12 +34,12 @@ export const processMessage = async ({
       throw new Error('wrong data format');
     }
 
-    let dataToSave = cleanupJCif(jcif[dataNames[0]]);
+    const dataToSave = cleanupJCif(jcif[dataNames[0]]);
     const now = new Date();
 
     await collection.findOneAndUpdate(
       {
-        _id: Number(codId) as any,
+        _id: Number(codId) as unknown as ObjectId,
       },
       {
         $set: {
@@ -55,13 +54,8 @@ export const processMessage = async ({
       {
         upsert: true,
         returnDocument: 'after',
-      } as any
+      }
     );
-
-    collection = null as any;
-    fileContent = null as any;
-    jcif = null;
-    dataToSave = null as any;
   } catch (e) {
     Sentry.captureException(e);
     console.error(e);
