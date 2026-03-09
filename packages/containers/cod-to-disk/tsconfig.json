@@ -1,6 +1,16 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES2024",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "rootDir": "src",
     "outDir": "dist"
   },

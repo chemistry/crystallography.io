@@ -10,7 +10,7 @@
     "url": "https://vreshch.com/"
   },
   "scripts": {
-    "build": "rimraf dist/* && tsc",
+    "build": "rm -rf dist && tsc",
     "start": "node dist/index.js",
     "start:dev": "cross-env SHOW_DEBUG_INFO=true nodemon -e ts -w ./src -x tsx src/index.ts"
   },
@@ -20,5 +20,8 @@
     "bullmq": "^5.0.0",
     "ioredis": "^5.4.0",
     "mongodb": "^6.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
   }
 }

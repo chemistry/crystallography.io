@@ -10,7 +10,7 @@
     "url": "https://vreshch.com/"
   },
   "scripts": {
-    "build": "rimraf dist/* && npm run build:backend && npm run build:frontend",
+    "build": "rm -rf dist && npm run build:backend && npm run build:frontend",
     "build:backend": "tsc",
     "build:frontend": "vite build",
     "start": "node dist/backend/index.js",
@@ -49,6 +49,7 @@
     "workbox-precaching": "^7.3.0",
     "workbox-routing": "^7.3.0",
     "workbox-strategies": "^7.3.0",
-    "workbox-window": "^7.3.0"
+    "workbox-window": "^7.3.0",
+    "typescript": "^5.9.0"
   }
 }

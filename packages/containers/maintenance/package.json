@@ -10,7 +10,7 @@
     "url": "https://vreshch.com/"
   },
   "scripts": {
-    "build": "rimraf dist/* && tsc",
+    "build": "rm -rf dist && tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node-cron": "^3.0.0",
-    "@types/shelljs": "^0.8.15"
+    "@types/shelljs": "^0.8.15",
+    "typescript": "^5.9.0"
   }
 }
