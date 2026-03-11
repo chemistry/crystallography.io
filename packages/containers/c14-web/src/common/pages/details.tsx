@@ -209,7 +209,7 @@ export const DetailsPage = () => {
               rel="nofollow"
               target="_blank"
               href={`//dx.doi.org/${structure.doi}`}
-              className="btn btn-active input-inline c-details-page__doi_link"
+              className="btn input-inline c-details-page__doi_link"
             >
               Article
             </a>
@@ -218,7 +218,7 @@ export const DetailsPage = () => {
             rel="nofollow"
             target="_blank"
             href={`/cif/${structure.id}`}
-            className="btn btn-active input-inline"
+            className="btn input-inline"
             download
           >
             <DownloadIcon />

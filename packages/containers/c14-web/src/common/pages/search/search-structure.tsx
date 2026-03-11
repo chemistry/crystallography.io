@@ -62,7 +62,7 @@ export const SearchByStructurePage = () => {
           <div>
             <div className="column col-6">
               <button
-                className="btn btn-primary input-inline search-layout__search_btn"
+                className="btn input-inline search-layout__search_btn"
                 onClick={handleSubmit}
               >
                 Search

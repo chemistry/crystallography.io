@@ -10,7 +10,7 @@ export const NotFoundPage = () => {
         <div className="app-layout-page" style={{ maxWidth: '600px' }}>
           <h4 className="text-primary">404</h4>
           <p>The page you are looking for does not exist or has been moved.</p>
-          <NavLink to="/" className="btn btn-primary">
+          <NavLink to="/" className="btn">
             Back to Search
           </NavLink>
         </div>

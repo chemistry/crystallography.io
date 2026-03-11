@@ -40,7 +40,7 @@ export const RegisterPage = () => {
               />
             </div>
             <div className="form-group">
-              <button className="btn btn-primary" type="submit">
+              <button className="btn" type="submit">
                 Register
               </button>
             </div>

@@ -141,7 +141,7 @@ const SearchByNameForm = ({
             setSuggestionsVisible={setSuggestionsVisible}
             autoCompleteOptions={autoCompleteOptions}
           />
-          <button className="form-button btn btn-primary" title={error}>
+          <button className="form-button btn" title={error}>
             Search
           </button>
         </div>
