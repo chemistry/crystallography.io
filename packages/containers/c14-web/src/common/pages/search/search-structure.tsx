@@ -1,25 +1,26 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchTab } from '../../components/index.js';
 import { useAppStore } from '../../store/index.js';
 import { useInBrowser } from '../../services/index.js';
 
-let MolPad: React.ForwardRefExoticComponent<
+type MolPadComponent = React.ForwardRefExoticComponent<
   React.RefAttributes<{
     isSutableForSearch: () => string;
     getJmol: () => unknown;
   }>
-> | null = null;
+>;
 
 export const SearchByStructurePage = () => {
   const molpadRef = useRef(null);
   const navigate = useNavigate();
   const searchStructureByStructure = useAppStore((s) => s.searchStructureByStructure);
+  const [MolPad, setMolPad] = useState<MolPadComponent | null>(null);
 
   useInBrowser(() => {
     (async () => {
       const mod = await import('@chemistry/molpad');
-      MolPad = mod.MolPad;
+      setMolPad(() => mod.MolPad);
     })();
   }, []);
 
@@ -48,7 +49,7 @@ export const SearchByStructurePage = () => {
         <SearchTab />
       </header>
       <div className="app-layout-content">
-        <div className="search-layout__page">
+        <div className="search-layout__page" style={{ maxWidth: '100%' }}>
           <div className="search-layout__molpad-editor">
             {MolPad ? <MolPad ref={molpadRef} /> : null}
           </div>
@@ -61,10 +62,7 @@ export const SearchByStructurePage = () => {
           </div>
           <div>
             <div className="column col-6">
-              <button
-                className="btn btn-active input-inline search-layout__search_btn"
-                onClick={handleSubmit}
-              >
+              <button className="btn input-inline search-layout__search_btn" onClick={handleSubmit}>
                 Search
               </button>
             </div>

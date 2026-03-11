@@ -17,27 +17,35 @@ export const LoginPage = () => {
         <h2 className="text-primary">Login</h2>
       </header>
       <div className="app-layout-content">
-        <h1>Login</h1>
-        <hr />
-        <div>
-          <b>{auth ? 'Logged IN' : null}</b>
+        <div className="app-layout-page" style={{ maxWidth: '480px' }}>
+          {auth ? <div className="alert alert-danger">Already logged in.</div> : null}
+          {error.code ? <div className="alert alert-danger">{error.message}</div> : null}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                className="form-input"
+                type="email"
+                placeholder="Enter email..."
+                {...register('email')}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input
+                className="form-input"
+                type="password"
+                placeholder="Enter password..."
+                {...register('password')}
+              />
+            </div>
+            <div className="form-group">
+              <button className="btn" type="submit">
+                Login
+              </button>
+            </div>
+          </form>
         </div>
-        <>{error.code ? error.message : null}</>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div style={{ padding: '20px' }}>
-            <div>
-              Email:
-              <input type="text" {...register('email')} />
-            </div>
-            <div>
-              Password:
-              <input type="text" {...register('password')} />
-            </div>
-            <div>
-              <input type="submit" name="Submit" />
-            </div>
-          </div>
-        </form>
       </div>
     </div>
   );

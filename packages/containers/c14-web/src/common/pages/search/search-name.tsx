@@ -243,7 +243,7 @@ export const SearchByNamePage = () => {
   );
 };
 
-export const DemoFormData = () => {
+const _DemoFormData = () => {
   return (
     <div>
       <h2 className="text-primary">Badges</h2>
