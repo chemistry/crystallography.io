@@ -1,4 +1,4 @@
-import { useState, useRef, type FormEvent } from 'react';
+import { useState, useRef, useMemo, type FormEvent } from 'react';
 import { useAppStore } from '../../store/index.js';
 import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components/index.js';
 import { Input } from '../../components/input/index.js';
@@ -138,39 +138,29 @@ const SearchSummary = ({ totalResults }: { totalResults: number }) => {
 const SearchResults = () => {
   const containerRef = useRef(null);
   const isLoading = useAppStore((s) => s.searchByAuthorSlice.isLoading);
-  const structures = useAppStore((s) => {
-    const structuresIds = s.searchByAuthorSlice.data.structureIds;
-    const structuresById = s.searchByAuthorSlice.data.structureById;
-    return structuresIds
-      .map((id) => structuresById[id])
-      .filter((item) => !!item) as unknown as StructureModel[];
-  });
+  const structureIds = useAppStore((s) => s.searchByAuthorSlice.data.structureIds);
+  const structureById = useAppStore((s) => s.searchByAuthorSlice.data.structureById);
+  const structures = useMemo(
+    () =>
+      structureIds
+        .map((id) => structureById[id])
+        .filter((item) => !!item) as unknown as StructureModel[],
+    [structureIds, structureById]
+  );
   const currentPage = useAppStore((s) => s.searchByAuthorSlice.search.page);
   const searchString = useAppStore((s) => s.searchByAuthorSlice.search.name);
   const totalPages = useAppStore((s) => s.searchByAuthorSlice.meta.totalPages);
-  const hasNoResults = useAppStore((s) => {
-    const status = s.searchByAuthorSlice.status;
-    const resultCount = Object.keys(s.searchByAuthorSlice.data.structureById).length;
-    return status === SearchState.success && resultCount === 0;
-  });
+  const status = useAppStore((s) => s.searchByAuthorSlice.status);
+  const metaTotalResults = useAppStore((s) => s.searchByAuthorSlice.meta.totalResults);
   const error = useAppStore((s) => s.searchByAuthorSlice.error);
-  const totalResults = useAppStore((s) => {
-    return Math.max(
-      Object.keys(s.searchByAuthorSlice.data.structureById).length,
-      s.searchByAuthorSlice.meta.totalResults
-    );
-  });
-  const showSummary = useAppStore((s) => {
-    const status = s.searchByAuthorSlice.status;
-    const resultCount = Math.max(
-      Object.keys(s.searchByAuthorSlice.data.structureById).length,
-      s.searchByAuthorSlice.meta.totalResults
-    );
-    return (
-      resultCount !== 0 &&
-      [SearchState.processing, SearchState.started, SearchState.success].includes(status)
-    );
-  });
+  const totalResults = useMemo(
+    () => Math.max(Object.keys(structureById).length, metaTotalResults),
+    [structureById, metaTotalResults]
+  );
+  const hasNoResults = status === SearchState.success && totalResults === 0;
+  const showSummary =
+    totalResults !== 0 &&
+    [SearchState.processing, SearchState.started, SearchState.success].includes(status);
 
   const searchStructureByAuthor = useAppStore((s) => s.searchStructureByAuthor);
 

@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { API_BASE_URL } from '../../config.js';
 
 export interface DetailsPageState {
   detailsPage: {
@@ -21,7 +22,7 @@ export const createDetailsPageSlice: StateCreator<DetailsPageState> = (set) => (
         detailsPage: { ...s.detailsPage, isLoading: true, error: null, data: { details: {} } },
       }));
 
-      const response = await fetch('https://crystallography.io/api/v1/structure', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/structure`, {
         method: 'POST',
         body: `ids=[${id}]&expand=true`,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

@@ -52,18 +52,19 @@ app.post('/api/v1/structure', (req, res) => {
 // Catalog
 app.get('/api/v1/catalog', (req, res) => {
   const page = Number(req.query.page) || 1;
-  const perPage = 100;
-  const start = (page - 1) * perPage;
-  const pageIds = structureIds.slice(start, start + perPage);
+  // Each catalog entry represents a "page" of structures
+  // The frontend requests page N and looks for data item with id === N
   res.json({
-    meta: { pages: Math.ceil(structureIds.length / perPage) },
+    meta: { pages: 1 },
     cache: { type: 'catalog' },
     errors: [],
-    data: pageIds.map((id) => ({
-      id,
-      type: 'catalog',
-      attributes: { id, structures: 1 },
-    })),
+    data: [
+      {
+        id: page,
+        type: 'catalog',
+        attributes: { id: page, structures: structureIds },
+      },
+    ],
   });
 });
 

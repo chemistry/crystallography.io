@@ -14,3 +14,4 @@ export * from './details.js';
 export * from './search/index.js';
 export * from './results.js';
 export * from './offline.js';
+export * from './design-system.js';

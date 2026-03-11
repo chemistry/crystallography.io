@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../common/config.js';
+
 interface CatalogContentResponse {
   meta: { pages: number };
   structures: number[];
@@ -19,7 +21,7 @@ interface CatalogResponse {
 
 export const getCatalogContent = async (pageQ: number): Promise<CatalogContentResponse> => {
   const response = await fetch(
-    `https://crystallography.io/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`,
+    `${API_BASE_URL}/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`,
     {
       method: 'GET',
     }

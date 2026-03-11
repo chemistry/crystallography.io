@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { API_BASE_URL } from '../../config.js';
 import { getStructures } from '../../../models/index.js';
 
 export enum SearchState {
@@ -64,7 +65,7 @@ export const createSearchByUnitCellSlice: StateCreator<SearchByUnitCellState> = 
       }));
 
       const body = `page=${page}&a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}&c=${encodeURIComponent(c)}&alpha=${encodeURIComponent(alpha)}&beta=${encodeURIComponent(beta)}&gamma=${encodeURIComponent(gamma)}&tolerance=${encodeURIComponent(tolerance)}`;
-      const response = await fetch('https://crystallography.io/api/v1/search/unit-cell', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/search/unit-cell`, {
         method: 'POST',
         body,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

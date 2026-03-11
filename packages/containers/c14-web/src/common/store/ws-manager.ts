@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import type { AppStore } from './create-app-store.js';
 import type { SearchResultsMeta } from './slices/search-results.slice.js';
 
@@ -23,7 +24,7 @@ const closeSocket = () => {
 
 const openSocket = (io: (url: string, opts: { path: string }) => SocketInstance) => {
   if (!socket) {
-    socket = io('https://crystallography.io', {
+    socket = io(API_BASE_URL || 'https://crystallography.io', {
       path: '/api/v1/live',
     });
   }

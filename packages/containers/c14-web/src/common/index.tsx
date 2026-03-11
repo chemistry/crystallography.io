@@ -18,6 +18,7 @@ import {
   SearchHistoryPage,
   SearchResultsPage,
   OfflinePage,
+  DesignSystemPage,
 } from './pages/index.js';
 import { setup } from './setup.js';
 import { useLoadedData } from './services/index.js';
@@ -195,6 +196,15 @@ export const getApplication: ApplicationFactory = async (context) => {
       description: 'Search over Crystal Structures',
     },
   ];
+
+  if (process.env.NODE_ENV === 'development') {
+    routeDefs.splice(-1, 0, {
+      path: '/design-system',
+      element: DesignSystemPage,
+      title: 'Design System',
+      description: 'Design System — Dev Only',
+    });
+  }
 
   const routes = routeDefs.map((route) => ({
     ...route,

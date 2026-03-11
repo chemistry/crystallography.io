@@ -1,5 +1,7 @@
+import { API_BASE_URL } from '../common/config.js';
+
 const getStructuresData = async (ids: number[]) => {
-  const response = await fetch(`https://crystallography.io/api/v1/structure`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/structure`, {
     method: 'POST',
     body: `ids=[${ids.join(',')}]`,
     headers: {

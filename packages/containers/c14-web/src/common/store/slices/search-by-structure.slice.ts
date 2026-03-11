@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { API_BASE_URL } from '../../config.js';
 
 export interface SearchByStructureState {
   searchByStructure: {
@@ -38,7 +39,7 @@ export const createSearchByStructureSlice: StateCreator<SearchByStructureState> 
         },
       }));
 
-      const response = await fetch('https://crystallography.io/api/v1/search/structure', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/search/structure`, {
         method: 'POST',
         body: `searchQuery=${encodeURIComponent(JSON.stringify(molecule))}`,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
