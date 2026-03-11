@@ -118,7 +118,7 @@ const SearchByAuthorForm = ({
             setSuggestionsVisible={setSuggestionsVisible}
             autoCompleteOptions={autoCompleteOptions}
           />
-          <button className="form-button btn" disabled={!!error} title={error}>
+          <button className="form-button btn btn-primary" disabled={!!error} title={error}>
             Search
           </button>
         </div>

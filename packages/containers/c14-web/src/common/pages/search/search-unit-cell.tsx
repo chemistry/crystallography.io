@@ -245,7 +245,7 @@ const SearchByUnitCellForm = ({
         <div className="columns search-layout__search_row">
           <div className="column col-6">
             <button
-              className="btn btn-active input-inline search-layout__search_btn"
+              className="btn btn-primary input-inline search-layout__search_btn"
               disabled={!!error}
               title={error}
             >

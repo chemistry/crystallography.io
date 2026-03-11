@@ -141,7 +141,7 @@ const SearchByNameForm = ({
             setSuggestionsVisible={setSuggestionsVisible}
             autoCompleteOptions={autoCompleteOptions}
           />
-          <button className="form-button btn" title={error}>
+          <button className="form-button btn btn-primary" title={error}>
             Search
           </button>
         </div>
@@ -243,7 +243,7 @@ export const SearchByNamePage = () => {
   );
 };
 
-export const DemoFormData = () => {
+const _DemoFormData = () => {
   return (
     <div>
       <h2 className="text-primary">Badges</h2>
