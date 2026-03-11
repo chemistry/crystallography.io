@@ -825,18 +825,17 @@ html,
 }
 
 .search-layout__molpad-editor {
-  border: 1px solid var(--color-light-grey);
-  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 1rem;
-  min-height: 480px;
+  max-width: 600px;
+  height: 480px;
+  background: var(--color-white);
 }
 
 .search-layout__molpad-editor canvas,
 .search-layout__molpad-editor > div {
   width: 100% !important;
   height: 100% !important;
-  min-height: 480px;
 }
 
 .search-layout__search_form {

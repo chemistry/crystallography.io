@@ -221,8 +221,10 @@ export const DetailsPage = () => {
             className="btn input-inline"
             download
           >
-            <DownloadIcon />
-            &nbsp;Download CIF
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+              <DownloadIcon />
+              Download CIF
+            </span>
           </a>
         </div>
       </div>
