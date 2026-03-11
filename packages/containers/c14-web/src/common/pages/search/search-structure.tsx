@@ -1,25 +1,26 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchTab } from '../../components/index.js';
 import { useAppStore } from '../../store/index.js';
 import { useInBrowser } from '../../services/index.js';
 
-let MolPad: React.ForwardRefExoticComponent<
+type MolPadComponent = React.ForwardRefExoticComponent<
   React.RefAttributes<{
     isSutableForSearch: () => string;
     getJmol: () => unknown;
   }>
-> | null = null;
+>;
 
 export const SearchByStructurePage = () => {
   const molpadRef = useRef(null);
   const navigate = useNavigate();
   const searchStructureByStructure = useAppStore((s) => s.searchStructureByStructure);
+  const [MolPad, setMolPad] = useState<MolPadComponent | null>(null);
 
   useInBrowser(() => {
     (async () => {
       const mod = await import('@chemistry/molpad');
-      MolPad = mod.MolPad;
+      setMolPad(() => mod.MolPad);
     })();
   }, []);
 
