@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useRef, useMemo, useState, type FormEvent } from 'react';
 import { useAppStore } from '../../store/index.js';
 import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components/index.js';
 import { StructuresList } from '../../components/structure-list/structure-list.js';
@@ -269,40 +269,29 @@ const SearchSummary = ({ totalResults }: { totalResults: number }) => {
 const SearchResults = () => {
   const containerRef = useRef(null);
   const isLoading = useAppStore((s) => s.searchByUnitCellSlice.isLoading);
-  const structures = useAppStore((s) => {
-    const structuresIds = s.searchByUnitCellSlice.data.structureIds;
-    const structuresById = s.searchByUnitCellSlice.data.structureById;
-    return structuresIds
-      .map((id) => structuresById[id])
-      .filter((item) => !!item) as unknown as StructureModel[];
-  });
+  const structureIds = useAppStore((s) => s.searchByUnitCellSlice.data.structureIds);
+  const structureById = useAppStore((s) => s.searchByUnitCellSlice.data.structureById);
+  const structures = useMemo(
+    () =>
+      structureIds
+        .map((id) => structureById[id])
+        .filter((item) => !!item) as unknown as StructureModel[],
+    [structureIds, structureById]
+  );
   const currentPage = useAppStore((s) => s.searchByUnitCellSlice.search.page);
   const totalPages = useAppStore((s) => s.searchByUnitCellSlice.meta.totalPages);
   const error = useAppStore((s) => s.searchByUnitCellSlice.error);
-  const hasNoResults = useAppStore((s) => {
-    const status = s.searchByUnitCellSlice.status;
-    const resultCount = Object.keys(s.searchByUnitCellSlice.data.structureById).length;
-    return status === SearchState.success && resultCount === 0;
-  });
-  const totalResults = useAppStore((s) => {
-    return Math.max(
-      Object.keys(s.searchByUnitCellSlice.data.structureById).length,
-      s.searchByUnitCellSlice.meta.totalResults
-    );
-  });
+  const status = useAppStore((s) => s.searchByUnitCellSlice.status);
+  const metaTotalResults = useAppStore((s) => s.searchByUnitCellSlice.meta.totalResults);
+  const totalResults = useMemo(
+    () => Math.max(Object.keys(structureById).length, metaTotalResults),
+    [structureById, metaTotalResults]
+  );
+  const hasNoResults = status === SearchState.success && totalResults === 0;
   const search = useAppStore((s) => s.searchByUnitCellSlice.search);
-
-  const showSummary = useAppStore((s) => {
-    const status = s.searchByUnitCellSlice.status;
-    const resultCount = Math.max(
-      Object.keys(s.searchByUnitCellSlice.data.structureById).length,
-      s.searchByUnitCellSlice.meta.totalResults
-    );
-    return (
-      resultCount !== 0 &&
-      [SearchState.processing, SearchState.started, SearchState.success].includes(status)
-    );
-  });
+  const showSummary =
+    totalResults !== 0 &&
+    [SearchState.processing, SearchState.started, SearchState.success].includes(status);
 
   const searchByUnitCell = useAppStore((s) => s.searchByUnitCell);
 

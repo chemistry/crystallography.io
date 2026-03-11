@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Pagination } from '../components/index.js';
 import { Loader } from '../components/loader/index.js';
@@ -20,11 +20,15 @@ export const AuthorDetailsPage = () => {
   const found = useAppStore((s) => s.authorsDetailsPage.meta.total);
   const isLoading = useAppStore((s) => s.authorsDetailsPage.isLoading);
   const pages = useAppStore((s) => s.authorsDetailsPage.meta.pages);
-  const structures = useAppStore((s) => {
-    const ids = s.authorsDetailsPage.data.structureIds;
-    const byId = s.authorsDetailsPage.data.structureById;
-    return ids.map((id) => byId[id]).filter((item) => !!item) as unknown as StructureModel[];
-  });
+  const structureIds = useAppStore((s) => s.authorsDetailsPage.data.structureIds);
+  const structureById = useAppStore((s) => s.authorsDetailsPage.data.structureById);
+  const structures = useMemo(
+    () =>
+      structureIds
+        .map((id) => structureById[id])
+        .filter((item) => !!item) as unknown as StructureModel[],
+    [structureIds, structureById]
+  );
 
   const containerRef = useRef(null);
 

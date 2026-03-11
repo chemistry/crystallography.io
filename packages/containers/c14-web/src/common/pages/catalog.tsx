@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../components/loader/index.js';
 import { Pagination } from '../components/pagination/index.js';
@@ -15,11 +15,15 @@ export const CatalogPage = () => {
   const pages = useAppStore((s) => s.catalogPage.meta.pages);
   const containerRef = useRef(null);
 
-  const structures = useAppStore((s) => {
-    const ids = s.catalogPage.data.structureIds;
-    const byId = s.catalogPage.data.structureById;
-    return ids.map((id) => byId[id]).filter((item) => !!item) as unknown as StructureModel[];
-  });
+  const structureIds = useAppStore((s) => s.catalogPage.data.structureIds);
+  const structureById = useAppStore((s) => s.catalogPage.data.structureById);
+  const structures = useMemo(
+    () =>
+      structureIds
+        .map((id) => structureById[id])
+        .filter((item) => !!item) as unknown as StructureModel[],
+    [structureIds, structureById]
+  );
 
   return (
     <div>

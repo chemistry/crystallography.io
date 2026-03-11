@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { API_BASE_URL } from '../../config.js';
 import { getStructures } from '../../../models/index.js';
 
 export enum SearchState {
@@ -68,10 +69,9 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
         },
       }));
 
-      const response = await fetch(
-        `https://crystallography.io/api/v1/search/structure/${id}?page=${page}`,
-        { method: 'GET' }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/search/structure/${id}?page=${page}`, {
+        method: 'GET',
+      });
       const data = await response.json();
 
       let structuresToLoad: number[] = [];
@@ -136,7 +136,7 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
     const newStructures = structuresToLoad.filter((x) => !existingIds.includes(x));
 
     if (newStructures.length > 0) {
-      const response2 = await fetch('https://crystallography.io/api/v1/structure', {
+      const response2 = await fetch(`${API_BASE_URL}/api/v1/structure`, {
         method: 'POST',
         body: `ids=[${structuresToLoad.join(',')}]`,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

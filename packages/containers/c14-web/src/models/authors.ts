@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../common/config.js';
+
 interface AuthorsContentResponse {
   meta: { pages: number; total: number };
   data: [
@@ -14,7 +16,7 @@ interface AuthorsContentResponse {
 }
 
 export const getAuthorsList = async (pageQ: number): Promise<AuthorsContentResponse> => {
-  const response = await fetch(`https://crystallography.io/api/v1/authors?page=${pageQ}`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/authors?page=${pageQ}`, {
     method: 'GET',
   });
   return await response.json();

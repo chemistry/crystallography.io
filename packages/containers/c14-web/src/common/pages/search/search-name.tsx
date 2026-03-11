@@ -1,4 +1,4 @@
-import { useState, useRef, type FormEvent } from 'react';
+import { useState, useRef, useMemo, type FormEvent } from 'react';
 import { useAppStore } from '../../store/index.js';
 import { Loader, NoSearchResults, Pagination, SearchTab } from '../../components/index.js';
 import { Input } from '../../components/input/index.js';
@@ -161,39 +161,29 @@ const SearchSummary = ({ totalResults }: { totalResults: number }) => {
 const SearchResults = () => {
   const containerRef = useRef(null);
   const isLoading = useAppStore((s) => s.searchByNameSlice.isLoading);
-  const structures = useAppStore((s) => {
-    const structuresIds = s.searchByNameSlice.data.structureIds;
-    const structuresById = s.searchByNameSlice.data.structureById;
-    return structuresIds
-      .map((id) => structuresById[id])
-      .filter((item) => !!item) as unknown as StructureModel[];
-  });
+  const structureIds = useAppStore((s) => s.searchByNameSlice.data.structureIds);
+  const structureById = useAppStore((s) => s.searchByNameSlice.data.structureById);
+  const structures = useMemo(
+    () =>
+      structureIds
+        .map((id) => structureById[id])
+        .filter((item) => !!item) as unknown as StructureModel[],
+    [structureIds, structureById]
+  );
   const currentPage = useAppStore((s) => s.searchByNameSlice.search.page);
   const searchString = useAppStore((s) => s.searchByNameSlice.search.name);
   const error = useAppStore((s) => s.searchByNameSlice.error);
   const totalPages = useAppStore((s) => s.searchByNameSlice.meta.totalPages);
-  const hasNoResults = useAppStore((s) => {
-    const status = s.searchByNameSlice.status;
-    const resultCount = Object.keys(s.searchByNameSlice.data.structureById).length;
-    return status === SearchState.success && resultCount === 0;
-  });
-  const totalResults = useAppStore((s) => {
-    return Math.max(
-      Object.keys(s.searchByNameSlice.data.structureById).length,
-      s.searchByNameSlice.meta.totalResults
-    );
-  });
-  const showSummary = useAppStore((s) => {
-    const status = s.searchByNameSlice.status;
-    const resultCount = Math.max(
-      Object.keys(s.searchByNameSlice.data.structureById).length,
-      s.searchByNameSlice.meta.totalResults
-    );
-    return (
-      resultCount !== 0 &&
-      [SearchState.processing, SearchState.started, SearchState.success].includes(status)
-    );
-  });
+  const status = useAppStore((s) => s.searchByNameSlice.status);
+  const metaTotalResults = useAppStore((s) => s.searchByNameSlice.meta.totalResults);
+  const totalResults = useMemo(
+    () => Math.max(Object.keys(structureById).length, metaTotalResults),
+    [structureById, metaTotalResults]
+  );
+  const hasNoResults = status === SearchState.success && totalResults === 0;
+  const showSummary =
+    totalResults !== 0 &&
+    [SearchState.processing, SearchState.started, SearchState.success].includes(status);
 
   const searchStructureByName = useAppStore((s) => s.searchStructureByName);
 

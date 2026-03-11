@@ -1,4 +1,4 @@
-import { hydrateRoot } from 'react-dom/client';
+import { hydrateRoot, createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppContextType, getApplication } from '../common/index.js';
@@ -24,8 +24,8 @@ if (process.env.NODE_ENV !== 'development') {
   const win = window as unknown as { __INITIAL_STATE__?: Record<string, unknown> };
   const initialState = win.__INITIAL_STATE__ || {};
 
-  hydrateRoot(
-    document.getElementById('root')!,
+  const rootElement = document.getElementById('root')!;
+  const app = (
     <StoreProvider initialState={initialState}>
       <BrowserRouter>
         <Routes>
@@ -38,6 +38,12 @@ if (process.env.NODE_ENV !== 'development') {
       </BrowserRouter>
     </StoreProvider>
   );
+
+  if (rootElement.hasChildNodes()) {
+    hydrateRoot(rootElement, app);
+  } else {
+    createRoot(rootElement).render(app);
+  }
 
   registerSW();
 })();

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useAppStore } from '../store/index.js';
 import { Loader } from '../components/loader/index.js';
@@ -63,13 +63,19 @@ export const AuthorsPage = () => {
 
   const isLoading = useAppStore((s) => s.authorsListPage.isLoading);
   const containerRef = useRef(null);
-  const { total, pages } = useAppStore((s) => s.authorsListPage.meta);
+  const total = useAppStore((s) => s.authorsListPage.meta.total);
+  const pages = useAppStore((s) => s.authorsListPage.meta.pages);
+  const authorsList = useAppStore((s) => s.authorsListPage.data.authorsList);
 
-  const authors: AuthorsRecord[] = useAppStore((s) => s.authorsListPage.data.authorsList).map(
-    (res: { full: string; count: number; updated: string; id: number }, index: number) => ({
-      index: index + 1,
-      ...res,
-    })
+  const authors: AuthorsRecord[] = useMemo(
+    () =>
+      authorsList.map(
+        (res: { full: string; count: number; updated: string; id: number }, index: number) => ({
+          index: index + 1,
+          ...res,
+        })
+      ),
+    [authorsList]
   );
 
   const split = Math.ceil(authors.length / 2);

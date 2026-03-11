@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { API_BASE_URL } from '../../config.js';
 import { getStructures } from '../../../models/index.js';
 
 export enum SearchState {
@@ -43,7 +44,7 @@ export const createSearchByNameSlice: StateCreator<SearchByNameState> = (set) =>
         },
       }));
 
-      const response = await fetch('https://crystallography.io/api/v1/search/name', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/search/name`, {
         method: 'POST',
         body: `page=${page}&name=${encodeURIComponent(name)}`,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

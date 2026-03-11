@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import svgr from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     svgr(),
     VitePWA({
       strategies: 'injectManifest',
@@ -41,8 +43,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api/v1/autocomplete': {
-        target: 'https://crystallography.io',
+      '/api': {
+        target: 'http://localhost:3001',
         changeOrigin: true,
       },
     },

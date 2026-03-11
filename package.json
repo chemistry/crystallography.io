@@ -27,6 +27,7 @@
     "lint": "eslint 'packages/**/*.{ts,tsx}'",
     "format": "prettier --write 'packages/**/*.{ts,tsx}'",
     "format:check": "prettier --check 'packages/**/*.{ts,tsx}'",
+    "dev": "npx tsx packages/containers/mock-server/src/index.ts & npx vite packages/containers/c14-web",
     "clean": "rimraf packages/**/dist coverage",
     "verify": "npm run build && npm run lint && npm run test"
   },

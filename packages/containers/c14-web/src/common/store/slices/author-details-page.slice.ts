@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { API_BASE_URL } from '../../config.js';
 import { getStructures } from '../../../models/index.js';
 
 export interface AuthorDetailsPageState {
@@ -32,7 +33,7 @@ export const createAuthorDetailsPageSlice: StateCreator<AuthorDetailsPageState> 
       }));
 
       const response = await fetch(
-        `https://crystallography.io/api/v1/authors/${encodeURIComponent(name)}?page=${pageQ}`,
+        `${API_BASE_URL}/api/v1/authors/${encodeURIComponent(name)}?page=${pageQ}`,
         { method: 'GET', headers: { 'Content-Type': 'application/json' } }
       );
       const data = await response.json();
