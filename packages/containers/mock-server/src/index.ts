@@ -117,9 +117,7 @@ app.post('/api/v1/search/name', (req, res) => {
 // Search by author
 app.post('/api/v1/search/author', (req, res) => {
   const name = String(req.body.name || '').toLowerCase();
-  const matched = structures.filter((s) =>
-    s.__authors.some((a) => a.toLowerCase().includes(name))
-  );
+  const matched = structures.filter((s) => s.__authors.some((a) => a.toLowerCase().includes(name)));
   const matchedAuthors = authors.filter((a) => a.full.toLowerCase().includes(name));
   res.json({
     meta: {
@@ -134,7 +132,9 @@ app.post('/api/v1/search/author', (req, res) => {
 
 // Search by formula
 app.post('/api/v1/search/formula', (req, res) => {
-  const formula = String(req.body.formula || '').toLowerCase().replace(/\s/g, '');
+  const formula = String(req.body.formula || '')
+    .toLowerCase()
+    .replace(/\s/g, '');
   const matched = structures.filter(
     (s) =>
       s.formula.toLowerCase().replace(/\s/g, '').includes(formula) ||
@@ -157,8 +157,7 @@ app.post('/api/v1/search/formula', (req, res) => {
 app.post('/api/v1/search/unit-cell', (req, res) => {
   const { a, b, c, alpha, beta, gamma, tolerance } = req.body;
   const tol = Number(tolerance) || 5;
-  const inRange = (val: number, target: number) =>
-    Math.abs(val - target) <= (target * tol) / 100;
+  const inRange = (val: number, target: number) => Math.abs(val - target) <= (target * tol) / 100;
 
   const matched = structures.filter(
     (s) =>

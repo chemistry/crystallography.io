@@ -20,12 +20,9 @@ interface CatalogResponse {
 }
 
 export const getCatalogContent = async (pageQ: number): Promise<CatalogContentResponse> => {
-  const response = await fetch(
-    `${API_BASE_URL}/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`,
-    {
-      method: 'GET',
-    }
-  );
+  const response = await fetch(`${API_BASE_URL}/api/v1/catalog/?page=${Math.ceil(pageQ / 100)}`, {
+    method: 'GET',
+  });
   const { data, meta } = (await response.json()) as CatalogResponse;
 
   let structures: number[] = [];

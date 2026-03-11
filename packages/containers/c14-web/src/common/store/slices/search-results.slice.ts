@@ -69,10 +69,9 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
         },
       }));
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/v1/search/structure/${id}?page=${page}`,
-        { method: 'GET' }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/search/structure/${id}?page=${page}`, {
+        method: 'GET',
+      });
       const data = await response.json();
 
       let structuresToLoad: number[] = [];
