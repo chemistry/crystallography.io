@@ -2,9 +2,6 @@ services:
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
     restart: always
-    ports:
-      - 5672:5672
-      - 15672:15672
     networks:
       - net
     deploy:
@@ -15,15 +12,12 @@ services:
   mongo:
     image: mongo:7
     restart: always
-    ports:
-      - 27017:27017
     volumes:
       - dbdata:/data/db
     env_file:
       - ./.env
     networks:
       - net
-      - traefik-public
     deploy:
       placement:
         constraints:
@@ -32,14 +26,11 @@ services:
   redis:
     image: redis:7-alpine
     restart: always
-    ports:
-      - 6379:6379
     volumes:
       - redisdata:/data
     command: 'redis-server --requirepass "${REDIS_PASSWORD}"'
     networks:
       - net
-      - traefik-public
     env_file:
       - ./.env
     deploy:
@@ -68,7 +59,7 @@ services:
     image: ghcr.io/chemistry/disk-to-db:latest
     restart: always
     volumes:
-      - cod-data:/home/data
+      - /mnt/data:/home/data
     env_file:
       - ./.env
     networks:
@@ -100,7 +91,7 @@ services:
     image: ghcr.io/chemistry/cod-to-disk:latest
     restart: always
     volumes:
-      - cod-data:/home/data
+      - /mnt/data:/home/data
     networks:
       - net
     env_file:
@@ -133,21 +124,21 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.web-http.rule=Host(`crystallography.io`)
-        - traefik.http.routers.web-http.entrypoints=http
-        - traefik.http.routers.web-http.middlewares=https-redirect
-        - traefik.http.routers.web-https.priority=10
-        - traefik.http.routers.web-https.rule=Host(`crystallography.io`)
-        - traefik.http.routers.web-https.entrypoints=https
-        - traefik.http.routers.web-https.tls=true
-        - traefik.http.routers.web-https.tls.certresolver=le
-        - traefik.http.services.web.loadbalancer.server.port=8060
+        - traefik.http.routers.crystallography-web-http.rule=Host(`crystallography.io`)
+        - traefik.http.routers.crystallography-web-http.entrypoints=http
+        - traefik.http.routers.crystallography-web-http.middlewares=https-redirect
+        - traefik.http.routers.crystallography-web-https.priority=10
+        - traefik.http.routers.crystallography-web-https.rule=Host(`crystallography.io`)
+        - traefik.http.routers.crystallography-web-https.entrypoints=https
+        - traefik.http.routers.crystallography-web-https.tls=true
+        - traefik.http.routers.crystallography-web-https.tls.certresolver=le
+        - traefik.http.services.crystallography-web.loadbalancer.server.port=8060
 
   api:
     image: ghcr.io/chemistry/c14-api:latest
     restart: always
     volumes:
-      - cod-data:/home/data
+      - /mnt/data:/home/data
     build:
       context: ./packages/containers/c14-api
       dockerfile: Dockerfile
@@ -167,12 +158,12 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.api-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api`) || PathPrefix(`/sitemap`) || PathPrefix(`/cif`)))
-        - traefik.http.routers.api-https.priority=20
-        - traefik.http.routers.api-https.entrypoints=https
-        - traefik.http.routers.api-https.tls=true
-        - traefik.http.routers.api-https.tls.certresolver=le
-        - traefik.http.services.api.loadbalancer.server.port=8070
+        - traefik.http.routers.crystallography-api-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api`) || PathPrefix(`/sitemap`) || PathPrefix(`/cif`)))
+        - traefik.http.routers.crystallography-api-https.priority=20
+        - traefik.http.routers.crystallography-api-https.entrypoints=https
+        - traefik.http.routers.crystallography-api-https.tls=true
+        - traefik.http.routers.crystallography-api-https.tls.certresolver=le
+        - traefik.http.services.crystallography-api.loadbalancer.server.port=8070
     depends_on:
       - mongo
 
@@ -201,12 +192,12 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.search-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api/v1/search/structure`) || PathPrefix(`/api/v1/live`)))
-        - traefik.http.routers.search-https.entrypoints=https,ws,wss
-        - traefik.http.routers.search-https.tls=true
-        - traefik.http.routers.search-https.priority=40
-        - traefik.http.routers.search-https.tls.certresolver=le
-        - traefik.http.services.search.loadbalancer.server.port=8050
+        - traefik.http.routers.crystallography-search-https.rule=(Host(`crystallography.io`) && (PathPrefix(`/api/v1/search/structure`) || PathPrefix(`/api/v1/live`)))
+        - traefik.http.routers.crystallography-search-https.entrypoints=https,ws,wss
+        - traefik.http.routers.crystallography-search-https.tls=true
+        - traefik.http.routers.crystallography-search-https.priority=40
+        - traefik.http.routers.crystallography-search-https.tls.certresolver=le
+        - traefik.http.services.crystallography-search.loadbalancer.server.port=8050
 
   searchworker:
     image: ghcr.io/chemistry/searchworker:latest
@@ -228,6 +219,5 @@ networks:
     external: true
 
 volumes:
-  cod-data:
   dbdata:
   redisdata:

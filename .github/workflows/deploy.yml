@@ -6,9 +6,12 @@ on:
       - master
     paths:
       - 'packages/containers/**'
+      - 'docker-compose.yaml'
 
 env:
   REGISTRY: ghcr.io
+  STACK_NAME: crystallography-io
+  REMOTE_DIR: /opt/crystallography.io
 
 jobs:
   build-and-deploy:
@@ -38,8 +41,18 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: REGISTRY,STACK_NAME,REMOTE_DIR
           script: |
             docker image prune -af
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            cd /opt/crystallography.io
-            docker stack deploy -c docker-compose.yaml crystallography-io --with-registry-auth
+
+            mkdir -p $REMOTE_DIR
+            cd $REMOTE_DIR
+
+            # Pull latest compose file from the deployed image or use existing
+            docker stack deploy -c docker-compose.yaml $STACK_NAME --with-registry-auth
+
+            # Force update all services to pull latest images
+            for service in $(docker stack services $STACK_NAME --format '{{.Name}}'); do
+              docker service update --force "$service" 2>/dev/null || true
+            done
