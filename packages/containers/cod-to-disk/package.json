@@ -17,12 +17,12 @@
     "@sentry/node": "^8.0.0",
     "amqplib": "^0.10.0",
     "node-cron": "^3.0.0",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.10.0"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.0",
     "@types/node-cron": "^3.0.0",
-    "@types/shelljs": "^0.8.15",
+    "@types/shelljs": "^0.10.0",
     "typescript": "^5.9.0"
   }
 }
