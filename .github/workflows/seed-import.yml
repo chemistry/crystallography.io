@@ -28,12 +28,15 @@ jobs:
           script: |
             BATCH_SIZE=${{ github.event.inputs.batch_size || '100' }}
             QUEUE_NAME="COD_FILE_CHANGED"
-            DATA_PATH="/mnt/data/cif"
+            # Host path where CIF files are stored
+            HOST_DATA_PATH="/mnt/data/cif"
+            # Container path (bind mount: /mnt/data -> /home/data)
+            CONTAINER_DATA_PATH="/home/data/cif"
 
             echo "=== Checking prerequisites ==="
             RABBIT_CONTAINER=$(docker ps --filter "name=${{ env.STACK_NAME }}_rabbitmq" --format '{{.ID}}' | head -1)
             [ -n "$RABBIT_CONTAINER" ] || { echo "ERROR: RabbitMQ container not running"; exit 1; }
-            [ -d "$DATA_PATH" ] || { echo "ERROR: CIF data not found at $DATA_PATH"; exit 1; }
+            [ -d "$HOST_DATA_PATH" ] || { echo "ERROR: CIF data not found at $HOST_DATA_PATH"; exit 1; }
 
             # Declare queue
             docker exec "$RABBIT_CONTAINER" rabbitmqadmin declare queue name="$QUEUE_NAME" durable=true 2>&1
@@ -41,7 +44,7 @@ jobs:
             # Force restart disk-to-db to ensure consumers are connected
             docker service update --force ${{ env.STACK_NAME }}_disk-to-db 2>&1 | tail -1
 
-            TOTAL=$(find "$DATA_PATH" -name "*.cif" | wc -l)
+            TOTAL=$(find "$HOST_DATA_PATH" -name "*.cif" | wc -l)
             echo "Found $TOTAL CIF files to import"
 
             # Generate all messages and publish via rabbitmqadmin
@@ -49,13 +52,15 @@ jobs:
             BATCH=""
             BATCH_COUNT=0
 
-            find "$DATA_PATH" -name "*.cif" | sort | while IFS= read -r filepath; do
+            find "$HOST_DATA_PATH" -name "*.cif" | sort | while IFS= read -r filepath; do
               filename=$(basename "$filepath" .cif)
+              # Convert host path to container path for disk-to-db
+              container_filepath="${filepath/$HOST_DATA_PATH/$CONTAINER_DATA_PATH}"
 
               if [ "$BATCH_COUNT" -eq 0 ]; then
-                BATCH="[{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
+                BATCH="[{\"fileName\":\"$container_filepath\",\"codId\":\"$filename\"}"
               else
-                BATCH="${BATCH},{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
+                BATCH="${BATCH},{\"fileName\":\"$container_filepath\",\"codId\":\"$filename\"}"
               fi
               BATCH_COUNT=$((BATCH_COUNT + 1))
 
