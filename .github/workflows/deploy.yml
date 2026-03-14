@@ -81,6 +81,9 @@ jobs:
             # Authenticate with GHCR
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+            # Pull all images before deploying
+            docker compose pull
+
             # Deploy stack
             docker stack deploy -c docker-compose.yaml $STACK_NAME --with-registry-auth
 
@@ -89,5 +92,5 @@ jobs:
               docker service update --force "$service" 2>/dev/null || true
             done
 
-            # Cleanup old images
-            docker image prune -af
+            # Cleanup old unused images
+            docker image prune -f
