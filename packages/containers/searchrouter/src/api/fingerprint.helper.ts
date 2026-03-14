@@ -1,4 +1,5 @@
-import { Molecule } from '@chemistry/molecule';
+import pkg from '@chemistry/molecule';
+const { Molecule } = pkg;
 import type { IFingerprintModel } from '../models/index.js';
 
 export function prepareChunksForSearch(

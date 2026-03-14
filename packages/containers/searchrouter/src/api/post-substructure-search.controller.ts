@@ -1,4 +1,5 @@
-import { Molecule } from '@chemistry/molecule';
+import pkg from '@chemistry/molecule';
+const { Molecule } = pkg;
 import * as Sentry from '@sentry/node';
 import type { NextFunction, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';

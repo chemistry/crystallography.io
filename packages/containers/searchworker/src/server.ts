@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
 import { Worker } from 'bullmq';
-import { Matcher, Molecule } from '@chemistry/molecule';
+import pkg from '@chemistry/molecule';
+const { Matcher, Molecule } = pkg;
 import type { Db, Document, Filter, WithId } from 'mongodb';
 
 interface JMol {
