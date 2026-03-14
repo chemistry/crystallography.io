@@ -1,0 +1,34 @@
+name: Sync COD Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 0' # Weekly on Sunday at 3 AM UTC
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync CIF files from COD
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          command_timeout: 120m
+          script: |
+            DATA_PATH="/mnt/data/cif"
+
+            # Verify volume is mounted
+            mountpoint -q /mnt/data || { echo "ERROR: /mnt/data not mounted"; exit 1; }
+            mkdir -p "$DATA_PATH"
+
+            echo "=== Starting COD rsync ==="
+            echo "Before: $(find "$DATA_PATH" -name '*.cif' 2>/dev/null | wc -l) files, $(du -sh "$DATA_PATH" 2>/dev/null | cut -f1)"
+
+            rsync -avz --stats rsync://www.crystallography.net/cif/ "$DATA_PATH/"
+
+            echo "=== Sync complete ==="
+            echo "After: $(find "$DATA_PATH" -name '*.cif' | wc -l) files, $(du -sh "$DATA_PATH" | cut -f1)"
+            echo "Volume: $(df -h /mnt/data | tail -1)"

@@ -1,0 +1,44 @@
+name: Server Status
+
+on:
+  workflow_dispatch:
+
+env:
+  STACK_NAME: crystallography-io
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check server and services
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            echo "=== Server ==="
+            uname -a
+            echo ""
+
+            echo "=== Resources ==="
+            echo "CPU: $(nproc) cores"
+            free -h | head -2
+            echo ""
+
+            echo "=== Disk ==="
+            df -h / /mnt/data
+            echo ""
+
+            echo "=== CIF Data ==="
+            echo "Files: $(find /mnt/data/cif -name '*.cif' 2>/dev/null | wc -l)"
+            echo "Size: $(du -sh /mnt/data/cif 2>/dev/null | cut -f1)"
+            echo ""
+
+            echo "=== Docker Stack ==="
+            docker stack services ${{ env.STACK_NAME }} 2>/dev/null || echo "Stack not deployed"
+            echo ""
+
+            echo "=== Docker Resources ==="
+            docker system df

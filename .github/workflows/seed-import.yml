@@ -1,0 +1,88 @@
+name: Seed Import
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        description: 'Files per RabbitMQ message'
+        required: false
+        default: '50'
+
+env:
+  STACK_NAME: crystallography-io
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run seed import
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          command_timeout: 60m
+          script: |
+            BATCH_SIZE=${{ github.event.inputs.batch_size || '50' }}
+            QUEUE_NAME="COD_FILE_CHANGED"
+            DATA_PATH="/mnt/data/cif"
+            RABBITMQ_API="http://localhost:15672/api"
+
+            # Verify prerequisites
+            echo "=== Checking prerequisites ==="
+            docker stack services ${{ env.STACK_NAME }} | grep -q rabbitmq || { echo "ERROR: Stack not deployed"; exit 1; }
+            [ -d "$DATA_PATH" ] || { echo "ERROR: CIF data not found at $DATA_PATH"; exit 1; }
+
+            TOTAL=$(find "$DATA_PATH" -name "*.cif" | wc -l)
+            echo "Found $TOTAL CIF files"
+
+            # Get RabbitMQ container for queue operations
+            RABBIT_CONTAINER=$(docker ps --filter "name=crystallography-io_rabbitmq" --format '{{.ID}}' | head -1)
+            [ -n "$RABBIT_CONTAINER" ] || { echo "ERROR: RabbitMQ container not running"; exit 1; }
+
+            # Declare queue
+            docker exec "$RABBIT_CONTAINER" rabbitmqctl set_policy ha-all "" '{"ha-mode":"all"}' 2>/dev/null || true
+
+            # Seed via rabbitmqadmin inside the container
+            COUNT=0
+            BATCH=""
+            BATCH_COUNT=0
+
+            find "$DATA_PATH" -name "*.cif" | sort | while IFS= read -r filepath; do
+              filename=$(basename "$filepath" .cif)
+
+              if [ "$BATCH_COUNT" -eq 0 ]; then
+                BATCH="[{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
+              else
+                BATCH="$BATCH,{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
+              fi
+              BATCH_COUNT=$((BATCH_COUNT + 1))
+
+              if [ "$BATCH_COUNT" -ge "$BATCH_SIZE" ]; then
+                BATCH="$BATCH]"
+                docker exec "$RABBIT_CONTAINER" rabbitmqadmin publish \
+                  exchange="" routing_key="$QUEUE_NAME" \
+                  payload="$BATCH" 2>/dev/null
+
+                COUNT=$((COUNT + BATCH_SIZE))
+                BATCH_COUNT=0
+
+                if [ $((COUNT % 10000)) -eq 0 ]; then
+                  echo "Queued $COUNT / $TOTAL files ($(( COUNT * 100 / TOTAL ))%)"
+                fi
+              fi
+            done
+
+            # Send remaining
+            if [ "$BATCH_COUNT" -gt 0 ]; then
+              BATCH="$BATCH]"
+              docker exec "$RABBIT_CONTAINER" rabbitmqadmin publish \
+                exchange="" routing_key="$QUEUE_NAME" \
+                payload="$BATCH" 2>/dev/null
+              COUNT=$((COUNT + BATCH_COUNT))
+            fi
+
+            echo "=== Seed import complete: $COUNT files queued ==="

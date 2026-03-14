@@ -11,6 +11,7 @@
     "composite": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "rootDir": "src",
     "outDir": "dist",
     "jsx": "react-jsx",
     "lib": ["ES2024", "DOM"]

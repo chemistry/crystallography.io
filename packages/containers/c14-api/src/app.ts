@@ -1,4 +1,4 @@
-import * as bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
 import cors from 'cors';
 import express from 'express';

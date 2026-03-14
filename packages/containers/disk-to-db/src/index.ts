@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node';
-import * as shell from 'shelljs';
+import shell from 'shelljs';
 import type { ExecOptions, ShellString } from 'shelljs';
 import { app } from './app.js';
 import type { AppContext } from './app.js';

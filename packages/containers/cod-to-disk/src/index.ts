@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type { Readable } from 'node:stream';
-import * as shell from 'shelljs';
+import shell from 'shelljs';
 import type { ShellString } from 'shelljs';
 import type { ExecOptions } from 'shelljs';
 import { app } from './app.js';
