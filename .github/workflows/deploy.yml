@@ -55,7 +55,7 @@ jobs:
           sed -i 's/^          //' .env.production
 
       - name: Copy files to server
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: root
