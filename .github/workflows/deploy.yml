@@ -35,6 +35,16 @@ jobs:
           docker compose build
           docker compose push
 
+      - name: Copy compose file to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: docker-compose.yaml,.env.production
+          target: ${{ env.REMOTE_DIR }}
+          overwrite: true
+
       - name: Deploy to Docker Swarm
         uses: appleboy/ssh-action@v1
         with:
@@ -46,10 +56,8 @@ jobs:
             docker image prune -af
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            mkdir -p $REMOTE_DIR
             cd $REMOTE_DIR
 
-            # Pull latest compose file from the deployed image or use existing
             docker stack deploy -c docker-compose.yaml $STACK_NAME --with-registry-auth
 
             # Force update all services to pull latest images
