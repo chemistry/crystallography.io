@@ -1,0 +1,48 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:00'
+      timezone: 'Europe/Prague'
+    assignees:
+      - 'vreshch'
+    open-pull-requests-limit: 10
+    groups:
+      dev-dependencies:
+        patterns:
+          - '@types/*'
+          - 'typescript'
+          - 'typescript-eslint'
+          - 'eslint*'
+          - '@eslint/*'
+          - 'prettier'
+          - 'vitest*'
+          - '@vitest/*'
+          - 'jest*'
+          - 'ts-jest'
+          - '@playwright/*'
+          - 'playwright*'
+          - '@testing-library/*'
+          - 'postcss'
+          - 'autoprefixer'
+          - '@tailwindcss/*'
+          - 'tailwindcss'
+        update-types:
+          - 'minor'
+          - 'patch'
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:00'
+      timezone: 'Europe/Prague'
+    assignees:
+      - 'vreshch'
