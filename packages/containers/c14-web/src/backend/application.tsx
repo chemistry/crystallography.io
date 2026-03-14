@@ -5,7 +5,7 @@ import express from 'express';
 import type { NextFunction, Request, Response, Express } from 'express';
 import path from 'node:path';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom/server';
+import { StaticRouter } from 'react-router-dom/server.js';
 import { matchPath, Routes, Route } from 'react-router-dom';
 import { StoreProvider } from '../common/store/index.js';
 import { createAppStore } from '../common/store/create-app-store.js';

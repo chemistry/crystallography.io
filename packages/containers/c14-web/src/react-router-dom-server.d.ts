@@ -1,4 +1,4 @@
-declare module 'react-router-dom/server' {
+declare module 'react-router-dom/server.js' {
   import type * as React from 'react';
   interface StaticRouterProps {
     basename?: string;

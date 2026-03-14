@@ -3,7 +3,7 @@ import type { Collection, Document, Filter, WithId } from 'mongodb';
 import type { AppContext } from '../app.js';
 
 const require = createRequire(import.meta.url);
-const { Molecule3D } = require('@chemistry/molecule3d');
+const { Molecule3D } = require('@chemistry/molecule3d/dist/molecule3d.js');
 
 const BLACK_LIST = [2003119, 2000129, 2105953, 4323098, 4323099];
 
