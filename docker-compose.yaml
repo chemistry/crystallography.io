@@ -108,6 +108,9 @@ services:
     build:
       context: ./packages/containers/c14-web
       dockerfile: Dockerfile
+      args:
+        - COMMIT_SHA=${COMMIT_SHA:-}
+        - BUILD_TIME=${BUILD_TIME:-}
     networks:
       - net
       - traefik-public
@@ -142,6 +145,9 @@ services:
     build:
       context: ./packages/containers/c14-api
       dockerfile: Dockerfile
+      args:
+        - COMMIT_SHA=${COMMIT_SHA:-}
+        - BUILD_TIME=${BUILD_TIME:-}
     networks:
       - net
       - traefik-public
@@ -173,6 +179,9 @@ services:
     build:
       context: ./packages/containers/searchrouter
       dockerfile: Dockerfile
+      args:
+        - COMMIT_SHA=${COMMIT_SHA:-}
+        - BUILD_TIME=${BUILD_TIME:-}
     networks:
       - net
       - traefik-public
