@@ -1,6 +1,7 @@
 name: Deploy
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -41,7 +42,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: docker-compose.yaml,.env.production
+          source: docker-compose.yaml
           target: ${{ env.REMOTE_DIR }}
           overwrite: true
 
