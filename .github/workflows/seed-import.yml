@@ -6,7 +6,7 @@ on:
       batch_size:
         description: 'Files per RabbitMQ message'
         required: false
-        default: '50'
+        default: '100'
 
 env:
   STACK_NAME: crystallography-io
@@ -24,29 +24,27 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          command_timeout: 60m
+          command_timeout: 120m
           script: |
-            BATCH_SIZE=${{ github.event.inputs.batch_size || '50' }}
+            BATCH_SIZE=${{ github.event.inputs.batch_size || '100' }}
             QUEUE_NAME="COD_FILE_CHANGED"
             DATA_PATH="/mnt/data/cif"
-            RABBITMQ_API="http://localhost:15672/api"
 
-            # Verify prerequisites
             echo "=== Checking prerequisites ==="
-            docker stack services ${{ env.STACK_NAME }} | grep -q rabbitmq || { echo "ERROR: Stack not deployed"; exit 1; }
+            RABBIT_CONTAINER=$(docker ps --filter "name=${{ env.STACK_NAME }}_rabbitmq" --format '{{.ID}}' | head -1)
+            [ -n "$RABBIT_CONTAINER" ] || { echo "ERROR: RabbitMQ container not running"; exit 1; }
             [ -d "$DATA_PATH" ] || { echo "ERROR: CIF data not found at $DATA_PATH"; exit 1; }
 
-            TOTAL=$(find "$DATA_PATH" -name "*.cif" | wc -l)
-            echo "Found $TOTAL CIF files"
-
-            # Get RabbitMQ container for queue operations
-            RABBIT_CONTAINER=$(docker ps --filter "name=crystallography-io_rabbitmq" --format '{{.ID}}' | head -1)
-            [ -n "$RABBIT_CONTAINER" ] || { echo "ERROR: RabbitMQ container not running"; exit 1; }
-
             # Declare queue
-            docker exec "$RABBIT_CONTAINER" rabbitmqctl set_policy ha-all "" '{"ha-mode":"all"}' 2>/dev/null || true
+            docker exec "$RABBIT_CONTAINER" rabbitmqadmin declare queue name="$QUEUE_NAME" durable=true 2>&1
 
-            # Seed via rabbitmqadmin inside the container
+            # Force restart disk-to-db to ensure consumers are connected
+            docker service update --force ${{ env.STACK_NAME }}_disk-to-db 2>&1 | tail -1
+
+            TOTAL=$(find "$DATA_PATH" -name "*.cif" | wc -l)
+            echo "Found $TOTAL CIF files to import"
+
+            # Generate all messages and publish via rabbitmqadmin
             COUNT=0
             BATCH=""
             BATCH_COUNT=0
@@ -57,32 +55,34 @@ jobs:
               if [ "$BATCH_COUNT" -eq 0 ]; then
                 BATCH="[{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
               else
-                BATCH="$BATCH,{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
+                BATCH="${BATCH},{\"fileName\":\"$filepath\",\"codId\":\"$filename\"}"
               fi
               BATCH_COUNT=$((BATCH_COUNT + 1))
 
               if [ "$BATCH_COUNT" -ge "$BATCH_SIZE" ]; then
-                BATCH="$BATCH]"
+                BATCH="${BATCH}]"
                 docker exec "$RABBIT_CONTAINER" rabbitmqadmin publish \
-                  exchange="" routing_key="$QUEUE_NAME" \
+                  exchange=amq.default routing_key="$QUEUE_NAME" \
                   payload="$BATCH" 2>/dev/null
 
                 COUNT=$((COUNT + BATCH_SIZE))
                 BATCH_COUNT=0
 
                 if [ $((COUNT % 10000)) -eq 0 ]; then
-                  echo "Queued $COUNT / $TOTAL files ($(( COUNT * 100 / TOTAL ))%)"
+                  QUEUE_DEPTH=$(docker exec "$RABBIT_CONTAINER" rabbitmqctl list_queues --quiet 2>/dev/null | grep "$QUEUE_NAME" | awk '{print $2}')
+                  echo "Queued $COUNT / $TOTAL ($(( COUNT * 100 / TOTAL ))%) | Queue depth: $QUEUE_DEPTH"
                 fi
               fi
             done
 
-            # Send remaining
+            # Send remaining batch
             if [ "$BATCH_COUNT" -gt 0 ]; then
-              BATCH="$BATCH]"
+              BATCH="${BATCH}]"
               docker exec "$RABBIT_CONTAINER" rabbitmqadmin publish \
-                exchange="" routing_key="$QUEUE_NAME" \
+                exchange=amq.default routing_key="$QUEUE_NAME" \
                 payload="$BATCH" 2>/dev/null
               COUNT=$((COUNT + BATCH_COUNT))
             fi
 
             echo "=== Seed import complete: $COUNT files queued ==="
+            docker exec "$RABBIT_CONTAINER" rabbitmqctl list_queues 2>&1
