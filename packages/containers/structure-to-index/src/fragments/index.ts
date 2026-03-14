@@ -1,8 +1,9 @@
+import { createRequire } from 'node:module';
 import type { Collection, Document, Filter, WithId } from 'mongodb';
 import type { AppContext } from '../app.js';
-import pkg from '@chemistry/molecule3d';
 
-const { Molecule3D } = pkg;
+const require = createRequire(import.meta.url);
+const { Molecule3D } = require('@chemistry/molecule3d');
 
 const BLACK_LIST = [2003119, 2000129, 2105953, 4323098, 4323099];
 

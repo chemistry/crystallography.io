@@ -1,4 +1,6 @@
-import { parse } from '@chemistry/cif-2-json';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { parse } = require('@chemistry/cif-2-json');
 import * as Sentry from '@sentry/node';
 import type { ObjectId } from 'mongodb';
 import fs from 'node:fs';
