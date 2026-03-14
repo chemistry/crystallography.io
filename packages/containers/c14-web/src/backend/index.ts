@@ -57,7 +57,13 @@ const getContext = async () => {
     PORT,
     onAppInit: (app: Express) => {
       initSentry();
-      app.get('/hc', (req, res) => res.json({ status: 'OK' }));
+      app.get('/hc', (req, res) =>
+        res.json({
+          status: 'OK',
+          commit: process.env.COMMIT_SHA || 'unknown',
+          buildTime: process.env.BUILD_TIME || 'unknown',
+        })
+      );
       app.use(mw);
     },
     onAppInitEnd: (_app: Express) => {

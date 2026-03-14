@@ -24,6 +24,8 @@ const writeOK = (res: Response) => {
       JSON.stringify(
         {
           status: 'OK',
+          commit: process.env.COMMIT_SHA || 'unknown',
+          buildTime: process.env.BUILD_TIME || 'unknown',
         },
         null,
         4
