@@ -107,7 +107,7 @@ jobs:
           echo "Verifying deployment..."
           EXPECTED="${{ github.sha }}"
           for i in $(seq 1 30); do
-            LIVE_COMMIT=$(curl -sf --resolve "crystallography.io:443:${DEPLOY_HOST}" "https://crystallography.io/hc" 2>/dev/null | jq -r '.commit // empty') || true
+            LIVE_COMMIT=$(curl -sfk --resolve "crystallography.io:443:${DEPLOY_HOST}" "https://crystallography.io/hc" 2>/dev/null | jq -r '.commit // empty') || true
             if [ "$LIVE_COMMIT" = "$EXPECTED" ]; then
               echo "Deployment verified! Live commit: ${LIVE_COMMIT:0:8}"
               exit 0
