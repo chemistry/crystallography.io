@@ -91,106 +91,106 @@ export const DetailsPage = () => {
         </div>
         <div className="column col-md-5 col-5">
           <div className="table-rounded">
-          <table>
-            <tbody>
-              {structure.id ? (
-                <tr>
-                  <td className="text-bold">Id</td>
-                  <td>
-                    <span>{structure.id}</span>
-                  </td>
-                </tr>
-              ) : null}
-              {structure.commonname ? (
-                <tr>
-                  <td className="text-bold">Common name</td>
-                  <td>
-                    <span>{structure.commonname}</span>
-                  </td>
-                </tr>
-              ) : null}
-              {structure.chemname ? (
-                <tr>
-                  <td className="text-bold">Chemical name</td>
-                  <td>
-                    <span>{structure.chemname}</span>
-                  </td>
-                </tr>
-              ) : null}
-              {structure.mineral ? (
-                <tr>
-                  <td className="text-bold">Mineral name</td>
-                  <td>
-                    <span>{structure.mineral}</span>
-                  </td>
-                </tr>
-              ) : null}
-              {structure.a ? (
-                <tr>
-                  <td className="text-bold">a (&Aring;)</td>
-                  <td>{structure.a}</td>
-                </tr>
-              ) : null}
-              {structure.b ? (
-                <tr>
-                  <td className="text-bold">b (&Aring;)</td>
-                  <td>{structure.b}</td>
-                </tr>
-              ) : null}
-              {structure.c ? (
-                <tr>
-                  <td className="text-bold">c (&Aring;)</td>
-                  <td>{structure.c}</td>
-                </tr>
-              ) : null}
-              {structure.alpha ? (
-                <tr>
-                  <td className="text-bold">&alpha; (&deg;)</td>
-                  <td>{structure.alpha}</td>
-                </tr>
-              ) : null}
-              {structure.beta ? (
-                <tr>
-                  <td className="text-bold">&beta; (&deg;)</td>
-                  <td>{structure.beta}</td>
-                </tr>
-              ) : null}
-              {structure.gamma ? (
-                <tr>
-                  <td className="text-bold">&gamma; (&deg;)</td>
-                  <td>{structure.gamma}</td>
-                </tr>
-              ) : null}
-              {structure.vol ? (
-                <tr>
-                  <td className="text-bold">
-                    V (&Aring;<sup>3</sup>)
-                  </td>
-                  <td>{structure.vol}</td>
-                </tr>
-              ) : null}
-              {structure.sg ? (
-                <tr>
-                  <td className="text-bold">Space group</td>
-                  <td>{structure.sg}</td>
-                </tr>
-              ) : null}
-              {structure.diffrtemp ? (
-                <tr>
-                  <td className="text-bold">Temperature (K)</td>
-                  <td>{structure.diffrtemp}</td>
-                </tr>
-              ) : null}
-              {structure.Robs ? (
-                <tr>
-                  <td className="text-bold">
-                    R<sub>int</sub>
-                  </td>
-                  <td>{structure.Robs}</td>
-                </tr>
-              ) : null}
-            </tbody>
-          </table>
+            <table>
+              <tbody>
+                {structure.id ? (
+                  <tr>
+                    <td className="text-bold">Id</td>
+                    <td>
+                      <span>{structure.id}</span>
+                    </td>
+                  </tr>
+                ) : null}
+                {structure.commonname ? (
+                  <tr>
+                    <td className="text-bold">Common name</td>
+                    <td>
+                      <span>{structure.commonname}</span>
+                    </td>
+                  </tr>
+                ) : null}
+                {structure.chemname ? (
+                  <tr>
+                    <td className="text-bold">Chemical name</td>
+                    <td>
+                      <span>{structure.chemname}</span>
+                    </td>
+                  </tr>
+                ) : null}
+                {structure.mineral ? (
+                  <tr>
+                    <td className="text-bold">Mineral name</td>
+                    <td>
+                      <span>{structure.mineral}</span>
+                    </td>
+                  </tr>
+                ) : null}
+                {structure.a ? (
+                  <tr>
+                    <td className="text-bold">a (&Aring;)</td>
+                    <td>{structure.a}</td>
+                  </tr>
+                ) : null}
+                {structure.b ? (
+                  <tr>
+                    <td className="text-bold">b (&Aring;)</td>
+                    <td>{structure.b}</td>
+                  </tr>
+                ) : null}
+                {structure.c ? (
+                  <tr>
+                    <td className="text-bold">c (&Aring;)</td>
+                    <td>{structure.c}</td>
+                  </tr>
+                ) : null}
+                {structure.alpha ? (
+                  <tr>
+                    <td className="text-bold">&alpha; (&deg;)</td>
+                    <td>{structure.alpha}</td>
+                  </tr>
+                ) : null}
+                {structure.beta ? (
+                  <tr>
+                    <td className="text-bold">&beta; (&deg;)</td>
+                    <td>{structure.beta}</td>
+                  </tr>
+                ) : null}
+                {structure.gamma ? (
+                  <tr>
+                    <td className="text-bold">&gamma; (&deg;)</td>
+                    <td>{structure.gamma}</td>
+                  </tr>
+                ) : null}
+                {structure.vol ? (
+                  <tr>
+                    <td className="text-bold">
+                      V (&Aring;<sup>3</sup>)
+                    </td>
+                    <td>{structure.vol}</td>
+                  </tr>
+                ) : null}
+                {structure.sg ? (
+                  <tr>
+                    <td className="text-bold">Space group</td>
+                    <td>{structure.sg}</td>
+                  </tr>
+                ) : null}
+                {structure.diffrtemp ? (
+                  <tr>
+                    <td className="text-bold">Temperature (K)</td>
+                    <td>{structure.diffrtemp}</td>
+                  </tr>
+                ) : null}
+                {structure.Robs ? (
+                  <tr>
+                    <td className="text-bold">
+                      R<sub>int</sub>
+                    </td>
+                    <td>{structure.Robs}</td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
