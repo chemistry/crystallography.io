@@ -23,13 +23,14 @@ const AuthorsTable = ({ authors }: { authors: AuthorsRecord[] }) => {
     return null;
   }
   return (
-    <table className="table table-rounded">
+    <div className="table-rounded">
+    <table>
       <thead>
         <tr>
-          <td></td>
-          <td>Name</td>
-          <td>Updated</td>
-          <td>Records</td>
+          <th></th>
+          <th>Name</th>
+          <th>Updated</th>
+          <th>Records</th>
         </tr>
       </thead>
       <tbody>
@@ -49,6 +50,7 @@ const AuthorsTable = ({ authors }: { authors: AuthorsRecord[] }) => {
         })}
       </tbody>
     </table>
+    </div>
   );
 };
 

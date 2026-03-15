@@ -7,7 +7,7 @@ export const NotFoundPage = () => {
         <h2 className="text-primary">Page Not Found</h2>
       </header>
       <div className="app-layout-content">
-        <div className="app-layout-page" style={{ maxWidth: '600px' }}>
+        <div className="app-layout-page app-layout-page-medium">
           <h4 className="text-primary">404</h4>
           <p>The page you are looking for does not exist or has been moved.</p>
           <NavLink to="/" className="btn">

@@ -170,6 +170,10 @@
     font-weight: 600;
   }
 
+  table tbody tr:nth-child(even) {
+    background-color: var(--color-clear-grey);
+  }
+
   ::-webkit-scrollbar {
     width: 12px;
   }
@@ -586,6 +590,7 @@ html,
 .tab-item a:hover {
   color: var(--color-black);
   text-decoration: none;
+  border-bottom-color: var(--color-grey);
 }
 
 .tab-item.active a,
@@ -798,9 +803,6 @@ html,
   padding-top: 0.5rem;
 }
 
-.search-layout__search-icon {
-  display: none;
-}
 
 .search-layout__results-list {
   margin-top: 1rem;
@@ -969,6 +971,10 @@ html,
 .c-structure-list-item {
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--color-light-grey);
+}
+
+.c-structure-list-item:nth-child(even) {
+  background-color: var(--color-clear-grey);
 }
 
 .c-structure-list-item__name {
@@ -1245,4 +1251,56 @@ html,
 }
 .text-center {
   text-align: center;
+}
+
+/* ========== FORM SELECT ========== */
+.form-select {
+  appearance: none;
+  display: block;
+  background: white;
+  background-image: none;
+  border: 1px solid var(--color-light-grey);
+  border-radius: 8px;
+  color: var(--color-black);
+  font-size: 1rem;
+  height: 3rem;
+  line-height: 1.5rem;
+  max-width: 100%;
+  outline: none;
+  padding: 0.75rem 1rem;
+  position: relative;
+  transition:
+    background 0.2s,
+    border 0.2s,
+    box-shadow 0.2s,
+    color 0.2s;
+  width: 100%;
+}
+
+.form-select:focus {
+  box-shadow: 0 0 0 0.1rem rgba(12, 60, 101, 0.2);
+  border-color: var(--color-active);
+}
+
+/* ========== INPUT INLINE ========== */
+.input-inline {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+
+/* ========== LAYOUT WIDTH VARIANTS ========== */
+.app-layout-page-narrow {
+  max-width: 480px;
+}
+
+.app-layout-page-medium {
+  max-width: 600px;
+}
+
+/* ========== INLINE ICON TEXT ========== */
+.inline-icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }

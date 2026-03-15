@@ -49,7 +49,7 @@ export const SearchByStructurePage = () => {
         <SearchTab />
       </header>
       <div className="app-layout-content">
-        <div className="search-layout__page" style={{ maxWidth: '100%' }}>
+        <div className="search-layout__page">
           <div className="search-layout__molpad-editor">
             {MolPad ? <MolPad ref={molpadRef} /> : null}
           </div>
@@ -62,7 +62,7 @@ export const SearchByStructurePage = () => {
           </div>
           <div>
             <div className="column col-6">
-              <button className="btn input-inline search-layout__search_btn" onClick={handleSubmit}>
+              <button className="btn btn-active search-layout__search_btn" onClick={handleSubmit}>
                 Search
               </button>
             </div>
