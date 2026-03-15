@@ -33,6 +33,7 @@ export async function startApplication(context: ApplicationContext) {
 
   app.use(timeout('10s'));
 
+  app.use(bodyParser.json({ limit: '1000kb' }));
   app.use(bodyParser.urlencoded({ extended: true, limit: '1000kb' }));
 
   // Remove header

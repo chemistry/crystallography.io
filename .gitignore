@@ -13,3 +13,7 @@ terraform.tfstate.backup
 .DS_Store
 *.tsbuildinfo
 npm-debug.log
+
+# Playwright
+playwright-report/
+test-results/
