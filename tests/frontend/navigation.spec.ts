@@ -4,28 +4,26 @@ test.describe('Page Navigation', () => {
   test('homepage loads with search form', async ({ page }) => {
     await page.goto(URLS.endpoints.home);
     await expect(page).toHaveTitle(/Crystal/i);
-    // App renders with aside navigation and main content
     await expect(page.locator('.app')).toBeVisible();
   });
 
   test('catalog page loads with structure list', async ({ page }) => {
     await page.goto(URLS.endpoints.catalog);
+    // SSR error pages have title "Error" — verify we get the real page
     await expect(page).toHaveTitle(/Crystal/i);
-    // Should render content, not error
-    await expect(page.locator('body')).not.toContainText('503');
-    await expect(page.locator('body')).not.toContainText('Service Unavailable');
+    await expect(page).not.toHaveTitle(/Error/);
   });
 
   test('authors page loads with author list', async ({ page }) => {
     await page.goto(URLS.endpoints.authors);
     await expect(page).toHaveTitle(/Crystal/i);
-    await expect(page.locator('body')).not.toContainText('503');
+    await expect(page).not.toHaveTitle(/Error/);
   });
 
   test('structure detail page loads', async ({ page }) => {
     await page.goto(URLS.endpoints.structure);
     await expect(page).toHaveTitle(/Crystal/i);
-    await expect(page.locator('body')).not.toContainText('503');
+    await expect(page).not.toHaveTitle(/Error/);
   });
 
   test('about page loads', async ({ page }) => {
@@ -41,7 +39,7 @@ test.describe('Page Navigation', () => {
       URLS.endpoints.searchUnitCell,
     ]) {
       await page.goto(path);
-      await expect(page.locator('body')).not.toContainText('503');
+      await expect(page).not.toHaveTitle(/Error/);
     }
   });
 

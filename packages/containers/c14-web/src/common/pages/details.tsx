@@ -52,6 +52,10 @@ export const DetailsPage = () => {
     }
     let viewer: Mol3DViewInstance | null = null;
     (async () => {
+      // @chemistry/crystalview depends on jQuery as a global ($)
+      const jQuery = (await import('jquery')).default;
+      window.$ = jQuery;
+      window.jQuery = jQuery;
       const { Mol3DView } = await import('@chemistry/crystalview');
       const instance = new Mol3DView({ bgcolor: '#212529' });
       viewer = instance as unknown as Mol3DViewInstance;
