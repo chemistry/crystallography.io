@@ -8,6 +8,7 @@ on:
     paths:
       - 'packages/containers/**'
       - 'docker-compose.yaml'
+      - '.github/workflows/deploy.yml'
 
 env:
   REGISTRY: ghcr.io
@@ -114,3 +115,7 @@ jobs:
           done
           echo "Could not verify deployment within 5 minutes"
           exit 1
+
+  e2e:
+    needs: build-and-deploy
+    uses: ./.github/workflows/e2e.yml
