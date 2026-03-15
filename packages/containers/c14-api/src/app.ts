@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
 import cors from 'cors';
+import helmet from 'helmet';
 import express from 'express';
 import type { Express } from 'express';
 import { getRouters } from './routers/index.js';
@@ -26,18 +27,12 @@ export async function startApplication(context: ApplicationContext) {
 
   onAppInit(app);
 
-  // Add UTF-8 symbols parser
   app.set('query parser', 'simple');
-
+  app.use(helmet());
   app.use(cors());
-
   app.use(timeout('10s'));
-
   app.use(bodyParser.json({ limit: '1000kb' }));
   app.use(bodyParser.urlencoded({ extended: true, limit: '1000kb' }));
-
-  // Remove header
-  app.disable('x-powered-by');
 
   // Serve static files
   app.get('/', (req, res) => {

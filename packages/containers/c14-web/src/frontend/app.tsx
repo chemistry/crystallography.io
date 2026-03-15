@@ -5,7 +5,6 @@ import { AppContextType, getApplication } from '../common/index.js';
 import type { ApplicationContext } from '../common/index.js';
 import { StoreProvider } from '../common/store/index.js';
 import { App } from '../common/app.js';
-import { registerSW } from './register-sw.js';
 
 const appContext: ApplicationContext = {
   type: AppContextType.frontend,
@@ -44,6 +43,4 @@ if (process.env.NODE_ENV !== 'development') {
   } else {
     createRoot(rootElement).render(app);
   }
-
-  registerSW();
 })();

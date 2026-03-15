@@ -9,7 +9,6 @@ import type { SearchByFormulaState } from './slices/search-by-formula-page.slice
 import type { SearchByUnitCellState } from './slices/search-by-unit-cell-page.slice.js';
 import type { SearchByStructureState } from './slices/search-by-structure.slice.js';
 import type { SearchResultsState } from './slices/search-results.slice.js';
-import type { UserState } from './slices/user.slice.js';
 import { createCatalogPageSlice } from './slices/catalog-page.slice.js';
 import { createDetailsPageSlice } from './slices/details-page.slice.js';
 import { createAuthorsListPageSlice } from './slices/author-list-page.slice.js';
@@ -20,7 +19,6 @@ import { createSearchByFormulaSlice } from './slices/search-by-formula-page.slic
 import { createSearchByUnitCellSlice } from './slices/search-by-unit-cell-page.slice.js';
 import { createSearchByStructureSlice } from './slices/search-by-structure.slice.js';
 import { createSearchResultsSlice } from './slices/search-results.slice.js';
-import { createUserSlice } from './slices/user.slice.js';
 
 export interface AppState
   extends
@@ -33,8 +31,7 @@ export interface AppState
     SearchByFormulaState,
     SearchByUnitCellState,
     SearchByStructureState,
-    SearchResultsState,
-    UserState {}
+    SearchResultsState {}
 
 export const createAppStore = (initialState?: Partial<AppState>) => {
   const store = createStore<AppState>()((...a) => ({
@@ -48,7 +45,6 @@ export const createAppStore = (initialState?: Partial<AppState>) => {
     ...createSearchByUnitCellSlice(...a),
     ...createSearchByStructureSlice(...a),
     ...createSearchResultsSlice(...a),
-    ...createUserSlice(...a),
   }));
 
   if (initialState && Object.keys(initialState).length > 0) {
