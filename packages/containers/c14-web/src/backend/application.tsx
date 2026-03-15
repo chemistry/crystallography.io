@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
+import helmet from 'helmet';
 import * as Sentry from '@sentry/node';
 import express from 'express';
 import type { NextFunction, Request, Response, Express } from 'express';
@@ -12,7 +13,6 @@ import { createAppStore } from '../common/store/create-app-store.js';
 import { App } from '../common/app.js';
 import type { ApplicationContext, ApplicationFactory, RouteDefinition } from '../common/index.js';
 import type { AppStore } from '../common/store/create-app-store.js';
-import { getAuthRouter } from './auth.router.js';
 
 import { fileURLToPath } from 'node:url';
 
@@ -46,21 +46,46 @@ function renderHTML(
   fileContent: string,
   componentHTML: string,
   initialState: Record<string, unknown>,
-  metaData: { title: string; description: string }
+  metaData: { title: string; description: string; url: string }
 ): string {
   let html = fileContent;
-  if (metaData?.title) {
-    html = html.replace(
-      '<title>Crystallography Online Website</title>',
-      '<title>' + escapeHTML(metaData.title) + '</title>'
-    );
-  }
-  if (metaData?.description) {
-    html = html.replace(
-      '<meta name="description" content="" />',
-      '<meta name="description" content="' + escapeHTML(metaData.description) + '" />'
-    );
-  }
+  const title = metaData?.title || 'Crystal Structure Search';
+  const description =
+    metaData?.description || 'Crystal Structure Search Online: Open Crystal Structure DataBase';
+  const url = 'https://crystallography.io' + metaData.url;
+
+  html = html.replace(
+    '<title>Crystallography Online Website</title>',
+    '<title>' + escapeHTML(title) + '</title>'
+  );
+  html = html.replace(
+    'content="Crystal Structure Search Online: Open Crystal Structure DataBase"',
+    'content="' + escapeHTML(description) + '"'
+  );
+
+  // OG tags
+  html = html.replace(
+    '<meta property="og:title" content="" />',
+    '<meta property="og:title" content="' + escapeHTML(title) + '" />'
+  );
+  html = html.replace(
+    '<meta property="og:description" content="" />',
+    '<meta property="og:description" content="' + escapeHTML(description) + '" />'
+  );
+  html = html.replace(
+    '<meta property="og:url" content="" />',
+    '<meta property="og:url" content="' + escapeHTML(url) + '" />'
+  );
+
+  // Twitter tags
+  html = html.replace(
+    '<meta name="twitter:title" content="" />',
+    '<meta name="twitter:title" content="' + escapeHTML(title) + '" />'
+  );
+  html = html.replace(
+    '<meta name="twitter:description" content="" />',
+    '<meta name="twitter:description" content="' + escapeHTML(description) + '" />'
+  );
 
   html = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + '</div>');
   html = html.replace(
@@ -90,6 +115,7 @@ const getMetadata = (routes: RouteDefinition[], url: string) => {
   return {
     title: matched?.title || '',
     description: matched?.description || '',
+    url,
   };
 };
 
@@ -100,14 +126,18 @@ export async function startApplication(context: ExpressContext) {
   const app = express();
 
   app.set('query parser', 'simple');
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    })
+  );
   app.use(timeout('5s'));
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.disable('x-powered-by');
 
   onAppInit(app);
 
   app.use(express.static(path.join(__dirname, '/../static'), { index: false }));
-  app.use(getAuthRouter());
 
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -5,22 +5,16 @@ import {
   CatalogPage,
   ContactsPage,
   DetailsPage,
-  LoginPage,
   NewsPage,
   NotFoundPage,
-  ProfilePage,
-  RegisterPage,
   SearchByAuthorsPage,
   SearchByFormulaPage,
   SearchByNamePage,
   SearchByStructurePage,
   SearchByUnitCellPage,
-  SearchHistoryPage,
   SearchResultsPage,
-  OfflinePage,
   DesignSystemPage,
 } from './pages/index.js';
-import { setup } from './setup.js';
 import { useLoadedData } from './services/index.js';
 import { AuthorDetailsPage } from './pages/author-details.js';
 import type { AppStore } from './store/create-app-store.js';
@@ -64,22 +58,11 @@ const withSentryProfiler = (Component: React.ComponentType) => {
   return Component;
 };
 
-export const getApplication: ApplicationFactory = async (context) => {
-  const { type } = context;
-  if (type === AppContextType.frontend) {
-    setup();
-  }
-
+export const getApplication: ApplicationFactory = async (_context) => {
   const routeDefs: RouteDefinition[] = [
     {
       path: '/',
       element: SearchByStructurePage,
-      title: 'Crystal Structure Search',
-      description: 'Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod',
-    },
-    {
-      path: '/offline',
-      element: OfflinePage,
       title: 'Crystal Structure Search',
       description: 'Crystal Structure Search Online: Open Crystal Structure DataBase; WebCod',
     },
@@ -164,30 +147,6 @@ export const getApplication: ApplicationFactory = async (context) => {
       element: NewsPage,
       title: 'News',
       description: 'News of Crystal Structure Search',
-    },
-    {
-      path: '/profile',
-      element: ProfilePage,
-      title: 'Profile',
-      description: 'User Profile Page',
-    },
-    {
-      path: '/login',
-      element: LoginPage,
-      title: 'Login',
-      description: 'User Login - Crystal Structure Search',
-    },
-    {
-      path: '/register',
-      element: RegisterPage,
-      title: 'Register',
-      description: 'Register User - Crystal Structure Search',
-    },
-    {
-      path: '/search-history',
-      element: SearchHistoryPage,
-      title: 'Search History',
-      description: 'Search History - Crystal Structure Search',
     },
     {
       path: '*',
