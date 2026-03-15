@@ -135,7 +135,7 @@ services:
         - traefik.http.routers.crystallography-web-https.rule=Host(`crystallography.io`)
         - traefik.http.routers.crystallography-web-https.entrypoints=https
         - traefik.http.routers.crystallography-web-https.tls=true
-        - traefik.http.routers.crystallography-web-https.tls.certresolver=le
+        - traefik.http.routers.crystallography-web-https.tls.certresolver=letsencrypt
         - traefik.http.services.crystallography-web.loadbalancer.server.port=8060
 
   api:
@@ -169,7 +169,7 @@ services:
         - traefik.http.routers.crystallography-api-https.priority=20
         - traefik.http.routers.crystallography-api-https.entrypoints=https
         - traefik.http.routers.crystallography-api-https.tls=true
-        - traefik.http.routers.crystallography-api-https.tls.certresolver=le
+        - traefik.http.routers.crystallography-api-https.tls.certresolver=letsencrypt
         - traefik.http.services.crystallography-api.loadbalancer.server.port=8070
     depends_on:
       - mongo
@@ -206,7 +206,7 @@ services:
         - traefik.http.routers.crystallography-search-https.entrypoints=https,ws,wss
         - traefik.http.routers.crystallography-search-https.tls=true
         - traefik.http.routers.crystallography-search-https.priority=40
-        - traefik.http.routers.crystallography-search-https.tls.certresolver=le
+        - traefik.http.routers.crystallography-search-https.tls.certresolver=letsencrypt
         - traefik.http.services.crystallography-search.loadbalancer.server.port=8050
 
   searchworker:
