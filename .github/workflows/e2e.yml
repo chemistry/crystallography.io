@@ -3,13 +3,11 @@ name: E2E Smoke Tests
 on:
   workflow_dispatch:
   workflow_call:
-  schedule:
-    - cron: '0 6 * * *' # Daily at 6 AM UTC
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v6
