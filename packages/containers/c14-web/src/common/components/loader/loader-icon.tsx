@@ -9,7 +9,14 @@ export const LoaderIcon = () => {
     >
       <g transform="translate(80,50)">
         <g transform="rotate(0)">
-          <circle cx="0" cy="0" r="6" fill="var(--color-active)" fillOpacity="1" transform="scale(1.21868 1)">
+          <circle
+            cx="0"
+            cy="0"
+            r="6"
+            fill="var(--color-active)"
+            fillOpacity="1"
+            transform="scale(1.21868 1)"
+          >
             <animateTransform
               attributeName="transform"
               type="scale"
@@ -122,7 +129,14 @@ export const LoaderIcon = () => {
       </g>
       <g transform="translate(20,50.00000000000001)">
         <g transform="rotate(180)">
-          <circle cx="0" cy="0" r="6" fill="var(--color-active)" fillOpacity="0.5" transform="scale(1.46868 1)">
+          <circle
+            cx="0"
+            cy="0"
+            r="6"
+            fill="var(--color-active)"
+            fillOpacity="0.5"
+            transform="scale(1.46868 1)"
+          >
             <animateTransform
               attributeName="transform"
               type="scale"
