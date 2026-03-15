@@ -61,6 +61,14 @@ const getApplicationContext = async () => {
     const context = await getApplicationContext();
     const { PORT, logger } = context;
 
+    // Ensure required indexes exist (idempotent)
+    await context.db
+      .collection('structures')
+      .createIndex(
+        { title: 'text', commonname: 'text', chemname: 'text', mineral: 'text' },
+        { name: 'text_search', background: true }
+      );
+
     const { app } = await startApplication(context);
 
     const server = await new Promise<Server>((resolve) => {

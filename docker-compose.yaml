@@ -118,6 +118,7 @@ services:
       - ./.env
     environment:
       - PORT=8060
+      - API_BASE_URL=http://api:8070
     deploy:
       update_config:
         order: start-first

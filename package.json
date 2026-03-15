@@ -29,10 +29,13 @@
     "format:check": "prettier --check 'packages/**/*.{ts,tsx}'",
     "dev": "npx vite packages/containers/c14-web",
     "clean": "rimraf packages/**/dist coverage",
-    "verify": "npm run build && npm run lint && npm run test"
+    "verify": "npm run build && npm run lint && npm run test",
+    "test:e2e": "playwright test --config playwright.config.ts",
+    "test:e2e:headed": "playwright test --config playwright.config.ts --headed"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.58.2",
     "@types/node": "^22.19.15",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
