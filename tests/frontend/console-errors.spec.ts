@@ -1,9 +1,8 @@
 import { test, expect, URLS } from '../fixtures/index.js';
 
-// Known issues from external dependencies (not fixable in this repo)
+// Known issues that are not application bugs
 const KNOWN_ERRORS = [
-  '$ is not defined', // @chemistry/crystalview depends on jQuery global
-  'ServiceWorker', // SSL cert issue in test environment only
+  'ServiceWorker', // SSL cert mismatch in CI/test environments
 ];
 
 const isKnownError = (msg: string) => KNOWN_ERRORS.some((known) => msg.includes(known));
