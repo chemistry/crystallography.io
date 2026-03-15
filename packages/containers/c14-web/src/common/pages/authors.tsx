@@ -23,32 +23,34 @@ const AuthorsTable = ({ authors }: { authors: AuthorsRecord[] }) => {
     return null;
   }
   return (
-    <table className="table table-rounded">
-      <thead>
-        <tr>
-          <td></td>
-          <td>Name</td>
-          <td>Updated</td>
-          <td>Records</td>
-        </tr>
-      </thead>
-      <tbody>
-        {authors.map((item) => {
-          const date = item.updated ? formatDate(new Date(item.updated)) : null;
-          const { index, full, count } = item;
-          return (
-            <tr key={index}>
-              <td>{index}</td>
-              <td>
-                <NavLink to={`/author/${full}`}>{full}</NavLink>
-              </td>
-              <td>{date}</td>
-              <td>{count}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div className="table-rounded">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Updated</th>
+            <th>Records</th>
+          </tr>
+        </thead>
+        <tbody>
+          {authors.map((item) => {
+            const date = item.updated ? formatDate(new Date(item.updated)) : null;
+            const { index, full, count } = item;
+            return (
+              <tr key={index}>
+                <td>{index}</td>
+                <td>
+                  <NavLink to={`/author/${full}`}>{full}</NavLink>
+                </td>
+                <td>{date}</td>
+                <td>{count}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

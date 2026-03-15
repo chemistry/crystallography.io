@@ -9,7 +9,14 @@ export const LoaderIcon = () => {
     >
       <g transform="translate(80,50)">
         <g transform="rotate(0)">
-          <circle cx="0" cy="0" r="6" fill="#4285f4" fillOpacity="1" transform="scale(1.21868 1)">
+          <circle
+            cx="0"
+            cy="0"
+            r="6"
+            fill="var(--color-active)"
+            fillOpacity="1"
+            transform="scale(1.21868 1)"
+          >
             <animateTransform
               attributeName="transform"
               type="scale"
@@ -36,7 +43,7 @@ export const LoaderIcon = () => {
             cx="0"
             cy="0"
             r="6"
-            fill="#4285f4"
+            fill="var(--color-active)"
             fillOpacity="0.875"
             transform="scale(1.28118 1)"
           >
@@ -66,7 +73,7 @@ export const LoaderIcon = () => {
             cx="0"
             cy="0"
             r="6"
-            fill="#4285f4"
+            fill="var(--color-active)"
             fillOpacity="0.75"
             transform="scale(1.34368 1)"
           >
@@ -96,7 +103,7 @@ export const LoaderIcon = () => {
             cx="0"
             cy="0"
             r="6"
-            fill="#4285f4"
+            fill="var(--color-active)"
             fillOpacity="0.625"
             transform="scale(1.40618 1)"
           >
@@ -122,7 +129,14 @@ export const LoaderIcon = () => {
       </g>
       <g transform="translate(20,50.00000000000001)">
         <g transform="rotate(180)">
-          <circle cx="0" cy="0" r="6" fill="#4285f4" fillOpacity="0.5" transform="scale(1.46868 1)">
+          <circle
+            cx="0"
+            cy="0"
+            r="6"
+            fill="var(--color-active)"
+            fillOpacity="0.5"
+            transform="scale(1.46868 1)"
+          >
             <animateTransform
               attributeName="transform"
               type="scale"
@@ -149,7 +163,7 @@ export const LoaderIcon = () => {
             cx="0"
             cy="0"
             r="6"
-            fill="#4285f4"
+            fill="var(--color-active)"
             fillOpacity="0.375"
             transform="scale(1.03118 1)"
           >
@@ -179,7 +193,7 @@ export const LoaderIcon = () => {
             cx="0"
             cy="0"
             r="6"
-            fill="#4285f4"
+            fill="var(--color-active)"
             fillOpacity="0.25"
             transform="scale(1.09368 1)"
           >
@@ -209,7 +223,7 @@ export const LoaderIcon = () => {
             cx="0"
             cy="0"
             r="6"
-            fill="#4285f4"
+            fill="var(--color-active)"
             fillOpacity="0.125"
             transform="scale(1.15618 1)"
           >
