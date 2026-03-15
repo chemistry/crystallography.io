@@ -58,7 +58,7 @@ const withSentryProfiler = (Component: React.ComponentType) => {
   return Component;
 };
 
-export const getApplication: ApplicationFactory = async (context) => {
+export const getApplication: ApplicationFactory = async (_context) => {
   const routeDefs: RouteDefinition[] = [
     {
       path: '/',

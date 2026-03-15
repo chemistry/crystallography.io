@@ -64,13 +64,28 @@ function renderHTML(
   );
 
   // OG tags
-  html = html.replace('<meta property="og:title" content="" />', '<meta property="og:title" content="' + escapeHTML(title) + '" />');
-  html = html.replace('<meta property="og:description" content="" />', '<meta property="og:description" content="' + escapeHTML(description) + '" />');
-  html = html.replace('<meta property="og:url" content="" />', '<meta property="og:url" content="' + escapeHTML(url) + '" />');
+  html = html.replace(
+    '<meta property="og:title" content="" />',
+    '<meta property="og:title" content="' + escapeHTML(title) + '" />'
+  );
+  html = html.replace(
+    '<meta property="og:description" content="" />',
+    '<meta property="og:description" content="' + escapeHTML(description) + '" />'
+  );
+  html = html.replace(
+    '<meta property="og:url" content="" />',
+    '<meta property="og:url" content="' + escapeHTML(url) + '" />'
+  );
 
   // Twitter tags
-  html = html.replace('<meta name="twitter:title" content="" />', '<meta name="twitter:title" content="' + escapeHTML(title) + '" />');
-  html = html.replace('<meta name="twitter:description" content="" />', '<meta name="twitter:description" content="' + escapeHTML(description) + '" />');
+  html = html.replace(
+    '<meta name="twitter:title" content="" />',
+    '<meta name="twitter:title" content="' + escapeHTML(title) + '" />'
+  );
+  html = html.replace(
+    '<meta name="twitter:description" content="" />',
+    '<meta name="twitter:description" content="' + escapeHTML(description) + '" />'
+  );
 
   html = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + '</div>');
   html = html.replace(
