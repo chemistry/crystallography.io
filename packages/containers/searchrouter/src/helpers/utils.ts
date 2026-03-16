@@ -14,14 +14,18 @@ export function errorHandler(
 ) {
   let errDTO: ErrorDTO;
   const e = err as ErrorDTO;
-  if (e.status && e.title && e.detail) {
-    errDTO = err as ErrorDTO;
+  if (e.title && e.detail) {
+    errDTO = {
+      status: typeof e.status === 'number' ? e.status : 500,
+      title: e.title,
+      detail: e.detail,
+    };
   } else {
     errDTO = {
       status: 500,
       title: 'Unknown Error',
       detail: err.toString(),
-    } as ErrorDTO;
+    };
     console.error(err);
   }
   res.status(errDTO.status).json({

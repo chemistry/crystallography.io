@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppStore, useAppStoreApi } from '../store/index.js';
 import { Loader, Pagination } from '../components/index.js';
@@ -29,13 +29,14 @@ export const SearchResultsPage = () => {
   const currentPage = parsePage(page);
   const containerRef = useRef(null);
 
-  const structures = useAppStore((s) => {
-    const ids = s.searchResults.data.structureIds;
-    const byId = s.searchResults.data.structureById;
-    return ids
-      .map((structureId) => byId[structureId])
+  const structureIds = useAppStore((s) => s.searchResults.data.structureIds);
+  const structureById = useAppStore((s) => s.searchResults.data.structureById);
+
+  const structures = useMemo(() => {
+    return structureIds
+      .map((structureId) => structureById[structureId])
       .filter((item) => !!item) as unknown as StructureModel[];
-  });
+  }, [structureIds, structureById]);
 
   useBrowserEffect(() => {
     subscribeToWSUpdates(store);

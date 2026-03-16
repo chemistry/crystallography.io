@@ -45,7 +45,7 @@ function processSubstructureSearch({
 }) {
   if (!req.body || !req.body.searchQuery) {
     return next({
-      status: 'message#1',
+      status: 400,
       title: 'Wrong Search Query',
       detail: 'Wrong Search Query Params',
     });
@@ -60,7 +60,7 @@ function processSubstructureSearch({
   } catch (e: unknown) {
     Sentry.captureException(e);
     return next({
-      status: 'message#2',
+      status: 400,
       title: 'Wrong Search Query',
       detail: 'Wrong Search Query Params',
     });
@@ -71,7 +71,7 @@ function processSubstructureSearch({
     const err = molecule.isSutableForSearch();
     if (err) {
       return next({
-        status: 'message#3',
+        status: 400,
         title: 'Wrong Molecule',
         detail: 'Wrong Molecule Params; ' + err,
       });
@@ -79,7 +79,7 @@ function processSubstructureSearch({
   } catch (e: unknown) {
     Sentry.captureException(e);
     return next({
-      status: 'message#4',
+      status: 400,
       title: 'Wrong Search Query Molecule',
       detail: 'Wrong Search Query Molecule Params',
     });
@@ -114,7 +114,7 @@ function processSubstructureSearch({
     .catch((err) => {
       Sentry.captureException(err);
       return next({
-        status: 'message#2',
+        status: 500,
         title: 'DB error',
         detail: 'Not able to save to database' + String(err),
       });

@@ -14,7 +14,7 @@ export const CompoundName: FC<{ model: StructureModel; highlight?: HighlightFunc
 }) => {
   const compoundName = model.commonname || model.chemname || model.mineral;
   if (highlight && compoundName) {
-    return <span>CapitalizeFirstLetter(highlight(compoundName))</span>;
+    return <span>{CapitalizeFirstLetter(highlight(compoundName))}</span>;
   }
   if (!compoundName && (model.formula || model.calcformula)) {
     return <CompoundFormula model={model} />;
@@ -38,7 +38,7 @@ const getAuthorDetails = (
   _arr: { name: string; link: string }[]
 ) => {
   if (!author || !author.name) {
-    return '';
+    return null;
   }
   if (author.link) {
     const authorUrl = '/author/' + encodeURIComponent(author.link);
