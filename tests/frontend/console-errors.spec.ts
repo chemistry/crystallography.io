@@ -14,6 +14,7 @@ test.describe('No Console Errors', () => {
     { name: 'authors', path: URLS.endpoints.authors },
     { name: 'structure detail', path: URLS.endpoints.structure },
     { name: 'search name', path: URLS.endpoints.searchName },
+    { name: 'search results', path: '/results/69b875f9195a94ba278914b3/1' },
     { name: 'about', path: URLS.endpoints.about },
   ];
 
