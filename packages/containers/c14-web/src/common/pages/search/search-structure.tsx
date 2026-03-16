@@ -16,6 +16,8 @@ export const SearchByStructurePage = () => {
   const navigate = useNavigate();
   const searchStructureByStructure = useAppStore((s) => s.searchStructureByStructure);
   const [MolPad, setMolPad] = useState<MolPadComponent | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
 
   useInBrowser(() => {
     (async () => {
@@ -32,12 +34,18 @@ export const SearchByStructurePage = () => {
       };
       const validationMessage = molpad.isSutableForSearch();
       if (validationMessage !== '') {
+        setError(validationMessage);
         return;
       }
+      setError(null);
+      setIsSearching(true);
       const jmol = molpad.getJmol();
       const searchId = await searchStructureByStructure({ molecule: jmol });
+      setIsSearching(false);
       if (searchId) {
         navigate(`/results/${searchId}/1`);
+      } else {
+        setError('Search request failed. Please try again.');
       }
     }
   };
@@ -62,11 +70,22 @@ export const SearchByStructurePage = () => {
           </div>
           <div>
             <div className="column col-6">
-              <button className="btn btn-active search-layout__search_btn" onClick={handleSubmit}>
-                Search
+              <button
+                className="btn btn-active search-layout__search_btn"
+                onClick={handleSubmit}
+                disabled={isSearching}
+              >
+                {isSearching ? 'Searching...' : 'Search'}
               </button>
             </div>
           </div>
+          {error ? (
+            <div className="search-layout__search_row">
+              <div className="column col-6">
+                <p className="text-error">{error}</p>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
