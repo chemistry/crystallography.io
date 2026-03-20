@@ -15,21 +15,21 @@ Microservice / event-driven architecture for crystal structure search and analys
 
 ### Containers
 
-| Package | Description |
-|---------|-------------|
-| [@chemistry/c14-api](packages/containers/c14-api) | REST API for COD+ database access |
-| [@chemistry/c14-web](packages/containers/c14-web) | Web UI with server-side rendering |
-| [@chemistry/cod-to-disk](packages/containers/cod-to-disk) | Sync CIF files from COD via rsync |
-| [@chemistry/disk-to-db](packages/containers/disk-to-db) | Parse CIF files and store in MongoDB |
+| Package                                                                 | Description                                                |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [@chemistry/c14-api](packages/containers/c14-api)                       | REST API for COD+ database access                          |
+| [@chemistry/c14-web](packages/containers/c14-web)                       | Web UI with server-side rendering                          |
+| [@chemistry/cod-to-disk](packages/containers/cod-to-disk)               | Sync CIF files from COD via rsync                          |
+| [@chemistry/disk-to-db](packages/containers/disk-to-db)                 | Parse CIF files and store in MongoDB                       |
 | [@chemistry/structure-to-index](packages/containers/structure-to-index) | Build search indexes (authors, names, formulas, fragments) |
-| [@chemistry/maintenance](packages/containers/maintenance) | Scheduled tasks (catalog, sitemap generation) |
-| [@chemistry/searchrouter](packages/containers/searchrouter) | Substructure search API (BullMQ + Socket.IO) |
-| [@chemistry/searchworker](packages/containers/searchworker) | Substructure search worker (molecule matching) |
+| [@chemistry/maintenance](packages/containers/maintenance)               | Scheduled tasks (catalog, sitemap generation)              |
+| [@chemistry/searchrouter](packages/containers/searchrouter)             | Substructure search API (BullMQ + Socket.IO)               |
+| [@chemistry/searchworker](packages/containers/searchworker)             | Substructure search worker (molecule matching)             |
 
 ### Libraries
 
-| Package | Description |
-|---------|-------------|
+| Package                                                | Description        |
+| ------------------------------------------------------ | ------------------ |
 | [@chemistry/cif-2-json](packages/libraries/cif-2-json) | CIF to JSON parser |
 
 ### Data Pipeline
@@ -57,14 +57,14 @@ npm run dev          # Start c14-web with Vite dev server
 
 Fully automated via GitHub Actions — no manual SSH required.
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `ci.yml` | Every push | Build + lint + test |
-| `pr-validation.yml` | PR to master | CI + Docker build validation |
-| `deploy.yml` | Push to master / manual | Build images → deploy to Docker Swarm |
-| `sync-cod.yml` | Manual / weekly cron | Rsync CIF files from COD |
-| `seed-import.yml` | Manual | Queue CIF files for initial data import |
-| `server-status.yml` | Manual | Check services and resources |
+| Workflow            | Trigger                 | Purpose                                 |
+| ------------------- | ----------------------- | --------------------------------------- |
+| `ci.yml`            | Every push              | Build + lint + test                     |
+| `pr-validation.yml` | PR to master            | CI + Docker build validation            |
+| `deploy.yml`        | Push to master / manual | Build images → deploy to Docker Swarm   |
+| `sync-cod.yml`      | Manual / weekly cron    | Rsync CIF files from COD                |
+| `seed-import.yml`   | Manual                  | Queue CIF files for initial data import |
+| `server-status.yml` | Manual                  | Check services and resources            |
 
 ### Deploy to a new server
 

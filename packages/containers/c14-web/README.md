@@ -38,5 +38,5 @@ GCP_SA_KEY
 
 ## Local Commands
 
-* Serve project: `npm run serve`
-* Build project: `npm run build`
+- Serve project: `npm run serve`
+- Build project: `npm run build`

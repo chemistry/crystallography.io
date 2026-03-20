@@ -28,4 +28,4 @@ docker push gcr.io/crystallography-io/disk-to-db
 
 ## Local Commands
 
-* Build project: `npm run build`
+- Build project: `npm run build`

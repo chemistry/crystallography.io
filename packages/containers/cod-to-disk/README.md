@@ -28,4 +28,4 @@ docker push gcr.io/crystallography-io/cod-to-disk
 
 ## Local Commands
 
-* Build project: `npm run build`
+- Build project: `npm run build`
