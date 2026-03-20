@@ -18,7 +18,7 @@
     "@chemistry/molecule": "^1.6.3",
     "@sentry/node": "^8.0.0",
     "bullmq": "^5.71.0",
-    "ioredis": "^5.4.0",
+    "ioredis": "^5.10.1",
     "mongodb": "^6.18.0"
   },
   "devDependencies": {
