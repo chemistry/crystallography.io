@@ -1,22 +1,22 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary: #0C3C65;
+  --color-primary: #0c3c65;
   --color-primary-opacity: rgba(12, 60, 101, 0.86);
-  --color-secondary: #FB9B2B;
-  --color-additional: #658DC6;
-  --color-active: #4285F4;
-  --color-success: #32B85F;
-  --color-warning: #EDAD3E;
-  --color-error: #DB433D;
+  --color-secondary: #fb9b2b;
+  --color-additional: #658dc6;
+  --color-active: #4285f4;
+  --color-success: #32b85f;
+  --color-warning: #edad3e;
+  --color-error: #db433d;
   --color-black: #373838;
   --color-white: #ffffff;
-  --color-dark-grey: #7F8FA4;
-  --color-grey: #B8C0CC;
-  --color-light-grey: #DCE6F5;
-  --color-clear-grey: #EFF3F9;
-  --color-bg: #F5F6F7;
-  --color-link: #4285F4;
+  --color-dark-grey: #7f8fa4;
+  --color-grey: #b8c0cc;
+  --color-light-grey: #dce6f5;
+  --color-clear-grey: #eff3f9;
+  --color-bg: #f5f6f7;
+  --color-link: #4285f4;
   --font-family-base: 'Roboto', 'Ubuntu', 'Arial', 'Helvetica Neue', sans-serif;
   --spacing-sidebar-open: 272px;
   --spacing-sidebar-closed: 80px;
@@ -25,22 +25,22 @@
 }
 
 :root {
-  --color-primary: #0C3C65;
+  --color-primary: #0c3c65;
   --color-primary-opacity: rgba(12, 60, 101, 0.86);
-  --color-secondary: #FB9B2B;
-  --color-additional: #658DC6;
-  --color-active: #4285F4;
-  --color-success: #32B85F;
-  --color-warning: #EDAD3E;
-  --color-error: #DB433D;
+  --color-secondary: #fb9b2b;
+  --color-additional: #658dc6;
+  --color-active: #4285f4;
+  --color-success: #32b85f;
+  --color-warning: #edad3e;
+  --color-error: #db433d;
   --color-black: #373838;
   --color-white: #ffffff;
-  --color-dark-grey: #7F8FA4;
-  --color-grey: #B8C0CC;
-  --color-light-grey: #DCE6F5;
-  --color-clear-grey: #EFF3F9;
-  --color-bg: #F5F6F7;
-  --color-link: #4285F4;
+  --color-dark-grey: #7f8fa4;
+  --color-grey: #b8c0cc;
+  --color-light-grey: #dce6f5;
+  --color-clear-grey: #eff3f9;
+  --color-bg: #f5f6f7;
+  --color-link: #4285f4;
   --font-family-base: 'Roboto', 'Ubuntu', 'Arial', 'Helvetica Neue', sans-serif;
   --spacing-sidebar-open: 272px;
   --spacing-sidebar-closed: 80px;
@@ -802,7 +802,6 @@ html,
   max-width: 640px;
   padding-top: 0.5rem;
 }
-
 
 .search-layout__results-list {
   margin-top: 1rem;

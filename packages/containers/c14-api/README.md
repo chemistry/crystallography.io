@@ -42,5 +42,5 @@ PORT
 
 ## Local Commands
 
-* Build project: `npm run build`
-* Local Development `npm run nodemon`
+- Build project: `npm run build`
+- Local Development `npm run nodemon`
