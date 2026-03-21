@@ -2,43 +2,139 @@ name: PR Validation
 
 on:
   pull_request:
-    branches:
-      - master
+    branches: [master]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   validate:
+    name: Validate Pull Request
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [22.x]
+    timeout-minutes: 15
+    outputs:
+      install: ${{ steps.install.outcome }}
+      lint: ${{ steps.lint.outcome }}
+      format: ${{ steps.format.outcome }}
+      build: ${{ steps.build.outcome }}
+      test: ${{ steps.test.outcome }}
 
     steps:
-      - uses: actions/checkout@v6
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
+        id: install
         run: npm ci
 
       - name: Lint
+        id: lint
+        if: always() && steps.install.outcome == 'success'
         run: npm run lint
 
       - name: Format check
+        id: format
+        if: always() && steps.install.outcome == 'success'
         run: npm run format:check
 
       - name: Build
+        id: build
+        if: always() && steps.install.outcome == 'success'
         run: npm run build
 
       - name: Test
+        id: test
+        if: always() && steps.install.outcome == 'success'
         run: npm run test
 
   docker-build:
+    name: Docker Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
 
       - name: Build Docker images (no push)
         run: docker compose build
+
+  comment:
+    name: PR Comment
+    needs: [validate, docker-build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const marker = '<!-- pr-validation-bot -->';
+            const checks = [
+              { name: 'Dependencies installed', outcome: '${{ needs.validate.outputs.install }}' },
+              { name: 'Linting passed', outcome: '${{ needs.validate.outputs.lint }}' },
+              { name: 'Format check passed', outcome: '${{ needs.validate.outputs.format }}' },
+              { name: 'Build successful', outcome: '${{ needs.validate.outputs.build }}' },
+              { name: 'Tests passed', outcome: '${{ needs.validate.outputs.test }}' },
+              { name: 'Docker build', outcome: '${{ needs.docker-build.result }}' },
+            ];
+
+            const allPassed = checks.every(c => c.outcome === 'success');
+            const status = allPassed ? '✅ PASSED' : '❌ FAILED';
+            const emoji = allPassed ? '🎉' : '💥';
+
+            const checkLines = checks
+              .map(c => `- ${c.outcome === 'success' ? '✅' : c.outcome === 'skipped' ? '⏭️' : '❌'} ${c.name}`)
+              .join('\n');
+
+            const body = `${marker}
+            ${emoji} **PR Validation ${status}**
+
+            **Commit:** \`${{ github.event.pull_request.head.sha }}\`
+            **Branch:** \`${{ github.head_ref }}\`
+
+            **Checks:**
+            ${checkLines}
+
+            ${allPassed ? '**Ready to merge!** ✨' : '**Please fix the failing checks.**'}
+
+            ---
+            🔗 [View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            ⏰ Generated at: \`${new Date().toISOString()}\``;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c =>
+              c.user.login === 'github-actions[bot]' && c.body.startsWith(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
