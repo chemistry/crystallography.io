@@ -15,7 +15,7 @@
     "start:dev": "nodemon -e ts -w ./src -x tsx src/index.ts"
   },
   "dependencies": {
-    "@sentry/node": "^8.0.0",
+    "@sentry/node": "^8.55.1",
     "body-parser": "^1.20.0",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
