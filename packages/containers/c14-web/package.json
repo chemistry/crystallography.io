@@ -28,7 +28,7 @@
     "helmet": "^8.1.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "react-hook-form": "^7.72.0",
+    "react-hook-form": "^7.72.1",
     "react-router": "^6.28.0",
     "react-router-dom": "^6.28.0",
     "socket.io-client": "^4.8.0",
