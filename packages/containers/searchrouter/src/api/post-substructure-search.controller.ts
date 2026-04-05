@@ -200,7 +200,7 @@ async function scheduleChunksToSearch(
     };
 
     await queue.add('search', jobData, {
-      jobId: searchId + ':' + i,
+      jobId: searchId + '-' + i,
       attempts: 1,
     });
   }

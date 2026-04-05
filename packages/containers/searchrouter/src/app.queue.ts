@@ -14,8 +14,8 @@ export function initQueue(io: Server, db: Db, queue: Queue, queueEvents: QueueEv
 
   queueEvents.on('failed', async ({ jobId }) => {
     const result: JobOutputModel = {
-      searchId: jobId.split(':')[0],
-      index: Number(jobId.split(':')[1]),
+      searchId: jobId.split('-')[0],
+      index: Number(jobId.split('-')[1]),
       results: [],
       time: 0,
     };
