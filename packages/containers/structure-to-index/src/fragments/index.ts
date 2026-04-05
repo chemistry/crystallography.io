@@ -1,6 +1,8 @@
 import { createRequire } from 'node:module';
-import type { Collection, Document, Filter, WithId } from 'mongodb';
+import type { Collection, Db, Document, Filter, WithId } from 'mongodb';
 import type { AppContext } from '../app.js';
+import pkg from '@chemistry/molecule';
+const { Molecule } = pkg;
 
 const require = createRequire(import.meta.url);
 const { Molecule3D } = require('@chemistry/molecule3d/dist/molecule3d.js');
@@ -22,6 +24,7 @@ export const processFragments = async ({
   }
 
   const fragmentsDB = db.collection('fragments');
+  const fingerprintsDB = db.collection('fingerprints');
   const structuresDB = db.collection('structures');
 
   const doc = await structuresDB.findOne({ _id: structureId } as unknown as Filter<Document>);
@@ -29,10 +32,15 @@ export const processFragments = async ({
     return;
   }
 
-  await fragmentsUpdate(fragmentsDB, doc);
+  await fragmentsUpdate(db, fragmentsDB, fingerprintsDB, doc);
 };
 
-async function fragmentsUpdate(fragmentsDB: Collection, doc: WithId<Document>) {
+async function fragmentsUpdate(
+  _db: Db,
+  fragmentsDB: Collection,
+  fingerprintsDB: Collection,
+  doc: WithId<Document>
+) {
   try {
     const molecule = new Molecule3D();
 
@@ -47,26 +55,40 @@ async function fragmentsUpdate(fragmentsDB: Collection, doc: WithId<Document>) {
       // molecule.addAtomLayers(1, Math.max(atomCount, 10) * 3);
     }
 
+    const fragments = molecule.export();
     const fdoc = {
       _id: doc._id,
-      fragments: molecule.export(),
+      fragments,
     };
     molecule.destroy();
 
-    await fragmentsDB.updateOne(
-      {
-        _id: fdoc._id,
-      },
-      {
-        $set: {
-          _id: fdoc._id,
-          fragments: fdoc.fragments,
-        },
-      },
-      {
-        upsert: true,
+    // Compute packed fingerprints for the substructure-search pre-filter.
+    // Without this, searchrouter's `fingerprints` collection stays empty and
+    // every substructure search short-circuits to 0 results.
+    const packedFingerprints: number[][] = [];
+    for (const jmol of fragments) {
+      try {
+        const m = new Molecule();
+        m.load(jmol);
+        packedFingerprints.push(m.getFingerPrintsPacked());
+      } catch (err) {
+        console.error(err);
       }
+    }
+
+    await fragmentsDB.updateOne(
+      { _id: fdoc._id },
+      { $set: { _id: fdoc._id, fragments: fdoc.fragments } },
+      { upsert: true }
     );
+
+    if (packedFingerprints.length > 0) {
+      await fingerprintsDB.updateOne(
+        { _id: fdoc._id },
+        { $set: { _id: fdoc._id, fingerprints: packedFingerprints } },
+        { upsert: true }
+      );
+    }
   } catch (e) {
     console.log(e);
   }
