@@ -24,6 +24,7 @@ export async function postSubstructureSearchCreator(queue: Queue, db: Db) {
     .find({})
     .toArray()) as unknown as IFingerprintModel[];
   console.timeEnd('fingerprints loaded');
+  console.log(`fingerprints loaded: ${fingerPrints.length} structures`);
 
   return (req: Request, res: Response, next: NextFunction) => {
     processSubstructureSearch({ req, res, next, queue, db });
