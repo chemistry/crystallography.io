@@ -53,7 +53,11 @@ async function main() {
   console.log(`fragments total: ${total}, fingerprints existing: ${existing}`);
 
   // Resume from highest _id already processed.
-  const last = await fingerprintsCol.find({}, { projection: { _id: 1 } }).sort({ _id: -1 }).limit(1).toArray();
+  const last = await fingerprintsCol
+    .find({}, { projection: { _id: 1 } })
+    .sort({ _id: -1 })
+    .limit(1)
+    .toArray();
   let lastId = last.length > 0 ? last[0]._id : -Infinity;
   console.log(`resume from _id > ${lastId}`);
 
@@ -118,9 +122,7 @@ async function main() {
         }
       }
       if (VERBOSE) {
-        process.stdout.write(
-          `ok ${Date.now() - docStart}ms fps=${fps.length} big=${tooLarge}\n`
-        );
+        process.stdout.write(`ok ${Date.now() - docStart}ms fps=${fps.length} big=${tooLarge}\n`);
       }
       if (fps.length === 0) {
         skipped++;
