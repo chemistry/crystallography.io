@@ -5,6 +5,7 @@ import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  publicDir: 'src/static',
   define: {
     'process.env.BROWSER': 'true',
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),

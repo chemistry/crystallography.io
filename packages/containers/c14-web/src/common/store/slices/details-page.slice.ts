@@ -36,7 +36,7 @@ export const createDetailsPageSlice: StateCreator<DetailsPageState> = (set) => (
       }
 
       set((s) => ({
-        detailsPage: { ...s.detailsPage, isLoading: true, data: { details } },
+        detailsPage: { ...s.detailsPage, isLoading: false, data: { details } },
       }));
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);

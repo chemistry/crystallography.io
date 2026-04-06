@@ -30,7 +30,7 @@ export const getNameSearchRouter = ({ db }: { db: Db }) => {
 
     let name = req.body.name || '';
     name = name
-      .replace(/[^\-()'a-z/\\,.\][α-ωΑ-Ω0-9]/gim, ' ')
+      .replace(/[^a-z0-9\-'.,α-ωΑ-Ω\s]/gim, '')
       .replace(/\s+/g, ' ')
       .trim();
 
