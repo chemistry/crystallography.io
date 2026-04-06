@@ -67,7 +67,7 @@ function renderHTML(
 
   html = html.replace('<div id="root"></div>', '<div id="root">' + componentHTML + '</div>');
   html = html.replace(
-    'window.__INITIAL_STATE__={};',
+    /window\.__INITIAL_STATE__\s*=\s*\{\};/,
     'window.__INITIAL_STATE__=' + JSON.stringify(initialState) + ';'
   );
   return html;

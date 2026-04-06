@@ -48,7 +48,7 @@ test.describe('Search Results Page', () => {
     await page.goto(URLS.endpoints.searchFormula);
     const input = page.locator('input').first();
     await expect(input).toBeVisible();
-    await input.fill('C6 H6');
+    await input.fill('C6H6');
 
     const submitButton = page.locator('button:has-text("Search")');
     await expect(submitButton).toBeEnabled({ timeout: 3_000 });
