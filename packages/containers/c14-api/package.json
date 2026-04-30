@@ -15,15 +15,15 @@
     "start:dev": "nodemon -e ts -w ./src -x tsx src/index.ts"
   },
   "dependencies": {
-    "@sentry/node": "^8.55.1",
-    "body-parser": "^1.20.0",
+    "@sentry/node": "^8.55.2",
+    "body-parser": "^1.20.5",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "helmet": "^8.1.0",
     "mongodb": "^6.18.0",
     "morgan": "^1.10.0",
-    "zod": "^4.3.6"
+    "zod": "^4.4.1"
   },
   "devDependencies": {
     "@types/connect-timeout": "^0.0.39",
