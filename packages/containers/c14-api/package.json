@@ -23,7 +23,7 @@
     "helmet": "^8.1.0",
     "mongodb": "^6.18.0",
     "morgan": "^1.10.0",
-    "zod": "^4.4.1"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/connect-timeout": "^0.0.39",
