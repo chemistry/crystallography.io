@@ -10,11 +10,26 @@ const appContext: ApplicationContext = {
   type: AppContextType.frontend,
 };
 
+const GA_MEASUREMENT_ID = 'G-52VPE7Y59X';
+
 if (process.env.NODE_ENV !== 'development') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN || '',
     tracesSampleRate: 1.0,
   });
+
+  const gtagScript = document.createElement('script');
+  gtagScript.async = true;
+  gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  document.head.appendChild(gtagScript);
+
+  const win = window as unknown as { dataLayer: unknown[] };
+  win.dataLayer = win.dataLayer || [];
+  function gtag(...args: unknown[]) {
+    win.dataLayer.push(args);
+  }
+  gtag('js', new Date());
+  gtag('config', GA_MEASUREMENT_ID);
 }
 
 (async () => {
