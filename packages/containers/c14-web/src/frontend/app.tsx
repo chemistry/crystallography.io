@@ -23,13 +23,14 @@ if (process.env.NODE_ENV !== 'development') {
   gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   document.head.appendChild(gtagScript);
 
-  const win = window as unknown as { dataLayer: unknown[] };
-  win.dataLayer = win.dataLayer || [];
-  function gtag(...args: unknown[]) {
-    win.dataLayer.push(args);
-  }
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID);
+  const gtagInit = document.createElement('script');
+  gtagInit.textContent = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${GA_MEASUREMENT_ID}');
+  `;
+  document.head.appendChild(gtagInit);
 }
 
 (async () => {
