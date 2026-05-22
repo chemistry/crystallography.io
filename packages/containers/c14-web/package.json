@@ -17,7 +17,7 @@
     "start:dev": "vite"
   },
   "dependencies": {
-    "@chemistry/crystalview": "^1.0.9",
+    "@chemistry/crystalview": "^3.0.0",
     "@chemistry/molpad": "^2.3.2",
     "@sentry/node": "^8.55.2",
     "@sentry/react": "^8.55.2",
