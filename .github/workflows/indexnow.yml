@@ -1,0 +1,35 @@
+name: IndexNow submit
+
+# Weekly ping to IndexNow (Bing + Yandex + Seznam + Naver) with the core public
+# URLs. Host + key are public (key file served at https://crystallography.io/<key>.txt),
+# so no environment/secret scoping is needed.
+#
+# crystallography.io's /sitemap.xml is a 500+ entry sitemap index whose children
+# hold ~533k per-structure pages — far past IndexNow's 10k-per-request cap and
+# not worth re-pinging weekly. We submit only the core static pages
+# (/sitemap/sitemap_s.xml); structure pages are discovered via normal crawling.
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch: {} # manual: submit on demand
+
+jobs:
+  submit:
+    name: 📨 Submit core pages to IndexNow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping IndexNow
+        run: |
+          HOST="crystallography.io"
+          KEY="ccb0914c374a02d6900ed5e4d04fde57"
+          SITEMAP="https://${HOST}/sitemap/sitemap_s.xml"
+          URLS=$(curl -s "$SITEMAP" | grep -oE '<loc>[^<]+</loc>' | sed -E 's#</?loc>##g')
+          if [ -z "$URLS" ]; then echo "::warning::no sitemap URLs — skipping IndexNow"; exit 0; fi
+          echo "Submitting $(echo "$URLS" | wc -l) URLs to IndexNow"
+          BODY=$(printf '%s\n' "$URLS" | jq -R . | jq -s "{host:\"${HOST}\",key:\"${KEY}\",keyLocation:\"https://${HOST}/${KEY}.txt\",urlList:.}")
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST 'https://api.indexnow.org/indexnow' \
+            -H 'Content-Type: application/json; charset=utf-8' --data "$BODY")
+          case "$code" in
+            200|202) echo "✅ IndexNow accepted (HTTP $code)";;
+            *) echo "::warning::IndexNow returned HTTP $code (non-fatal)";;
+          esac
