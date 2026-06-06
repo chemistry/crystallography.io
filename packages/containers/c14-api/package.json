@@ -22,7 +22,7 @@
     "express": "^4.22.2",
     "helmet": "^8.2.0",
     "mongodb": "^6.18.0",
-    "morgan": "^1.10.0",
+    "morgan": "^1.11.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
