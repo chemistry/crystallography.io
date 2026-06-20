@@ -32,7 +32,7 @@
     "build": "tsc --emitDeclarationOnly && webpack-cli --config webpack.config.cjs --mode production"
   },
   "devDependencies": {
-    "ts-loader": "^9.6.0",
+    "ts-loader": "^9.6.1",
     "webpack": "^5.107.2",
     "webpack-cli": "^6.0.0"
   }
