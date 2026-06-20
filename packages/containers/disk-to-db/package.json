@@ -14,7 +14,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@chemistry/cif-2-json": "0.0.18",
+    "@chemistry/cif-2-json": "file:vendor/chemistry-cif-2-json-0.0.18.tgz",
     "@sentry/node": "^8.55.2",
     "amqplib": "^0.10.0",
     "mongodb": "^6.18.0",
