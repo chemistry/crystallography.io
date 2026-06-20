@@ -16,7 +16,7 @@
   "dependencies": {
     "@chemistry/molecule": "^1.6.3",
     "@chemistry/molecule3d": "file:vendor/chemistry-molecule3d-1.5.1.tgz",
-    "@sentry/node": "^8.55.2",
+    "@sentry/node": "^10.59.0",
     "amqplib": "^0.10.0",
     "mongodb": "^6.18.0",
     "shelljs": "^0.10.0"

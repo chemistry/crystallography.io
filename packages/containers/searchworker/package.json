@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@chemistry/molecule": "^1.6.3",
-    "@sentry/node": "^8.55.2",
+    "@sentry/node": "^10.59.0",
     "bullmq": "^5.79.0",
     "ioredis": "^5.11.1",
     "mongodb": "^6.18.0"
