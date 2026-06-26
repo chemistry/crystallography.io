@@ -19,7 +19,7 @@
   "dependencies": {
     "@chemistry/crystalview": "^3.0.0",
     "@chemistry/molpad": "^2.3.2",
-    "@sentry/node": "^10.59.0",
+    "@sentry/node": "^10.62.0",
     "@sentry/react": "^8.55.2",
     "body-parser": "^1.20.5",
     "clsx": "^2.1.0",
@@ -28,7 +28,7 @@
     "helmet": "^8.2.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "react-hook-form": "^7.79.0",
+    "react-hook-form": "^7.80.0",
     "react-router": "^6.30.4",
     "react-router-dom": "^6.30.4",
     "socket.io-client": "^4.8.0",
