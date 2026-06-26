@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@chemistry/molecule": "^1.6.3",
-    "@sentry/node": "^10.59.0",
+    "@sentry/node": "^10.62.0",
     "body-parser": "^1.20.5",
-    "bullmq": "^5.79.0",
+    "bullmq": "^5.79.1",
     "connect-timeout": "^1.9.0",
     "express": "^4.22.2",
     "mongodb": "^6.18.0",

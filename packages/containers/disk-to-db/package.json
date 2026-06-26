@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@chemistry/cif-2-json": "file:vendor/chemistry-cif-2-json-0.0.18.tgz",
-    "@sentry/node": "^10.59.0",
+    "@sentry/node": "^10.62.0",
     "amqplib": "^0.10.0",
     "mongodb": "^6.18.0",
     "shelljs": "^0.10.0"
