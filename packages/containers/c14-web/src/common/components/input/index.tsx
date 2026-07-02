@@ -8,8 +8,7 @@ interface ISuggestedItem {
 
 export interface AutocompleteOptions {
   source:
-    | ((value: string, suggest: (value: string, data: ISuggestedItem[]) => void) => void)
-    | number;
+    ((value: string, suggest: (value: string, data: ISuggestedItem[]) => void) => void) | number;
   minChars: number;
   delay: number;
   cache: number;
