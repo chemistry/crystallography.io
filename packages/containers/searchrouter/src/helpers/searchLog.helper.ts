@@ -3,11 +3,11 @@ import type { Request } from 'express';
 import type { Db, InsertOneResult } from 'mongodb';
 
 export enum SearchType {
-  'structure' = 'structure',
-  'author' = 'author',
-  'name' = 'name',
-  'formula' = 'formula',
-  'unitCell' = 'unitCell',
+  structure = 'structure',
+  author = 'author',
+  name = 'name',
+  formula = 'formula',
+  unitCell = 'unitCell',
 }
 export async function saveSearchLog({
   config,
