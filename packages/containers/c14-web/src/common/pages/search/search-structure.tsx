@@ -17,7 +17,10 @@ export const SearchByStructurePage = () => {
 
   useInBrowser(() => {
     (async () => {
-      const mod = await import('@chemistry/molpad');
+      const [mod] = await Promise.all([
+        import('@chemistry/molpad'),
+        import('@chemistry/molpad/molpad.css'),
+      ]);
       setMolPad(() => mod.MolPad);
     })();
   }, []);
