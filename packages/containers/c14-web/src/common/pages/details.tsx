@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { PageContainer } from '../layout/index.js';
 import type { StructureModel } from '../models/index.js';
 import { useInBrowser } from '../services/index.js';

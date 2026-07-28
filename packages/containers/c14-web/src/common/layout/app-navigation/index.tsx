@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { LogoIcon, TitleIcon } from '../../icons/index.js';
 import { NavMenuTop } from '../nav-menu/index.js';
 

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import type { StructureModel } from '../../models/index.js';
 import { CompoundFormula, CompoundName, AuthorsList } from '../../utils/index.js';
 

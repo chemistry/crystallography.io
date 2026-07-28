@@ -1,5 +1,5 @@
 import { useRef, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Loader } from '../components/loader/index.js';
 import { Pagination } from '../components/pagination/index.js';
 import { useAppStore } from '../store/index.js';
