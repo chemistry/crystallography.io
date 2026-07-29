@@ -6,6 +6,7 @@ import { StructuresList } from '../components/structure-list/structure-list.js';
 import type { StructureModel } from '../models/index.js';
 import { useBrowserEffect } from '../hooks/index.js';
 import { subscribeToWSUpdates, closeWSSubscription } from '../store/ws-manager.js';
+import { SearchState } from '../store/slices/search-results.slice.js';
 
 const parsePage = (page?: string): number => {
   let currentPage = parseInt(page as string, 10);
@@ -39,8 +40,19 @@ export const SearchResultsPage = () => {
   }, [structureIds, structureById]);
 
   useBrowserEffect(() => {
-    subscribeToWSUpdates(store);
+    let cancelled = false;
+    (async () => {
+      // SSR status fetch can fail (issue #231) - refetch client-side before subscribing
+      const { meta, status } = store.getState().searchResults;
+      if (id && (meta.status === SearchState.empty || status === SearchState.failed)) {
+        await store.getState().fetchSearchResultsData({ id, page: String(currentPage) });
+      }
+      if (!cancelled) {
+        subscribeToWSUpdates(store);
+      }
+    })();
     return () => {
+      cancelled = true;
       closeWSSubscription(store);
     };
   }, [id, page]);

@@ -1,5 +1,5 @@
 import type { StateCreator } from 'zustand';
-import { API_BASE_URL } from '../../config.js';
+import { API_BASE_URL, SEARCH_API_BASE_URL } from '../../config.js';
 import { getStructures } from '../../../models/index.js';
 
 export enum SearchState {
@@ -69,9 +69,10 @@ export const createSearchResultsSlice: StateCreator<SearchResultsState> = (set, 
         },
       }));
 
-      const response = await fetch(`${API_BASE_URL}/api/v1/search/structure/${id}?page=${page}`, {
-        method: 'GET',
-      });
+      const response = await fetch(
+        `${SEARCH_API_BASE_URL}/api/v1/search/structure/${id}?page=${page}`,
+        { method: 'GET' }
+      );
       const data = await response.json();
 
       let structuresToLoad: number[] = [];
