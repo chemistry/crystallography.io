@@ -119,6 +119,7 @@ services:
     environment:
       - PORT=8060
       - API_BASE_URL=http://api:8070
+      - SEARCH_API_BASE_URL=http://searchrouter:8050
     deploy:
       update_config:
         order: start-first
