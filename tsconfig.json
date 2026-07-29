@@ -1,14 +1,14 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/libraries/cif-2-json" },
-    { "path": "packages/containers/c14-api" },
-    { "path": "packages/containers/c14-web" },
-    { "path": "packages/containers/searchrouter" },
-    { "path": "packages/containers/searchworker" },
-    { "path": "packages/containers/cod-to-disk" },
-    { "path": "packages/containers/disk-to-db" },
-    { "path": "packages/containers/structure-to-index" },
-    { "path": "packages/containers/maintenance" }
+    { "path": "packages/libraries/cif-2-json/tsconfig.json" },
+    { "path": "packages/containers/c14-api/tsconfig.json" },
+    { "path": "packages/containers/c14-web/tsconfig.json" },
+    { "path": "packages/containers/searchrouter/tsconfig.json" },
+    { "path": "packages/containers/searchworker/tsconfig.json" },
+    { "path": "packages/containers/cod-to-disk/tsconfig.json" },
+    { "path": "packages/containers/disk-to-db/tsconfig.json" },
+    { "path": "packages/containers/structure-to-index/tsconfig.json" },
+    { "path": "packages/containers/maintenance/tsconfig.json" }
   ]
 }
