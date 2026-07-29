@@ -1,5 +1,5 @@
 import { useRef, useMemo } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router';
 import { useAppStore } from '../store/index.js';
 import { Loader } from '../components/loader/index.js';
 import { Pagination } from '../components/pagination/index.js';

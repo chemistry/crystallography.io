@@ -1,6 +1,6 @@
 import type { EffectCallback, DependencyList } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useAppStoreApi } from '../store/index.js';
 import type { RouteDefinition } from '../index.js';
 

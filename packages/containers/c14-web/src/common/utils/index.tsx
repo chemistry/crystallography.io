@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { StructureModel } from '../models/index.js';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export type HighlightFunction = (name: string) => string;
 

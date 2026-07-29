@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useAppStore, useAppStoreApi } from '../store/index.js';
 import { Loader, Pagination } from '../components/index.js';
 import { StructuresList } from '../components/structure-list/structure-list.js';

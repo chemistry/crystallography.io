@@ -1,6 +1,6 @@
 import { hydrateRoot, createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import { AppContextType, getApplication } from '../common/index.js';
 import type { ApplicationContext } from '../common/index.js';
 import { StoreProvider } from '../common/store/index.js';

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useLocation, matchPath } from 'react-router-dom';
+import { Outlet, useLocation, matchPath } from 'react-router';
 import { cn } from './utils/cn.js';
 import { CollapseIcon, LogoMobileIcon, NavBtnIcon } from './icons/index.js';
 import { AppMobileNavigation, AppNavigation } from './layout/index.js';

@@ -1,18 +1,14 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import type { MolPadHandle } from '@chemistry/molpad';
 import { SearchTab } from '../../components/index.js';
 import { useAppStore } from '../../store/index.js';
 import { useInBrowser } from '../../services/index.js';
 
-type MolPadComponent = React.ForwardRefExoticComponent<
-  React.RefAttributes<{
-    isSutableForSearch: () => string;
-    getJmol: () => unknown;
-  }>
->;
+type MolPadComponent = React.ForwardRefExoticComponent<React.RefAttributes<MolPadHandle>>;
 
 export const SearchByStructurePage = () => {
-  const molpadRef = useRef(null);
+  const molpadRef = useRef<MolPadHandle>(null);
   const navigate = useNavigate();
   const searchStructureByStructure = useAppStore((s) => s.searchStructureByStructure);
   const [MolPad, setMolPad] = useState<MolPadComponent | null>(null);
@@ -21,25 +17,23 @@ export const SearchByStructurePage = () => {
 
   useInBrowser(() => {
     (async () => {
-      const mod = await import('@chemistry/molpad');
+      const [mod] = await Promise.all([
+        import('@chemistry/molpad'),
+        import('@chemistry/molpad/molpad.css'),
+      ]);
       setMolPad(() => mod.MolPad);
     })();
   }, []);
 
   const handleSubmit = async () => {
     if (MolPad && molpadRef && molpadRef.current) {
-      const molpad = molpadRef.current as {
-        isSutableForSearch: () => string;
-        getJmol: () => unknown;
-      };
-      const validationMessage = molpad.isSutableForSearch();
-      if (validationMessage !== '') {
-        setError(validationMessage);
+      const jmol = molpadRef.current.getJmol();
+      if (!jmol || jmol.atoms.length <= 2) {
+        setError('Molecule should contain more than 2 atoms');
         return;
       }
       setError(null);
       setIsSearching(true);
-      const jmol = molpad.getJmol();
       const searchId = await searchStructureByStructure({ molecule: jmol });
       setIsSearching(false);
       if (searchId) {
