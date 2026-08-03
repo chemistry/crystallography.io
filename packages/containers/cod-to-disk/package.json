@@ -23,6 +23,6 @@
     "@types/amqplib": "^0.10.0",
     "@types/node-cron": "^3.0.0",
     "@types/shelljs": "^0.10.0",
-    "typescript": "^5.9.0"
+    "typescript": "^6.0.3"
   }
 }
