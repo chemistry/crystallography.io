@@ -15,7 +15,7 @@
     "start:dev": "nodemon -e ts -w ./src -x tsx src/index.ts"
   },
   "dependencies": {
-    "@agentage/observability": "^0.2.1",
+    "@agentage/observability": "^0.5.0",
     "@sentry/node": "^10.66.0",
     "body-parser": "^1.20.6",
     "connect-timeout": "^1.9.0",

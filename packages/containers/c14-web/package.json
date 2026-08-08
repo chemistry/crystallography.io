@@ -17,7 +17,7 @@
     "start:dev": "vite"
   },
   "dependencies": {
-    "@agentage/observability": "^0.2.1",
+    "@agentage/observability": "^0.5.0",
     "@chemistry/crystalview": "^3.0.0",
     "@chemistry/molpad": "^3.1.0",
     "@sentry/node": "^10.66.0",
