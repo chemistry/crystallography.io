@@ -14,7 +14,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@agentage/observability": "^0.2.1",
+    "@agentage/observability": "^0.6.1",
     "@sentry/node": "^10.66.0",
     "mongodb": "^6.18.0",
     "node-cron": "^3.0.0",
