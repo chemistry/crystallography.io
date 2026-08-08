@@ -14,7 +14,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@agentage/observability": "^0.6.0",
+    "@agentage/observability": "^0.6.1",
     "@chemistry/molecule": "^1.6.3",
     "@chemistry/molecule3d": "file:vendor/chemistry-molecule3d-1.5.1.tgz",
     "@sentry/node": "^10.66.0",
