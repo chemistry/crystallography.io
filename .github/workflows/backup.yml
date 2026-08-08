@@ -10,7 +10,11 @@ name: Backup
 # little when the underlying data changes on a weekly sync cadence.
 on:
   schedule:
-    - cron: '10 4 * * 0' # Sunday, after the weekly COD sync at 03:00
+    - cron: '34 1 * * 0' # Sunday 01:34 UTC = 03:34 Prague (CEST), 86 minutes
+    #                      BEFORE sync-cod starts at 03:00. Running ahead of the
+    #                      sync rather than after it means the index is quiescent
+    #                      and fully imported from last week, with nothing writing
+    #                      to it - no race with the 120m COD import.
   workflow_dispatch:
 
 concurrency:
