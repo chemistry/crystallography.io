@@ -87,7 +87,7 @@ jobs:
             chmod 600 .env
 
             # Authenticate with GHCR
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo ${{ secrets.GHCR_READ_TOKEN }} | docker login ghcr.io -u vreshch --password-stdin
 
             # Pull all images before deploying
             docker compose pull
