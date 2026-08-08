@@ -48,6 +48,13 @@ services:
       - net
     env_file:
       - ./.env
+    environment:
+      - OTEL_SERVICE_NAME=crystallography-structure-to-index
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     deploy:
       mode: replicated
       replicas: 4
@@ -62,6 +69,13 @@ services:
       - /mnt/data:/home/data
     env_file:
       - ./.env
+    environment:
+      - OTEL_SERVICE_NAME=crystallography-disk-to-db
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     networks:
       - net
     build:
@@ -84,6 +98,13 @@ services:
       - net
     env_file:
       - ./.env
+    environment:
+      - OTEL_SERVICE_NAME=crystallography-maintenance
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     depends_on:
       - mongo
 
@@ -96,6 +117,13 @@ services:
       - net
     env_file:
       - ./.env
+    environment:
+      - OTEL_SERVICE_NAME=crystallography-cod-to-disk
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     build:
       context: ./packages/containers/cod-to-disk
       dockerfile: Dockerfile
@@ -120,6 +148,12 @@ services:
       - PORT=8060
       - API_BASE_URL=http://api:8070
       - SEARCH_API_BASE_URL=http://searchrouter:8050
+      - OTEL_SERVICE_NAME=crystallography-web
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     deploy:
       update_config:
         order: start-first
@@ -157,6 +191,12 @@ services:
       - ./.env
     environment:
       - PORT=8070
+      - OTEL_SERVICE_NAME=crystallography-api
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     deploy:
       update_config:
         order: start-first
@@ -191,6 +231,12 @@ services:
       - ./.env
     environment:
       - PORT=8050
+      - OTEL_SERVICE_NAME=crystallography-searchrouter
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     depends_on:
       - mongo
       - redis
@@ -220,6 +266,13 @@ services:
       - net
     env_file:
       - ./.env
+    environment:
+      - OTEL_SERVICE_NAME=crystallography-searchworker
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     depends_on:
       - mongo
       - redis

@@ -13,4 +13,4 @@ COPY package.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
 HEALTHCHECK --interval=60s --timeout=5s CMD node -e "process.exit(0)" || exit 1
-CMD ["node", "dist/index.js"]
+CMD ["node", "--import", "@agentage/observability/bootstrap", "dist/index.js"]
