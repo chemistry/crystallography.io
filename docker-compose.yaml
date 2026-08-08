@@ -150,7 +150,7 @@ services:
       - SEARCH_API_BASE_URL=http://searchrouter:8050
       - OTEL_SERVICE_NAME=crystallography-web
       - OTEL_TRACES_SAMPLER=parentbased_traceidratio
-      - OTEL_TRACES_SAMPLER_ARG=0.2
+      - OTEL_TRACES_SAMPLER_ARG=1.0
       - OTEL_METRICS_EXPORTER=none
       - OTEL_LOGS_EXPORTER=none
       - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
@@ -193,7 +193,7 @@ services:
       - PORT=8070
       - OTEL_SERVICE_NAME=crystallography-api
       - OTEL_TRACES_SAMPLER=parentbased_traceidratio
-      - OTEL_TRACES_SAMPLER_ARG=0.5
+      - OTEL_TRACES_SAMPLER_ARG=1.0
       - OTEL_METRICS_EXPORTER=none
       - OTEL_LOGS_EXPORTER=none
       - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
