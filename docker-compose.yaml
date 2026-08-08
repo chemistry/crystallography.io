@@ -57,7 +57,7 @@ services:
       - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,service.namespace=side
     deploy:
       mode: replicated
-      replicas: 4
+      replicas: 2
     depends_on:
       - rabbitmq
       - mongo
@@ -83,7 +83,7 @@ services:
       dockerfile: Dockerfile
     deploy:
       mode: replicated
-      replicas: 4
+      replicas: 2
     depends_on:
       - rabbitmq
       - mongo
