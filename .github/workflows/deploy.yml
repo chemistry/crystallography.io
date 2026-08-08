@@ -14,6 +14,7 @@ env:
   REGISTRY: ghcr.io
   STACK_NAME: crystallography-io
   REMOTE_DIR: /opt/crystallography.io
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://172.31.0.1:4318
 
 jobs:
   build-and-deploy:
@@ -55,6 +56,8 @@ jobs:
           API_PORT=8070
           SEARCH_PORT=8050
           WEB_PORT=3000
+          OTEL_EXPORTER_OTLP_ENDPOINT=${{ env.OTEL_EXPORTER_OTLP_ENDPOINT }}
+          OTEL_EXPORTER_OTLP_HEADERS=Authorization=Bearer%20${{ secrets.SIGNOZ_INGEST_TOKEN }}
           EOF
           sed -i 's/^          //' .env.production
 

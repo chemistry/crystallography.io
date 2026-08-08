@@ -15,6 +15,7 @@
     "start:dev": "cross-env SHOW_DEBUG_INFO=true nodemon -e ts -w ./src -x tsx src/index.ts"
   },
   "dependencies": {
+    "@agentage/observability": "^0.2.1",
     "@chemistry/molecule": "^1.6.3",
     "@sentry/node": "^10.66.0",
     "bullmq": "^5.80.7",
