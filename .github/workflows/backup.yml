@@ -1,0 +1,55 @@
+name: Backup
+
+# The crystallography mongo backs itself up from its own repo, rather than from
+# a central ansible role that had to know about every stack on every box.
+# scripts/backup.sh talks to the Storage Box using the host's own credentials -
+# nothing secret is passed in from here.
+#
+# Weekly, not nightly: this is a ~2GB derived index over the CIF store, which is
+# itself rebuildable from COD via sync-cod.yml. A nightly re-ship of 2GB buys
+# little when the underlying data changes on a weekly sync cadence.
+on:
+  schedule:
+    - cron: '10 4 * * 0' # Sunday, after the weekly COD sync at 03:00
+  workflow_dispatch:
+
+concurrency:
+  group: backup-crystallography-io
+  cancel-in-progress: false # never interrupt an in-flight backup
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    name: 🗄️ Backup crystallography mongo
+    runs-on: ubuntu-latest
+    timeout-minutes: 45 # ~2GB dump plus the upload
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 📦 Copy the backup script to the server
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: scripts/backup.sh
+          target: /tmp/crystallography-backup
+          overwrite: true
+
+      - name: 🗄️ Dump and ship
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          command_timeout: 40m
+          # The script exits non-zero on failure, and the final `result: ok` line
+          # is asserted here so a truncated session cannot pass as success.
+          script: |
+            set -e
+            bash /tmp/crystallography-backup/scripts/backup.sh | tee /tmp/backup.log
+            grep -q '^result: ok ' /tmp/backup.log || { echo "backup did not report success"; exit 1; }
+            rm -rf /tmp/crystallography-backup /tmp/backup.log
