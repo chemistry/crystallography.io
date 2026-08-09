@@ -303,6 +303,7 @@ services:
     env_file:
       - ./.env
     environment:
+      - HEALTH_PORT=8090
       - OTEL_SERVICE_NAME=crystallography-searchworker
       - OTEL_TRACES_SAMPLER=parentbased_traceidratio
       - OTEL_TRACES_SAMPLER_ARG=1.0

@@ -12,5 +12,6 @@ RUN apk add --no-cache rsync
 COPY package.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
-HEALTHCHECK --interval=60s --timeout=5s CMD node -e "process.exit(0)" || exit 1
+# No HEALTHCHECK: cron-shaped (hourly, app.ts), no HTTP listener to probe between ticks -
+# the removed `node -e "process.exit(0)"` always passed and asserted nothing (see PR body).
 CMD ["node", "--import", "@agentage/observability/bootstrap", "dist/index.js"]
