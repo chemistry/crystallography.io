@@ -57,6 +57,11 @@ export async function startWorker() {
       }
     );
 
+    // Reports fork progress to the cluster primary, which serves it as /health facts.
+    worker.on('completed', () => {
+      process.send?.({ type: 'job-processed', at: Date.now() });
+    });
+
     const closeConnections = async () => {
       console.log('closing connection');
       await worker.close();
