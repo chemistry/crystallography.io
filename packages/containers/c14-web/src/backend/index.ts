@@ -6,6 +6,7 @@ import { AppContextType, getApplication } from '../common/index.js';
 import type { ApplicationContext } from '../common/index.js';
 import { startApplication } from './application.js';
 import { getLogger } from './common/logger.js';
+import { mountHealth } from './health.js';
 
 import { fileURLToPath } from 'node:url';
 
@@ -57,13 +58,7 @@ const getContext = async () => {
     PORT,
     onAppInit: (app: Express) => {
       initSentry();
-      app.get('/hc', (req, res) =>
-        res.json({
-          status: 'OK',
-          commit: process.env.COMMIT_SHA || 'unknown',
-          buildTime: process.env.BUILD_TIME || 'unknown',
-        })
-      );
+      mountHealth(app);
       app.use(mw);
     },
     onAppInitEnd: (_app: Express) => {

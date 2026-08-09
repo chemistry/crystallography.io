@@ -1,5 +1,5 @@
 import express from 'express';
-import type { Express, RequestHandler, Router } from 'express';
+import type { Express, RequestHandler } from 'express';
 import * as Sentry from '@sentry/node';
 import http from 'node:http';
 import { Queue, QueueEvents } from 'bullmq';
@@ -8,6 +8,7 @@ import type { Db } from 'mongodb';
 import { initExpress } from './app.express.js';
 import { initIO } from './app.io.js';
 import { initQueue } from './app.queue.js';
+import { healthCheck } from './common/health-check.js';
 
 const redisConnection = {
   host: process.env.REDIS_HOST || 'redis',
@@ -23,7 +24,7 @@ const initSentry = (_config: { app: Express }) => {
   });
 };
 
-export async function startServer({ db, mw, hc }: { db: Db; mw: RequestHandler; hc: Router }) {
+export async function startServer({ db, mw }: { db: Db; mw: RequestHandler }) {
   const app = express();
   const server = http.createServer(app);
 
@@ -41,7 +42,7 @@ export async function startServer({ db, mw, hc }: { db: Db; mw: RequestHandler; 
 
   initSentry({ app });
 
-  app.use('/', hc);
+  app.use('/', healthCheck({ db, queue }));
   app.use(mw);
 
   process.on('SIGINT', async () => {

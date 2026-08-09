@@ -1,62 +1,30 @@
 import { Router } from 'express';
-import type { Request, Response } from 'express';
 import type { Db } from 'mongodb';
+import type { Queue } from 'bullmq';
+import type { HealthCheck } from '@agentage/observability/health';
+import { createHealthHandler } from '@agentage/observability/health';
 
-const writeFail = (res: Response) => {
-  res
-    .status(500)
-    .send(
-      JSON.stringify(
-        {
-          status: 'FAIL',
-        },
-        null,
-        4
-      )
-    )
-    .end();
-};
+// Shared with helpers/healthcheck.ts so the top-level alias and the nested
+// /api/v1/search/structure/hc route assert mongo + the BullMQ/Redis queue the
+// same way. Mirrors the previous mongoCheck + queue.getJobCounts() checks.
+export const createChecks = ({ db, queue }: { db: Db; queue: Queue }): HealthCheck[] => [
+  { name: 'mongo', run: async () => Boolean((await db.stats()).ok), timeoutMs: 2000 },
+  {
+    name: 'queue',
+    run: async () => {
+      await queue.getJobCounts();
+      return true;
+    },
+    timeoutMs: 2000,
+  },
+];
 
-const writeOK = (res: Response) => {
-  res
-    .status(200)
-    .send(
-      JSON.stringify(
-        {
-          status: 'OK',
-          commit: process.env.COMMIT_SHA || 'unknown',
-          buildTime: process.env.BUILD_TIME || 'unknown',
-        },
-        null,
-        4
-      )
-    )
-    .end();
-};
-
-export const mongoCheck = ({ db }: { db: Db }) => {
-  return async () => {
-    const check = await db.stats();
-    if (check.ok) {
-      return Promise.resolve();
-    }
-    return Promise.reject();
-  };
-};
-
-// health check
-export const healthCheck = (checks: (() => Promise<void>)[]) => {
+export const healthCheck = ({ db, queue }: { db: Db; queue: Queue }) => {
+  // service defaults to OTEL_SERVICE_NAME (set in docker-compose.yaml) so health
+  // and telemetry service.name can't drift apart - see specs/health-endpoints.md.
+  const handler = createHealthHandler({ checks: createChecks({ db, queue }) });
   const router = Router();
-
-  router.get('/hc', async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    try {
-      await Promise.all([...checks]);
-      writeOK(res);
-    } catch (err) {
-      writeFail(res);
-      console.error(err);
-    }
-  });
+  router.get('/health', handler);
+  router.get('/hc', handler); // legacy alias, wired into the Dockerfile HEALTHCHECK
   return router;
 };
