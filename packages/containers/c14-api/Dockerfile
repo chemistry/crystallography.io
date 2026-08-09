@@ -13,5 +13,7 @@ ENV COMMIT_SHA=$COMMIT_SHA BUILD_TIME=$BUILD_TIME
 COPY package.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=5 CMD wget -qO- http://127.0.0.1:${PORT:-8080}/hc || exit 1
+# Liveness only: any HTTP response is OK, so a Mongo outage 503 in the body can't restart-loop the container.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=5 \
+  CMD NODE_OPTIONS= node -e "fetch('http://127.0.0.1:${PORT:-8080}/health').then(()=>process.exit(0)).catch(()=>process.exit(1))"
 CMD ["node", "--import", "@agentage/observability/bootstrap", "dist/index.js"]
