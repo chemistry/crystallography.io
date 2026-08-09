@@ -2,7 +2,6 @@ import { startServer } from './app.js';
 import * as Sentry from '@sentry/node';
 import { getLogger } from './common/express-logger.js';
 import { getMongoConnection } from './common/mongo.js';
-import { healthCheck, mongoCheck } from './common/health-check.js';
 
 (async () => {
   try {
@@ -11,9 +10,8 @@ import { healthCheck, mongoCheck } from './common/health-check.js';
 
     const { db } = await getMongoConnection();
     const { logger, mw } = await getLogger();
-    const hc = healthCheck([mongoCheck({ db })]);
 
-    const server = await startServer({ db, mw, hc });
+    const server = await startServer({ db, mw });
 
     server.listen(PORT, () => {
       console.log(`${new Date().toLocaleString()} searchrouter - started on port ${PORT}`);

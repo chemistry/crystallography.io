@@ -4,7 +4,7 @@ import { getLogger } from './common/express-logger.js';
 import { getMongoConnection } from './common/mongo.js';
 import type { Express } from 'express';
 import type { Server } from 'http';
-import { mongoCheck, healthCheck } from './common/health-check.js';
+import { healthCheck } from './common/health-check.js';
 
 const getPort = () => {
   const port = process.env.PORT;
@@ -43,7 +43,7 @@ const getApplicationContext = async () => {
     },
     onAppInit: (app: Express) => {
       initSentry();
-      app.use('/', healthCheck([mongoCheck({ db })]));
+      app.use('/', healthCheck({ db }));
       app.use(mw);
     },
     onAppInitEnd: (_app: Express) => {

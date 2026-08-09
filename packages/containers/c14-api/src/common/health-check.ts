@@ -1,62 +1,20 @@
 import { Router } from 'express';
-import type { Request, Response } from 'express';
 import type { Db } from 'mongodb';
+import { createHealthHandler } from '@agentage/observability/health';
 
-const writeFail = (res: Response) => {
-  res
-    .status(500)
-    .send(
-      JSON.stringify(
-        {
-          status: 'FAIL',
-        },
-        null,
-        4
-      )
-    )
-    .end();
-};
-
-const writeOK = (res: Response) => {
-  res
-    .status(200)
-    .send(
-      JSON.stringify(
-        {
-          status: 'OK',
-          commit: process.env.COMMIT_SHA || 'unknown',
-          buildTime: process.env.BUILD_TIME || 'unknown',
-        },
-        null,
-        4
-      )
-    )
-    .end();
-};
-
-export const mongoCheck = ({ db }: { db: Db }) => {
-  return async () => {
-    const check = await db.stats();
-    if (check.ok) {
-      return Promise.resolve();
-    }
-    return Promise.reject();
-  };
-};
-
-// health check
-export const healthCheck = (checks: (() => Promise<void>)[]) => {
-  const router = Router();
-
-  router.get('/hc', async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    try {
-      await Promise.all([...checks]);
-      writeOK(res);
-    } catch (err) {
-      writeFail(res);
-      console.error(err);
-    }
+export const healthCheck = ({ db }: { db: Db }) => {
+  const handler = createHealthHandler({
+    // service defaults to OTEL_SERVICE_NAME (set in docker-compose.yaml) so health
+    // and telemetry service.name can't drift apart - see specs/health-endpoints.md.
+    // Mirrors the previous mongoCheck; bounded well under HEALTHCHECK --timeout=5s.
+    checks: [{ name: 'mongo', run: async () => Boolean((await db.stats()).ok), timeoutMs: 2000 }],
   });
+  const router = Router();
+  router.get('/health', handler);
+  router.get('/hc', handler); // legacy alias, wired into the Dockerfile HEALTHCHECK
+  // Traefik forwards PathPrefix('/api'|'/sitemap'|'/cif') to this service unchanged
+  // (no strip-prefix) - /health at the app root is unreachable from outside the
+  // overlay network without this mount.
+  router.get('/api/health', handler);
   return router;
 };
