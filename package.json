@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.61.1",
+    "@playwright/test": "^1.62.1",
     "@types/node": "^22.20.1",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
@@ -44,9 +44,9 @@
     "prettier": "^3.9.5",
     "rimraf": "^5.0.0",
     "supertest": "^7.0.0",
-    "tsx": "^4.23.1",
+    "tsx": "^4.23.9",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.64.0",
+    "typescript-eslint": "^8.66.0",
     "vitest": "^4.1.10"
   }
 }

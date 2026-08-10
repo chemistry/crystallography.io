@@ -16,7 +16,7 @@
   "dependencies": {
     "@agentage/observability": "^0.6.1",
     "@chemistry/cif-2-json": "file:vendor/chemistry-cif-2-json-0.0.18.tgz",
-    "@sentry/node": "^10.66.0",
+    "@sentry/node": "^10.69.0",
     "amqplib": "^0.10.0",
     "mongodb": "^6.18.0",
     "shelljs": "^0.10.0"
