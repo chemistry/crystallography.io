@@ -6,7 +6,7 @@ updates:
       interval: 'weekly'
       day: 'friday'
       time: '16:07'
-      timezone: 'Europe/Prague'
+      timezone: 'Etc/UTC'
     assignees:
       - 'vreshch'
     open-pull-requests-limit: 10
@@ -24,7 +24,7 @@ updates:
       interval: 'weekly'
       day: 'friday'
       time: '16:07'
-      timezone: 'Europe/Prague'
+      timezone: 'Etc/UTC'
     assignees:
       - 'vreshch'
     open-pull-requests-limit: 5
