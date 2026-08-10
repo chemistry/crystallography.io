@@ -4,7 +4,7 @@ name: Train
 # direct-to-master, then dispatch deploy.yml (which chains e2e). Red run = the only alarm.
 on:
   schedule:
-    - cron: '0 21 * * 5'
+    - cron: '7 21 * * 5'
   workflow_dispatch:
     inputs:
       bump_deps:
@@ -136,19 +136,23 @@ jobs:
           fi
 
       - name: Validate (mirrors pr-validation)
+        id: validate
         if: steps.ncu.outputs.changed == 'true'
         run: |
-          npm run lint
-          npm run format:check
-          npm run build
-          npm run test
-
-      - name: Docker build (mirrors pr-validation)
-        if: steps.ncu.outputs.changed == 'true'
-        run: docker compose build
+          set +e
+          npm run lint && npm run format:check && npm run build && npm run test && docker compose build
+          RC=$?
+          set -e
+          if [ "$RC" -ne 0 ]; then
+            # a broken upstream major must not block the week's deploy
+            echo "Internal bump reverted - checks red." | tee -a "$GITHUB_STEP_SUMMARY"
+            git checkout -- $(git ls-files '*package.json') package-lock.json
+            npm ci
+            echo "reverted=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit to master
-        if: steps.ncu.outputs.changed == 'true'
+        if: steps.ncu.outputs.changed == 'true' && steps.validate.outputs.reverted != 'true'
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -161,7 +165,9 @@ jobs:
 
       - name: Dispatch deploy
         # GITHUB_TOKEN merges never fire the push-triggered deploy; deploy chains e2e
-        if: (needs.deps.outputs.merged != '' && needs.deps.outputs.merged != '0') || steps.ncu.outputs.changed == 'true'
+        if: >-
+          (needs.deps.outputs.merged != '' && needs.deps.outputs.merged != '0') ||
+          (steps.ncu.outputs.changed == 'true' && steps.validate.outputs.reverted != 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -173,5 +179,7 @@ jobs:
           echo "Deploy dispatched: ${URL:-see Actions tab}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Quiet week
-        if: (needs.deps.outputs.merged == '' || needs.deps.outputs.merged == '0') && steps.ncu.outputs.changed != 'true'
-        run: echo "Quiet week - no bot PRs merged, no internal dep changes, nothing to deploy." >> "$GITHUB_STEP_SUMMARY"
+        if: >-
+          (needs.deps.outputs.merged == '' || needs.deps.outputs.merged == '0') &&
+          (steps.ncu.outputs.changed != 'true' || steps.validate.outputs.reverted == 'true')
+        run: echo "Nothing to deploy - no bot PRs merged, no internal dep change landed." >> "$GITHUB_STEP_SUMMARY"
