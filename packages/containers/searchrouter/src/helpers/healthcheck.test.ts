@@ -20,7 +20,7 @@ const mockQueue = (up = true) =>
     },
   }) as unknown as Queue;
 
-describe('nested /api/v1/search/structure/hc route', () => {
+describe('nested /api/v1/search health routes', () => {
   // service comes from OTEL_SERVICE_NAME (docker-compose.yaml), not a hand-typed
   // constant - stub it per test so this suite doesn't leak into others.
   const original = process.env.OTEL_SERVICE_NAME;
@@ -37,6 +37,15 @@ describe('nested /api/v1/search/structure/hc route', () => {
     const app = express();
     app.get('/api/v1/search/structure/hc', healthCheck({ db: mockDb(), queue: mockQueue() }));
     const res = await request(app).get('/api/v1/search/structure/hc');
+    expect(res.status).toBe(200);
+    expect(res.body.data.service).toBe('crystallography-searchrouter');
+    expect(res.body.data.checks).toEqual({ mongo: 'ok', queue: 'ok' });
+  });
+
+  it('serves the same envelope on the standard /api/v1/search/health route', async () => {
+    const app = express();
+    app.get('/api/v1/search/health', healthCheck({ db: mockDb(), queue: mockQueue() }));
+    const res = await request(app).get('/api/v1/search/health');
     expect(res.status).toBe(200);
     expect(res.body.data.service).toBe('crystallography-searchrouter');
     expect(res.body.data.checks).toEqual({ mongo: 'ok', queue: 'ok' });

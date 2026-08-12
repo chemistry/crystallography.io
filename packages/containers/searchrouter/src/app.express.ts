@@ -26,7 +26,9 @@ export async function initExpress(app: Express, queue: Queue, db: Db) {
   app.get('/ping', (req, res) => {
     res.send('pong');
   });
-  app.get('/api/v1/search/structure/hc', healthCheck({ db, queue }));
+  const searchHealth = healthCheck({ db, queue });
+  app.get('/api/v1/search/health', searchHealth);
+  app.get('/api/v1/search/structure/hc', searchHealth); // legacy path, kept for existing probes
   app.get('/api/v1/search/structure/status', statusCheck({ db, queue }));
 
   // Include API router
