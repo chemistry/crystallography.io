@@ -105,31 +105,9 @@ jobs:
 
       - name: Verify deployment
         env:
+          COMMIT_SHA: ${{ github.sha }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-        run: |
-          echo "Verifying deployment..."
-          EXPECTED="${{ github.sha }}"
-          # Every HTTP surface bakes COMMIT_SHA into its v1 health envelope
-          # (specs/health-endpoints.md): `version` = full sha, `commit` = 7-char.
-          verify() {
-            local name="$1" path="$2" live
-            for i in $(seq 1 30); do
-              live=$(curl -sfk --resolve "crystallography.io:443:${DEPLOY_HOST}" "https://crystallography.io${path}" 2>/dev/null | jq -r '.data.version // empty') || true
-              if [ "$live" = "$EXPECTED" ]; then
-                echo "PASS  ${name} ${path} serving ${live:0:8}"
-                return 0
-              fi
-              echo "  attempt $i/30 ${name}: got ${live:-no response}, want ${EXPECTED:0:8}"
-              sleep 10
-            done
-            echo "::error::FAIL  ${name} ${path} never served ${EXPECTED:0:8}"
-            return 1
-          }
-          fail=0
-          verify web /hc || fail=1
-          verify api /api/health || fail=1
-          verify searchrouter /api/v1/search/health || fail=1
-          exit $fail
+        run: bash scripts/verify-deploy.sh
 
   e2e:
     needs: build-and-deploy
