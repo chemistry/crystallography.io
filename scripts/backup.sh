@@ -25,6 +25,7 @@ STACK="${STACK:-crystallography-io}"
 SERVICE="${SERVICE:-mongo}"
 BACKUP_SERVICE="${BACKUP_SERVICE:-crystallography-mongo}"
 BACKUP_ROOT="${BACKUP_ROOT:-/backup}"
+DATASET_DB="${DATASET_DB:-crystallography}"
 SPOOL="${SPOOL:-/var/backups/crystallography-io}"
 MARKER_DIR="${MARKER_DIR:-/var/lib/backup-status}"
 # Guards against shipping a truncated archive as if it were good. The dump sat
@@ -37,7 +38,7 @@ started="$(date -u +%s)"
 log() { printf '%s %s\n' "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" "$*"; }
 fail() {
   log "FAILED: $*"
-  echo "result: failed"
+  echo "backup failed service=${BACKUP_SERVICE}"
   exit 1
 }
 
@@ -109,12 +110,19 @@ log "dump ok, ${size} bytes"
 # The counts mongodump already reports, kept as the manifest's `records`. A dump
 # against an empty database produces plausible files and sizes - only the counts
 # say the data is gone.
-counts="$(sed -n 's/.*done dumping \([^ ]*\)[[:space:]]*(\([0-9][0-9]*\) document.*/\1 \2/p' "$dumplog")"
+# mongodump quotes the namespace in backticks, so they are stripped first.
+counts="$(tr -d '`' <"$dumplog" |
+  sed -n 's/.*done dumping \([^ ]*\)[[:space:]]*(\([0-9][0-9]*\) document.*/\1 \2/p')"
 collections="$(printf '%s' "$counts" | grep -c . || true)"
 [ "$collections" -gt 0 ] || fail "mongodump reported no collections - refusing to record an empty backup"
-docs="$(printf '%s\n' "$counts" | awk '{ t += $2 } END { print t + 0 }')"
-[ "$docs" -gt 0 ] || fail "mongodump reported ${collections} collection(s) but 0 documents"
-log "dumped ${collections} collection(s), ${docs} document(s)"
+
+# Counted for the dataset's own database, not across every namespace: the dump
+# also carries admin.system.*, whose handful of documents would otherwise mask a
+# crystallography database that came back empty.
+docs="$(printf '%s\n' "$counts" | awk -v db="${DATASET_DB}." '
+  index($1, db) == 1 { t += $2 } END { print t + 0 }')"
+[ "$docs" -gt 0 ] || fail "mongodump found no documents in ${DATASET_DB} across ${collections} collection(s)"
+log "dumped ${collections} collection(s), ${docs} document(s) in ${DATASET_DB}"
 
 sha_src="$(sha256sum "$out" | cut -d' ' -f1)"
 
@@ -132,8 +140,9 @@ log "verified on ${BACKUP_ROOT}: ${dest_size} bytes, sha256 ${sha_dest}"
 
 # manifest.json is written LAST and is the success marker: a directory without
 # one is a failed run, so it must not appear until everything above has passed.
-records="$(printf '%s\n' "$counts" |
-  awk 'NF { printf "    \"%s\": %s,\n", substr($1, index($1, ".") + 1), $2 }')"
+# Keyed by the full db.collection namespace: the dump spans more than one
+# database, and bare collection names would collide across them.
+records="$(printf '%s\n' "$counts" | awk 'NF { printf "    \"%s\": %s,\n", $1, $2 }')"
 cat >"${dest}/manifest.json" <<JSON
 {
   "schema": 1,
