@@ -1,10 +1,14 @@
 #!/bin/bash
-# Back up the crystallography mongo to the Hetzner Storage Box.
+# Back up the crystallography mongo to the estate backup disk at /backup.
 #
 # Runs ON the side host, invoked by .github/workflows/backup.yml over ssh.
-# Storage Box access is the host's own root ssh key plus the `storagebox-backup`
-# alias in /root/.ssh/config, both provisioned by agentage/infrastructure - so
-# no backup credential is passed in from the workflow and none is stored here.
+# /backup is the estate's shared Storage Box, CIFS-mounted read-write on every
+# VM by agentage/infrastructure - so no backup credential is passed in from the
+# workflow and none is stored here.
+#
+# The layout, the mount guard, the manifest and the summary line are the estate
+# backup contract (agentage/infrastructure docs/backup-contract.md). Only the
+# dump command below is specific to this repo.
 #
 # NOT BACKED UP: /mnt/data/cif, the 111GB CIF store. It is rebuildable from COD
 # upstream via .github/workflows/sync-cod.yml, which is the documented recovery
@@ -12,21 +16,23 @@
 # the CIFs gives you a searchable catalogue whose structure files are missing,
 # so a full recovery is: re-run sync-cod, then restore this dump.
 #
-# History comes from the Storage Box's 10 automated daily snapshots, which no
-# VM can reach or delete. That is why one "latest" artifact is kept rather than
-# a dated series that would need its own prune.
+# History is the dated directories on /backup, pruned centrally by
+# infrastructure, plus the Storage Box's 10 daily snapshots, which no VM can
+# reach or delete. This script only ever adds - it deletes nothing on /backup.
 set -euo pipefail
 
 STACK="${STACK:-crystallography-io}"
 SERVICE="${SERVICE:-mongo}"
+BACKUP_SERVICE="${BACKUP_SERVICE:-crystallography-mongo}"
+BACKUP_ROOT="${BACKUP_ROOT:-/backup}"
 SPOOL="${SPOOL:-/var/backups/crystallography-io}"
-REMOTE="${REMOTE:-storagebox-backup}"
-REMOTE_DIR="${REMOTE_DIR:-repo/crystallography/mongo}"
 MARKER_DIR="${MARKER_DIR:-/var/lib/backup-status}"
 # Guards against shipping a truncated archive as if it were good. The dump sat
 # at ~2.0GB compressed on 2026-08-08; an order of magnitude under that means
 # the dump died early.
 MIN_BYTES="${MIN_BYTES:-1000000000}"
+
+started="$(date -u +%s)"
 
 log() { printf '%s %s\n' "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" "$*"; }
 fail() {
@@ -35,19 +41,18 @@ fail() {
   exit 1
 }
 
-# The box's restricted shell rejects a compound --rsync-path (exit 12), so
-# parent directories are pre-created over sftp instead. The '-' prefix makes
-# sftp continue past an already-exists error; without it the batch aborts on the
-# first existing parent and the leaf is never created.
-ensure_remote_dir() {
-  local acc=""
-  local IFS='/'
-  for part in $1; do
-    [ -n "$part" ] || continue
-    acc="${acc}${part}/"
-    printf -- '-mkdir %s\n' "$acc"
-  done | sftp -q -b - "$REMOTE" >/dev/null 2>&1 || true
-}
+# THE FIRST LINE OF WORK IS THE MOUNT GUARD. An unmounted /backup is an ordinary
+# empty directory on the root filesystem: a backup would write there, report
+# success, fill the root disk and be gone on the next boot. `mountpoint -q` is
+# not enough - /backup is an autofs point, so it answers 0 even while the CIFS
+# mount is down.
+ls "$BACKUP_ROOT" >/dev/null 2>&1 || true # first access wakes the automount
+findmnt -t cifs --mountpoint "$BACKUP_ROOT" >/dev/null ||
+  { echo "::error::${BACKUP_ROOT} cifs mount is down"; exit 1; }
+
+date_utc="$(date -u +%F)"
+dest="${BACKUP_ROOT}/${date_utc}/${BACKUP_SERVICE}"
+archive_name="mongo.archive.gz"
 
 # Collected first, then filtered: piping straight into `grep -m1` lets grep exit
 # on the first match and SIGPIPE the producer, which under `set -o pipefail`
@@ -63,7 +68,8 @@ avail="$(df --output=avail -k / | tail -1)"
 [ "$avail" -ge 6000000 ] || fail "only ${avail}KB free on / - refusing to spool a ~2GB dump"
 
 mkdir -p "$SPOOL"
-out="$SPOOL/mongo-latest.archive.gz"
+out="$SPOOL/${archive_name}"
+dumplog="$SPOOL/mongodump.log"
 
 # WHY a sidecar container and not `docker exec`: exec runs mongodump inside
 # mongod's own cgroup, so its buffers count against the service memory limit.
@@ -79,11 +85,17 @@ export MONGO_U MONGO_P
 log "mongodump ${container} -> ${out}"
 # Credentials are passed by NAME to `docker -e` so the values never appear on a
 # command line or in the process table.
+# stderr goes to a file rather than a pipe because it is read back for the
+# per-collection counts; it is echoed afterwards so the run log still has it.
 docker run --rm --network "container:${container}" --memory 512m \
   -e MONGO_U -e MONGO_P "$img" \
   sh -c 'set -- --host 127.0.0.1 --numParallelCollections=1 --archive --gzip;
          [ -n "$MONGO_U" ] && set -- "$@" --username "$MONGO_U" --password "$MONGO_P" --authenticationDatabase admin;
-         exec mongodump "$@"' >"${out}.tmp"
+         exec mongodump "$@"' >"${out}.tmp" 2>"$dumplog" || {
+  cat "$dumplog" >&2
+  fail "mongodump failed"
+}
+cat "$dumplog" >&2
 
 size="$(stat -c %s "${out}.tmp")"
 [ "$size" -ge "$MIN_BYTES" ] || fail "archive is ${size} bytes, under the ${MIN_BYTES} floor - dump likely truncated"
@@ -94,16 +106,59 @@ gzip -t "${out}.tmp" 2>/dev/null || fail "archive fails gzip integrity check"
 mv -f "${out}.tmp" "$out"
 log "dump ok, ${size} bytes"
 
-ensure_remote_dir "$REMOTE_DIR"
-log "rsync ${SPOOL}/ -> ${REMOTE}:${REMOTE_DIR}/"
-rsync -az --delete -e ssh "$SPOOL/" "${REMOTE}:${REMOTE_DIR}/" || fail "rsync failed"
+# The counts mongodump already reports, kept as the manifest's `records`. A dump
+# against an empty database produces plausible files and sizes - only the counts
+# say the data is gone.
+counts="$(sed -n 's/.*done dumping \([^ ]*\)[[:space:]]*(\([0-9][0-9]*\) document.*/\1 \2/p' "$dumplog")"
+collections="$(printf '%s' "$counts" | grep -c . || true)"
+[ "$collections" -gt 0 ] || fail "mongodump reported no collections - refusing to record an empty backup"
+docs="$(printf '%s\n' "$counts" | awk '{ t += $2 } END { print t + 0 }')"
+[ "$docs" -gt 0 ] || fail "mongodump reported ${collections} collection(s) but 0 documents"
+log "dumped ${collections} collection(s), ${docs} document(s)"
+
+sha_src="$(sha256sum "$out" | cut -d' ' -f1)"
+
+mkdir -p "$dest"
+log "copy ${out} -> ${dest}/${archive_name}"
+cp -f "$out" "${dest}/${archive_name}" || fail "copy to ${dest} failed"
+
+# Read back from the backup disk, not from the spool: this is the only check
+# that the bytes which survived the CIFS write are the bytes that were dumped.
+dest_size="$(stat -c %s "${dest}/${archive_name}")"
+[ "$dest_size" = "$size" ] || fail "copy is ${dest_size} bytes on /backup, dumped ${size}"
+sha_dest="$(sha256sum "${dest}/${archive_name}" | cut -d' ' -f1)"
+[ "$sha_dest" = "$sha_src" ] || fail "sha256 on /backup does not match the dump"
+log "verified on ${BACKUP_ROOT}: ${dest_size} bytes, sha256 ${sha_dest}"
+
+# manifest.json is written LAST and is the success marker: a directory without
+# one is a failed run, so it must not appear until everything above has passed.
+records="$(printf '%s\n' "$counts" |
+  awk 'NF { printf "    \"%s\": %s,\n", substr($1, index($1, ".") + 1), $2 }')"
+cat >"${dest}/manifest.json" <<JSON
+{
+  "schema": 1,
+  "service": "${BACKUP_SERVICE}",
+  "at": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
+  "host": "$(hostname)",
+  "files": [
+    { "name": "${archive_name}", "bytes": ${dest_size}, "sha256": "${sha_dest}" }
+  ],
+  "bytes": ${dest_size},
+  "records": {
+${records}
+    "collections": ${collections}
+  },
+  "duration_s": $(($(date -u +%s) - started))
+}
+JSON
+log "manifest written: ${dest}/manifest.json"
 
 # Read by the host-side staleness watchdog, which is what catches "the workflow
 # silently stopped running" - a failure mode a workflow cannot report on itself.
 mkdir -p "$MARKER_DIR"
 printf '%s bytes=%s remote=%s\n' \
-  "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" "$size" "${REMOTE_DIR}" \
-  >"${MARKER_DIR}/crystallography-mongo"
+  "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" "$dest_size" "${dest}" \
+  >"${MARKER_DIR}/${BACKUP_SERVICE}"
 
 # Asserted by the workflow. Keep the format stable.
-echo "result: ok artifacts=1 bytes=${size}"
+echo "backup ok service=${BACKUP_SERVICE} date=${date_utc} bytes=${dest_size} files=1"
