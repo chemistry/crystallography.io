@@ -109,19 +109,27 @@ jobs:
         run: |
           echo "Verifying deployment..."
           EXPECTED="${{ github.sha }}"
-          for i in $(seq 1 30); do
-            # /hc now answers the v1 envelope (specs/health-endpoints.md); version
-            # carries the full COMMIT_SHA, commit is the truncated 7-char form.
-            LIVE_COMMIT=$(curl -sfk --resolve "crystallography.io:443:${DEPLOY_HOST}" "https://crystallography.io/hc" 2>/dev/null | jq -r '.data.version // empty') || true
-            if [ "$LIVE_COMMIT" = "$EXPECTED" ]; then
-              echo "Deployment verified! Live commit: ${LIVE_COMMIT:0:8}"
-              exit 0
-            fi
-            echo "Attempt $i/30 - got: ${LIVE_COMMIT:-no response}, want: ${EXPECTED:0:8}"
-            sleep 10
-          done
-          echo "Could not verify deployment within 5 minutes"
-          exit 1
+          # Every HTTP surface bakes COMMIT_SHA into its v1 health envelope
+          # (specs/health-endpoints.md): `version` = full sha, `commit` = 7-char.
+          verify() {
+            local name="$1" path="$2" live
+            for i in $(seq 1 30); do
+              live=$(curl -sfk --resolve "crystallography.io:443:${DEPLOY_HOST}" "https://crystallography.io${path}" 2>/dev/null | jq -r '.data.version // empty') || true
+              if [ "$live" = "$EXPECTED" ]; then
+                echo "PASS  ${name} ${path} serving ${live:0:8}"
+                return 0
+              fi
+              echo "  attempt $i/30 ${name}: got ${live:-no response}, want ${EXPECTED:0:8}"
+              sleep 10
+            done
+            echo "::error::FAIL  ${name} ${path} never served ${EXPECTED:0:8}"
+            return 1
+          }
+          fail=0
+          verify web /hc || fail=1
+          verify api /api/health || fail=1
+          verify searchrouter /api/v1/search/health || fail=1
+          exit $fail
 
   e2e:
     needs: build-and-deploy
