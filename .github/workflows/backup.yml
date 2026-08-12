@@ -2,12 +2,13 @@ name: Backup
 
 # The crystallography mongo backs itself up from its own repo, rather than from
 # a central ansible role that had to know about every stack on every box.
-# scripts/backup.sh talks to the Storage Box using the host's own credentials -
-# nothing secret is passed in from here.
+# scripts/backup.sh writes to /backup, the estate backup disk agentage/
+# infrastructure CIFS-mounts on every VM - nothing secret is passed in from here.
 #
 # Weekly, not nightly: this is a ~2GB derived index over the CIF store, which is
 # itself rebuildable from COD via sync-cod.yml. A nightly re-ship of 2GB buys
-# little when the underlying data changes on a weekly sync cadence.
+# little when the underlying data changes on a weekly sync cadence. Retention is
+# the central prune's weekly survivors - 7 weekly plus 7 monthly.
 on:
   schedule:
     - cron: '34 1 * * 0' # Sunday 01:34 UTC = 03:34 Prague (CEST), 86 minutes
@@ -43,17 +44,20 @@ jobs:
           target: /tmp/crystallography-backup
           overwrite: true
 
-      - name: 🗄️ Dump and ship
+      - name: 🗄️ Dump and store
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           command_timeout: 40m
-          # The script exits non-zero on failure, and the final `result: ok` line
-          # is asserted here so a truncated session cannot pass as success.
+          # The script exits non-zero on failure, and the contract summary line
+          # is asserted here so a truncated session cannot pass as success. The
+          # service name is pinned in the pattern: a summary line for some other
+          # service would mean the wrong script ran.
           script: |
             set -e
             bash /tmp/crystallography-backup/scripts/backup.sh | tee /tmp/backup.log
-            grep -q '^result: ok ' /tmp/backup.log || { echo "backup did not report success"; exit 1; }
+            grep -q '^backup ok service=crystallography-mongo date=.* bytes=[0-9]* files=[0-9]*$' /tmp/backup.log ||
+              { echo "backup did not report success"; exit 1; }
             rm -rf /tmp/crystallography-backup /tmp/backup.log
