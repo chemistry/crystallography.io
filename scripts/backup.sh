@@ -87,7 +87,7 @@ log "mongodump ${container} -> ${out}"
 # command line or in the process table.
 # stderr goes to a file rather than a pipe because it is read back for the
 # per-collection counts; it is echoed afterwards so the run log still has it.
-docker run --rm --network "container:${container}" --memory 512m \
+docker run --rm --log-driver none --network "container:${container}" --memory 512m \
   -e MONGO_U -e MONGO_P "$img" \
   sh -c 'set -- --host 127.0.0.1 --numParallelCollections=1 --archive --gzip;
          [ -n "$MONGO_U" ] && set -- "$@" --username "$MONGO_U" --password "$MONGO_P" --authenticationDatabase admin;
