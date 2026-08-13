@@ -54,7 +54,7 @@ const getStaticSiteMap = ({ db: _db }: { db: Db }) => {
     });
     data.forEach((line) => res.write(line));
     res.write('</urlset>');
-    res.status(500).end();
+    res.end();
   };
 };
 
