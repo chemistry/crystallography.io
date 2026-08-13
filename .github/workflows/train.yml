@@ -163,11 +163,20 @@ jobs:
           git push origin HEAD:master
           echo "Committed chore(deps): bump @chemistry/*" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Check prod drift
+        # root-only commits miss deploy.yml's path filter; a quiet week must still redeploy a stale prod
+        id: drift
+        run: |
+          set -euo pipefail
+          git pull --rebase --quiet origin master
+          bash scripts/check-prod-drift.sh >> "$GITHUB_OUTPUT"
+
       - name: Dispatch deploy
         # GITHUB_TOKEN merges never fire the push-triggered deploy; deploy chains e2e
         if: >-
           (needs.deps.outputs.merged != '' && needs.deps.outputs.merged != '0') ||
-          (steps.ncu.outputs.changed == 'true' && steps.validate.outputs.reverted != 'true')
+          (steps.ncu.outputs.changed == 'true' && steps.validate.outputs.reverted != 'true') ||
+          steps.drift.outputs.drift == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -181,5 +190,6 @@ jobs:
       - name: Quiet week
         if: >-
           (needs.deps.outputs.merged == '' || needs.deps.outputs.merged == '0') &&
-          (steps.ncu.outputs.changed != 'true' || steps.validate.outputs.reverted == 'true')
-        run: echo "Nothing to deploy - no bot PRs merged, no internal dep change landed." >> "$GITHUB_STEP_SUMMARY"
+          (steps.ncu.outputs.changed != 'true' || steps.validate.outputs.reverted == 'true') &&
+          steps.drift.outputs.drift != 'true'
+        run: echo "Nothing to deploy - no bot PRs merged, no internal dep change landed, prod on-commit." >> "$GITHUB_STEP_SUMMARY"
