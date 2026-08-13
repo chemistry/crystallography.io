@@ -27,7 +27,6 @@ BACKUP_SERVICE="${BACKUP_SERVICE:-crystallography-mongo}"
 BACKUP_ROOT="${BACKUP_ROOT:-/backup}"
 DATASET_DB="${DATASET_DB:-crystallography}"
 SPOOL="${SPOOL:-/var/backups/crystallography-io}"
-MARKER_DIR="${MARKER_DIR:-/var/lib/backup-status}"
 # Guards against shipping a truncated archive as if it were good. The dump sat
 # at ~2.0GB compressed on 2026-08-08; an order of magnitude under that means
 # the dump died early.
@@ -161,13 +160,6 @@ ${records}
 }
 JSON
 log "manifest written: ${dest}/manifest.json"
-
-# Read by the host-side staleness watchdog, which is what catches "the workflow
-# silently stopped running" - a failure mode a workflow cannot report on itself.
-mkdir -p "$MARKER_DIR"
-printf '%s bytes=%s remote=%s\n' \
-  "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" "$dest_size" "${dest}" \
-  >"${MARKER_DIR}/${BACKUP_SERVICE}"
 
 # Asserted by the workflow. Keep the format stable.
 echo "backup ok service=${BACKUP_SERVICE} date=${date_utc} bytes=${dest_size} files=1"
