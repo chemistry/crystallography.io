@@ -17,7 +17,7 @@
   "dependencies": {
     "@agentage/observability": "^0.15.0",
     "@chemistry/molecule": "^1.6.3",
-    "@sentry/node": "^10.69.0",
+    "@sentry/node": "^10.70.0",
     "body-parser": "^1.20.6",
     "bullmq": "^5.81.3",
     "connect-timeout": "^1.9.0",
