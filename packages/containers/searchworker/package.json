@@ -17,7 +17,7 @@
   "dependencies": {
     "@agentage/observability": "^0.15.0",
     "@chemistry/molecule": "^1.6.3",
-    "@sentry/node": "^10.69.0",
+    "@sentry/node": "^10.70.0",
     "bullmq": "^5.81.3",
     "express": "^4.22.2",
     "ioredis": "^5.11.1",
