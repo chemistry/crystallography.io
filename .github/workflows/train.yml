@@ -96,7 +96,8 @@ jobs:
           FILES=$(git ls-files '*package.json')
           rm -rf /tmp/pre && for f in $FILES; do install -D "$f" "/tmp/pre/$f"; done
           # file:vendor/*.tgz deps are not registry specs - ncu leaves them alone
-          npx --yes npm-check-updates -u --workspaces --root --dep prod,dev --filter '@chemistry/*'
+          # majors stay a deliberate human decision - the train only proposes minor/patch
+          npx --yes npm-check-updates -u --workspaces --root --dep prod,dev --filter '@chemistry/*' --target minor
           cat > /tmp/no-downgrade.mjs <<'EOF'
           import { readFileSync, writeFileSync } from 'node:fs';
 
