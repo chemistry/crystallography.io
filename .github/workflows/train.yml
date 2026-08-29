@@ -4,7 +4,7 @@ name: Train
 # direct-to-master, then dispatch deploy.yml (which chains e2e). Red run = the only alarm.
 on:
   schedule:
-    - cron: '7 21 * * 5'
+    - cron: '23 6 * * 6'
   workflow_dispatch:
     inputs:
       bump_deps:
