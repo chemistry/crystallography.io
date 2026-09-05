@@ -14,10 +14,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@agentage/observability": "^0.17.0",
+    "@agentage/observability": "^0.18.0",
     "@chemistry/molecule": "^1.6.3",
     "@chemistry/molecule3d": "file:vendor/chemistry-molecule3d-1.5.1.tgz",
-    "@sentry/node": "^10.71.0",
+    "@sentry/node": "^10.73.0",
     "amqplib": "^0.10.0",
     "mongodb": "^6.18.0",
     "shelljs": "^0.10.0"
