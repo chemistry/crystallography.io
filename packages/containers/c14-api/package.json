@@ -20,7 +20,7 @@
     "body-parser": "^1.20.8",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
-    "express": "^4.22.2",
+    "express": "^5.2.1",
     "helmet": "^8.3.0",
     "mongodb": "^6.18.0",
     "morgan": "^1.12.0",
