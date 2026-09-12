@@ -61,17 +61,18 @@ const getStaticSiteMap = ({ db: _db }: { db: Db }) => {
 const getStructuresList = ({ db }: { db: Db }) => {
   return async (req: Request, res: Response) => {
     try {
-      if (
-        !req.params ||
-        !req.params[0] ||
-        !isFinite(parseInt(req.params[0], 10)) ||
-        parseInt(req.params[0], 10) <= 0
-      ) {
+      const rawPage = req.params.page;
+      if (!rawPage || !/^[0-9]+$/.test(rawPage)) {
         res.status(404);
         res.end('Wrong sitemap');
         return;
       }
-      const page = parseInt(req.params[0], 10);
+      const page = parseInt(rawPage, 10);
+      if (!isFinite(page) || page <= 0) {
+        res.status(404);
+        res.end('Wrong sitemap');
+        return;
+      }
       const doc = await db
         .collection<{ _id: number; structures?: number[] }>('sitemap')
         .findOne({ _id: page });
@@ -111,7 +112,8 @@ export const getSitemapRouters = ({ db }: { db: Db }) => {
 
   router.get('/sitemap/sitemap_s.xml', getStaticSiteMap({ db }));
 
-  router.get('/sitemap/sitemap([0-9]+).xml', getStructuresList({ db }));
+  // path-to-regexp v8 dropped inline regex; named param + in-handler digit check preserves the URL shape
+  router.get('/sitemap/sitemap:page.xml', getStructuresList({ db }));
 
   return router;
 };
