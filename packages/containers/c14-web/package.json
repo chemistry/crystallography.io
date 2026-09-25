@@ -20,7 +20,7 @@
     "@agentage/observability": "^0.21.0",
     "@chemistry/crystalview": "^3.1.7",
     "@chemistry/molpad": "^3.2.7",
-    "@sentry/node": "^10.74.0",
+    "@sentry/node": "^10.75.2",
     "@sentry/react": "^8.55.2",
     "body-parser": "^1.20.8",
     "clsx": "^2.1.0",

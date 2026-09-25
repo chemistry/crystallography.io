@@ -36,17 +36,17 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
-    "@types/node": "^22.20.2",
-    "eslint": "^10.10.0",
+    "@types/node": "^22.20.4",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "nodemon": "^3.1.0",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.8",
     "rimraf": "^5.0.0",
-    "supertest": "^7.0.0",
-    "tsx": "^4.23.13",
+    "supertest": "^7.3.0",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.0",
+    "typescript-eslint": "^8.70.1",
     "vitest": "^4.1.11"
   }
 }

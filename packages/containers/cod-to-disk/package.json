@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@agentage/observability": "^0.21.0",
-    "@sentry/node": "^10.74.0",
+    "@sentry/node": "^10.75.2",
     "amqplib": "^0.10.0",
     "node-cron": "^3.0.0",
     "shelljs": "^0.10.0"
