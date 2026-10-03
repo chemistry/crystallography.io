@@ -17,13 +17,13 @@
   "dependencies": {
     "@agentage/observability": "^0.21.0",
     "@chemistry/molecule": "^1.6.3",
-    "@sentry/node": "^10.75.2",
+    "@sentry/node": "^10.75.3",
     "body-parser": "^1.20.8",
     "bullmq": "^5.81.5",
     "connect-timeout": "^1.9.0",
     "express": "^4.22.3",
     "mongodb": "^6.18.0",
-    "socket.io": "^4.8.0"
+    "socket.io": "^4.8.4"
   },
   "devDependencies": {
     "@types/connect-timeout": "^0.0.39",
