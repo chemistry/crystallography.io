@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@agentage/observability": "^0.21.0",
-    "@chemistry/crystalview": "^3.1.8",
-    "@chemistry/molpad": "^3.2.8",
+    "@chemistry/crystalview": "^3.1.9",
+    "@chemistry/molpad": "^3.2.9",
     "@sentry/node": "^10.75.3",
     "@sentry/react": "^8.55.2",
     "body-parser": "^1.20.8",
