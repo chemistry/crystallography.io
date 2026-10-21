@@ -76,11 +76,7 @@ Fully automated via GitHub Actions — no manual SSH required.
 
 ### Library Release
 
-```bash
-git tag l0.0.18 && git push --tags
-```
-
-Triggers `release.yml` → npm publish for `@chemistry/cif-2-json`.
+This repo deploys, it does not publish packages. `@chemistry/*` libraries release from their own repos via the Friday train (`prepare-release.yml` -> `release.yml`).
 
 ## License
 
