@@ -27,10 +27,10 @@
     "connect-timeout": "^1.9.0",
     "express": "^4.22.3",
     "helmet": "^8.3.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-hook-form": "^7.90.0",
-    "react-router": "^8.4.0",
+    "react-router": "^8.5.0",
     "socket.io-client": "^4.8.4",
     "tailwind-merge": "^2.6.0",
     "zustand": "^5.0.15"
