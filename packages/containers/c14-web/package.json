@@ -22,7 +22,7 @@
     "@chemistry/molpad": "^3.2.11",
     "@sentry/node": "^10.76.2",
     "@sentry/react": "^8.55.2",
-    "body-parser": "^1.20.8",
+    "body-parser": "^1.20.9",
     "clsx": "^2.1.0",
     "connect-timeout": "^1.9.0",
     "express": "^4.22.3",
