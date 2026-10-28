@@ -1,6 +1,5 @@
 import { defineConfig } from '@playwright/test';
 
-// eslint-disable-next-line
 export default defineConfig({
   testDir: './tests',
   timeout: 30_000,
