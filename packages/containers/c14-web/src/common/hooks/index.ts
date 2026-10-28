@@ -1,2 +1,2 @@
-export * from './useClickOutside.js';
-export * from './useBrowserEffect.js';
+export * from './use-click-outside.js';
+export * from './use-browser-effect.js';

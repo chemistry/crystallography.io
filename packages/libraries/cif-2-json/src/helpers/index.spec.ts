@@ -1,5 +1,5 @@
 import type { CifLoop } from '../types.js';
-import { loadMock } from '../mocks/mockHelper.js';
+import { loadMock } from '../mocks/mock.helper.js';
 import { cif2json } from './index.js';
 
 describe('cif2json#parse', () => {

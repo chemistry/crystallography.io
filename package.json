@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -b",
     "test": "vitest run",
-    "lint": "eslint 'packages/**/*.{ts,tsx}'",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev": "npx vite packages/containers/c14-web",
@@ -38,6 +38,7 @@
     "@types/node": "^22.20.5",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.12.1",
     "eslint-plugin-prettier": "^5.5.7",
     "nodemon": "^3.1.0",
     "prettier": "^3.9.10",

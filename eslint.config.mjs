@@ -1,6 +1,7 @@
 import tseslint from 'typescript-eslint';
 import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
+import playwrightPlugin from 'eslint-plugin-playwright';
 
 const PACKAGES = [
   'libraries/cif-2-json',
@@ -23,16 +24,21 @@ export default tseslint.config(
       '**/*.js',
       '**/*.cjs',
       '**/*.mjs',
+      'playwright-report/**',
+      'test-results/**',
     ],
   },
   {
-    files: ['packages/**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         ecmaVersion: 2024,
         sourceType: 'module',
-        project: PACKAGES.map((p) => `./packages/${p}/tsconfig.eslint.json`),
+        project: [
+          './tsconfig.eslint.json',
+          ...PACKAGES.map((p) => `./packages/${p}/tsconfig.eslint.json`),
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -60,6 +66,14 @@ export default tseslint.config(
       'prefer-arrow-callback': 'error',
       'arrow-body-style': ['error', 'as-needed'],
       'no-var': 'error',
+    },
+  },
+  {
+    files: ['tests/**/*.ts'],
+    plugins: { playwright: playwrightPlugin },
+    rules: {
+      'playwright/missing-playwright-await': 'error',
+      'playwright/no-force-option': 'error',
     },
   }
 );

@@ -11,7 +11,7 @@ test.describe('Search by Name', () => {
     await expect(page.locator('body')).not.toContainText('error');
   });
 
-  test('autocomplete API returns results for typed text', async ({ page, apiClient }) => {
+  test('autocomplete API returns results for typed text', async ({ apiClient }) => {
     // Verify the underlying API works
     const res = await apiClient.autocompleteName(TEST_DATA.search.structureName);
     expect(res.ok()).toBeTruthy();

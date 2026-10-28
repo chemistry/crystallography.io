@@ -1,6 +1,6 @@
 import type { CifDataBlock } from '../types.js';
-import { cifProcessDataLine } from './cif_process_data_line.js';
-import { cifProcessLoop } from './cif_process_loop.js';
+import { cifProcessDataLine } from './cif-process-data-line.js';
+import { cifProcessLoop } from './cif-process-loop.js';
 
 const LOOP_START = /^(\s*)loop_(\s*)$/i;
 
