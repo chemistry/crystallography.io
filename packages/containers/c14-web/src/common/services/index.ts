@@ -1,1 +1,1 @@
-export * from './useLoadData.js';
+export * from './use-load-data.js';

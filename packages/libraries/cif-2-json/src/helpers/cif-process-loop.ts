@@ -1,5 +1,5 @@
 import { normalizeCifString } from '../normalizeCifString/index.js';
-import { unquoteLine } from './cif_utils_unquote.js';
+import { unquoteLine } from './cif-utils-unquote.js';
 
 const LOOP_KEY = /^_(\S+)$/;
 const MULTI_LINE_COMMENTS_DELIMER = /^(\s*);(.{0,})$/;

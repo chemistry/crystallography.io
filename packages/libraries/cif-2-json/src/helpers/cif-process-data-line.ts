@@ -1,5 +1,5 @@
 import { normalizeCifString } from '../normalizeCifString/index.js';
-import { unquoteLine } from './cif_utils_unquote.js';
+import { unquoteLine } from './cif-utils-unquote.js';
 
 // CONSTANTS
 const SINGLE_LINE_COMMENT = /^_(\S+)(\s+)(\S+|'.*'|".*")(\s*)$/;

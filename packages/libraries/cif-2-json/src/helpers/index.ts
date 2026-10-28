@@ -1,6 +1,6 @@
 import type { CifResult } from '../types.js';
-import { cifParser } from './cif_parser.js';
-import { splitDataBloks } from './cif_spliter.js';
+import { cifParser } from './cif-parser.js';
+import { splitDataBloks } from './cif-spliter.js';
 
 export function cif2json(text: string): CifResult {
   if (!text) {
