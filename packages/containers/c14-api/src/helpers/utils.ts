@@ -89,9 +89,10 @@ function filterLoopArray(loops: unknown) {
   if (!Array.isArray(loops)) {
     return [];
   }
-  return loops.filter((item: Record<string, unknown>) => {
-    return (item.columns as string[]).indexOf('_atom_site_fract_x') !== -1;
-  });
+  return loops.filter(
+    (item: Record<string, unknown>) =>
+      (item.columns as string[]).indexOf('_atom_site_fract_x') !== -1
+  );
 }
 
 function getarticleHtml(item: Record<string, unknown>): string {

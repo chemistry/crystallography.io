@@ -58,9 +58,7 @@ function buildSingleWordWhere(word: string) {
 
 export function buildNameWhereAnd(name: string) {
   const words = name.split(' ');
-  const queries = words.map((word) => {
-    return buildSingleWordWhere(word);
-  });
+  const queries = words.map((word) => buildSingleWordWhere(word));
 
   return {
     $and: queries,
@@ -69,9 +67,7 @@ export function buildNameWhereAnd(name: string) {
 
 export function buildNameWhereOr(name: string) {
   const words = name.split(' ');
-  const queries = words.map((word) => {
-    return buildSingleWordWhere(word);
-  });
+  const queries = words.map((word) => buildSingleWordWhere(word));
 
   return {
     $or: queries,

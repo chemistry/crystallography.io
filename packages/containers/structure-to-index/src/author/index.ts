@@ -129,12 +129,10 @@ async function saveAuthorsToDoc(
   }[],
   docId: number
 ) {
-  const authorsInfo = authorRecordsData.map((item) => {
-    return {
-      name: item.name,
-      link: getAuthorFullByDetails(item.recognizedRecord),
-    };
-  });
+  const authorsInfo = authorRecordsData.map((item) => ({
+    name: item.name,
+    link: getAuthorFullByDetails(item.recognizedRecord),
+  }));
 
   await structureDB.updateOne(
     {
@@ -185,9 +183,7 @@ function getAuthorFullByDetails(
 
 function extractAuthorsList(doc: WithId<Document>): string[] {
   const loops = (doc.loops || []) as { columns: string[]; data: (string | string[])[] }[];
-  const theLoops = loops.filter((item) => {
-    return (item.columns || []).indexOf('_publ_author_name') !== -1;
-  });
+  const theLoops = loops.filter((item) => (item.columns || []).indexOf('_publ_author_name') !== -1);
   if (theLoops.length !== 1) {
     return [];
   }

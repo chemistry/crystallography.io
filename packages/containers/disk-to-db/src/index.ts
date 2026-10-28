@@ -27,12 +27,9 @@ const getContext = async (): Promise<AppContext> => {
 
   return {
     logger,
-    getChanel: () => {
-      return chanel;
-    },
-    exec: (command: string, _options?: ExecOptions & { async?: false }): ShellString => {
-      return shell.exec(command);
-    },
+    getChanel: () => chanel,
+    exec: (command: string, _options?: ExecOptions & { async?: false }): ShellString =>
+      shell.exec(command),
     sendNoticeToQueue: async (data: object): Promise<void> => {
       chanel.sendToQueue(NOTICE_WRITE_QUEUE, Buffer.from(JSON.stringify(data)));
     },

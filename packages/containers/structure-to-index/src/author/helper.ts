@@ -10,9 +10,9 @@ export const extractAuthorsList = (doc: {
   loops?: LoopItem[];
   [key: string]: unknown;
 }): string[] => {
-  const theLoops = (doc.loops || []).filter((item: LoopItem) => {
-    return (item.columns || []).indexOf('_publ_author_name') !== -1;
-  });
+  const theLoops = (doc.loops || []).filter(
+    (item: LoopItem) => (item.columns || []).indexOf('_publ_author_name') !== -1
+  );
   if (theLoops.length !== 1) {
     return [];
   }

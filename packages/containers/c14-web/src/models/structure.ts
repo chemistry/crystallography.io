@@ -12,9 +12,7 @@ const getStructuresData = async (ids: number[]) => {
   return res.data;
 };
 
-const _difference = (arr1: number[], arr2: number[]) => {
-  return arr1.filter((x) => !arr2.includes(x));
-};
+const _difference = (arr1: number[], arr2: number[]) => arr1.filter((x) => !arr2.includes(x));
 
 interface StructureResponse {
   data: { id: string; attributes: Record<string, unknown> }[];

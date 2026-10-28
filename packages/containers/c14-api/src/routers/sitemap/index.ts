@@ -5,8 +5,9 @@ import * as Sentry from '@sentry/node';
 
 const HOST = 'https://crystallography.io';
 
-const getSitemapsList = ({ db }: { db: Db }) => {
-  return async (req: Request, res: Response) => {
+const getSitemapsList =
+  ({ db }: { db: Db }) =>
+  async (req: Request, res: Response) => {
     try {
       const sitemapPageCount = await db.collection('sitemap').countDocuments({});
 
@@ -28,10 +29,10 @@ const getSitemapsList = ({ db }: { db: Db }) => {
       res.end();
     }
   };
-};
 
-const getStaticSiteMap = ({ db: _db }: { db: Db }) => {
-  return (req: Request, res: Response) => {
+const getStaticSiteMap =
+  ({ db: _db }: { db: Db }) =>
+  (req: Request, res: Response) => {
     res.set('Content-Type', 'text/xml');
     const URLS = [
       '/',
@@ -49,17 +50,18 @@ const getStaticSiteMap = ({ db: _db }: { db: Db }) => {
     res.write(
       '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     );
-    const data = URLS.map((url) => {
-      return `<url><loc>${HOST}${url}</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`;
-    });
+    const data = URLS.map(
+      (url) =>
+        `<url><loc>${HOST}${url}</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`
+    );
     data.forEach((line) => res.write(line));
     res.write('</urlset>');
     res.end();
   };
-};
 
-const getStructuresList = ({ db }: { db: Db }) => {
-  return async (req: Request, res: Response) => {
+const getStructuresList =
+  ({ db }: { db: Db }) =>
+  async (req: Request, res: Response) => {
     try {
       if (
         !req.params ||
@@ -102,7 +104,6 @@ const getStructuresList = ({ db }: { db: Db }) => {
       res.status(500).end();
     }
   };
-};
 
 export const getSitemapRouters = ({ db }: { db: Db }) => {
   const router = Router();

@@ -64,9 +64,7 @@ export const getNameAutocompleteRouter = ({ db }: { db: Db }) => {
         getNameCollection(whereOR, db),
       ]);
 
-      andNames.sort((name1, name2) => {
-        return name1.name.length - name2.name.length;
-      });
+      andNames.sort((name1, name2) => name1.name.length - name2.name.length);
 
       const words = name.split(' ');
       orNames.sort((name1, name2) => {
@@ -118,18 +116,16 @@ interface NameEntry {
   count: number;
 }
 
-const getNamesCount = async (where: Record<string, unknown>, db: Db): Promise<number> => {
-  return await db.collection('names').countDocuments(where);
-};
-const getNameCollection = async (where: Record<string, unknown>, db: Db): Promise<NameEntry[]> => {
-  return await db
+const getNamesCount = async (where: Record<string, unknown>, db: Db): Promise<number> =>
+  await db.collection('names').countDocuments(where);
+const getNameCollection = async (where: Record<string, unknown>, db: Db): Promise<NameEntry[]> =>
+  await db
     .collection('names')
     .find(where)
     .sort({ count: -1 })
     .limit(RESULTS_PER_SUGGESTION)
     .map((doc) => ({ _id: doc._id, name: doc.name as string, count: doc.count as number }))
     .toArray();
-};
 const uniqById = (names: NameEntry[]): NameEntry[] => {
   const res: NameEntry[] = [];
   const addedIds: string[] = [];
@@ -143,8 +139,5 @@ const uniqById = (names: NameEntry[]): NameEntry[] => {
   return res;
 };
 
-const numberOccurrence = (words: string[], sentence: string) => {
-  return words.reduce((res, curr) => {
-    return sentence.indexOf(curr) !== -1 ? res + 1 : res;
-  }, 0);
-};
+const numberOccurrence = (words: string[], sentence: string) =>
+  words.reduce((res, curr) => (sentence.indexOf(curr) !== -1 ? res + 1 : res), 0);

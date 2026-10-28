@@ -789,9 +789,7 @@ FROM = FROM.concat([
 ]);
 TO = TO.concat(['°', '×', '—–', '≠', '—–', '□', '±', '&gt;', '±', '&lt;', '~', '→', '≈', '←', '∞']);
 
-const FROM_REGEX: RegExp[] = FROM.map((toReplace) => {
-  return new RegExp(escapeRegExp(toReplace), 'g');
-});
+const FROM_REGEX: RegExp[] = FROM.map((toReplace) => new RegExp(escapeRegExp(toReplace), 'g'));
 
 export function normalizeCifString(text: string): string {
   if (!text) {

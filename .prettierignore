@@ -1,7 +1,11 @@
 node_modules
 dist
 build
+out
 .next
 coverage
+playwright-report
+test-results
 package-lock.json
 *.snap
+*.tsbuildinfo

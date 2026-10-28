@@ -42,9 +42,7 @@ const extractDataFromLogs = new Transform({
           };
         }
       })
-      .filter((item) => {
-        return !!item;
-      });
+      .filter((item) => !!item);
     count = count + lines.length;
     callback(null, lines);
   },
@@ -61,8 +59,8 @@ const getSendMessageToQueueStream = ({ sendToQueue }: AppContext) =>
     },
   });
 
-const checkExistsWithTimeout = (filePath: string, timeout: number): Promise<void> => {
-  return new Promise((resolve, reject) => {
+const checkExistsWithTimeout = (filePath: string, timeout: number): Promise<void> =>
+  new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       watcher.close();
       reject(new Error('File did not exists and was not created during the timeout.'));
@@ -86,22 +84,19 @@ const checkExistsWithTimeout = (filePath: string, timeout: number): Promise<void
       }
     });
   });
-};
 
 const waitTillFileExists = new Transform({
   objectMode: true,
   transform: (chunk, _encoding, callback: TransformCallback) => {
     if (Array.isArray(chunk) && chunk.length > 0) {
-      const waits = chunk.map(({ fileName, codId }) => {
-        return checkExistsWithTimeout(fileName, 15000)
-          .then(() => {
-            return { fileName, codId };
-          })
+      const waits = chunk.map(({ fileName, codId }) =>
+        checkExistsWithTimeout(fileName, 15000)
+          .then(() => ({ fileName, codId }))
           .catch((e) => {
             Sentry.captureException(e);
             console.error(e);
-          });
-      });
+          })
+      );
       Promise.all(waits).then((data) => {
         callback(null, data);
       });
