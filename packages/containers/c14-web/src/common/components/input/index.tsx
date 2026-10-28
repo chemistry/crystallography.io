@@ -171,17 +171,15 @@ export const Input = ({
     }
   };
 
-  const selectSuggestion = (idx: number) => {
-    return () => {
-      const newSuggestions = suggestions.map((res) => ({
-        ...res,
-        isSelected: false,
-      }));
-      setSuggestions(newSuggestions);
-      setSuggestionsVisible(false);
-      setValue(suggestions[idx].value);
-      onChange(suggestions[idx].value);
-    };
+  const selectSuggestion = (idx: number) => () => {
+    const newSuggestions = suggestions.map((res) => ({
+      ...res,
+      isSelected: false,
+    }));
+    setSuggestions(newSuggestions);
+    setSuggestionsVisible(false);
+    setValue(suggestions[idx].value);
+    onChange(suggestions[idx].value);
   };
 
   const inputFormClassnames = suggestionsVisible
@@ -222,20 +220,18 @@ const Suggestions = ({
   onSelectSuggestion: (index: number) => () => void;
   renderItemValue: (item: ISuggestedItem, search: string) => React.ReactNode;
   value: string;
-}) => {
-  return (
-    <div className="c-form-input-suggestions">
-      <div className="c-form-input-suggestion-divider"></div>
-      {suggestions.map((item, i) => {
-        const classN = item.isSelected
-          ? 'c-form-input-suggestions-item selected'
-          : 'c-form-input-suggestions-item';
-        return (
-          <div key={i} className={classN} onClick={onSelectSuggestion(i)}>
-            {renderItemValue(item, value)}
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+}) => (
+  <div className="c-form-input-suggestions">
+    <div className="c-form-input-suggestion-divider"></div>
+    {suggestions.map((item, i) => {
+      const classN = item.isSelected
+        ? 'c-form-input-suggestions-item selected'
+        : 'c-form-input-suggestions-item';
+      return (
+        <div key={i} className={classN} onClick={onSelectSuggestion(i)}>
+          {renderItemValue(item, value)}
+        </div>
+      );
+    })}
+  </div>
+);

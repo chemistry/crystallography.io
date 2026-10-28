@@ -7,59 +7,55 @@ import { ErrorToast } from '../../components/toast/index.js';
 import { SearchState } from '../../store/slices/search-by-unit-cell-page.slice.js';
 import { useValidationError } from './common/index.js';
 
-const getPramsValidators = (param: string) => {
-  return [
-    {
-      type: 'required',
-      isValid(value: string) {
-        return value !== '';
-      },
-      message: `Param ${param} can not be empty`,
+const getPramsValidators = (param: string) => [
+  {
+    type: 'required',
+    isValid(value: string) {
+      return value !== '';
     },
-    {
-      type: 'number',
-      isValid(value: string) {
-        return !isNaN(parseFloat(value));
-      },
-      message: `Param ${param} should be a valid number`,
+    message: `Param ${param} can not be empty`,
+  },
+  {
+    type: 'number',
+    isValid(value: string) {
+      return !isNaN(parseFloat(value));
     },
-    {
-      type: 'range',
-      isValid(value: string) {
-        const v = parseFloat(value);
-        return v > 0 && v < 1000;
-      },
-      message: `Param ${param} should be in range 0...1000`,
+    message: `Param ${param} should be a valid number`,
+  },
+  {
+    type: 'range',
+    isValid(value: string) {
+      const v = parseFloat(value);
+      return v > 0 && v < 1000;
     },
-  ];
-};
+    message: `Param ${param} should be in range 0...1000`,
+  },
+];
 
-const _getAngleValidators = (param: string) => {
-  return [
-    {
-      type: 'required',
-      isValid(value: string) {
-        return value !== '';
-      },
-      message: `Param ${param} can not be empty`,
+const _getAngleValidators = (param: string) => [
+  {
+    type: 'required',
+    isValid(value: string) {
+      return value !== '';
     },
-    {
-      type: 'number',
-      isValid(value: string) {
-        return !isNaN(parseFloat(value));
-      },
-      message: `Param ${param} should be a valid number`,
+    message: `Param ${param} can not be empty`,
+  },
+  {
+    type: 'number',
+    isValid(value: string) {
+      return !isNaN(parseFloat(value));
     },
-    {
-      type: 'range',
-      isValid(value: string) {
-        const v = parseFloat(value);
-        return v > 2 && v < 180;
-      },
-      message: `Param ${param} should be in range 2...180`,
+    message: `Param ${param} should be a valid number`,
+  },
+  {
+    type: 'range',
+    isValid(value: string) {
+      const v = parseFloat(value);
+      return v > 2 && v < 180;
     },
-  ];
-};
+    message: `Param ${param} should be in range 2...180`,
+  },
+];
 
 const toleranceValidators = [
   {
@@ -258,13 +254,11 @@ const SearchByUnitCellForm = ({
   );
 };
 
-const SearchSummary = ({ totalResults }: { totalResults: number }) => {
-  return (
-    <div className="search-layout__results-header">
-      <h4 className="text-primary">Results: {totalResults}</h4>
-    </div>
-  );
-};
+const SearchSummary = ({ totalResults }: { totalResults: number }) => (
+  <div className="search-layout__results-header">
+    <h4 className="text-primary">Results: {totalResults}</h4>
+  </div>
+);
 
 const SearchResults = () => {
   const containerRef = useRef(null);

@@ -54,9 +54,7 @@ const AuthorsTable = ({ authors }: { authors: AuthorsRecord[] }) => {
   );
 };
 
-const numberWithSpaces = (x: number): string => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-};
+const numberWithSpaces = (x: number): string => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 export const AuthorsPage = () => {
   const { page } = useParams();

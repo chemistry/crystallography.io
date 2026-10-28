@@ -79,9 +79,7 @@ export const getUnitCellSearchRouter = ({ db }: { db: Db }) => {
         skip: (page - 1) * RESULTS_PER_PAGE,
         sort: { _id: 1 },
       })
-      .map((doc) => {
-        return doc._id;
-      })
+      .map((doc) => doc._id)
       .toArray();
 
     const totalPages = Math.ceil(documentsCount / RESULTS_PER_PAGE);

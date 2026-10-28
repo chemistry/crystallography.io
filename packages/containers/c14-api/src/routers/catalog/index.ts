@@ -7,16 +7,14 @@ import * as Sentry from '@sentry/node';
 const catalogPageSchema = z.number().int().min(1).max(99999);
 const PER_PAGE = 100;
 
-const catalogMapper = (item: Record<string, unknown>) => {
-  return {
+const catalogMapper = (item: Record<string, unknown>) => ({
+  id: item._id,
+  type: 'catalog',
+  attributes: {
     id: item._id,
-    type: 'catalog',
-    attributes: {
-      id: item._id,
-      structures: item.structures,
-    },
-  };
-};
+    structures: item.structures,
+  },
+});
 
 export const getCatalogRouter = ({ db }: { db: Db }) => {
   const router = Router();

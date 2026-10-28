@@ -11,9 +11,7 @@ export const getMongoConnection = async () => {
   const mongoClient = new MongoClient(connectionString);
   await mongoClient.connect();
 
-  const close = () => {
-    return mongoClient.close();
-  };
+  const close = () => mongoClient.close();
   const db = mongoClient.db('crystallography');
 
   process.on('SIGTERM', () => {

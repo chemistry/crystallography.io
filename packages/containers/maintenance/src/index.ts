@@ -29,9 +29,7 @@ const getContext = async (): Promise<AppContext> => {
 
   return {
     logger,
-    close: () => {
-      return close();
-    },
+    close: () => close(),
     db,
   };
 };

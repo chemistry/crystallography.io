@@ -7,9 +7,7 @@ export const getRedisClient = async () => {
     password: process.env.REDIS_PASSWORD || undefined,
   });
 
-  const close = () => {
-    return client.quit();
-  };
+  const close = () => client.quit();
 
   return { client, close };
 };

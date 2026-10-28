@@ -126,9 +126,7 @@ function clearBondOrder(searchQuery: Record<string, unknown>): object {
   const bonds = (searchQuery.bonds || []) as number[][];
   return {
     ...searchQuery,
-    bonds: bonds.map((bond: number[]) => {
-      return [bond[0], bond[1], 1];
-    }),
+    bonds: bonds.map((bond: number[]) => [bond[0], bond[1], 1]),
   };
 }
 

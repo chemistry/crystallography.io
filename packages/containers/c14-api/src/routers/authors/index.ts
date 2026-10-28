@@ -25,8 +25,9 @@ interface AuthorMapped {
   attributes: AuthorAttributes;
 }
 
-const authorMapper = (showDetails: boolean) => {
-  return (item: Record<string, unknown>): AuthorMapped => {
+const authorMapper =
+  (showDetails: boolean) =>
+  (item: Record<string, unknown>): AuthorMapped => {
     const o: AuthorMapped = {
       id: item._id,
       type: 'author',
@@ -41,7 +42,6 @@ const authorMapper = (showDetails: boolean) => {
     }
     return o;
   };
-};
 
 const STRUCTURES_PAGE_SIZE = 100;
 

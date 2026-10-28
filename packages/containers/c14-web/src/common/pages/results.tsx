@@ -14,9 +14,7 @@ const parsePage = (page?: string): number => {
   return currentPage;
 };
 
-const numberWithSpaces = (x: number): string => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-};
+const numberWithSpaces = (x: number): string => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 const MAX_PAGES = 10;
 
@@ -33,11 +31,13 @@ export const SearchResultsPage = () => {
   const structureIds = useAppStore((s) => s.searchResults.data.structureIds);
   const structureById = useAppStore((s) => s.searchResults.data.structureById);
 
-  const structures = useMemo(() => {
-    return structureIds
-      .map((structureId) => structureById[structureId])
-      .filter((item) => !!item) as unknown as StructureModel[];
-  }, [structureIds, structureById]);
+  const structures = useMemo(
+    () =>
+      structureIds
+        .map((structureId) => structureById[structureId])
+        .filter((item) => !!item) as unknown as StructureModel[],
+    [structureIds, structureById]
+  );
 
   useBrowserEffect(() => {
     let cancelled = false;

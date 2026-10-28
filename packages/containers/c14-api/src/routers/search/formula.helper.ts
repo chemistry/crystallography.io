@@ -192,24 +192,16 @@ function elementCompare(a: string, b: string) {
 
 export function formulaToString(formulaObj: FormulaObj): string {
   const formulaDataArray = Object.keys(formulaObj)
-    .filter((key) => {
-      return ELEMENTS.indexOf(key) !== -1;
-    })
-    .map((key) => {
-      return {
-        element: key,
-        count: formulaObj[key],
-      };
-    });
+    .filter((key) => ELEMENTS.indexOf(key) !== -1)
+    .map((key) => ({
+      element: key,
+      count: formulaObj[key],
+    }));
 
   // sorted formula
-  formulaDataArray.sort((a, b) => {
-    return elementCompare(a.element, b.element);
-  });
+  formulaDataArray.sort((a, b) => elementCompare(a.element, b.element));
 
   return formulaDataArray
-    .map((item) => {
-      return item.element + (item.count === 1 ? '' : item.count);
-    })
+    .map((item) => item.element + (item.count === 1 ? '' : item.count))
     .join('');
 }

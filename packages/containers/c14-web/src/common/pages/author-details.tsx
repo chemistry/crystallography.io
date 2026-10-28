@@ -6,9 +6,7 @@ import { StructuresList } from '../components/structure-list/structure-list.js';
 import type { StructureModel } from '../models/index.js';
 import { useAppStore } from '../store/index.js';
 
-const numberWithSpaces = (x: number): string => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-};
+const numberWithSpaces = (x: number): string => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 const MAX_PAGES = 10;
 

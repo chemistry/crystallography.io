@@ -25,9 +25,7 @@ const renderItemValue = (item: SuggestedAuthor, search: string): React.ReactNode
 
   if (item.value && item.count) {
     let valueWords = item.value.split(' ');
-    valueWords = valueWords.map((word: string) => {
-      return word.replace(re, '<b>$1</b>');
-    });
+    valueWords = valueWords.map((word: string) => word.replace(re, '<b>$1</b>'));
 
     const html = valueWords.join(' ');
     return (
@@ -137,13 +135,11 @@ const SearchByAuthorForm = ({
   );
 };
 
-const SearchSummary = ({ totalResults }: { totalResults: number }) => {
-  return (
-    <div className="search-layout__results-header">
-      <h4 className="text-primary">Results: {totalResults}</h4>
-    </div>
-  );
-};
+const SearchSummary = ({ totalResults }: { totalResults: number }) => (
+  <div className="search-layout__results-header">
+    <h4 className="text-primary">Results: {totalResults}</h4>
+  </div>
+);
 
 const SearchResults = () => {
   const containerRef = useRef(null);

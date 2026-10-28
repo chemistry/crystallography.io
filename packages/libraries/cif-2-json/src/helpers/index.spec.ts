@@ -196,9 +196,7 @@ describe('cif2json#parse', () => {
     expect(parseResult.data_1100937).toBeDefined();
 
     const loops = getLoops(parseResult, 'data_1100937');
-    const authorLoop = loops.filter((item) => {
-      return item.columns.indexOf('_publ_author_name') !== -1;
-    });
+    const authorLoop = loops.filter((item) => item.columns.indexOf('_publ_author_name') !== -1);
     expect(authorLoop.length).toEqual(1);
 
     expect(authorLoop[0].data[0][0]).toEqual('Gerd Becker');
@@ -226,9 +224,7 @@ describe('cif2json#parse', () => {
     expect(parseResult.data_1502740).toBeDefined();
 
     const loops = getLoops(parseResult, 'data_1502740');
-    const coordLoop = loops.filter((item) => {
-      return item.columns.indexOf('_atom_site_fract_x') !== -1;
-    });
+    const coordLoop = loops.filter((item) => item.columns.indexOf('_atom_site_fract_x') !== -1);
     expect(coordLoop.length).toEqual(1);
   });
 });

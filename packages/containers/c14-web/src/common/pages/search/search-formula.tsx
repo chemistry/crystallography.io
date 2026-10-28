@@ -87,13 +87,11 @@ const SearchByFormulaForm = ({
   );
 };
 
-const SearchSummary = ({ totalResults }: { totalResults: number }) => {
-  return (
-    <div className="search-layout__results-header">
-      <h4 className="text-primary">Results: {totalResults}</h4>
-    </div>
-  );
-};
+const SearchSummary = ({ totalResults }: { totalResults: number }) => (
+  <div className="search-layout__results-header">
+    <h4 className="text-primary">Results: {totalResults}</h4>
+  </div>
+);
 
 const SearchResults = () => {
   const containerRef = useRef(null);

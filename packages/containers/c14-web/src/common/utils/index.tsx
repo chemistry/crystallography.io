@@ -4,9 +4,8 @@ import { NavLink } from 'react-router';
 
 export type HighlightFunction = (name: string) => string;
 
-const CapitalizeFirstLetter = (name: string): string => {
-  return name.charAt(0).toUpperCase() + name.slice(1);
-};
+const CapitalizeFirstLetter = (name: string): string =>
+  name.charAt(0).toUpperCase() + name.slice(1);
 
 export const CompoundName: FC<{ model: StructureModel; highlight?: HighlightFunction }> = ({
   model,
@@ -26,9 +25,10 @@ export const CompoundName: FC<{ model: StructureModel; highlight?: HighlightFunc
 export const CompoundFormula: FC<{ model: StructureModel }> = ({ model }) => {
   let formula = model.formula || model.calcformula || '';
   formula = formula.replace(/[-\s+]/g, '');
-  formula = formula.replace(/([\])a-zA-Z])([.,0-9]+)/g, (match, p1, p2) => {
-    return p1 + '<sub>' + p2 + '</sub>';
-  });
+  formula = formula.replace(
+    /([\])a-zA-Z])([.,0-9]+)/g,
+    (match, p1, p2) => p1 + '<sub>' + p2 + '</sub>'
+  );
   return <span dangerouslySetInnerHTML={{ __html: formula }}></span>;
 };
 

@@ -56,11 +56,9 @@ export function cleanupJCif(jcif: Record<string, unknown>): object {
 function constructFilterFunction(loopFieldsFilterList: string[][]) {
   return (loopItem: { columns?: string[]; data?: unknown[][] }) => {
     const columns = loopItem.columns || [];
-    return loopFieldsFilterList.some((fieldsArray: string[]) => {
-      return columns.some((col: string) => {
-        return fieldsArray.indexOf(col) !== -1;
-      });
-    });
+    return loopFieldsFilterList.some((fieldsArray: string[]) =>
+      columns.some((col: string) => fieldsArray.indexOf(col) !== -1)
+    );
   };
 }
 
@@ -80,30 +78,20 @@ const coordFieldsOrder = [
 
 function prepareCoordLoop(coordLoop: { columns: string[]; data?: unknown[][] }) {
   const colsIdx = coordFieldsOrder
-    .map((colName) => {
-      return {
-        name: colName,
-        idx: coordLoop.columns.indexOf(colName),
-      };
-    })
+    .map((colName) => ({
+      name: colName,
+      idx: coordLoop.columns.indexOf(colName),
+    }))
     // filter non existing
-    .filter((item) => {
-      return item.idx !== -1;
-    });
+    .filter((item) => item.idx !== -1);
 
-  const newColNames = colsIdx.map((item) => {
-    return item.name;
-  });
+  const newColNames = colsIdx.map((item) => item.name);
 
-  const dataIndexes = colsIdx.map((item) => {
-    return item.idx;
-  });
+  const dataIndexes = colsIdx.map((item) => item.idx);
 
-  const newData = (coordLoop.data || []).map((row: unknown[]) => {
-    return dataIndexes.map((colIdx) => {
-      return row[colIdx];
-    });
-  });
+  const newData = (coordLoop.data || []).map((row: unknown[]) =>
+    dataIndexes.map((colIdx) => row[colIdx])
+  );
 
   return {
     columns: newColNames,
