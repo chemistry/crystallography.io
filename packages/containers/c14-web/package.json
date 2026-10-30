@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@agentage/observability": "^0.21.0",
-    "@chemistry/crystalview": "^3.1.12",
-    "@chemistry/molpad": "^3.2.11",
-    "@sentry/node": "^10.76.2",
+    "@chemistry/crystalview": "^3.1.14",
+    "@chemistry/molpad": "^3.2.12",
+    "@sentry/node": "^10.77.1",
     "@sentry/react": "^8.55.2",
     "body-parser": "^1.20.9",
     "clsx": "^2.1.0",
@@ -29,11 +29,11 @@
     "helmet": "^8.3.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-hook-form": "^7.90.0",
+    "react-hook-form": "^7.91.0",
     "react-router": "^8.5.0",
     "socket.io-client": "^4.8.4",
     "tailwind-merge": "^2.6.0",
-    "zustand": "^5.0.15"
+    "zustand": "^5.0.16"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
